@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration845EmptySpellConsumables extends MigrationBase {
     static override version = 0.845;
 
-    override async preUpdateItem(source: ItemSourcePF2e): Promise<void> {
+    override async preUpdateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "consumable") {
             const spell: unknown = source.system.spell;
             if (R.isPlainObject(spell) && !["_id", "name", "type", "system"].every((p) => p in spell)) {

@@ -12,7 +12,7 @@ export const RenderDialog = {
                 const select = html.querySelector<HTMLSelectElement>("select[name=type]");
                 const option = select?.querySelector("option");
                 if (select && option) {
-                    const localize = localizer("PF2E.Item.CreationDialog.Categories");
+                    const localize = localizer("AVANT.Item.CreationDialog.Categories");
                     select.append(extractOptGroup(select, localize("Physical"), [...PHYSICAL_ITEM_TYPES, "kit"]));
                     select.append(extractOptGroup(select, localize("Character"), Array.from(PC_ITEM_TYPES)));
                     select.append(extractOptGroup(select, localize("Other")));

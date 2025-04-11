@@ -2,19 +2,19 @@
     <ol class="box-list inventory-members">
         {{#unless restricted}}
             <li class="box summary">
-                <header>{{localize "PF2E.Actor.Party.Total"}}</header>
+                <header>{{localize "AVANT.Actor.Party.Total"}}</header>
                 <div class="summary-data">
                     <div>
-                        <label><i class="fa-solid fa-coins fa-fw"></i> {{localize "PF2E.Actor.Party.Coin"}}</label>
-                        <span class="value">{{numberFormat inventorySummary.totalCoins decimals=2}} {{localize "PF2E.CurrencyAbbreviations.gp"}}</span>
+                        <label><i class="fa-solid fa-coins fa-fw"></i> {{localize "AVANT.Actor.Party.Coin"}}</label>
+                        <span class="value">{{numberFormat inventorySummary.totalCoins decimals=2}} {{localize "AVANT.CurrencyAbbreviations.gp"}}</span>
                     </div>
                     <div>
-                        <label><i class="fa-solid fa-scale-unbalanced fa-fw"></i> {{localize "PF2E.Actor.Party.Wealth"}}</label>
-                        <span class="value">{{numberFormat inventorySummary.totalWealth decimals=2}} {{localize "PF2E.CurrencyAbbreviations.gp"}}</span>
+                        <label><i class="fa-solid fa-scale-unbalanced fa-fw"></i> {{localize "AVANT.Actor.Party.Wealth"}}</label>
+                        <span class="value">{{numberFormat inventorySummary.totalWealth decimals=2}} {{localize "AVANT.CurrencyAbbreviations.gp"}}</span>
                     </div>
                 </div>
                 <footer>
-                    <i class="fa-solid fa-weight-scale-hanging"></i> {{localize "PF2E.Item.Physical.Bulk.Label"}} {{inventorySummary.totalBulk}}
+                    <i class="fa-solid fa-weight-scale-hanging"></i> {{localize "AVANT.Item.Physical.Bulk.Label"}} {{inventorySummary.totalBulk}}
                 </footer>
             </li>
         {{/unless}}
@@ -27,19 +27,19 @@
                         {{#unless member.restricted}}
                             <div class="value">
                                 <i class="fa-solid fa-scale-unbalanced"></i>
-                                {{numberFormat member.actor.inventory.totalWealth.goldValue decimals=2}} {{localize "PF2E.CurrencyAbbreviations.gp"}}
+                                {{numberFormat member.actor.inventory.totalWealth.goldValue decimals=2}} {{localize "AVANT.CurrencyAbbreviations.gp"}}
                             </div>
                         {{/unless}}
                     </div>
                 </div>
                 {{#unless member.restricted}}
                     <footer>
-                        <i class="fa-solid fa-weight-scale-hanging"></i> {{localize "PF2E.Item.Physical.Bulk.Label"}} {{member.actor.inventory.bulk.value}}
+                        <i class="fa-solid fa-weight-scale-hanging"></i> {{localize "AVANT.Item.Physical.Bulk.Label"}} {{member.actor.inventory.bulk.value}}
                     </footer>
                 {{/unless}}
             </li>
         {{/each}}
     </ol>
 {{else}}
-    {{localize "PF2E.Actor.Party.BlankSlate"}}
+    {{localize "AVANT.Actor.Party.BlankSlate"}}
 {{/if}}

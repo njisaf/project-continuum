@@ -1,12 +1,12 @@
-import { AbilityViewData, ActorSheetDataPF2e } from "@actor/sheet/data-types.ts";
+import { AbilityViewData, ActorSheetDataAvant } from "@actor/sheet/data-types.ts";
 import { createAbilityViewData } from "@actor/sheet/helpers.ts";
-import { VehiclePF2e } from "@actor/vehicle/index.ts";
-import { ItemPF2e } from "@item";
+import { VehicleAvant } from "@actor/vehicle/index.ts";
+import { ItemAvant } from "@item";
 import { AdjustedValue, getAdjustedValue } from "@module/sheet/helpers.ts";
-import { ErrorPF2e, getActionIcon, htmlClosest, htmlQuery, htmlQueryAll } from "@util";
-import { ActorSheetPF2e } from "../sheet/base.ts";
+import { ErrorAvant, getActionIcon, htmlClosest, htmlQuery, htmlQueryAll } from "@util";
+import { ActorSheetAvant } from "../sheet/base.ts";
 
-export class VehicleSheetPF2e extends ActorSheetPF2e<VehiclePF2e> {
+export class VehicleSheetAvant extends ActorSheetAvant<VehicleAvant> {
     static override get defaultOptions(): ActorSheetOptions {
         const options = super.defaultOptions;
         return {
@@ -15,7 +15,7 @@ export class VehicleSheetPF2e extends ActorSheetPF2e<VehiclePF2e> {
             width: 670,
             height: 480,
             tabs: [{ navSelector: ".sheet-navigation", contentSelector: ".sheet-content", initial: "details" }],
-            template: "systems/pf2e/templates/actors/vehicle/sheet.hbs",
+            template: "systems/avant/templates/actors/vehicle/sheet.hbs",
         };
     }
 
@@ -23,9 +23,9 @@ export class VehicleSheetPF2e extends ActorSheetPF2e<VehiclePF2e> {
         const sheetData = await super.getData();
 
         const actions: ActionsSheetData = {
-            action: { label: game.i18n.localize("PF2E.ActionsActionsHeader"), actions: [] },
-            reaction: { label: game.i18n.localize("PF2E.ActionsReactionsHeader"), actions: [] },
-            free: { label: game.i18n.localize("PF2E.ActionsFreeActionsHeader"), actions: [] },
+            action: { label: game.i18n.localize("AVANT.ActionsActionsHeader"), actions: [] },
+            reaction: { label: game.i18n.localize("AVANT.ActionsReactionsHeader"), actions: [] },
+            free: { label: game.i18n.localize("AVANT.ActionsFreeActionsHeader"), actions: [] },
         };
 
         for (const item of this.actor.itemTypes.action.toSorted((a, b) => a.sort - b.sort)) {
@@ -34,7 +34,7 @@ export class VehicleSheetPF2e extends ActorSheetPF2e<VehiclePF2e> {
                 ...createAbilityViewData(item),
                 img: ((): ImageFilePath => {
                     const actionIcon = getActionIcon(item.actionCost);
-                    const defaultIcon = ItemPF2e.getDefaultArtwork(item._source).img;
+                    const defaultIcon = ItemAvant.getDefaultArtwork(item._source).img;
                     if (item.isOfType("action") && ![actionIcon, defaultIcon].includes(item.img)) {
                         return item.img;
                     }
@@ -46,12 +46,12 @@ export class VehicleSheetPF2e extends ActorSheetPF2e<VehiclePF2e> {
         return {
             ...sheetData,
             actions,
-            actorSizes: CONFIG.PF2E.actorSizes,
-            actorSize: CONFIG.PF2E.actorSizes[this.actor.size],
-            actorRarities: CONFIG.PF2E.rarityTraits,
-            actorRarity: CONFIG.PF2E.rarityTraits[this.actor.system.traits.rarity],
+            actorSizes: CONFIG.AVANT.actorSizes,
+            actorSize: CONFIG.AVANT.actorSizes[this.actor.size],
+            actorRarities: CONFIG.AVANT.rarityTraits,
+            actorRarity: CONFIG.AVANT.rarityTraits[this.actor.system.traits.rarity],
             ac: getAdjustedValue(this.actor.attributes.ac.value, this.actor._source.system.attributes.ac.value),
-            frequencies: CONFIG.PF2E.frequencies,
+            frequencies: CONFIG.AVANT.frequencies,
             saves: {
                 fortitude: getAdjustedValue(
                     this.actor.saves.fortitude.mod,
@@ -59,9 +59,9 @@ export class VehicleSheetPF2e extends ActorSheetPF2e<VehiclePF2e> {
                 ),
             },
             emitsSoundOptions: [
-                { value: "true", label: "PF2E.Actor.Hazard.EmitsSound.True" },
-                { value: "false", label: "PF2E.Actor.Hazard.EmitsSound.False" },
-                { value: "encounter", label: "PF2E.Actor.Hazard.EmitsSound.Encounter" },
+                { value: "true", label: "AVANT.Actor.Hazard.EmitsSound.True" },
+                { value: "false", label: "AVANT.Actor.Hazard.EmitsSound.False" },
+                { value: "encounter", label: "AVANT.Actor.Hazard.EmitsSound.Encounter" },
             ],
         };
     }
@@ -72,7 +72,7 @@ export class VehicleSheetPF2e extends ActorSheetPF2e<VehiclePF2e> {
 
         // Ensure correct tab name is displayed after actor update
         const titleElem = htmlQuery(html, "nav > .panel-title");
-        if (!titleElem) throw ErrorPF2e("Unexpected missing DOM element");
+        if (!titleElem) throw ErrorAvant("Unexpected missing DOM element");
 
         const initialTitle = htmlQuery(html, ".sheet-navigation .active")?.title;
         if (initialTitle) titleElem.title = initialTitle;
@@ -101,14 +101,14 @@ export class VehicleSheetPF2e extends ActorSheetPF2e<VehiclePF2e> {
     }
 }
 
-interface VehicleSheetData extends ActorSheetDataPF2e<VehiclePF2e> {
+interface VehicleSheetData extends ActorSheetDataAvant<VehicleAvant> {
     actions: ActionsSheetData;
-    actorRarities: typeof CONFIG.PF2E.rarityTraits;
+    actorRarities: typeof CONFIG.AVANT.rarityTraits;
     actorRarity: string;
-    actorSizes: typeof CONFIG.PF2E.actorSizes;
+    actorSizes: typeof CONFIG.AVANT.actorSizes;
     actorSize: string;
     ac: AdjustedValue;
-    frequencies: typeof CONFIG.PF2E.frequencies;
+    frequencies: typeof CONFIG.AVANT.frequencies;
     saves: { fortitude: AdjustedValue };
     emitsSoundOptions: FormSelectOption[];
 }

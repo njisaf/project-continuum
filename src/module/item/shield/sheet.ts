@@ -1,21 +1,21 @@
 import { ItemSheetOptions } from "@item/base/sheet/sheet.ts";
 import {
-    CoinsPF2e,
+    CoinsAvant,
     MATERIAL_DATA,
     MaterialSheetData,
     PhysicalItemSheetData,
-    PhysicalItemSheetPF2e,
+    PhysicalItemSheetAvant,
     RUNE_DATA,
 } from "@item/physical/index.ts";
 import { WeaponPropertyRuneType } from "@item/weapon/types.ts";
 import { htmlQuery, sortStringRecord } from "@util";
 import * as R from "remeda";
 import { SpecificShieldData } from "./data.ts";
-import type { ShieldPF2e } from "./document.ts";
+import type { ShieldAvant } from "./document.ts";
 import { BaseShieldType } from "./types.ts";
 import { REINFORCING_RUNE_LOC_PATHS } from "./values.ts";
 
-class ShieldSheetPF2e extends PhysicalItemSheetPF2e<ShieldPF2e> {
+class ShieldSheetAvant extends PhysicalItemSheetAvant<ShieldAvant> {
     override async getData(options?: Partial<ItemSheetOptions>): Promise<ShieldSheetData> {
         const sheetData = await super.getData(options);
         const shield = this.item;
@@ -44,8 +44,8 @@ class ShieldSheetPF2e extends PhysicalItemSheetPF2e<ShieldPF2e> {
         return {
             ...sheetData,
             baseHardness: shield._source.system.hardness,
-            basePrice: new CoinsPF2e(shield._source.system.price.value),
-            baseTypes: sortStringRecord(CONFIG.PF2E.baseShieldTypes),
+            basePrice: new CoinsAvant(shield._source.system.price.value),
+            baseTypes: sortStringRecord(CONFIG.AVANT.baseShieldTypes),
             canChangeMaterial: !shield.isSpecific || !!shield.system.material.type,
             preciousMaterials: this.getMaterialSheetData(shield, materialData),
             propertyRuneSlots,
@@ -87,9 +87,9 @@ class ShieldSheetPF2e extends PhysicalItemSheetPF2e<ShieldPF2e> {
     }
 }
 
-interface ShieldSheetData extends PhysicalItemSheetData<ShieldPF2e> {
+interface ShieldSheetData extends PhysicalItemSheetData<ShieldAvant> {
     baseHardness: number;
-    basePrice: CoinsPF2e;
+    basePrice: CoinsAvant;
     baseTypes: Record<BaseShieldType, string>;
     canChangeMaterial: boolean;
     preciousMaterials: MaterialSheetData;
@@ -102,4 +102,4 @@ interface ShieldSheetData extends PhysicalItemSheetData<ShieldPF2e> {
     weaponRunes: typeof RUNE_DATA.weapon | null;
 }
 
-export { ShieldSheetPF2e };
+export { ShieldSheetAvant };

@@ -1,7 +1,7 @@
 <div class="content">
     {{#unless members}}
         <div class="summary">
-            {{localize "PF2E.Actor.Party.BlankSlate"}}
+            {{localize "AVANT.Actor.Party.BlankSlate"}}
         </div>
     {{/unless}}
 
@@ -9,18 +9,18 @@
         <section class="summary">
             <nav>
                 <button type="button" data-action="change-view" data-view="languages">
-                    {{localize "PF2E.Actor.Party.Languages"}}
+                    {{localize "AVANT.Actor.Party.Languages"}}
                 </button>
                 <button type="button" data-action="change-view" data-view="skills">
-                    {{localize "PF2E.Actor.Party.Skills"}}
+                    {{localize "AVANT.Actor.Party.Skills"}}
                 </button>
                 <button type="button" data-action="change-view" data-view="rk">
-                    {{localize "PF2E.RecallKnowledge.Label"}}
+                    {{localize "AVANT.RecallKnowledge.Label"}}
                 </button>
             </nav>
             <ul class="tags" data-view="languages">
                 {{#unless languages}}
-                    {{localize "PF2E.NoneOption"}}
+                    {{localize "AVANT.NoneOption"}}
                 {{/unless}}
                 {{#each languages as |language|}}
                     <li class="tag tag_alt" data-language="{{language.slug}}">
@@ -80,7 +80,7 @@
                         <a class="resource{{#unless member.owner}} readonly{{/unless}}" data-action="adjust-member-resource" data-resource="{{resource.slug}}">
                             {{#times resource.max as |idx|~}}
                                 {{#if (gt resource.value idx)}}
-                                    <img src="systems/pf2e/dice/basic/heads.webp" />
+                                    <img src="systems/avant/dice/basic/heads.webp" />
                                 {{else}}
                                     <span class="empty"></span>
                                 {{/if}}
@@ -91,34 +91,34 @@
 
                 <div class="main-stats">
                     <section class="ac score">
-                        <label>{{localize "PF2E.ArmorClassShortLabel"}}</label>
+                        <label>{{localize "AVANT.ArmorClassShortLabel"}}</label>
                         <span class="value">{{member.actor.attributes.ac.value}}</span>
                     </section>
                     {{#if member.actor.saves}}
                         <section class="saving-throws">
                             <span class="score">
-                                <label>{{localize "PF2E.SavesFortitudeShort"}}</label>
+                                <label>{{localize "AVANT.SavesFortitudeShort"}}</label>
                                 {{numberFormat member.actor.saves.fortitude.mod sign=true}}
                             </span>
                             <span class="score">
-                                <label>{{localize "PF2E.SavesReflexShort"}}</label>
+                                <label>{{localize "AVANT.SavesReflexShort"}}</label>
                                 {{numberFormat member.actor.saves.reflex.mod sign=true}}
                             </span>
                            <span class="score">
-                                <label>{{localize "PF2E.SavesWillShort"}}</label>
+                                <label>{{localize "AVANT.SavesWillShort"}}</label>
                                 {{numberFormat member.actor.saves.will.mod sign=true}}
                             </span>
                         </section>
                     {{/if}}
 
                     <section class="score senses">
-                        <label>{{localize "PF2E.Senses"}}</label>
+                        <label>{{localize "AVANT.Senses"}}</label>
                         <div class="value">
                             {{#each member.senses as |sense|}}
                                 <span class="tag-light" data-acuity="{{sense.acuity}}" data-tooltip="{{sense.labelFull}}">{{localize sense.label}}</span>
                             {{/each}}
                             {{#unless member.senses}}
-                                <span class="blank">{{localize "PF2E.Actor.Party.NoSpecialSenses"}}</span>
+                                <span class="blank">{{localize "AVANT.Actor.Party.NoSpecialSenses"}}</span>
                             {{/unless}}
                         </div>
                     </section>

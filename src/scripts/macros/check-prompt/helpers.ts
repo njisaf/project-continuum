@@ -1,8 +1,8 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
+import type { ActorAvant, CharacterAvant } from "@actor";
 
-function loreSkillsFromActors(actors: ActorPF2e | ActorPF2e[]): Record<string, string> {
+function loreSkillsFromActors(actors: ActorAvant | ActorAvant[]): Record<string, string> {
     const actorsArray = Array.isArray(actors) ? actors : [actors];
-    const characters = actorsArray.filter((a): a is CharacterPF2e => a?.type === "character");
+    const characters = actorsArray.filter((a): a is CharacterAvant => a?.type === "character");
     return Object.fromEntries(
         characters
             .flatMap((m) => Object.values(m.skills))
@@ -13,7 +13,7 @@ function loreSkillsFromActors(actors: ActorPF2e | ActorPF2e[]): Record<string, s
 
 async function getActions(): Promise<Record<string, string>> {
     const indexFields = ["system.slug"];
-    const pack = game.packs.get("pf2e.actionspf2e");
+    const pack = game.packs.get("avant.actionsavant");
     if (pack) {
         const index = await pack.getIndex({ fields: indexFields });
         const actions = index.map((a) => [a.system.slug, a.name]);

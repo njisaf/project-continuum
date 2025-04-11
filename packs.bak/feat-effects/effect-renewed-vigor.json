@@ -1,0 +1,61 @@
+{
+    "_id": "jlZjUtrfcfIWumSe",
+    "img": "systems/avant/icons/spells/enduring-might.webp",
+    "name": "Effect: Renewed Vigor",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.feats-srd.Item.Renewed Vigor]</p>\n<p>You gain temporary Hit Points equal to half your level plus your Constitution modifier. If you made an attack action this turn, increase the number of temporary Hit Points to your level plus your Constitution modifier.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 8
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.Check.Result.Degree.Attack.success",
+                        "value": 2
+                    },
+                    {
+                        "label": "AVANT.Check.Result.Degree.Attack.criticalSuccess",
+                        "value": 1
+                    }
+                ],
+                "flag": "outcome",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DegreeOfSuccess"
+            },
+            {
+                "key": "TempHP",
+                "predicate": [
+                    "self:effect:rage"
+                ],
+                "value": "floor(@actor.level/@item.flags.avant.rulesSelections.outcome) + @actor.abilities.con.mod"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

@@ -5,7 +5,7 @@ export const CloseWorldClockSettings = {
     listen: (): void => {
         Hooks.on("closeWorldClockSettings", (): void => {
             if (game.user.isGM) {
-                game.socket.emit("system.pf2e", {
+                game.socket.emit("system.avant", {
                     request: "refreshSceneControls",
                     data: { layer: "TokenLayer" },
                 } satisfies SocketMessage);

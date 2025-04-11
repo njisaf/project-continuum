@@ -1,11 +1,11 @@
 import { EffectBadgeSource } from "@item/abstract-effect/index.ts";
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
-import { ErrorPF2e } from "@util";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
+import { ErrorAvant } from "@util";
 import { htmlQuery, htmlQueryAll } from "@util/dom.ts";
 import { EffectSource } from "./data.ts";
-import type { EffectPF2e } from "./document.ts";
+import type { EffectAvant } from "./document.ts";
 
-export class EffectSheetPF2e extends ItemSheetPF2e<EffectPF2e> {
+export class EffectSheetAvant extends ItemSheetAvant<EffectAvant> {
     static override get defaultOptions(): ItemSheetOptions {
         return { ...super.defaultOptions, hasSidebar: true };
     }
@@ -19,19 +19,19 @@ export class EffectSheetPF2e extends ItemSheetPF2e<EffectPF2e> {
 
         return {
             ...(await super.getData(options)),
-            itemType: game.i18n.localize("PF2E.LevelLabel"),
-            badgeType: badge ? game.i18n.localize(`PF2E.Item.Effect.Badge.Type.${badge.type}`) : "",
+            itemType: game.i18n.localize("AVANT.LevelLabel"),
+            badgeType: badge ? game.i18n.localize(`AVANT.Item.Effect.Badge.Type.${badge.type}`) : "",
             expiryOptions: [
-                { value: "turn-start", label: "PF2E.Item.Effect.Expiry.StartOfTurn" },
-                { value: "turn-end", label: "PF2E.Item.Effect.Expiry.EndOfTurn" },
-                { value: "round-end", label: "PF2E.Item.Effect.Expiry.EndOfRound" },
+                { value: "turn-start", label: "AVANT.Item.Effect.Expiry.StartOfTurn" },
+                { value: "turn-end", label: "AVANT.Item.Effect.Expiry.EndOfTurn" },
+                { value: "round-end", label: "AVANT.Item.Effect.Expiry.EndOfRound" },
             ],
             reevaluateOptions: [
-                { value: "initiative-roll", label: "PF2E.Item.Effect.Badge.ReevaluateFormula.InitiativeRoll" },
-                { value: "turn-start", label: "PF2E.Item.Effect.Badge.ReevaluateFormula.TurnStart" },
-                { value: "turn-end", label: "PF2E.Item.Effect.Badge.ReevaluateFormula.TurnEnd" },
+                { value: "initiative-roll", label: "AVANT.Item.Effect.Badge.ReevaluateFormula.InitiativeRoll" },
+                { value: "turn-start", label: "AVANT.Item.Effect.Badge.ReevaluateFormula.TurnStart" },
+                { value: "turn-end", label: "AVANT.Item.Effect.Badge.ReevaluateFormula.TurnEnd" },
             ],
-            timeUnits: CONFIG.PF2E.timeUnits,
+            timeUnits: CONFIG.AVANT.timeUnits,
         };
     }
 
@@ -56,7 +56,7 @@ export class EffectSheetPF2e extends ItemSheetPF2e<EffectPF2e> {
         });
 
         htmlQuery(html, "[data-action=badge-add-label")?.addEventListener("click", () => {
-            if (!this.item.system.badge) throw ErrorPF2e("Unexpected error adding badge label");
+            if (!this.item.system.badge) throw ErrorAvant("Unexpected error adding badge label");
             const labels = this.item.system.badge.labels ?? [];
             labels.push("");
             this.item.update({ system: { badge: { labels } } });
@@ -96,9 +96,9 @@ export class EffectSheetPF2e extends ItemSheetPF2e<EffectPF2e> {
     }
 }
 
-interface EffectSheetData extends ItemSheetDataPF2e<EffectPF2e> {
+interface EffectSheetData extends ItemSheetDataAvant<EffectAvant> {
     badgeType: string;
     expiryOptions: FormSelectOption[];
     reevaluateOptions: FormSelectOption[];
-    timeUnits: ConfigPF2e["PF2E"]["timeUnits"];
+    timeUnits: ConfigAvant["AVANT"]["timeUnits"];
 }

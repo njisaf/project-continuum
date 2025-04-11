@@ -1,9 +1,9 @@
 import { resetActors } from "@actor/helpers.ts";
-import type { RegionDocumentPF2e } from "@scene";
+import type { RegionDocumentAvant } from "@scene";
 import type { EnvironmentBehaviorType } from "./environment.ts";
 
-class RegionBehaviorPF2e<
-    TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null,
+class RegionBehaviorAvant<
+    TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null,
 > extends RegionBehavior<TParent> {
     protected override _onUpdate(
         data: DeepPartial<this["_source"]>,
@@ -26,4 +26,4 @@ class RegionBehaviorPF2e<
     }
 }
 
-export { RegionBehaviorPF2e };
+export { RegionBehaviorAvant };

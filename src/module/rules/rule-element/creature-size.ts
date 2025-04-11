@@ -1,11 +1,11 @@
-import type { ActorType, CreaturePF2e } from "@actor";
+import type { ActorType, CreatureAvant } from "@actor";
 import { SIZE_TO_REACH } from "@actor/creature/values.ts";
-import { ActorSizePF2e } from "@actor/data/size.ts";
-import { TreasurePF2e } from "@item";
+import { ActorSizeAvant } from "@actor/data/size.ts";
+import { TreasureAvant } from "@item";
 import { SIZES, Size } from "@module/data.ts";
 import { RecordField } from "@system/schema-data-fields.ts";
 import { tupleHasValue } from "@util";
-import { RuleElementOptions, RuleElementPF2e } from "./base.ts";
+import { RuleElementOptions, RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema, RuleElementSource } from "./data.ts";
 import fields = foundry.data.fields;
 
@@ -13,7 +13,7 @@ import fields = foundry.data.fields;
  * @category RuleElement
  * Change a creature's size
  */
-class CreatureSizeRuleElement extends RuleElementPF2e<CreatureSizeRuleSchema> {
+class CreatureSizeRuleElement extends RuleElementAvant<CreatureSizeRuleSchema> {
     protected static override validActorTypes: ActorType[] = ["character", "npc", "familiar"];
 
     constructor(data: RuleElementSource, options: RuleElementOptions) {
@@ -89,7 +89,7 @@ class CreatureSizeRuleElement extends RuleElementPF2e<CreatureSizeRuleSchema> {
             return;
         }
         const { actor } = this;
-        const originalSize = new ActorSizePF2e({ value: actor.size });
+        const originalSize = new ActorSizeAvant({ value: actor.size });
 
         if (value === 1) {
             if (this.maximumSize && !originalSize.isSmallerThan(this.maximumSize)) {
@@ -102,7 +102,7 @@ class CreatureSizeRuleElement extends RuleElementPF2e<CreatureSizeRuleSchema> {
             }
             actor.system.traits.size.decrement();
         } else if (tupleHasValue(SIZES, size)) {
-            actor.system.traits.size = new ActorSizePF2e({ value: size });
+            actor.system.traits.size = new ActorSizeAvant({ value: size });
         } else {
             const validValues = Array.from(
                 new Set(Object.entries(CreatureSizeRuleElement.wordToAbbreviation).flat()),
@@ -120,7 +120,7 @@ class CreatureSizeRuleElement extends RuleElementPF2e<CreatureSizeRuleSchema> {
 
         if (this.resizeEquipment) {
             const sizeDifference = originalSize.difference(actor.system.traits.size, { smallIsMedium: true });
-            for (const item of actor.inventory.filter((i) => !(i instanceof TreasurePF2e && i.isCoinage))) {
+            for (const item of actor.inventory.filter((i) => !(i instanceof TreasureAvant && i.isCoinage))) {
                 if (sizeDifference < 0) {
                     item.system.size = this.incrementSize(item.size, Math.abs(sizeDifference));
                 } else if (sizeDifference > 0) {
@@ -134,7 +134,7 @@ class CreatureSizeRuleElement extends RuleElementPF2e<CreatureSizeRuleSchema> {
     }
 
     /** Return a new reach distance if one is specified */
-    #getReach(originalSize: ActorSizePF2e): number {
+    #getReach(originalSize: ActorSizeAvant): number {
         const current = this.actor.attributes.reach.base;
 
         if (this.reach) {
@@ -160,9 +160,9 @@ class CreatureSizeRuleElement extends RuleElementPF2e<CreatureSizeRuleSchema> {
 }
 
 interface CreatureSizeRuleElement
-    extends RuleElementPF2e<CreatureSizeRuleSchema>,
+    extends RuleElementAvant<CreatureSizeRuleSchema>,
         ModelPropsFromRESchema<CreatureSizeRuleSchema> {
-    get actor(): CreaturePF2e;
+    get actor(): CreatureAvant;
 }
 
 type CreatureSizeRuleSchema = RuleElementSchema & {

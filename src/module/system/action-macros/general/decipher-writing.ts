@@ -9,7 +9,7 @@ import { CheckResultCallback } from "@system/action-macros/types.ts";
 
 function decipherWriting(options: SkillActionOptions): void {
     if (!options?.skill) {
-        ui.notifications.warn(game.i18n.localize("PF2E.Actions.DecipherWriting.Warning.NoSkill"));
+        ui.notifications.warn(game.i18n.localize("AVANT.Actions.DecipherWriting.Warning.NoSkill"));
         return;
     }
     const { skill: slug } = options;
@@ -18,17 +18,17 @@ function decipherWriting(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph,
-        title: "PF2E.Actions.DecipherWriting.Title",
+        title: "AVANT.Actions.DecipherWriting.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["concentrate", "exploration", "secret"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.DecipherWriting", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.DecipherWriting", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.DecipherWriting", "failure"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.DecipherWriting", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.DecipherWriting", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.DecipherWriting", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.DecipherWriting", "failure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.DecipherWriting", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -41,7 +41,7 @@ class DecipherWritingActionVariant extends SingleCheckActionVariant {
         options: Partial<SingleCheckActionUseOptions> & { statistic: string },
     ): Promise<CheckResultCallback[]> {
         if (!options?.statistic) {
-            throw new Error(game.i18n.localize("PF2E.Actions.DecipherWriting.Warning.NoSkill"));
+            throw new Error(game.i18n.localize("AVANT.Actions.DecipherWriting.Warning.NoSkill"));
         }
         const rollOption = `action:decipher-writing:${options.statistic}`;
         options.rollOptions ??= [];
@@ -55,21 +55,21 @@ class DecipherWritingActionVariant extends SingleCheckActionVariant {
 class DecipherWritingAction extends SingleCheckAction {
     constructor() {
         super({
-            description: "PF2E.Actions.DecipherWriting.Description",
+            description: "AVANT.Actions.DecipherWriting.Description",
             img: "icons/skills/social/diplomacy-writing-letter.webp",
-            name: "PF2E.Actions.DecipherWriting.Title",
+            name: "AVANT.Actions.DecipherWriting.Title",
             notes: [
-                { outcome: ["criticalSuccess"], text: "PF2E.Actions.DecipherWriting.Notes.criticalSuccess" },
-                { outcome: ["success"], text: "PF2E.Actions.DecipherWriting.Notes.success" },
-                { outcome: ["failure"], text: "PF2E.Actions.DecipherWriting.Notes.failure" },
-                { outcome: ["criticalFailure"], text: "PF2E.Actions.DecipherWriting.Notes.criticalFailure" },
+                { outcome: ["criticalSuccess"], text: "AVANT.Actions.DecipherWriting.Notes.criticalSuccess" },
+                { outcome: ["success"], text: "AVANT.Actions.DecipherWriting.Notes.success" },
+                { outcome: ["failure"], text: "AVANT.Actions.DecipherWriting.Notes.failure" },
+                { outcome: ["criticalFailure"], text: "AVANT.Actions.DecipherWriting.Notes.criticalFailure" },
             ],
             rollOptions: ["action:decipher-writing"],
             sampleTasks: {
-                trained: "PF2E.Actions.DecipherWriting.SampleTasks.Trained",
-                expert: "PF2E.Actions.DecipherWriting.SampleTasks.Expert",
-                master: "PF2E.Actions.DecipherWriting.SampleTasks.Master",
-                legendary: "PF2E.Actions.DecipherWriting.SampleTasks.Legendary",
+                trained: "AVANT.Actions.DecipherWriting.SampleTasks.Trained",
+                expert: "AVANT.Actions.DecipherWriting.SampleTasks.Expert",
+                master: "AVANT.Actions.DecipherWriting.SampleTasks.Master",
+                legendary: "AVANT.Actions.DecipherWriting.SampleTasks.Legendary",
             },
             section: "skill",
             slug: "decipher-writing",

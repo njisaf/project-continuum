@@ -1,0 +1,77 @@
+{
+    "_id": "2EMak2C8x6pFwoUi",
+    "img": "systems/avant/icons/spells/breath-of-drought.webp",
+    "name": "Stance: Thermal Nimbus",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.feats-srd.Item.Thermal Nimbus]</p>\n<p>Choose cold or fire. You and allies in your kinetic aura gain resistance equal to your level to damage of that type.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "encounter",
+            "value": -1
+        },
+        "level": {
+            "value": 4
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": true,
+            "title": "Pathfinder Rage of Elements"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    }
+                ],
+                "flag": "thermalNimbus",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DamageType"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "flags.avant.kineticist.thermalNimbus",
+                "value": "{item|flags.avant.rulesSelections.thermalNimbus}"
+            },
+            {
+                "effects": [
+                    {
+                        "affects": "allies",
+                        "uuid": "Compendium.avant.feat-effects.Item.Effect: Thermal Nimbus"
+                    }
+                ],
+                "key": "Aura",
+                "predicate": [
+                    "self:effect:kinetic-aura"
+                ],
+                "radius": "@actor.flags.avant.kineticist.auraRadius",
+                "slug": "kinetic-aura",
+                "traits": [
+                    "kineticist",
+                    "primal",
+                    "fire"
+                ]
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

@@ -1,6 +1,6 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { TraitViewData } from "@actor/data/base.ts";
-import { EffectPF2e, type PhysicalItemPF2e } from "@item";
+import { EffectAvant, type PhysicalItemAvant } from "@item";
 import type { EffectTrait } from "@item/abstract-effect/types.ts";
 import type { EffectSource } from "@item/effect/data.ts";
 import type { PhysicalItemTrait } from "@item/physical/types.ts";
@@ -9,7 +9,7 @@ import { traitSlugToObject } from "@util/tags.ts";
 import type { EffectSpinoffRuleElement } from "./rule-element.ts";
 
 class EffectSpinoff {
-    item: PhysicalItemPF2e<ActorPF2e>;
+    item: PhysicalItemAvant<ActorAvant>;
 
     slug: string;
 
@@ -40,7 +40,7 @@ class EffectSpinoff {
                 glyph,
                 details: rule.activation.details,
                 get traits(): TraitViewData[] {
-                    return activationTraits.map((t) => traitSlugToObject(t, CONFIG.PF2E.actionTraits)) ?? [];
+                    return activationTraits.map((t) => traitSlugToObject(t, CONFIG.AVANT.actionTraits)) ?? [];
                 },
             };
         } else {
@@ -56,7 +56,7 @@ class EffectSpinoff {
         const item = this.item;
         const actor = item.actor;
         const traits = item.system.traits.value.filter(
-            (t): t is PhysicalItemTrait & EffectTrait => t in EffectPF2e.validTraits,
+            (t): t is PhysicalItemTrait & EffectTrait => t in EffectAvant.validTraits,
         );
 
         const source: PreCreate<EffectSource> = {
@@ -82,7 +82,7 @@ class EffectSpinoff {
             },
         };
 
-        return new EffectPF2e(source).toObject();
+        return new EffectAvant(source).toObject();
     }
 }
 

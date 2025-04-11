@@ -1,0 +1,167 @@
+{
+    "_id": "2HkagmqG9rsQfyfR",
+    "folder": "MKFmNxwrVSwVZLkL",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Wisdom from Another Life",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "ancestry",
+        "description": {
+            "value": "<p>You absorbed a wide variety of facts before you died, and your soul still remembers slivers of this precious knowledge. You gain the trained proficiency rank in one skill of your choice and the @UUID[Compendium.avant.feats-srd.Item.Additional Lore] skill feat as a bonus feat.</p>"
+        },
+        "level": {
+            "value": 1
+        },
+        "prerequisites": {
+            "value": []
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder #199: To Bloom Below the Web"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Skill.Acrobatics",
+                        "predicate": [
+                            "skill:acrobatics:rank:0"
+                        ],
+                        "value": "acrobatics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Arcana",
+                        "predicate": [
+                            "skill:arcana:rank:0"
+                        ],
+                        "value": "arcana"
+                    },
+                    {
+                        "label": "AVANT.Skill.Athletics",
+                        "predicate": [
+                            "skill:athletics:rank:0"
+                        ],
+                        "value": "athletics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Crafting",
+                        "predicate": [
+                            "skill:crafting:rank:0"
+                        ],
+                        "value": "crafting"
+                    },
+                    {
+                        "label": "AVANT.Skill.Deception",
+                        "predicate": [
+                            "skill:deception:rank:0"
+                        ],
+                        "value": "deception"
+                    },
+                    {
+                        "label": "AVANT.Skill.Diplomacy",
+                        "predicate": [
+                            "skill:diplomacy:rank:0"
+                        ],
+                        "value": "diplomacy"
+                    },
+                    {
+                        "label": "AVANT.Skill.Intimidation",
+                        "predicate": [
+                            "skill:intimidation:rank:0"
+                        ],
+                        "value": "intimidation"
+                    },
+                    {
+                        "label": "AVANT.Skill.Medicine",
+                        "predicate": [
+                            "skill:medicine:rank:0"
+                        ],
+                        "value": "medicine"
+                    },
+                    {
+                        "label": "AVANT.Skill.Nature",
+                        "predicate": [
+                            "skill:nature:rank:0"
+                        ],
+                        "value": "nature"
+                    },
+                    {
+                        "label": "AVANT.Skill.Occultism",
+                        "predicate": [
+                            "skill:occultism:rank:0"
+                        ],
+                        "value": "occultism"
+                    },
+                    {
+                        "label": "AVANT.Skill.Performance",
+                        "predicate": [
+                            "skill:performance:rank:0"
+                        ],
+                        "value": "performance"
+                    },
+                    {
+                        "label": "AVANT.Skill.Religion",
+                        "predicate": [
+                            "skill:religion:rank:0"
+                        ],
+                        "value": "religion"
+                    },
+                    {
+                        "label": "AVANT.Skill.Society",
+                        "predicate": [
+                            "skill:society:rank:0"
+                        ],
+                        "value": "society"
+                    },
+                    {
+                        "label": "AVANT.Skill.Stealth",
+                        "predicate": [
+                            "skill:stealth:rank:0"
+                        ],
+                        "value": "stealth"
+                    },
+                    {
+                        "label": "AVANT.Skill.Survival",
+                        "predicate": [
+                            "skill:survival:rank:0"
+                        ],
+                        "value": "survival"
+                    },
+                    {
+                        "label": "AVANT.Skill.Thievery",
+                        "predicate": [
+                            "skill:thievery:rank:0"
+                        ],
+                        "value": "thievery"
+                    }
+                ],
+                "flag": "skill",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Skill"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "upgrade",
+                "path": "system.skills.{item|flags.avant.rulesSelections.skill}.rank",
+                "value": 1
+            },
+            {
+                "key": "GrantItem",
+                "uuid": "Compendium.avant.feats-srd.Item.Additional Lore"
+            }
+        ],
+        "traits": {
+            "rarity": "rare",
+            "value": [
+                "reincarnated"
+            ]
+        }
+    },
+    "type": "feat"
+}

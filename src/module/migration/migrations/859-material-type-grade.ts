@@ -1,4 +1,4 @@
-import { ItemSourcePF2e, PhysicalItemSource } from "@item/base/data/index.ts";
+import { ItemSourceAvant, PhysicalItemSource } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { PRECIOUS_MATERIAL_GRADES, PRECIOUS_MATERIAL_TYPES } from "@item/physical/values.ts";
 import { WeaponMaterialType } from "@item/weapon/types.ts";
@@ -22,7 +22,7 @@ export class Migration859MaterialTypeGrade extends MigrationBase {
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (itemIsOfType(source, "physical") && this.#hasOldMaterialData(source)) {
             const { preciousMaterial, preciousMaterialGrade } = source.system;
             const type = this.#PRECIOUS_MATERIAL_TYPES.has(String(preciousMaterial?.value))

@@ -1,25 +1,25 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import type { Language } from "@actor/creature/types.ts";
 import { LANGUAGE_RARITIES } from "@actor/creature/values.ts";
-import type { ItemPF2e } from "@item";
-import { ErrorPF2e, htmlQueryAll } from "@util";
+import type { ItemAvant } from "@item";
+import { ErrorAvant, htmlQueryAll } from "@util";
 import * as R from "remeda";
 import { TagSelectorBasicData } from "./basic.ts";
 import { TagSelectorBasic, type SelectableTagField, type TagSelectorOptions } from "./index.ts";
 
-class LanguageSelector extends TagSelectorBasic<ActorPF2e | ItemPF2e> {
+class LanguageSelector extends TagSelectorBasic<ActorAvant | ItemAvant> {
     static override get defaultOptions(): TagSelectorOptions {
         return {
             ...super.defaultOptions,
             id: "language-selector",
-            title: "PF2E.Actor.Creature.Language.Plural",
+            title: "AVANT.Actor.Creature.Language.Plural",
             width: 325,
         };
     }
 
-    declare choices: typeof CONFIG.PF2E.languages;
+    declare choices: typeof CONFIG.AVANT.languages;
 
-    constructor(document: ActorPF2e | ItemPF2e, options: Partial<TagSelectorOptions> = {}) {
+    constructor(document: ActorAvant | ItemAvant, options: Partial<TagSelectorOptions> = {}) {
         super(document, {
             ...options,
             objectProperty: options?.objectProperty ?? "system.details.languages",
@@ -32,15 +32,15 @@ class LanguageSelector extends TagSelectorBasic<ActorPF2e | ItemPF2e> {
 
     override async getData(options?: Partial<TagSelectorOptions>): Promise<LanguageSelectorData> {
         const document = this.document;
-        if (document instanceof ActorPF2e && !document.isOfType("creature")) {
-            throw ErrorPF2e("The languages selector is usable only with creatures");
+        if (document instanceof ActorAvant && !document.isOfType("creature")) {
+            throw ErrorAvant("The languages selector is usable only with creatures");
         }
         const sheetData = await super.getData(options);
-        const actor = document instanceof ActorPF2e ? document : null;
+        const actor = document instanceof ActorAvant ? document : null;
         const details = actor
             ? {
                   path: "system.details.languages.details",
-                  placeholder: "PF2E.Actor.Creature.Language.DetailsPlaceholder",
+                  placeholder: "AVANT.Actor.Creature.Language.DetailsPlaceholder",
                   value: actor.system.details.languages.details.trim(),
               }
             : null;
@@ -50,7 +50,7 @@ class LanguageSelector extends TagSelectorBasic<ActorPF2e | ItemPF2e> {
             (g) => [g.slug, g.source],
         );
 
-        const languagesByRarity = game.pf2e.settings.campaign.languages;
+        const languagesByRarity = game.avant.settings.campaign.languages;
 
         for (const language of languagesByRarity.unavailable) {
             delete sheetData.choices[language];
@@ -61,7 +61,7 @@ class LanguageSelector extends TagSelectorBasic<ActorPF2e | ItemPF2e> {
         // Assign rarities to each option
         const choices = R.mapValues(selectedAtTop, (data, key): ChoiceData => {
             const slug = key as Language;
-            const rarityLocKeys = { ...CONFIG.PF2E.rarityTraits, secret: "PF2E.TraitSecret" };
+            const rarityLocKeys = { ...CONFIG.AVANT.rarityTraits, secret: "AVANT.TraitSecret" };
             const tags = R.mapToObj(LANGUAGE_RARITIES, (r) => [
                 r,
                 { slug: r, label: game.i18n.localize(rarityLocKeys[r]) },
@@ -81,9 +81,9 @@ class LanguageSelector extends TagSelectorBasic<ActorPF2e | ItemPF2e> {
                 if (slug === "common") {
                     if (languagesByRarity.commonLanguage) {
                         const commonLanguage = game.i18n.localize(
-                            CONFIG.PF2E.languages[languagesByRarity.commonLanguage],
+                            CONFIG.AVANT.languages[languagesByRarity.commonLanguage],
                         );
-                        const locKey = "PF2E.Actor.Creature.Language.CommonLanguage";
+                        const locKey = "AVANT.Actor.Creature.Language.CommonLanguage";
                         data.label = game.i18n.format(locKey, { language: commonLanguage });
                     }
                     return tags.common;
@@ -135,7 +135,7 @@ class LanguageSelector extends TagSelectorBasic<ActorPF2e | ItemPF2e> {
     }
 }
 
-interface LanguageSelectorData extends TagSelectorBasicData<ActorPF2e | ItemPF2e> {
+interface LanguageSelectorData extends TagSelectorBasicData<ActorAvant | ItemAvant> {
     choices: Record<string, ChoiceData>;
     hasRarity: true;
 }

@@ -19,7 +19,7 @@ function SvelteApplicationMixin<
 >(Base: TBase) {
     abstract class SvelteApplication extends Base {
         static override DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
-            classes: ["pf2e"],
+            classes: ["avant"],
         };
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

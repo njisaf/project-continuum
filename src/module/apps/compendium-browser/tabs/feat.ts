@@ -7,14 +7,14 @@ import { CompendiumBrowserIndexData, FeatFilters, TraitData } from "./data.ts";
 
 export class CompendiumBrowserFeatTab extends CompendiumBrowserTab {
     tabName: ContentTabName = "feat";
-    tabLabel = "PF2E.CompendiumBrowser.TabFeat";
+    tabLabel = "AVANT.CompendiumBrowser.TabFeat";
     declare filterData: FeatFilters;
 
     /* MiniSearch */
     override searchFields = ["name", "originalName"];
     override storeFields = ["type", "name", "img", "uuid", "level", "category", "skills", "traits", "rarity", "source"];
 
-    #creatureTraits = CONFIG.PF2E.creatureTraits;
+    #creatureTraits = CONFIG.AVANT.creatureTraits;
 
     constructor(browser: CompendiumBrowser) {
         super(browser);
@@ -24,7 +24,7 @@ export class CompendiumBrowserFeatTab extends CompendiumBrowserTab {
     }
 
     protected override async loadData(): Promise<void> {
-        console.debug("PF2e System | Compendium Browser | Started loading feats");
+        console.debug("Avant System | Compendium Browser | Started loading feats");
 
         const feats: CompendiumBrowserIndexData[] = [];
         const publications = new Set<string>();
@@ -45,7 +45,7 @@ export class CompendiumBrowserFeatTab extends CompendiumBrowserTab {
             this.browser.loadedPacks("feat"),
             indexFields,
         )) {
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
             for (const featData of index) {
                 if (featData.type === "feat") {
                     featData.filters = {};
@@ -77,7 +77,7 @@ export class CompendiumBrowserFeatTab extends CompendiumBrowserTab {
                     );
                     const skills: Set<string> = new Set();
                     for (const prereq of prerequisitesArr) {
-                        for (const [key, value] of Object.entries(CONFIG.PF2E.skills)) {
+                        for (const [key, value] of Object.entries(CONFIG.AVANT.skills)) {
                             // Check the string for the english translation key or a translated skill name
                             const translated = game.i18n.localize(value.label).toLocaleLowerCase(game.i18n.lang);
                             if (prereq.includes(key) || prereq.includes(translated)) {
@@ -114,13 +114,13 @@ export class CompendiumBrowserFeatTab extends CompendiumBrowserTab {
         this.indexData = feats;
 
         // Filters
-        this.filterData.checkboxes.category.options = this.generateCheckboxOptions(CONFIG.PF2E.featCategories);
-        this.filterData.checkboxes.skills.options = this.generateCheckboxOptions(CONFIG.PF2E.skills);
-        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.PF2E.rarityTraits);
+        this.filterData.checkboxes.category.options = this.generateCheckboxOptions(CONFIG.AVANT.featCategories);
+        this.filterData.checkboxes.skills.options = this.generateCheckboxOptions(CONFIG.AVANT.skills);
+        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.AVANT.rarityTraits);
         this.filterData.source.options = this.generateSourceCheckboxOptions(publications);
-        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.PF2E.featTraits);
+        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.AVANT.featTraits);
 
-        console.debug("PF2e System | Compendium Browser | Finished loading feats");
+        console.debug("Avant System | Compendium Browser | Finished loading feats");
     }
 
     protected override filterTraits(
@@ -170,26 +170,26 @@ export class CompendiumBrowserFeatTab extends CompendiumBrowserTab {
             checkboxes: {
                 category: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.Categories",
+                    label: "AVANT.CompendiumBrowser.Filter.Categories",
                     options: {},
                     selected: [],
                 },
                 skills: {
                     isExpanded: false,
-                    label: "PF2E.SkillsLabel",
+                    label: "AVANT.SkillsLabel",
                     options: {},
                     selected: [],
                 },
                 rarity: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.Rarities",
+                    label: "AVANT.CompendiumBrowser.Filter.Rarities",
                     options: {},
                     selected: [],
                 },
             },
             source: {
                 isExpanded: false,
-                label: "PF2E.CompendiumBrowser.Filter.Source",
+                label: "AVANT.CompendiumBrowser.Filter.Source",
                 options: {},
                 selected: [],
             },
@@ -203,7 +203,7 @@ export class CompendiumBrowserFeatTab extends CompendiumBrowserTab {
                 direction: "asc",
                 options: {
                     name: { label: "Name", type: "alpha" },
-                    level: { label: "PF2E.LevelLabel", type: "numeric" },
+                    level: { label: "AVANT.LevelLabel", type: "numeric" },
                 },
                 type: "numeric",
             },

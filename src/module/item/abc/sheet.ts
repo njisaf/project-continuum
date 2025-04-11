@@ -1,13 +1,13 @@
 import { AttributeString } from "@actor/types.ts";
-import type { AncestryPF2e, BackgroundPF2e, ClassPF2e, FeatPF2e } from "@item";
-import { ItemPF2e } from "@item";
+import type { AncestryAvant, BackgroundAvant, ClassAvant, FeatAvant } from "@item";
+import { ItemAvant } from "@item";
 import { ABCFeatureEntryData } from "@item/abc/data.ts";
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
 import { FeatOrFeatureCategory } from "@item/feat/types.ts";
 import { FEAT_CATEGORIES } from "@item/feat/values.ts";
 import { htmlClosest, htmlQuery, htmlQueryAll, setHasElement } from "@util";
 
-abstract class ABCSheetPF2e<TItem extends ABCItem> extends ItemSheetPF2e<TItem> {
+abstract class ABCSheetAvant<TItem extends ABCItem> extends ItemSheetAvant<TItem> {
     static override get defaultOptions(): ItemSheetOptions {
         return {
             ...super.defaultOptions,
@@ -31,15 +31,15 @@ abstract class ABCSheetPF2e<TItem extends ABCItem> extends ItemSheetPF2e<TItem> 
 
     protected getLocalizedAbilities(traits: { value: AttributeString[] }): { [key: string]: string } {
         if (traits !== undefined && traits.value) {
-            if (traits.value.length === 6) return { free: game.i18n.localize("PF2E.AbilityFree") };
-            return Object.fromEntries(traits.value.map((x: AttributeString) => [x, CONFIG.PF2E.abilities[x]]));
+            if (traits.value.length === 6) return { free: game.i18n.localize("AVANT.AbilityFree") };
+            return Object.fromEntries(traits.value.map((x: AttributeString) => [x, CONFIG.AVANT.abilities[x]]));
         }
 
         return {};
     }
 
     /** Is the dropped feat or feature valid for the given section? */
-    #isValidDrop(event: DragEvent, feat: FeatPF2e): boolean {
+    #isValidDrop(event: DragEvent, feat: FeatAvant): boolean {
         const validCategories = (
             htmlClosest(event.target, "[data-valid-drops]")?.dataset.validDrops?.split(" ") ?? []
         ).filter((f): f is FeatOrFeatureCategory => setHasElement(FEAT_CATEGORIES, f));
@@ -47,10 +47,10 @@ abstract class ABCSheetPF2e<TItem extends ABCItem> extends ItemSheetPF2e<TItem> 
             return true;
         }
 
-        const goodCategories = validCategories.map((c) => game.i18n.localize(CONFIG.PF2E.featCategories[c]));
+        const goodCategories = validCategories.map((c) => game.i18n.localize(CONFIG.AVANT.featCategories[c]));
         if (goodCategories.length > 0) {
-            const badCategory = game.i18n.localize(CONFIG.PF2E.featCategories[feat.category]);
-            const warning = game.i18n.format("PF2E.Item.ABC.InvalidDrop", {
+            const badCategory = game.i18n.localize(CONFIG.AVANT.featCategories[feat.category]);
+            const warning = game.i18n.format("AVANT.Item.ABC.InvalidDrop", {
                 badType: badCategory,
                 goodType: goodCategories[0],
             });
@@ -66,7 +66,7 @@ abstract class ABCSheetPF2e<TItem extends ABCItem> extends ItemSheetPF2e<TItem> 
         event.preventDefault();
         const dataString = event.dataTransfer?.getData("text/plain");
         const dropData = JSON.parse(dataString ?? "");
-        const item = await ItemPF2e.fromDropData(dropData);
+        const item = await ItemAvant.fromDropData(dropData);
 
         if (!item?.isOfType("feat") || !this.#isValidDrop(event, item)) {
             return;
@@ -115,14 +115,14 @@ abstract class ABCSheetPF2e<TItem extends ABCItem> extends ItemSheetPF2e<TItem> 
     }
 }
 
-interface ABCSheetData<TItem extends ABCItem> extends ItemSheetDataPF2e<TItem> {
+interface ABCSheetData<TItem extends ABCItem> extends ItemSheetDataAvant<TItem> {
     features: { key: string; item: FeatureSheetData }[];
 }
 
-type ABCItem = AncestryPF2e | BackgroundPF2e | ClassPF2e;
+type ABCItem = AncestryAvant | BackgroundAvant | ClassAvant;
 
 interface FeatureSheetData extends ABCFeatureEntryData {
     fromWorld: boolean;
 }
 
-export { ABCSheetPF2e, type ABCSheetData };
+export { ABCSheetAvant, type ABCSheetData };

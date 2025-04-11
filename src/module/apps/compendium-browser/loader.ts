@@ -7,7 +7,7 @@ class PackLoader {
     sourcesSettings: CompendiumBrowserSources;
 
     constructor() {
-        this.sourcesSettings = game.settings.get("pf2e", "compendiumBrowserSources");
+        this.sourcesSettings = game.settings.get("avant", "compendiumBrowserSources");
     }
 
     async *loadPacks(
@@ -15,7 +15,7 @@ class PackLoader {
         packs: string[],
         indexFields: string[],
     ): AsyncGenerator<{ pack: CompendiumCollection<CompendiumDocument>; index: CompendiumIndex }, void, unknown> {
-        const localize = localizer("PF2E.ProgressBar");
+        const localize = localizer("AVANT.ProgressBar");
         const sources = this.#getSources();
 
         const progress = new Progress({ max: packs.length });
@@ -35,7 +35,7 @@ class PackLoader {
                     this.#setModuleArt(packId, filteredIndex);
                     yield { pack, index: filteredIndex };
                 } else {
-                    ui.notifications.warn(game.i18n.format("PF2E.BrowserWarnPackNotLoaded", { pack: pack.collection }));
+                    ui.notifications.warn(game.i18n.format("AVANT.BrowserWarnPackNotLoaded", { pack: pack.collection }));
                 }
             }
         }
@@ -44,10 +44,10 @@ class PackLoader {
 
     /** Set art provided by a module if any is available */
     #setModuleArt(packName: string, index: CompendiumIndex): void {
-        if (!packName.startsWith("pf2e.")) return;
+        if (!packName.startsWith("avant.")) return;
         for (const record of index) {
             const uuid = `Compendium.${packName}.Actor.${record._id}` as const;
-            const actorArt = game.compendiumArt.get(uuid)?.actor ?? game.pf2e.system.moduleArt.map.get(uuid)?.img;
+            const actorArt = game.compendiumArt.get(uuid)?.actor ?? game.avant.system.moduleArt.map.get(uuid)?.img;
             record.img = actorArt ?? record.img;
         }
     }
@@ -109,7 +109,7 @@ class PackLoader {
     }
 
     async #loadSources(packs: string[]): Promise<void> {
-        const localize = localizer("PF2E.ProgressBar");
+        const localize = localizer("AVANT.ProgressBar");
         const progress = new Progress({ max: packs.length });
 
         const loadedSources = new Set<string>();

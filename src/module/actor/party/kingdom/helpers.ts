@@ -1,5 +1,5 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import * as R from "remeda";
 import type { Kingdom } from "./model.ts";
 import type { KingdomCHG } from "./schema.ts";
@@ -28,7 +28,7 @@ function calculateKingdomCollectionData(kingdom: Kingdom): {
     };
 }
 
-async function importDocuments(actor: ActorPF2e, items: ItemPF2e[], skipDialog: boolean): Promise<void> {
+async function importDocuments(actor: ActorAvant, items: ItemAvant[], skipDialog: boolean): Promise<void> {
     const newDocuments = items.filter((d) => !actor.items.some((i) => i.sourceId === d.uuid));
     const createData = newDocuments.map((d) => d.toObject());
 
@@ -51,8 +51,8 @@ async function importDocuments(actor: ActorPF2e, items: ItemPF2e[], skipDialog: 
 
     if (!skipDialog) {
         const result = await Dialog.confirm({
-            title: game.i18n.localize("PF2E.Kingmaker.Kingdom.ImportDialog.Title"),
-            content: game.i18n.format("PF2E.Kingmaker.Kingdom.ImportDialog.Content", {
+            title: game.i18n.localize("AVANT.Kingmaker.Kingdom.ImportDialog.Title"),
+            content: game.i18n.format("AVANT.Kingmaker.Kingdom.ImportDialog.Content", {
                 added: createData.length,
                 updated: updateData.length,
             }),

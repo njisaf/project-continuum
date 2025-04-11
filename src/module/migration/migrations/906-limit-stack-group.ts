@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { AMMO_STACK_GROUPS } from "@item/consumable/values.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { setHasElement } from "@util";
@@ -33,4 +33,4 @@ export class Migration906LimitStackGroup extends MigrationBase {
     }
 }
 
-type MaybeWithToBeDeletedStackGroup = ItemSourcePF2e & { system: { "-=stackGroup"?: null } };
+type MaybeWithToBeDeletedStackGroup = ItemSourceAvant & { system: { "-=stackGroup"?: null } };

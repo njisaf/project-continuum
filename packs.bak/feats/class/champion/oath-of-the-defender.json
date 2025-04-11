@@ -1,0 +1,103 @@
+{
+    "_id": "imBsp1Tg7KMut4Lf",
+    "folder": "TyGXf14sFGJxyN6Z",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Oath of the Defender",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "class",
+        "description": {
+            "value": "<p>During your daily preparations, you can swear an oath to defend against a certain kind of enemy during your deeds that day. Choose aberrations, celestials, dragons, fiends, or undead. You can't choose celestials if you're holy, nor can you choose fiends if you're unholy. You gain an edict to defend against creatures of that kind.</p>\n<p>Allies in your champion's aura, not including you, get resistance 2 to damage dealt by creatures with the chosen trait. If such a creature deals more than one damage type at once, apply this resistance only to the highest amount of damage. The resistance increases to 3 at 7th level, 4 at 12th level, and 5 at 17th level. If a creature with the chosen trait triggers your champion's reaction and your champion's reaction grants resistance against the triggering damage, the resistance increases by 5.</p>"
+        },
+        "level": {
+            "value": 2
+        },
+        "prerequisites": {
+            "value": []
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Lost Omens Divine Mysteries"
+        },
+        "rules": [
+            {
+                "alwaysActive": true,
+                "key": "RollOption",
+                "option": "oath-of-the-defender",
+                "phase": "beforeDerived",
+                "suboptions": [
+                    {
+                        "label": "AVANT.TraitAberration",
+                        "value": "aberration"
+                    },
+                    {
+                        "label": "AVANT.TraitCelestial",
+                        "predicate": [
+                            {
+                                "not": "self:trait:holy"
+                            }
+                        ],
+                        "value": "celestial"
+                    },
+                    {
+                        "label": "AVANT.TraitDragon",
+                        "value": "dragon"
+                    },
+                    {
+                        "label": "AVANT.TraitFiend",
+                        "predicate": [
+                            {
+                                "not": "self:trait:unholy"
+                            }
+                        ],
+                        "value": "fiend"
+                    },
+                    {
+                        "label": "AVANT.TraitUndead",
+                        "value": "undead"
+                    }
+                ],
+                "toggleable": true
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "flags.avant.oathOfTheDefender",
+                "phase": "beforeDerived",
+                "priority": 51,
+                "value": "{item|flags.avant.rulesSelections.oathOfTheDefender}"
+            },
+            {
+                "effects": [
+                    {
+                        "affects": "allies",
+                        "includesSelf": false,
+                        "uuid": "Compendium.avant.feat-effects.Item.Effect: Oath of the Defender"
+                    }
+                ],
+                "key": "Aura",
+                "predicate": [
+                    "champions-aura",
+                    {
+                        "not": "self:condition:unconscious"
+                    }
+                ],
+                "radius": "@actor.flags.avant.champion.aura"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "champion",
+                "oath"
+            ]
+        }
+    },
+    "type": "feat"
+}

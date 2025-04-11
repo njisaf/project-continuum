@@ -1,8 +1,8 @@
-import type { AbilityItemPF2e } from "@item/ability/document.ts";
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
+import type { AbilityItemAvant } from "@item/ability/document.ts";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
 import { getItemFromDragEvent } from "@module/sheet/helpers.ts";
 import { ancestryTraits } from "@scripts/config/traits.ts";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 import * as R from "remeda";
 import type { AbilitySystemSchema, SelfEffectReference } from "./data.ts";
 import { activateActionSheetListeners, createSelfEffectSheetData, handleSelfEffectDrop } from "./helpers.ts";
@@ -11,7 +11,7 @@ import { activateActionSheetListeners, createSelfEffectSheetData, handleSelfEffe
 // We fetch at load time to avoid propagated homebrew traits
 const originalAncestryTraits = R.keys(ancestryTraits);
 
-class AbilitySheetPF2e extends ItemSheetPF2e<AbilityItemPF2e> {
+class AbilitySheetAvant extends ItemSheetAvant<AbilityItemAvant> {
     static override get defaultOptions(): ItemSheetOptions {
         return {
             ...super.defaultOptions,
@@ -40,11 +40,11 @@ class AbilitySheetPF2e extends ItemSheetPF2e<AbilityItemPF2e> {
         return {
             ...sheetData,
             fields: this.item.system.schema.fields,
-            actionTypes: CONFIG.PF2E.actionTypes,
-            actionsNumber: CONFIG.PF2E.actionsNumber,
-            actionTraits: CONFIG.PF2E.actionTraits,
-            frequencies: CONFIG.PF2E.frequencies,
-            proficiencies: CONFIG.PF2E.proficiencyLevels,
+            actionTypes: CONFIG.AVANT.actionTypes,
+            actionsNumber: CONFIG.AVANT.actionsNumber,
+            actionTraits: CONFIG.AVANT.actionTraits,
+            frequencies: CONFIG.AVANT.frequencies,
+            proficiencies: CONFIG.AVANT.proficiencyLevels,
             selfEffect: createSelfEffectSheetData(sheetData.data.selfEffect),
         };
     }
@@ -66,19 +66,19 @@ class AbilitySheetPF2e extends ItemSheetPF2e<AbilityItemPF2e> {
         if (!item) return;
 
         if (!(await handleSelfEffectDrop(this, item))) {
-            throw ErrorPF2e("Invalid item drop");
+            throw ErrorAvant("Invalid item drop");
         }
     }
 }
 
-interface ActionSheetData extends ItemSheetDataPF2e<AbilityItemPF2e> {
+interface ActionSheetData extends ItemSheetDataAvant<AbilityItemAvant> {
     fields: AbilitySystemSchema;
-    actionTypes: typeof CONFIG.PF2E.actionTypes;
-    actionsNumber: typeof CONFIG.PF2E.actionsNumber;
-    actionTraits: typeof CONFIG.PF2E.actionTraits;
-    frequencies: typeof CONFIG.PF2E.frequencies;
-    proficiencies: typeof CONFIG.PF2E.proficiencyLevels;
+    actionTypes: typeof CONFIG.AVANT.actionTypes;
+    actionsNumber: typeof CONFIG.AVANT.actionsNumber;
+    actionTraits: typeof CONFIG.AVANT.actionTraits;
+    frequencies: typeof CONFIG.AVANT.frequencies;
+    proficiencies: typeof CONFIG.AVANT.proficiencyLevels;
     selfEffect: SelfEffectReference | null;
 }
 
-export { AbilitySheetPF2e };
+export { AbilitySheetAvant };

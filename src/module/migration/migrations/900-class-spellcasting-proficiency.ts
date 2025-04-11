@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { ZeroToFour } from "@module/data.ts";
 import type { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { MigrationBase } from "../base.ts";
@@ -9,7 +9,7 @@ export class Migration900ClassSpellcastingProficiency extends MigrationBase {
     static override version = 0.9;
 
     /** Remove persisted spellcasting proficiency */
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type === "character" && source.system.proficiencies) {
             const proficiencies: { attacks?: object; "-=spellcasting"?: null } = source.system.proficiencies;
             if ("spellcasting" in proficiencies) {
@@ -18,7 +18,7 @@ export class Migration900ClassSpellcastingProficiency extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "class") {
             const aeLikeIncrease = source.system.rules.find(
                 (r: MaybeAELike) => r.key === "ActiveEffectLike" && r.path === "system.proficiencies.spellcasting.rank",

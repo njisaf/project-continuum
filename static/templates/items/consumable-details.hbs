@@ -1,12 +1,12 @@
 <div class="form-group">
-    <label>{{localize "PF2E.Category"}}</label>
+    <label>{{localize "AVANT.Category"}}</label>
     <select name="system.category">
         {{selectOptions categories selected=data.category localize=true}}
     </select>
 </div>
 
 <div class="form-group">
-    <label for="{{fieldIdPrefix}}uses-value">{{localize "PF2E.Item.Consumable.Uses.Label"}}</label>
+    <label for="{{fieldIdPrefix}}uses-value">{{localize "AVANT.Item.Consumable.Uses.Label"}}</label>
     <div class="form-fields">
         <input id="{{fieldIdPrefix}}uses-value" type="number" name="system.uses.value" value="{{data.uses.value}}" />
         /
@@ -15,13 +15,13 @@
 </div>
 
 <div class="form-group">
-    <label for="{{fieldIdPrefix}}uses-auto-destroy">{{localize "PF2E.Item.Consumable.Uses.AutoDestroy"}}</label>
+    <label for="{{fieldIdPrefix}}uses-auto-destroy">{{localize "AVANT.Item.Consumable.Uses.AutoDestroy"}}</label>
     <input type="checkbox" name="system.uses.autoDestroy" id="{{fieldIdPrefix}}uses-auto-destroy" {{checked data.uses.autoDestroy}} />
 </div>
 
 {{#if canHaveDamageOrHealing}}
     <div class="form-group damage">
-        <label for="{{fieldIdPrefix}}damage">{{localize "PF2E.Item.Consumable.Damage.Label"}}</label>
+        <label for="{{fieldIdPrefix}}damage">{{localize "AVANT.Item.Consumable.Damage.Label"}}</label>
         {{#if data.damage}}
             <div class="form-fields">
                 <input type="text" name="system.damage.formula" id="{{fieldIdPrefix}}damage" value="{{data.damage.formula}}" />
@@ -31,12 +31,12 @@
                 <select class="kinds" name="system.damage.kind" {{disabled (not canHaveHealing)}}>
                     {{selectOptions @root.damageKindOptions selected=data.damage.kind localize=true}}
                 </select>
-                <a data-action="remove-damage" data-tooltip="PF2E.DeleteShortLabel"><i class="fa-solid fa-trash"></i></a>
+                <a data-action="remove-damage" data-tooltip="AVANT.DeleteShortLabel"><i class="fa-solid fa-trash"></i></a>
             </div>
         {{else}}
             <button type="button" id="{{fieldIdPrefix}}damage" data-action="add-damage">
                 <i class="fa-regular fa-plus"></i>
-                {{localize "PF2E.AddShortLabel"}}
+                {{localize "AVANT.AddShortLabel"}}
             </button>
         {{/if}}
     </div>
@@ -46,13 +46,13 @@
 {{#unless (or item.isAmmo (eq data.damage.kind "healing"))}}
     <div class="form-group stacked">
         <label>
-            <span>{{localize "PF2E.Item.MaterialEffects.Label"}}</span>
-            <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.MaterialEffects.Hint"></i>
+            <span>{{localize "AVANT.Item.MaterialEffects.Label"}}</span>
+            <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.MaterialEffects.Hint"></i>
             {{#if editable}}
                 <a
                     class="tag-selector"
                     data-tag-selector="basic"
-                    data-title="PF2E.Item.MaterialEffects.Label"
+                    data-title="AVANT.Item.MaterialEffects.Label"
                     data-config-types="materialDamageEffects"
                     data-property="system.material.effects"
                 ><i class="fa-solid fa-fw fa-edit"></i></a>
@@ -68,14 +68,14 @@
 
 <div class="form-group stacked">
     <label>
-        <span>{{localize "PF2E.Item.Physical.OtherTags.Label"}}</span>
-        <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.Physical.OtherTags.Hint"></i>
+        <span>{{localize "AVANT.Item.Physical.OtherTags.Label"}}</span>
+        <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.Physical.OtherTags.Hint"></i>
         {{#if editable}}
             <a
                 class="tag-selector"
                 data-tag-selector="basic"
                 data-config-types="otherConsumableTags"
-                data-title="PF2E.Item.Physical.OtherTags.Label"
+                data-title="AVANT.Item.Physical.OtherTags.Label"
                 data-property="system.traits.otherTags"
             ><i class="fa-solid fa-edit"></i></a>
         {{/if}}

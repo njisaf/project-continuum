@@ -8,7 +8,7 @@ export const CanvasReady = {
             const tokenActors = canvas.scene?.tokens.contents.flatMap((t) => t.actor ?? []) ?? [];
             for (const actor of tokenActors) {
                 for (const effect of actor.itemTypes.effect.filter((e) => e.fromAura)) {
-                    game.pf2e.effectTracker.register(effect);
+                    game.avant.effectTracker.register(effect);
                 }
             }
 
@@ -24,14 +24,14 @@ export const CanvasReady = {
 
         Hooks.on("canvasReady", () => {
             // Effect Panel singleton application
-            game.pf2e.effectPanel.render(true);
+            game.avant.effectPanel.render(true);
             if (!canvas.scene) return;
 
             if (game.ready) canvas.scene.reset();
             // Accomodate hex grid play with a usable default cone angle
             CONFIG.MeasuredTemplate.defaults.angle = canvas.grid.isHexagonal ? 60 : 90;
 
-            const hasSceneTerrains = !!canvas.scene.flags.pf2e.environmentTypes?.length;
+            const hasSceneTerrains = !!canvas.scene.flags.avant.environmentTypes?.length;
             for (const token of canvas.tokens.placeables) {
                 // Reset actors to add scene and region terrains and refresh their available roll options
                 // The first reset is performed in the ready hook

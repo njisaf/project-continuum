@@ -1,12 +1,12 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { SingleCheckAction, SingleCheckActionVariant, SingleCheckActionVariantData } from "@actor/actions/index.ts";
-import { ItemPF2e, WeaponPF2e } from "@item";
+import { ItemAvant, WeaponAvant } from "@item";
 import { CheckContextData, CheckContextOptions, CheckMacroContext } from "@system/action-macros/types.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-const PREFIX = "PF2E.Actions.Disarm";
+const PREFIX = "AVANT.Actions.Disarm";
 
-function disarmCheckContext<ItemType extends ItemPF2e<ActorPF2e>>(
+function disarmCheckContext<ItemType extends ItemAvant<ActorAvant>>(
     opts: CheckContextOptions<ItemType>,
     data: CheckContextData<ItemType>,
 ): CheckMacroContext<ItemType> | undefined {
@@ -29,7 +29,7 @@ function disarm(options: SkillActionOptions): void {
     const slug = options?.skill ?? "athletics";
     const modifiers = options?.modifiers;
     const rollOptions = ["action:disarm"];
-    ActionMacroHelpers.simpleRollActionCheck<WeaponPF2e<ActorPF2e>>({
+    ActionMacroHelpers.simpleRollActionCheck<WeaponAvant<ActorAvant>>({
         actors: options.actors,
         actionGlyph: options.glyph ?? "A",
         title: `${PREFIX}.Title`,
@@ -39,9 +39,9 @@ function disarm(options: SkillActionOptions): void {
         callback: options.callback,
         difficultyClass: options.difficultyClass ?? "reflex",
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Disarm", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Disarm", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Disarm", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Disarm", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Disarm", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Disarm", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -50,7 +50,7 @@ function disarm(options: SkillActionOptions): void {
 }
 
 class DisarmActionVariant extends SingleCheckActionVariant {
-    protected override checkContext<ItemType extends ItemPF2e<ActorPF2e>>(
+    protected override checkContext<ItemType extends ItemAvant<ActorAvant>>(
         opts: CheckContextOptions<ItemType>,
         data: CheckContextData<ItemType>,
     ): CheckMacroContext<ItemType> | undefined {

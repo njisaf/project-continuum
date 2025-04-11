@@ -1,0 +1,199 @@
+{
+    "_id": "Vc97f8ChfcZzprlZ",
+    "img": "icons/magic/symbols/runes-etched-steel-blade.webp",
+    "name": "Spell Effect: Runic Impression",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Runic Impression]</p>\n<p>Your unarmed attacks or weapon gain the benefits of a weapon rune you choose.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "minutes",
+            "value": 1
+        },
+        "level": {
+            "value": 4
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Secrets of Magic"
+        },
+        "rules": [
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.WeaponTypeUnarmed",
+                        "value": "unarmed"
+                    },
+                    {
+                        "label": "TYPES.Item.weapon",
+                        "value": "weapon"
+                    }
+                ],
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.WeaponOrUnarmed",
+                "rollOption": "runic-impression"
+            },
+            {
+                "choices": {
+                    "ownedItems": true,
+                    "types": [
+                        "weapon"
+                    ]
+                },
+                "flag": "weapon",
+                "key": "ChoiceSet",
+                "predicate": [
+                    "runic-impression:weapon"
+                ],
+                "prompt": "AVANT.SpecificRule.Prompt.Weapon"
+            },
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.WeaponPropertyRune.corrosive.Name",
+                        "value": "corrosive"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.flaming.Name",
+                        "value": "flaming"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.frost.Name",
+                        "value": "frost"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.ghostTouch.Name",
+                        "value": "ghost-touch"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterCorrosive.Name",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "parent:level",
+                                    8
+                                ]
+                            }
+                        ],
+                        "value": "greater-corrosive"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterFlaming.Name",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "parent:level",
+                                    8
+                                ]
+                            }
+                        ],
+                        "value": "greater-flaming"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterFrost.Name",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "parent:level",
+                                    8
+                                ]
+                            }
+                        ],
+                        "value": "greater-frost"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterShock.Name",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "parent:level",
+                                    8
+                                ]
+                            }
+                        ],
+                        "value": "greater-shock"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterThundering.Name",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "parent:level",
+                                    8
+                                ]
+                            }
+                        ],
+                        "value": "greater-thundering"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.keen.Name",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "parent:level",
+                                    8
+                                ]
+                            }
+                        ],
+                        "value": "keen"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.returning.Name",
+                        "value": "returning"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.shock.Name",
+                        "value": "shock"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.thundering.Name",
+                        "value": "thundering"
+                    }
+                ],
+                "flag": "rune",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Rune"
+            },
+            {
+                "definition": [
+                    "item:id:{item|flags.avant.rulesSelections.weapon}"
+                ],
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "runic-impression:weapon"
+                ],
+                "property": "property-runes",
+                "value": "{item|flags.avant.rulesSelections.rune}"
+            },
+            {
+                "definition": [
+                    "item:category:unarmed"
+                ],
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "runic-impression:unarmed"
+                ],
+                "property": "property-runes",
+                "value": "{item|flags.avant.rulesSelections.rune}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

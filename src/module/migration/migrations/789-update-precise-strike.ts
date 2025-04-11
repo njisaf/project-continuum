@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration789UpdatePreciseStrike extends MigrationBase {
     static override version = 0.789;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "feat") return;
 
         if (source.system.slug === "precise-strike") {
@@ -22,7 +22,7 @@ export class Migration789UpdatePreciseStrike extends MigrationBase {
             {
                 domain: "damage-roll",
                 key: "RollOption",
-                label: "PF2E.SpecificRule.PreciseStrike.Finisher",
+                label: "AVANT.SpecificRule.PreciseStrike.Finisher",
                 option: "finisher",
                 toggleable: true,
             },

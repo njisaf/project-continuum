@@ -1,10 +1,10 @@
 import { RollTwiceSynthetic } from "../synthetics.ts";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
 /** Roll Twice and keep either the higher or lower result */
-class RollTwiceRuleElement extends RuleElementPF2e<RollTwiceRuleSchema> {
+class RollTwiceRuleElement extends RuleElementAvant<RollTwiceRuleSchema> {
     static override defineSchema(): RollTwiceRuleSchema {
         return {
             ...super.defineSchema(),
@@ -29,13 +29,13 @@ class RollTwiceRuleElement extends RuleElementPF2e<RollTwiceRuleSchema> {
         }
     }
 
-    override async afterRoll({ domains, roll, rollOptions }: RuleElementPF2e.AfterRollParams): Promise<void> {
+    override async afterRoll({ domains, roll, rollOptions }: RuleElementAvant.AfterRollParams): Promise<void> {
         if (!this.actor.items.has(this.item.id)) {
             return;
         }
 
-        const expireEffects = game.settings.get("pf2e", "automation.effectExpiration");
-        const removeExpired = game.settings.get("pf2e", "automation.removeExpiredEffects");
+        const expireEffects = game.settings.get("avant", "automation.effectExpiration");
+        const removeExpired = game.settings.get("avant", "automation.removeExpiredEffects");
         const removeAfterRoll =
             this.removeAfterRoll ?? ((expireEffects || removeExpired) && this.item.isOfType("effect"));
 
@@ -64,7 +64,7 @@ class RollTwiceRuleElement extends RuleElementPF2e<RollTwiceRuleSchema> {
 }
 
 interface RollTwiceRuleElement
-    extends RuleElementPF2e<RollTwiceRuleSchema>,
+    extends RuleElementAvant<RollTwiceRuleSchema>,
         ModelPropsFromRESchema<RollTwiceRuleSchema> {}
 
 type RollTwiceRuleSchema = RuleElementSchema & {

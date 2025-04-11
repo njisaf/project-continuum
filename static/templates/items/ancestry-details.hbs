@@ -2,8 +2,8 @@
     {{#each data.boosts as |boost idx|}}
         <div class="form-group form-group-trait">
             <label>
-                {{localize "PF2E.AbilityBoost"}}
-                <a class="tag-selector" data-tag-selector="basic" data-title="PF2E.AbilityBoost" data-config-types="abilities" data-property="system.boosts.{{idx}}" data-no-custom="true"><i class="fa-solid fa-edit"></i></a>
+                {{localize "AVANT.AbilityBoost"}}
+                <a class="tag-selector" data-tag-selector="basic" data-title="AVANT.AbilityBoost" data-config-types="abilities" data-property="system.boosts.{{idx}}" data-no-custom="true"><i class="fa-solid fa-edit"></i></a>
             </label>
 
             <ul class="abc-traits-list">
@@ -17,8 +17,8 @@
     {{#each data.flaws as |flaw idx|}}
         <div class="form-group form-group-trait">
             <label>
-                {{localize "PF2E.AbilityFlaw"}}
-                <a class="tag-selector" data-tag-selector="basic" data-title="PF2E.AbilityFlaw" data-config-types="abilities" data-property="system.flaws.{{idx}}" data-no-custom="true"><i class="fa-solid fa-edit"></i></a>
+                {{localize "AVANT.AbilityFlaw"}}
+                <a class="tag-selector" data-tag-selector="basic" data-title="AVANT.AbilityFlaw" data-config-types="abilities" data-property="system.flaws.{{idx}}" data-no-custom="true"><i class="fa-solid fa-edit"></i></a>
             </label>
 
             {{lookup selectedFlaws @idx}}
@@ -32,7 +32,7 @@
 
     <div class="form-group form-group-trait">
         <label>
-            {{localize "PF2E.Actor.Creature.Language.Plural"}}
+            {{localize "AVANT.Actor.Creature.Language.Plural"}}
             <a class="tag-selector" data-tag-selector="languages" data-property="system.languages"><i class="fa-solid fa-edit"></i></a>
         </label>
 
@@ -45,11 +45,11 @@
 
     <div class="form-group additional-language">
         <label for="{{fieldIdPrefix}}additional-languages">
-            {{localize "PF2E.LanguagesAdditional"}}
+            {{localize "AVANT.LanguagesAdditional"}}
             <a
                 class="tag-selector"
                 data-tag-selector="languages"
-                data-title="PF2E.LanguagesAdditional"
+                data-title="AVANT.LanguagesAdditional"
                 data-config-types="languages"
                 data-property="system.additionalLanguages"
             ><i class="fa-solid fa-edit"></i></a>
@@ -61,7 +61,7 @@
             id="{{fieldIdPrefix}}additional-languages"
             value="{{data.additionalLanguages.count}}"
         />
-        <span>{{localize "PF2E.AdditionalLanguagePlusInt"}}</span>
+        <span>{{localize "AVANT.AdditionalLanguagePlusInt"}}</span>
     </div>
 
     <div class="form-group form-group-trait">
@@ -74,7 +74,7 @@
 </fieldset>
 
 <fieldset class="features">
-    <legend>{{localize "PF2E.Item.ABC.Features"}}</legend>
+    <legend>{{localize "AVANT.Item.ABC.Features"}}</legend>
 
     <div class="form-group stacked item-ref-group" data-valid-drops="ancestryfeature">
         {{#> abcItems data}}data.{{/abcItems}}
@@ -87,7 +87,7 @@
         <li data-pack-id="{{item.pack}}" data-index="{{i}}" data-item-uuid="{{item.uuid}}">
             <img src="{{item.img}}">
             <a class="name">{{item.name}}</a>
-            <span>{{~#unless (includes item.uuid "Compendium.")}}<i class="fa-solid fa-globe" data-tooltip="PF2E.Item.WorldItemWarning"></i>{{/unless~}}</span>
+            <span>{{~#unless (includes item.uuid "Compendium.")}}<i class="fa-solid fa-globe" data-tooltip="AVANT.Item.WorldItemWarning"></i>{{/unless~}}</span>
             <a class="remove" data-action="remove"><i class="fa-solid fa-xmark"></i></a>
             <input value="{{item.uuid}}" name="{{@partial-block}}items.{{i}}.uuid" type="hidden" data-dtype="String">
             <input value="{{item.name}}" name="{{@partial-block}}items.{{i}}.name" type="hidden" data-dtype="String">
@@ -101,7 +101,7 @@
         <li>
             <div class="image-placeholder"></div>
             <span class="name-warning">
-                {{localize "PF2E.Item.Ancestry.DropFeatures"}}
+                {{localize "AVANT.Item.Ancestry.DropFeatures"}}
             </span>
         </li>
     {{/unless}}

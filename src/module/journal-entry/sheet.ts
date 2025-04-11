@@ -1,4 +1,4 @@
-class JournalSheetPF2e<TJournalEntry extends JournalEntry> extends JournalSheet<TJournalEntry> {
+class JournalSheetAvant<TJournalEntry extends JournalEntry> extends JournalSheet<TJournalEntry> {
     /** Start pagination at 1 🤫 */
     override async getData(options?: Partial<DocumentSheetOptions>): Promise<JournalSheetData<TJournalEntry>> {
         const sheetData = await super.getData(options);
@@ -9,4 +9,4 @@ class JournalSheetPF2e<TJournalEntry extends JournalEntry> extends JournalSheet<
     }
 }
 
-export { JournalSheetPF2e };
+export { JournalSheetAvant };

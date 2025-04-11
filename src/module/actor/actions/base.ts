@@ -1,6 +1,6 @@
 import type { AbilityTrait } from "@item/ability/index.ts";
 import type { ProficiencyRank } from "@item/base/data/index.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { PROFICIENCY_RANKS } from "@module/data.ts";
 import { getActionGlyph, sluggify } from "@util";
 import {
@@ -40,7 +40,7 @@ function labelSampleTasks(sampleTasks: Partial<Record<ProficiencyRank, string>>)
         unlabeled.push({ rank, text: sampleTasks[rank]! });
     }
     unlabeled.sort((t1, t2) => PROFICIENCY_RANKS.indexOf(t1.rank) - PROFICIENCY_RANKS.indexOf(t2.rank));
-    return unlabeled.map((task) => ({ label: CONFIG.PF2E.proficiencyRanks[task.rank], text: task.text }));
+    return unlabeled.map((task) => ({ label: CONFIG.AVANT.proficiencyRanks[task.rank], text: task.text }));
 }
 
 abstract class BaseActionVariant implements ActionVariant {
@@ -82,27 +82,27 @@ abstract class BaseActionVariant implements ActionVariant {
         return this.#traits ?? this.#action.traits;
     }
 
-    async toMessage(options?: Partial<ActionMessageOptions>): Promise<ChatMessagePF2e | undefined> {
+    async toMessage(options?: Partial<ActionMessageOptions>): Promise<ChatMessageAvant | undefined> {
         const description = this.description || this.#action.description;
         const name = this.name
             ? `${game.i18n.localize(this.#action.name)} - ${game.i18n.localize(this.name)}`
             : game.i18n.localize(this.#action.name);
         const sampleTasks = this.#action.sampleTasks ? labelSampleTasks(this.#action.sampleTasks) : undefined;
-        const traitLabels: Record<string, string | undefined> = CONFIG.PF2E.actionTraits;
-        const traitDescriptions: Record<string, string | undefined> = CONFIG.PF2E.traitsDescriptions;
+        const traitLabels: Record<string, string | undefined> = CONFIG.AVANT.actionTraits;
+        const traitDescriptions: Record<string, string | undefined> = CONFIG.AVANT.traitsDescriptions;
         const traits = this.traits.map((trait) => ({
             description: traitDescriptions[trait],
             label: traitLabels[trait] ?? trait,
             slug: trait,
         }));
-        const content = await renderTemplate("/systems/pf2e/templates/actors/actions/base/chat-message-content.hbs", {
+        const content = await renderTemplate("/systems/avant/templates/actors/actions/base/chat-message-content.hbs", {
             description,
             glyph: this.glyph,
             name,
             sampleTasks,
             traits,
         });
-        return ChatMessagePF2e.create({
+        return ChatMessageAvant.create({
             blind: options?.blind,
             content,
             whisper: options?.whisper,
@@ -166,19 +166,19 @@ abstract class BaseAction<TData extends BaseActionVariantData, TAction extends B
     protected getDefaultVariant(options?: { variant?: string }): TAction {
         const variants = this.variants;
         if (options?.variant && !variants.size) {
-            throw game.i18n.format("PF2E.ActionsWarning.Variants.None", {
+            throw game.i18n.format("AVANT.ActionsWarning.Variants.None", {
                 action: game.i18n.localize(this.name),
                 variant: options.variant,
             });
         }
         if (!options?.variant && variants.size > 1) {
-            throw game.i18n.format("PF2E.ActionsWarning.Variants.Multiple", {
+            throw game.i18n.format("AVANT.ActionsWarning.Variants.Multiple", {
                 action: game.i18n.localize(this.name),
             });
         }
         const variant = variants.get(options?.variant ?? "");
         if (options?.variant && !variant) {
-            throw game.i18n.format("PF2E.ActionsWarning.Variants.Nonexistent", {
+            throw game.i18n.format("AVANT.ActionsWarning.Variants.Nonexistent", {
                 action: game.i18n.localize(this.name),
                 variant: options.variant,
             });
@@ -186,7 +186,7 @@ abstract class BaseAction<TData extends BaseActionVariantData, TAction extends B
         return variant ?? this.toActionVariant();
     }
 
-    async toMessage(options?: Partial<ActionMessageOptions>): Promise<ChatMessagePF2e | undefined> {
+    async toMessage(options?: Partial<ActionMessageOptions>): Promise<ChatMessageAvant | undefined> {
         return options?.variant
             ? this.getDefaultVariant(options).toMessage(options)
             : this.toActionVariant().toMessage(options);

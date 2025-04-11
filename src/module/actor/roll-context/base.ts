@@ -1,9 +1,9 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { PCAttackTraitHelpers } from "@actor/character/helpers.ts";
 import type { StrikeData } from "@actor/data/base.ts";
 import { getRangeIncrement, isOffGuardFromFlanking } from "@actor/helpers.ts";
 import { StatisticModifier } from "@actor/modifiers.ts";
-import type { ItemPF2e } from "@item";
+import type { ItemAvant } from "@item";
 import type { AbilityTrait } from "@item/ability/types.ts";
 import { getPropertyRuneStrikeAdjustments } from "@item/physical/runes.ts";
 import { extractEphemeralEffects } from "@module/rules/helpers.ts";
@@ -14,9 +14,9 @@ import { RollContextData, RollOrigin, RollTarget } from "./types.ts";
 
 /** Resolve a roll context by cloning a pair of actors and feeding them with mutual roll options. */
 abstract class RollContext<
-    TSelf extends ActorPF2e,
+    TSelf extends ActorAvant,
     TStatistic extends Statistic | StrikeData,
-    TItem extends ItemPF2e<ActorPF2e> | null,
+    TItem extends ItemAvant<ActorAvant> | null,
 > {
     /** Origin and target data provided directly by the caller */
     protected unresolved: Readonly<UnresolvedOpposingActors<TStatistic, TItem>>;
@@ -215,8 +215,8 @@ abstract class RollContext<
 
     async #cloneActor(
         which: "origin" | "target",
-        { other = null }: { other?: ActorPF2e | null } = {},
-    ): Promise<ActorPF2e | null> {
+        { other = null }: { other?: ActorAvant | null } = {},
+    ): Promise<ActorAvant | null> {
         const unresolved = this.unresolved;
         const uncloned = unresolved[which];
         const opposingAlias = which === "origin" ? "target" : "origin";
@@ -257,8 +257,8 @@ abstract class RollContext<
         // Add an epehemeral effect from flanking
         const isFlankingAttack = this.isFlankingAttack;
         if (which === "target" && isFlankingAttack && isOffGuardFromFlanking(uncloned.actor, otherActor)) {
-            const name = game.i18n.localize("PF2E.Item.Condition.Flanked");
-            const condition = game.pf2e.ConditionManager.getCondition("off-guard", { name });
+            const name = game.i18n.localize("AVANT.Item.Condition.Flanked");
+            const condition = game.avant.ConditionManager.getCondition("off-guard", { name });
             ephemeralEffects.push(condition.toObject());
         }
 
@@ -290,7 +290,7 @@ abstract class RollContext<
         );
     }
 
-    #cloneItem(originActor: ActorPF2e | null): ItemPF2e<ActorPF2e> | null {
+    #cloneItem(originActor: ActorAvant | null): ItemAvant<ActorAvant> | null {
         const unresolved = this.unresolved;
         const unclonedItem = this.item;
 
@@ -317,7 +317,7 @@ abstract class RollContext<
         return unclonedItem;
     }
 
-    #getClonedStatistic(clonedActor: ActorPF2e | null): Statistic | StrikeData | null {
+    #getClonedStatistic(clonedActor: ActorAvant | null): Statistic | StrikeData | null {
         const unresolvedRoller = this.unresolved[this.rollerRole];
         const unresolvedStatistic = unresolvedRoller?.statistic ?? null;
         if (this.viewOnly) return unresolvedStatistic;

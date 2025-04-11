@@ -1,2 +1,2 @@
-export { ClassPF2e } from "./document.ts";
-export { ClassSheetPF2e } from "./sheet.ts";
+export { ClassAvant } from "./document.ts";
+export { ClassSheetAvant } from "./sheet.ts";

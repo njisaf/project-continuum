@@ -1,0 +1,32 @@
+{
+    "_id": "kTlJqhC7ZSE8P8lu",
+    "folder": "1nhgH7eUL9FK6Ofz",
+    "img": "systems/avant/icons/default-icons/heritage.svg",
+    "name": "Venomous Anadi",
+    "system": {
+        "ancestry": {
+            "name": "Anadi",
+            "slug": "anadi",
+            "uuid": "Compendium.avant.ancestries.Item.TQEqWqc7BYiadUdY"
+        },
+        "description": {
+            "value": "<p>Your natural form's fangs are capable of injecting foes with venom. You gain the @UUID[Compendium.avant.actionsavant.Item.Anadi Venom] ability.</p>"
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens The Mwangi Expanse"
+        },
+        "rules": [
+            {
+                "key": "GrantItem",
+                "uuid": "Compendium.avant.actionsavant.Item.Anadi Venom"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "heritage"
+}

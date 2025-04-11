@@ -10,14 +10,14 @@ import { StatisticRollParameters } from "@system/statistic/index.ts";
 
 type CreatureSource = CharacterSource | NPCSource | FamiliarSource;
 
-type ActorSourcePF2e = ArmySource | CreatureSource | HazardSource | LootSource | PartySource | VehicleSource;
+type ActorSourceAvant = ArmySource | CreatureSource | HazardSource | LootSource | PartySource | VehicleSource;
 
-interface RollInitiativeOptionsPF2e extends RollInitiativeOptions, StatisticRollParameters {
+interface RollInitiativeOptionsAvant extends RollInitiativeOptions, StatisticRollParameters {
     secret?: boolean;
 }
 
 export type {
-    ActorSourcePF2e,
+    ActorSourceAvant,
     ArmySource,
     CharacterSource,
     CreatureSource,
@@ -26,6 +26,6 @@ export type {
     LootSource,
     NPCSource,
     PartySource,
-    RollInitiativeOptionsPF2e,
+    RollInitiativeOptionsAvant,
     VehicleSource,
 };

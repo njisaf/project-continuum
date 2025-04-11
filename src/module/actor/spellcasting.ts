@@ -1,16 +1,16 @@
-import type { ActorPF2e } from "@actor";
-import type { ConsumablePF2e, SpellPF2e } from "@item";
-import { SpellcastingEntryPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ConsumableAvant, SpellAvant } from "@item";
+import { SpellcastingEntryAvant } from "@item";
 import { SpellCollection } from "@item/spellcasting-entry/collection.ts";
 import { RitualSpellcasting } from "@item/spellcasting-entry/rituals.ts";
 import { TRICK_MAGIC_SKILLS, TrickMagicItemEntry } from "@item/spellcasting-entry/trick.ts";
 import { BaseSpellcastingEntry } from "@item/spellcasting-entry/types.ts";
 import { Statistic } from "@system/statistic/statistic.ts";
-import { DelegatedCollection, ErrorPF2e, tupleHasValue } from "@util";
+import { DelegatedCollection, ErrorAvant, tupleHasValue } from "@util";
 import { CreatureSource } from "./data/index.ts";
 import { ActorCommitData } from "./types.ts";
 
-export class ActorSpellcasting<TActor extends ActorPF2e> extends DelegatedCollection<BaseSpellcastingEntry<TActor>> {
+export class ActorSpellcasting<TActor extends ActorAvant> extends DelegatedCollection<BaseSpellcastingEntry<TActor>> {
     actor: TActor;
 
     /** The base casting proficiency, off of which spellcasting builds */
@@ -40,9 +40,9 @@ export class ActorSpellcasting<TActor extends ActorPF2e> extends DelegatedCollec
         }
     }
 
-    /** Returns a list of entries pre-filtered to SpellcastingEntryPF2e */
-    get regular(): SpellcastingEntryPF2e<TActor>[] {
-        return this.filter((e): e is SpellcastingEntryPF2e<TActor> => e instanceof SpellcastingEntryPF2e);
+    /** Returns a list of entries pre-filtered to SpellcastingEntryAvant */
+    get regular(): SpellcastingEntryAvant<TActor>[] {
+        return this.filter((e): e is SpellcastingEntryAvant<TActor> => e instanceof SpellcastingEntryAvant);
     }
 
     /** Get this actor's ritual casting ability */
@@ -52,7 +52,7 @@ export class ActorSpellcasting<TActor extends ActorPF2e> extends DelegatedCollec
     }
 
     /** Spells not belonging to any collection */
-    get orphanedSpells(): SpellPF2e<TActor>[] {
+    get orphanedSpells(): SpellAvant<TActor>[] {
         return this.actor.itemTypes.spell.filter((s) => !s.spellcasting);
     }
 
@@ -60,7 +60,7 @@ export class ActorSpellcasting<TActor extends ActorPF2e> extends DelegatedCollec
      * All spellcasting entries that count as prepared/spontaneous, which qualify as a
      * full fledged spellcasting feature for wands and scrolls.
      */
-    get spellcastingFeatures(): SpellcastingEntryPF2e<TActor>[] {
+    get spellcastingFeatures(): SpellcastingEntryAvant<TActor>[] {
         return this.regular.filter((e) => e.isPrepared || e.isSpontaneous);
     }
 
@@ -78,14 +78,14 @@ export class ActorSpellcasting<TActor extends ActorPF2e> extends DelegatedCollec
         return existing;
     }
 
-    canCastConsumable(item: ConsumablePF2e): boolean {
+    canCastConsumable(item: ConsumableAvant): boolean {
         const spell = item.embeddedSpell;
         return !!spell && this.some((e) => e.canCast(spell, { origin: item }));
     }
 
     refocus(options: { all?: boolean } = {}): DeepPartial<CreatureSource> | null {
         if (!options.all) {
-            throw ErrorPF2e("Actors do not currently support regular refocusing");
+            throw ErrorAvant("Actors do not currently support regular refocusing");
         }
 
         if (this.actor.isOfType("character", "npc")) {
@@ -109,7 +109,7 @@ export class ActorSpellcasting<TActor extends ActorPF2e> extends DelegatedCollec
         type SpellcastingUpdate = EmbeddedDocumentUpdateData | EmbeddedDocumentUpdateData[];
 
         const itemUpdates = this.contents.flatMap((entry): SpellcastingUpdate => {
-            if (!(entry instanceof SpellcastingEntryPF2e)) return [];
+            if (!(entry instanceof SpellcastingEntryAvant)) return [];
             if (entry.isFocusPool || !entry.spells) return [];
 
             // Innate spells should refresh uses instead

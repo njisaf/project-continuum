@@ -1,12 +1,12 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { AutomaticBonusProgression as ABP } from "@actor/character/automatic-bonus-progression.ts";
 import { SIZE_TO_REACH } from "@actor/creature/values.ts";
 import type { AttributeString } from "@actor/types.ts";
 import { ATTRIBUTE_ABBREVIATIONS } from "@actor/values.ts";
-import type { ConsumablePF2e, MeleePF2e, ShieldPF2e } from "@item";
-import { ItemProxyPF2e, PhysicalItemPF2e } from "@item";
+import type { ConsumableAvant, MeleeAvant, ShieldAvant } from "@item";
+import { ItemProxyAvant, PhysicalItemAvant } from "@item";
 import { createActionRangeLabel } from "@item/ability/helpers.ts";
-import type { ItemSourcePF2e, MeleeSource, RawItemChatData } from "@item/base/data/index.ts";
+import type { ItemSourceAvant, MeleeSource, RawItemChatData } from "@item/base/data/index.ts";
 import { performLatePreparation } from "@item/helpers.ts";
 import type { NPCAttackDamage } from "@item/melee/data.ts";
 import type { NPCAttackTrait } from "@item/melee/types.ts";
@@ -15,9 +15,9 @@ import { IdentificationStatus, MystifiedData, RUNE_DATA, getPropertyRuneSlots } 
 import { MAGIC_TRADITIONS } from "@item/spell/values.ts";
 import type { RangeData } from "@item/types.ts";
 import type { StrikeRuleElement } from "@module/rules/rule-element/strike.ts";
-import type { UserPF2e } from "@module/user/document.ts";
+import type { UserAvant } from "@module/user/document.ts";
 import { DamageCategorization } from "@system/damage/helpers.ts";
-import { ErrorPF2e, objectHasKey, setHasElement, sluggify, tupleHasValue } from "@util";
+import { ErrorAvant, objectHasKey, setHasElement, sluggify, tupleHasValue } from "@util";
 import * as R from "remeda";
 import type { WeaponDamage, WeaponFlags, WeaponSource, WeaponSystemData } from "./data.ts";
 import { processTwoHandTrait } from "./helpers.ts";
@@ -33,21 +33,21 @@ import type {
 } from "./types.ts";
 import { MANDATORY_RANGED_GROUPS, MELEE_ONLY_TRAITS, RANGED_ONLY_TRAITS, THROWN_RANGES } from "./values.ts";
 
-class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+class WeaponAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     /** The shield to which this weapon is attached or is a part of */
-    declare shield?: ShieldPF2e<TParent>;
+    declare shield?: ShieldAvant<TParent>;
 
     /** The combination weapon that is an alternate form or usage of this weapon */
-    declare comboSibling?: WeaponPF2e<TParent>;
+    declare comboSibling?: WeaponAvant<TParent>;
 
     /** The rule element that generated this weapon, if applicable */
     declare rule?: StrikeRuleElement;
 
     static override get validTraits(): Record<NPCAttackTrait, string> {
-        return CONFIG.PF2E.npcAttackTraits;
+        return CONFIG.AVANT.npcAttackTraits;
     }
 
-    constructor(data: PreCreate<ItemSourcePF2e>, context: WeaponConstructionContext<TParent> = {}) {
+    constructor(data: PreCreate<ItemSourceAvant>, context: WeaponConstructionContext<TParent> = {}) {
         super(data, context);
         if (context.shield) this.shield = context.shield;
     }
@@ -186,7 +186,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
             : 0;
     }
 
-    get ammo(): ConsumablePF2e<ActorPF2e> | WeaponPF2e<ActorPF2e> | null {
+    get ammo(): ConsumableAvant<ActorAvant> | WeaponAvant<ActorAvant> | null {
         const ammo = this.actor?.items.get(this.system.selectedAmmoId ?? "");
         return ammo?.isOfType("consumable", "weapon") ? ammo : null;
     }
@@ -195,7 +195,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         return new Set(this.system.traits.otherTags);
     }
 
-    override acceptsSubitem(candidate: PhysicalItemPF2e): boolean {
+    override acceptsSubitem(candidate: PhysicalItemAvant): boolean {
         return (
             candidate !== this &&
             candidate.isOfType("weapon") &&
@@ -207,7 +207,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         );
     }
 
-    override isStackableWith(item: PhysicalItemPF2e): boolean {
+    override isStackableWith(item: PhysicalItemAvant): boolean {
         if (this.category === "unarmed" || !item.isOfType("weapon") || item.category === "unarmed") {
             return false;
         }
@@ -218,7 +218,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
     }
 
     /** Whether this weapon can serve as ammunition for another weapon */
-    isAmmoFor(weapon: WeaponPF2e): boolean {
+    isAmmoFor(weapon: WeaponAvant): boolean {
         return this.system.usage.canBeAmmo && !weapon.system.traits.value.includes("repeating");
     }
 
@@ -241,7 +241,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         const thrownMelee = this.isThrown && this.altUsageType === "thrown";
         // Some base weapons qualify as others for all rules purposes (e.g., a composite longbow is a longbow)
         const baseTypeRollOptions = ((): Record<string, boolean> => {
-            const equivalentBases: Record<string, string | undefined> = CONFIG.PF2E.equivalentWeapons;
+            const equivalentBases: Record<string, string | undefined> = CONFIG.AVANT.equivalentWeapons;
             const baseTypes = [this.baseType ?? [], equivalentBases[this.baseType ?? ""] ?? []].flat();
             return baseTypes.reduce((types, t) => ({ ...types, [`base:${t}`]: true }), {} as Record<string, boolean>);
         })();
@@ -249,7 +249,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         const propertyRunes = R.mapToObj(this.system.runes.property, (p) => [`rune:property:${sluggify(p)}`, true]);
 
         // Ammunition
-        const ammunitionRollOptions = ((ammunition: ConsumablePF2e | WeaponPF2e | null) => {
+        const ammunitionRollOptions = ((ammunition: ConsumableAvant | WeaponAvant | null) => {
             const rollOptions: Record<string, boolean> = {};
             if (ammunition) {
                 rollOptions[`ammo:id:${ammunition.id}`] = true;
@@ -329,8 +329,8 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
 
         const reloadValue = (this.system.reload.value ||= null);
         this.system.reload.label = reloadValue
-            ? game.i18n.format("PF2E.Item.Weapon.Reload.LabelN", {
-                  value: CONFIG.PF2E.weaponReload[reloadValue],
+            ? game.i18n.format("AVANT.Item.Weapon.Reload.LabelN", {
+                  value: CONFIG.AVANT.weaponReload[reloadValue],
               })
             : null;
 
@@ -394,8 +394,8 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         // object
         this.system.usage.canBeAmmo = this._source.system.usage.canBeAmmo ?? false;
 
-        this.flags.pf2e.comboMeleeUsage ??= false;
-        this.flags.pf2e.damageFacesUpgraded = false;
+        this.flags.avant.comboMeleeUsage ??= false;
+        this.flags.avant.damageFacesUpgraded = false;
 
         // Prepare and limit runes
         ABP.cleanupRunes(this);
@@ -411,7 +411,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         const inherentDiceNumber = this.system.damage.die ? this._source.system.damage.dice : 0;
         const strikingDice = ABP.isEnabled(actor) ? ABP.getStrikingDice(actor?.level ?? 0) : this.system.runes.striking;
         this.system.damage.dice =
-            inherentDiceNumber === 1 && !this.flags.pf2e.battleForm
+            inherentDiceNumber === 1 && !this.flags.avant.battleForm
                 ? inherentDiceNumber + strikingDice
                 : this.system.damage.dice;
 
@@ -422,7 +422,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
             .filter(R.isTruthy)
             .sort();
 
-        this.flags.pf2e.attackItemBonus = this.system.runes.potency || this.system.bonus.value || 0;
+        this.flags.avant.attackItemBonus = this.system.runes.potency || this.system.bonus.value || 0;
 
         if (this.system.usage.canBeAmmo && !this.isThrowable) {
             this.system.usage.canBeAmmo = false;
@@ -449,13 +449,13 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
     }
 
     override async getChatData(
-        this: WeaponPF2e<ActorPF2e>,
+        this: WeaponAvant<ActorAvant>,
         htmlOptions: EnrichmentOptions = {},
     ): Promise<RawItemChatData> {
-        const traits = this.traitChatData(CONFIG.PF2E.weaponTraits);
+        const traits = this.traitChatData(CONFIG.AVANT.weaponTraits);
         const chatData = await super.getChatData();
         const rangeLabel = createActionRangeLabel(this.range);
-        const properties = [CONFIG.PF2E.weaponCategories[this.category], this.system.reload.label, rangeLabel].filter(
+        const properties = [CONFIG.AVANT.weaponCategories[this.category], this.system.reload.label, rangeLabel].filter(
             R.isTruthy,
         );
 
@@ -473,13 +473,13 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
     }
 
     override generateUnidentifiedName({ typeOnly = false }: { typeOnly?: boolean } = { typeOnly: false }): string {
-        const baseWeaponTypes: Record<string, string | undefined> = CONFIG.PF2E.baseWeaponTypes;
-        const baseShieldTypes: Record<string, string | undefined> = CONFIG.PF2E.baseShieldTypes;
+        const baseWeaponTypes: Record<string, string | undefined> = CONFIG.AVANT.baseWeaponTypes;
+        const baseShieldTypes: Record<string, string | undefined> = CONFIG.AVANT.baseShieldTypes;
         const base = this.baseType ? (baseWeaponTypes[this.baseType] ?? baseShieldTypes[this.baseType] ?? null) : null;
-        const group = this.group ? CONFIG.PF2E.weaponGroups[this.group] : null;
+        const group = this.group ? CONFIG.AVANT.weaponGroups[this.group] : null;
         const itemType = game.i18n.localize(base ?? group ?? "TYPES.Item.weapon");
 
-        return typeOnly ? itemType : game.i18n.format("PF2E.identification.UnidentifiedItem", { item: itemType });
+        return typeOnly ? itemType : game.i18n.format("AVANT.identification.UnidentifiedItem", { item: itemType });
     }
 
     /**
@@ -488,10 +488,10 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
      * @param [options.recurse=true] Whether to get the alternative usages of alternative usages
      */
     getAltUsages(options?: { recurse?: boolean }): this[];
-    getAltUsages({ recurse = true } = {}): WeaponPF2e<TParent>[] {
+    getAltUsages({ recurse = true } = {}): WeaponAvant<TParent>[] {
         const meleeUsage = this.toMeleeUsage();
 
-        const altUsages: WeaponPF2e<TParent>[] = [
+        const altUsages: WeaponAvant<TParent>[] = [
             this.toThrownUsage() ?? [],
             meleeUsage ?? [],
             // Some combination weapons have a melee usage that is throwable
@@ -500,7 +500,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
 
         // Apply late prep procedures to all alt usages
         for (const weapon of altUsages) {
-            performLatePreparation(weapon as WeaponPF2e<NonNullable<TParent>>);
+            performLatePreparation(weapon as WeaponAvant<NonNullable<TParent>>);
         }
 
         return altUsages;
@@ -514,7 +514,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
     override clone(data?: Record<string, unknown>, context?: WeaponCloneContext): this | Promise<this>;
     override clone(data?: Record<string, unknown>, context?: WeaponCloneContext): this | Promise<this> {
         const clone = super.clone(data, context);
-        if (context?.altUsage && clone instanceof WeaponPF2e) {
+        if (context?.altUsage && clone instanceof WeaponAvant) {
             clone.altUsageType = context.altUsage;
             const comboSibling = this.system.traits.value.includes("combination") ? this : this.comboSibling;
             if (comboSibling) clone.comboSibling = comboSibling;
@@ -545,7 +545,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
     /** Generate a clone of this combination weapon with its melee usage overlain, or `null` if not applicable */
     private toMeleeUsage(): this | null {
         const meleeUsage = this.system.meleeUsage;
-        if (!meleeUsage || this.flags.pf2e.comboMeleeUsage) return null;
+        if (!meleeUsage || this.flags.avant.comboMeleeUsage) return null;
 
         const traitToggles = {
             module: { selected: meleeUsage.traitToggles.modular },
@@ -562,7 +562,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
                 selectedAmmoId: null,
             },
             flags: {
-                pf2e: {
+                avant: {
                     comboMeleeUsage: true,
                 },
             },
@@ -571,16 +571,16 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
     }
 
     /** Generate a melee item from this weapon for use by NPCs */
-    toNPCAttacks(this: WeaponPF2e<NonNullable<TParent>>, { keepId = false } = {}): MeleePF2e<NonNullable<TParent>>[] {
+    toNPCAttacks(this: WeaponAvant<NonNullable<TParent>>, { keepId = false } = {}): MeleeAvant<NonNullable<TParent>>[] {
         const actor = this.actor;
-        if (!actor.isOfType("npc")) throw ErrorPF2e("Melee items can only be generated for NPCs");
+        if (!actor.isOfType("npc")) throw ErrorAvant("Melee items can only be generated for NPCs");
 
         const baseDamage = ((): NPCAttackDamage => {
             const weaponDamage = this.baseDamage;
             const ability = this.range?.increment && !this.isThrown ? "dex" : "str";
             const actorLevel = actor.system.details.level.base;
             // Use the base dice if damage is fixed
-            const dice = this.flags.pf2e.fixedAttack
+            const dice = this.flags.avant.fixedAttack
                 ? weaponDamage.dice
                 : [1, 2, 3, 4].reduce((closest, dice) =>
                       Math.abs(dice - Math.round((actorLevel + 2) / 4)) <
@@ -593,7 +593,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
             const constant = ((): string => {
                 const fromAbility = actor.abilities[ability].mod;
                 // Use the base modifier if damage is fixed
-                const totalModifier = this.flags.pf2e.fixedAttack
+                const totalModifier = this.flags.avant.fixedAttack
                     ? weaponDamage.modifier
                     : fromAbility + (actor.level > 1 ? dice : 0);
                 const sign = totalModifier < 0 ? "-" : "+";
@@ -641,7 +641,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
                     // Omitted traits include ...
                     (t) =>
                         // Creature traits (unless coming from a Strike RE)
-                        (["holy", "unholy"].includes(t) || !!this.rule || !(t in CONFIG.PF2E.creatureTraits)) &&
+                        (["holy", "unholy"].includes(t) || !!this.rule || !(t in CONFIG.AVANT.creatureTraits)) &&
                         // Thrown(-N) trait on melee attacks with thrown melee weapons
                         !(t.startsWith("thrown") && !this.isThrown) &&
                         // Finesse trait on thrown attacks with thrown melee weapons
@@ -671,7 +671,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
             }
 
             const reloadTrait = `reload-${this.reload}`;
-            if (objectHasKey(CONFIG.PF2E.npcAttackTraits, reloadTrait)) {
+            if (objectHasKey(CONFIG.AVANT.npcAttackTraits, reloadTrait)) {
                 newTraits.push(reloadTrait);
             }
 
@@ -707,7 +707,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
                 slug: this.slug ?? sluggify(this._source.name),
                 bonus: {
                     // Unless there is a fixed attack modifier, give an attack bonus approximating a high-threat NPC
-                    value: this.flags.pf2e.fixedAttack || Math.round(1.5 * this.actor.level + 7),
+                    value: this.flags.avant.fixedAttack || Math.round(1.5 * this.actor.level + 7),
                 },
                 damageRolls: [baseDamage, splashDamage, fromPropertyRunes, persistentDamage]
                     .flat()
@@ -721,10 +721,10 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
                 },
                 rules: fu.deepClone(this._source.system.rules),
             },
-            flags: { pf2e: { linkedWeapon: this.id } },
+            flags: { avant: { linkedWeapon: this.id } },
         };
 
-        const attack = new ItemProxyPF2e(source, { parent: this.actor }) as MeleePF2e<NonNullable<TParent>>;
+        const attack = new ItemProxyAvant(source, { parent: this.actor }) as MeleeAvant<NonNullable<TParent>>;
         // Melee items retrieve these during `prepareSiblingData`, but if the attack is from a Strike rule element,
         // there will be no inventory weapon from which to pull the data.
         attack.category = this.category;
@@ -741,7 +741,7 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
             return ammo.consume(this.ammoRequired);
         } else if (ammo?.isOfType("weapon")) {
             if (!ammo.system.usage.canBeAmmo) {
-                throw ErrorPF2e("attempted to consume weapon not usable as ammunition");
+                throw ErrorAvant("attempted to consume weapon not usable as ammunition");
             }
             await ammo.update({ "system.quantity": Math.max(ammo.quantity - 1, 0) });
         }
@@ -754,13 +754,13 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
     protected override _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) return super._preUpdate(changed, operation, user);
 
         const traits = changed.system.traits ?? {};
         if ("value" in traits && Array.isArray(traits.value)) {
-            traits.value = traits.value.filter((t) => t in CONFIG.PF2E.weaponTraits);
+            traits.value = traits.value.filter((t) => t in CONFIG.AVANT.weaponTraits);
         }
 
         for (const key of ["group", "range", "selectedAmmoId"] as const) {
@@ -791,14 +791,14 @@ class WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         if (game.user.id === userId) {
             const updates =
                 this.actor?.itemTypes.melee
-                    .filter((a) => a.flags.pf2e.linkedWeapon === this.id)
-                    .map((a) => ({ _id: a.id, "flags.pf2e.-=linkedWeapon": null })) ?? [];
+                    .filter((a) => a.flags.avant.linkedWeapon === this.id)
+                    .map((a) => ({ _id: a.id, "flags.avant.-=linkedWeapon": null })) ?? [];
             this.actor?.updateEmbeddedDocuments("Item", updates);
         }
     }
 }
 
-interface WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+interface WeaponAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     flags: WeaponFlags;
     readonly _source: WeaponSource;
     system: WeaponSystemData;
@@ -806,8 +806,8 @@ interface WeaponPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     get traits(): Set<WeaponTrait>;
 }
 
-interface WeaponConstructionContext<TParent extends ActorPF2e | null> extends PhysicalItemConstructionContext<TParent> {
-    shield?: ShieldPF2e<TParent>;
+interface WeaponConstructionContext<TParent extends ActorAvant | null> extends PhysicalItemConstructionContext<TParent> {
+    shield?: ShieldAvant<TParent>;
 }
 
 interface WeaponCloneContext extends DocumentCloneContext {
@@ -815,4 +815,4 @@ interface WeaponCloneContext extends DocumentCloneContext {
     altUsage?: "melee" | "thrown";
 }
 
-export { WeaponPF2e };
+export { WeaponAvant };

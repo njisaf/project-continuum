@@ -1,14 +1,14 @@
-import type { ActorPF2e } from "@actor";
-import type { TokenPF2e } from "@module/canvas/index.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene";
+import type { ActorAvant } from "@actor";
+import type { TokenAvant } from "@module/canvas/index.ts";
+import type { SceneAvant, TokenDocumentAvant } from "@scene";
 import * as R from "remeda";
-import { UserFlagsPF2e, UserSourcePF2e } from "./data.ts";
+import { UserFlagsAvant, UserSourceAvant } from "./data.ts";
 
-class UserPF2e extends User<ActorPF2e<null>> {
+class UserAvant extends User<ActorAvant<null>> {
     override prepareData(): void {
         super.prepareData();
         if (canvas.ready && canvas.tokens.controlled.length > 0) {
-            game.pf2e.effectPanel.refresh();
+            game.avant.effectPanel.refresh();
         }
     }
 
@@ -17,7 +17,7 @@ class UserPF2e extends User<ActorPF2e<null>> {
         super.prepareBaseData();
         this.flags = fu.mergeObject(
             {
-                pf2e: {
+                avant: {
                     settings: {
                         showEffectPanel: true,
                         showCheckDialogs: true,
@@ -31,12 +31,12 @@ class UserPF2e extends User<ActorPF2e<null>> {
         );
     }
 
-    get settings(): Readonly<UserSettingsPF2e> {
-        return this.flags.pf2e.settings;
+    get settings(): Readonly<UserSettingsAvant> {
+        return this.flags.avant.settings;
     }
 
     /** Get tokens controlled by this user or, failing that, a token of the assigned character. */
-    getActiveTokens(): TokenDocumentPF2e[] {
+    getActiveTokens(): TokenDocumentAvant[] {
         if (!canvas.ready || canvas.tokens.controlled.length === 0) {
             return [game.user.character?.getActiveTokens(true, true).shift()].filter(R.isTruthy);
         }
@@ -57,23 +57,23 @@ class UserPF2e extends User<ActorPF2e<null>> {
         if (game.user.id !== userId) return;
 
         const keys = Object.keys(fu.flattenObject(changed));
-        if (keys.includes("flags.pf2e.settings.showEffectPanel")) {
-            game.pf2e.effectPanel.refresh();
+        if (keys.includes("flags.avant.settings.showEffectPanel")) {
+            game.avant.effectPanel.refresh();
         }
-        if (keys.includes("flags.pf2e.settings.monochromeDarkvision") && canvas.ready) {
+        if (keys.includes("flags.avant.settings.monochromeDarkvision") && canvas.ready) {
             canvas.scene?.reset();
             canvas.perception.update({ initializeVision: true, refreshLighting: true }, true);
         }
     }
 }
 
-interface UserPF2e extends User<ActorPF2e<null>> {
-    targets: UserTargets<TokenPF2e<TokenDocumentPF2e<ScenePF2e>>>;
-    flags: UserFlagsPF2e;
-    readonly _source: UserSourcePF2e;
+interface UserAvant extends User<ActorAvant<null>> {
+    targets: UserTargets<TokenAvant<TokenDocumentAvant<SceneAvant>>>;
+    flags: UserFlagsAvant;
+    readonly _source: UserSourceAvant;
 }
 
-interface UserSettingsPF2e {
+interface UserSettingsAvant {
     showEffectPanel: boolean;
     showCheckDialogs: boolean;
     showDamageDialogs: boolean;
@@ -81,4 +81,4 @@ interface UserSettingsPF2e {
     searchPackContents: boolean;
 }
 
-export { UserPF2e, type UserSettingsPF2e };
+export { UserAvant, type UserSettingsAvant };

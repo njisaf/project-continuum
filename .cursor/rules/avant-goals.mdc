@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Goals of Avant
+
+Avant is a new game system built out of a fork of the Pathfinder2e FoundryVTT module. We're stripping down the PF2e codebase, replacing all items of "PF2e" or similar with its "Avant" equivalent. Eventually, we will reach a point where we separate it entirely.
+

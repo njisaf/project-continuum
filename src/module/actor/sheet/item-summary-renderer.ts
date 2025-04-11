@@ -1,5 +1,5 @@
-import type { ActorPF2e } from "@actor/base.ts";
-import { AbstractEffectPF2e, ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor/base.ts";
+import { AbstractEffectAvant, ItemAvant } from "@item";
 import type { RawItemChatData } from "@item/base/data/index.ts";
 import { htmlClosest, htmlQuery, htmlQueryAll, htmlSelectorFor } from "@util";
 
@@ -7,7 +7,7 @@ import { htmlClosest, htmlQuery, htmlQueryAll, htmlSelectorFor } from "@util";
  * Implementation used to populate item summaries, toggle visibility
  * of item summaries, and save expanded/collapsed state of item summaries.
  */
-export class ItemSummaryRenderer<TActor extends ActorPF2e, TSheet extends Application & { get actor(): TActor }> {
+export class ItemSummaryRenderer<TActor extends ActorAvant, TSheet extends Application & { get actor(): TActor }> {
     protected sheet: TSheet;
 
     constructor(sheet: TSheet) {
@@ -28,7 +28,7 @@ export class ItemSummaryRenderer<TActor extends ActorPF2e, TSheet extends Applic
         const summaryElem = await (async () => {
             const container = htmlQuery(element, ".item-summary");
             if (container?.hasChildNodes()) return container;
-            if (!container || !(item instanceof ItemPF2e)) return null;
+            if (!container || !(item instanceof ItemAvant)) return null;
             const chatData = await item.getChatData({ secrets: item.isOwner }, { ...element.dataset });
             await this.renderItemSummary(container, item, chatData);
             return container;
@@ -93,10 +93,10 @@ export class ItemSummaryRenderer<TActor extends ActorPF2e, TSheet extends Applic
      */
     async renderItemSummary(
         container: HTMLElement,
-        item: ItemPF2e<ActorPF2e>,
+        item: ItemAvant<ActorAvant>,
         chatData: RawItemChatData,
     ): Promise<void> {
-        const isEffect = item instanceof AbstractEffectPF2e;
+        const isEffect = item instanceof AbstractEffectAvant;
         const selfEffectLink = (() => {
             if (!item.isOfType("action", "feat") || !item.system.selfEffect) return null;
             const uuid = item.system.selfEffect.uuid;
@@ -105,7 +105,7 @@ export class ItemSummaryRenderer<TActor extends ActorPF2e, TSheet extends Applic
             return `@UUID[${uuid}]{${name}}`;
         })();
 
-        const summary = await renderTemplate("systems/pf2e/templates/actors/partials/item-summary.hbs", {
+        const summary = await renderTemplate("systems/avant/templates/actors/partials/item-summary.hbs", {
             item,
             description: chatData.description,
             identified: game.user.isGM || !(item.isOfType("physical") || isEffect) || item.isIdentified,

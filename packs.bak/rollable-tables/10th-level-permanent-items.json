@@ -1,0 +1,672 @@
+{
+    "_id": "W0qudblot2Z9Vu86",
+    "description": "<p>Table of 10th-Level Permanent Items</p>",
+    "displayRoll": true,
+    "formula": "1d261",
+    "img": "icons/svg/d20-grey.svg",
+    "name": "10th-Level Permanent Items",
+    "ownership": {
+        "default": 0
+    },
+    "replacement": true,
+    "results": [
+        {
+            "_id": "QN2b9QvvhEhXYHss",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "8HxM35X8DDt2gw9d",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/armor/specific-magic-armor/electric-eelskin.webp",
+            "range": [
+                1,
+                6
+            ],
+            "text": "Electric Eelskin",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "ciGdruxBAmd692cf",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "7jGnVnqFt2gFtU1g",
+            "drawn": false,
+            "img": "icons/equipment/chest/breastplate-layered-leather-blue.webp",
+            "range": [
+                7,
+                12
+            ],
+            "text": "Tideplate",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "oudJeH6hPuEB5bcN",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "eoI3M6FXtcPWeg7i",
+            "drawn": false,
+            "img": "icons/environment/creatures/horse-tan.webp",
+            "range": [
+                13,
+                18
+            ],
+            "text": "Barding of the Zephyr",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "aFIfCLc2FSkgZdcC",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "9Y86NM6nt2WtYBOy",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/structures/explorers-yurt.webp",
+            "range": [
+                19,
+                24
+            ],
+            "text": "Explorer's Yurt",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "TA1RJqjKJ7st9zkQ",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "3mprh9aZ670HfNhT",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/held-items/maestros-instrument.webp",
+            "range": [
+                25,
+                30
+            ],
+            "text": "Maestro's Instrument (Moderate)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "Oxjwf2R7EjJugIno",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "QEPx1fCf74xdpXBH",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/held-items/thurible-of-revelation.webp",
+            "range": [
+                31,
+                36
+            ],
+            "text": "Thurible of Revelation (Moderate)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "acEumOv11DbWXZi0",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "pOoEiuEuITm4I2Il",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/runes/fundamental-weapon-runes/weapon-potency.webp",
+            "range": [
+                37,
+                42
+            ],
+            "text": "Weapon Potency (+2)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "Z6B5YbMt9578ex4w",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "bxz885LMjLCkpDq3",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/runes/armor-property-runes/armor-property-runes.webp",
+            "range": [
+                43,
+                48
+            ],
+            "text": "Invisibility (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "78DjSZEVAAHluzkV",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "bvROhtzAez0KP7Vt",
+            "drawn": false,
+            "img": "icons/commodities/treasure/token-runed-os-grey.webp",
+            "range": [
+                49,
+                54
+            ],
+            "text": "Reinforcing Rune (Moderate)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "7M2HRXJ8PrgOchIt",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "NoTUhKkiTY5BQU5T",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/shields/specific-shields/forge-warden.webp",
+            "range": [
+                55,
+                57
+            ],
+            "text": "Forge Warden",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "Ukf4aagqZ6DIR6e1",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "pNQJ9PTOEHxEZCgp",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/shields/specific-shields/sturdy-shield.webp",
+            "range": [
+                58,
+                63
+            ],
+            "text": "Sturdy Shield (Moderate)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "xxiagrX3dhPsLgTK",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "bQynfb23iexSu8zU",
+            "drawn": false,
+            "img": "icons/weapons/staves/staff-orb-feather.webp",
+            "range": [
+                64,
+                69
+            ],
+            "text": "Fluid Form Staff (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "Vx1WAKaF4qykmyI8",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "d5dnhOf5RHFFnsiB",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/staves/staff-of-enchantment.webp",
+            "range": [
+                70,
+                75
+            ],
+            "text": "Staff of Control (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "jFLF0aEoRJ4EOGjS",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "nvSZioRW4J1sMtO7",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/staves/staff-of-evocation.webp",
+            "range": [
+                76,
+                81
+            ],
+            "text": "Staff of Elemental Power (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "K9dZso61oYAVCvZ2",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "Svq02kCaFadVPOSq",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/staves/staff-of-illusion.webp",
+            "range": [
+                82,
+                87
+            ],
+            "text": "Staff of Phantasms (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "g6UiUyT6aJrFwBq9",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "XE8AxkahYPVzeLCW",
+            "drawn": false,
+            "img": "icons/weapons/staves/staff-engraved-wood.webp",
+            "range": [
+                88,
+                93
+            ],
+            "text": "Staff of Protection (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "rrJCuFu7rOlzBqNU",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "GeAz02cQMU4X9nYp",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/staves/staff-of-conjuration.webp",
+            "range": [
+                94,
+                99
+            ],
+            "text": "Staff of Summoning (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "kBKOSJJOthXUTf0h",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "Ab5EjJyoRSec5YrW",
+            "drawn": false,
+            "img": "icons/weapons/staves/staff-skull-feathers-brown.webp",
+            "range": [
+                100,
+                105
+            ],
+            "text": "Staff of the Dead (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "881hg9ckAmdGzlia",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "jUL4ZdztH8VODBuv",
+            "drawn": false,
+            "img": "icons/weapons/staves/staff-ornate-eye.webp",
+            "range": [
+                106,
+                108
+            ],
+            "text": "Staff of the Unblinking Eye (Greater)",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "cXQCxtF4sQ6gvLnJ",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "zYRzgETeR1Hs1ti1",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-widening.webp",
+            "range": [
+                109,
+                114
+            ],
+            "text": "Wand of Widening (4th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "G6QovZFdg6g38tvN",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/weapons/shortsword.webp",
+            "range": [
+                115,
+                120
+            ],
+            "text": "Striking Weapon (+2)",
+            "type": "text",
+            "weight": 6
+        },
+        {
+            "_id": "PzAMwmwHTMf10pQQ",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/weapons/shortsword.webp",
+            "range": [
+                121,
+                126
+            ],
+            "text": "Cold Iron Weapon (Standard-Grade)",
+            "type": "text",
+            "weight": 6
+        },
+        {
+            "_id": "wWUp1qvdIJxBLhep",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/weapons/shortsword.webp",
+            "range": [
+                127,
+                132
+            ],
+            "text": "Silver Weapon (Standard-Grade)",
+            "type": "text",
+            "weight": 6
+        },
+        {
+            "_id": "cNuhT4AiHOdOV64F",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "icons/equipment/hand/gauntlet-simple-leather-brown-gold.webp",
+            "range": [
+                133,
+                138
+            ],
+            "text": "Striking Handwraps of Mighty Blows (+2)",
+            "type": "text",
+            "weight": 6
+        },
+        {
+            "_id": "Z9nv6izcPtN4I0ei",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "D8VKhm7rSBozJkMN",
+            "drawn": false,
+            "img": "icons/equipment/chest/robe-collared-blue.webp",
+            "range": [
+                139,
+                144
+            ],
+            "text": "Accolade Robe",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "fUpdqbv3ZKaRcD5L",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "uiJAR3jQbQHhiP3Q",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/cape-of-the-mountebank.webp",
+            "range": [
+                145,
+                147
+            ],
+            "text": "Charlatan's Cape",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "MBRWXABrKJ6CPIdR",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "X3Nfa7bByYFrg1lU",
+            "drawn": false,
+            "img": "icons/equipment/neck/amulet-round-engraved-spiral-gold.webp",
+            "range": [
+                148,
+                153
+            ],
+            "text": "Charm of Resistance (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "MrY2fq5aNm2PqjkL",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "br4eClrcGeLTL6Ba",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/choker-of-elocution.webp",
+            "range": [
+                154,
+                159
+            ],
+            "text": "Choker of Elocution (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "ninWfWwGfOy7w3i2",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "6jRXUXzYKIpm2uNp",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/clandestine-cloak.webp",
+            "range": [
+                160,
+                162
+            ],
+            "text": "Clandestine Cloak (Greater)",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "JkR1RZAMyd9YRedy",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "4v8FIJSPaJUbccLz",
+            "drawn": false,
+            "img": "icons/equipment/finger/ring-crown-gold-pink.webp",
+            "range": [
+                163,
+                168
+            ],
+            "text": "Crown of Witchcraft",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "qzCUiWHBlPFP8RmW",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "mmdnWrQsh7vDspLK",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/daredevil-boots.webp",
+            "range": [
+                169,
+                174
+            ],
+            "text": "Daredevil Boots",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "DOtIN50dWN91TvRP",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "shKPtYN0YUOe07K2",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/demon-mask.webp",
+            "range": [
+                175,
+                180
+            ],
+            "text": "Demon Mask (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "cMWGMvMtBkAnUlrN",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "IM9W5fovv44ZKDRQ",
+            "drawn": false,
+            "img": "icons/equipment/neck/choker-rounded-gold-green.webp",
+            "range": [
+                181,
+                186
+            ],
+            "text": "Entertainer's Cincture",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "ek9burQBg1GBJBJv",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "hvlEFx25ogf1K1C2",
+            "drawn": false,
+            "img": "icons/equipment/back/mantle-collared-green.webp",
+            "range": [
+                187,
+                192
+            ],
+            "text": "Living Mantle",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "TeURcsi5zD1vp63j",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "OTeONq4r10Xm6gSy",
+            "drawn": false,
+            "img": "icons/equipment/finger/ring-band-engraved-scrolls-silver.webp",
+            "range": [
+                193,
+                195
+            ],
+            "text": "Ring of Lies",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "c5hpg9ZsflwhJvA5",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "1T1TJB929nC7wBtC",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/shadow-signet.webp",
+            "range": [
+                196,
+                201
+            ],
+            "text": "Shadow Signet",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "faSGBSJSHLbN1A8V",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "Wtm4JdxeTLQi3zQI",
+            "drawn": false,
+            "img": "icons/commodities/treasure/broach-eye-silver-teal.webp",
+            "range": [
+                202,
+                204
+            ],
+            "text": "Symbol of Conflict (Greater)",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "eEC4apvPqTlttK9H",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "aKoMqPDmVzPI7Q20",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/winged-boots.webp",
+            "range": [
+                205,
+                210
+            ],
+            "text": "Winged Sandals",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "9v8CIPH9aduJeDbX",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "RUEAV5LMUGFHcXcW",
+            "drawn": false,
+            "img": "icons/equipment/chest/breastplate-gorget-steel-purple.webp",
+            "range": [
+                211,
+                216
+            ],
+            "text": "Warleader's Bulwark",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "ASA2rQI0Lnog6KaE",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "T1L6XbgMqJLDv2Pi",
+            "drawn": false,
+            "img": "icons/weapons/staves/staff-ornate-eye.webp",
+            "range": [
+                217,
+                222
+            ],
+            "text": "Staff of Providence (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "AcLAETcNIQzMgcE0",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "8Ia2jOo23XoArpJm",
+            "drawn": false,
+            "img": "icons/weapons/staves/staff-simple-wrapped.webp",
+            "range": [
+                223,
+                228
+            ],
+            "text": "Staff of the Tempest (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "dkJ0Cn4gTboOwuXt",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/magic-wands/magic-wand.webp",
+            "range": [
+                229,
+                234
+            ],
+            "text": "Wand of Crackling Lighting 4th-Rank",
+            "type": "text",
+            "weight": 6
+        },
+        {
+            "_id": "VAUzL6OL2gaoMpDN",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "9ftc8XfloerPcJnI",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-hopeless-night.webp",
+            "range": [
+                235,
+                240
+            ],
+            "text": "Wand of Hopeless Night (4th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "mXnjYmaWFmAPEP0Y",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "64mxKuxc9k98FkUi",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/fire-jump-ring.webp",
+            "range": [
+                241,
+                243
+            ],
+            "text": "Fire-Jump Ring",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "TJVa9XMnkRtQz8GM",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "7wuDdrF6HKPXyxqj",
+            "drawn": false,
+            "img": "icons/equipment/head/hood-purple-mask.webp",
+            "range": [
+                244,
+                249
+            ],
+            "text": "Prognostic Veil",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "lyaawPbciwLeP0VL",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "xyTF5YznEskKIXpp",
+            "drawn": false,
+            "img": "icons/equipment/neck/pendant-faceted-red.webp",
+            "range": [
+                250,
+                255
+            ],
+            "text": "Sanguine Pendant",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "bLCXzSc33Ru4q5As",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "Rr7dAVnfpnnQPAWh",
+            "drawn": false,
+            "img": "icons/equipment/waist/sash-cloth-green-white.webp",
+            "range": [
+                256,
+                261
+            ],
+            "text": "Sash of Prowess",
+            "type": "pack",
+            "weight": 6
+        }
+    ]
+}

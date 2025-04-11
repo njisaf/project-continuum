@@ -1,6 +1,6 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
-import { CoinsPF2e } from "@item/physical/helpers.ts";
+import { CoinsAvant } from "@item/physical/helpers.ts";
 import { TreasureSystemSource } from "@item/treasure/data.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -8,11 +8,11 @@ import { MigrationBase } from "../base.ts";
 export class Migration746StandardizePricing extends MigrationBase {
     static override version = 0.746;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!itemIsOfType(source, "physical") && source.type !== "kit") return;
 
         if (!R.isPlainObject(source.system.price)) {
-            source.system.price = { value: CoinsPF2e.fromString(String(source.system.price)).toObject() };
+            source.system.price = { value: CoinsAvant.fromString(String(source.system.price)).toObject() };
         }
 
         if (source.type === "treasure") {
@@ -28,7 +28,7 @@ export class Migration746StandardizePricing extends MigrationBase {
                 delete systemData.value;
             }
         } else if (!R.isPlainObject(source.system.price.value)) {
-            source.system.price.value = CoinsPF2e.fromString(String(source.system.price.value)).toObject();
+            source.system.price.value = CoinsAvant.fromString(String(source.system.price.value)).toObject();
         }
     }
 }

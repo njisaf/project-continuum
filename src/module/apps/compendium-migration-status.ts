@@ -1,23 +1,23 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import { MigrationList, MigrationRunner } from "@module/migration/index.ts";
 import { htmlQuery } from "@util";
 import * as R from "remeda";
 
 /** Dialog used to view compendium data and migrate them. */
 class CompendiumMigrationStatus extends Application {
-    compendium: CompendiumCollection<ActorPF2e<null> | ItemPF2e<null>>;
+    compendium: CompendiumCollection<ActorAvant<null> | ItemAvant<null>>;
 
     static override get defaultOptions(): ApplicationOptions {
         const options = super.defaultOptions;
-        options.template = "systems/pf2e/templates/system/compendium-migration-status.hbs";
+        options.template = "systems/avant/templates/system/compendium-migration-status.hbs";
         options.classes = ["compendium-migration-status"];
         options.height = "auto";
-        options.title = game.i18n.localize("PF2E.CompendiumMigrationStatus.Title");
+        options.title = game.i18n.localize("AVANT.CompendiumMigrationStatus.Title");
         return options;
     }
 
-    constructor(compendium: CompendiumCollection<ActorPF2e<null> | ItemPF2e<null>>) {
+    constructor(compendium: CompendiumCollection<ActorAvant<null> | ItemAvant<null>>) {
         super();
         this.compendium = compendium;
     }
@@ -46,13 +46,13 @@ class CompendiumMigrationStatus extends Application {
                 Object.entries(MigrationRunner.FOUNDRY_SCHEMA_VERSIONS),
                 R.sortBy(([_, schema]) => schema),
                 R.findLast(([_, schema]) => schemaVersion >= schema),
-            )?.[0] ?? game.i18n.localize("PF2E.CompendiumMigrationStatus.FoundryOld");
+            )?.[0] ?? game.i18n.localize("AVANT.CompendiumMigrationStatus.FoundryOld");
 
         return {
             ...(await super.getData(options)),
             compendium: this.compendium,
             schemaVersion: Number.isNaN(schemaVersion)
-                ? game.i18n.localize("PF2E.CompendiumMigrationStatus.Invalid")
+                ? game.i18n.localize("AVANT.CompendiumMigrationStatus.Invalid")
                 : schemaVersion,
             foundryVersion,
             module: game.modules.get(this.compendium.metadata.packageName ?? ""),

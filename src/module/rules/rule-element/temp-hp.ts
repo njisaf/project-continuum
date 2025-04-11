@@ -1,14 +1,14 @@
 import type { ActorType } from "@actor/types.ts";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import * as R from "remeda";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
 /**
  * @category RuleElement
  */
-class TempHPRuleElement extends RuleElementPF2e<TempHPRuleSchema> {
+class TempHPRuleElement extends RuleElementAvant<TempHPRuleSchema> {
     static override validActorTypes: ActorType[] = ["character", "npc", "familiar"];
 
     static override defineSchema(): TempHPRuleSchema {
@@ -104,18 +104,18 @@ class TempHPRuleElement extends RuleElementPF2e<TempHPRuleSchema> {
     broadcast(newQuantity: number, oldQuantity: number): void {
         const singularOrPlural =
             newQuantity === 1
-                ? "PF2E.Encounter.Broadcast.TempHP.SingleNew"
-                : "PF2E.Encounter.Broadcast.TempHP.PluralNew";
-        const wasAt = oldQuantity > 0 ? game.i18n.format("PF2E.Encounter.Broadcast.TempHP.WasAt", { oldQuantity }) : "";
+                ? "AVANT.Encounter.Broadcast.TempHP.SingleNew"
+                : "AVANT.Encounter.Broadcast.TempHP.PluralNew";
+        const wasAt = oldQuantity > 0 ? game.i18n.format("AVANT.Encounter.Broadcast.TempHP.WasAt", { oldQuantity }) : "";
         const [actor, item] = [this.actor.name, this.item.name];
         const content = game.i18n.format(singularOrPlural, { actor, newQuantity, wasAt, item });
         const recipients = game.users.filter((u) => this.actor.testUserPermission(u, "OWNER")).map((u) => u.id);
-        const speaker = ChatMessagePF2e.getSpeaker({ actor: this.actor, token: this.token });
-        ChatMessagePF2e.create({ content, speaker, whisper: recipients });
+        const speaker = ChatMessageAvant.getSpeaker({ actor: this.actor, token: this.token });
+        ChatMessageAvant.create({ content, speaker, whisper: recipients });
     }
 }
 
-interface TempHPRuleElement extends RuleElementPF2e<TempHPRuleSchema>, ModelPropsFromRESchema<TempHPRuleSchema> {}
+interface TempHPRuleElement extends RuleElementAvant<TempHPRuleSchema>, ModelPropsFromRESchema<TempHPRuleSchema> {}
 
 type TempHPEventsSchema = {
     /** Whether the temporary hit points are immediately applied */

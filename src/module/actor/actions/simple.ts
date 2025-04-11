@@ -1,35 +1,35 @@
-import type { ActorPF2e } from "@actor";
-import type { EffectPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { EffectAvant } from "@item";
 import { getSelectedActors } from "@util/token-actor-utils.ts";
 import { BaseAction, BaseActionData, BaseActionVariant, BaseActionVariantData } from "./base.ts";
 import { ActionCost, ActionUseOptions } from "./types.ts";
 
 interface SimpleActionVariantData extends BaseActionVariantData {
-    effect?: string | EffectPF2e;
+    effect?: string | EffectAvant;
 }
 
 interface SimpleActionData extends BaseActionData<SimpleActionVariantData> {
-    effect?: string | EffectPF2e;
+    effect?: string | EffectAvant;
 }
 
 interface SimpleActionUseOptions extends ActionUseOptions {
     cost: ActionCost;
-    effect: string | EffectPF2e | false;
+    effect: string | EffectAvant | false;
 }
 
 interface SimpleActionResult {
-    actor: ActorPF2e;
-    effect?: EffectPF2e;
+    actor: ActorAvant;
+    effect?: EffectAvant;
     message?: ChatMessage;
 }
 
-async function toEffectItem(effect?: string | EffectPF2e) {
+async function toEffectItem(effect?: string | EffectAvant) {
     return typeof effect === "string" ? await fromUuid(effect) : effect;
 }
 
 class SimpleActionVariant extends BaseActionVariant {
     readonly #action: SimpleAction;
-    readonly #effect?: string | EffectPF2e;
+    readonly #effect?: string | EffectAvant;
 
     constructor(action: SimpleAction, data?: SimpleActionVariantData) {
         super(action, data);
@@ -37,12 +37,12 @@ class SimpleActionVariant extends BaseActionVariant {
         this.#effect = data?.effect ?? action.effect;
     }
 
-    get effect(): string | EffectPF2e | undefined {
+    get effect(): string | EffectAvant | undefined {
         return this.#effect ?? this.#action.effect;
     }
 
     override async use(options: Partial<SimpleActionUseOptions> = {}): Promise<SimpleActionResult[]> {
-        const actors: ActorPF2e[] = [];
+        const actors: ActorAvant[] = [];
         if (Array.isArray(options.actors)) {
             actors.push(...options.actors);
         } else if (options.actors) {
@@ -51,11 +51,11 @@ class SimpleActionVariant extends BaseActionVariant {
             actors.push(...getSelectedActors({ exclude: ["loot", "party"], assignedFallback: true }));
         }
         if (actors.length === 0) {
-            throw new Error(game.i18n.localize("PF2E.ActionsWarning.NoActor"));
+            throw new Error(game.i18n.localize("AVANT.ActionsWarning.NoActor"));
         }
 
-        const traitLabels: Record<string, string | undefined> = CONFIG.PF2E.actionTraits;
-        const traitDescriptions: Record<string, string | undefined> = CONFIG.PF2E.traitsDescriptions;
+        const traitLabels: Record<string, string | undefined> = CONFIG.AVANT.actionTraits;
+        const traitDescriptions: Record<string, string | undefined> = CONFIG.AVANT.traitsDescriptions;
         const traits = this.traits.concat(options.traits ?? []).map((trait) => ({
             description: traitDescriptions[trait],
             label: traitLabels[trait] ?? trait,
@@ -65,7 +65,7 @@ class SimpleActionVariant extends BaseActionVariant {
         const name = this.name
             ? `${game.i18n.localize(this.#action.name)} - ${game.i18n.localize(this.name)}`
             : game.i18n.localize(this.#action.name);
-        const flavor = await renderTemplate("systems/pf2e/templates/actors/actions/simple/chat-message-flavor.hbs", {
+        const flavor = await renderTemplate("systems/avant/templates/actors/actions/simple/chat-message-flavor.hbs", {
             effect,
             glyph: this.glyph,
             name,
@@ -80,7 +80,7 @@ class SimpleActionVariant extends BaseActionVariant {
             const message = (options.message?.create ?? true) ? await ChatMessage.create(data) : new ChatMessage(data);
             const item =
                 effect && actor.isOwner
-                    ? ((await actor.createEmbeddedDocuments("Item", [effect.toObject()]))[0] as EffectPF2e)
+                    ? ((await actor.createEmbeddedDocuments("Item", [effect.toObject()]))[0] as EffectAvant)
                     : undefined;
             results.push({ actor, effect: item, message });
         }
@@ -89,7 +89,7 @@ class SimpleActionVariant extends BaseActionVariant {
 }
 
 class SimpleAction extends BaseAction<SimpleActionVariantData, SimpleActionVariant> {
-    readonly effect?: string | EffectPF2e;
+    readonly effect?: string | EffectAvant;
 
     public constructor(data: SimpleActionData) {
         super(data);

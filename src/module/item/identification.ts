@@ -2,7 +2,7 @@ import { SkillSlug } from "@actor/types.ts";
 import { Rarity } from "@module/data.ts";
 import { setHasElement } from "@util";
 import { adjustDCByRarity, calculateDC, DCOptions } from "../dc.ts";
-import type { PhysicalItemPF2e } from "./physical/index.ts";
+import type { PhysicalItemAvant } from "./physical/index.ts";
 import { MagicTradition } from "./spell/types.ts";
 import { MAGIC_TRADITIONS } from "./spell/values.ts";
 
@@ -18,7 +18,7 @@ import { MAGIC_TRADITIONS } from "./spell/values.ts";
  * Extract all traits from an item, that match a magic tradition
  * @param itemData
  */
-function getMagicTraditions(item: PhysicalItemPF2e): Set<MagicTradition> {
+function getMagicTraditions(item: PhysicalItemAvant): Set<MagicTradition> {
     const traits: string[] = item.system.traits.value;
     return new Set(traits.filter((t): t is MagicTradition => setHasElement(MAGIC_TRADITIONS, t)));
 }
@@ -26,7 +26,7 @@ function getMagicTraditions(item: PhysicalItemPF2e): Set<MagicTradition> {
 type MagicSkill = Extract<SkillSlug, "arcana" | "nature" | "religion" | "occultism">;
 
 /** All cursed items are incredibly hard to identify */
-function getDcRarity(item: PhysicalItemPF2e): Rarity {
+function getDcRarity(item: PhysicalItemAvant): Rarity {
     return item.traits.has("cursed") ? "unique" : item.rarity;
 }
 
@@ -34,7 +34,7 @@ type IdentifyMagicDCs = Record<MagicSkill, number>;
 type IdentifyAlchemyDCs = { crafting: number };
 
 function getIdentifyMagicDCs(
-    item: PhysicalItemPF2e,
+    item: PhysicalItemAvant,
     baseDC: number,
     notMatchingTraditionModifier: number,
 ): IdentifyMagicDCs {
@@ -60,7 +60,7 @@ interface IdentifyItemOptions extends DCOptions {
 }
 
 function getItemIdentificationDCs(
-    item: PhysicalItemPF2e,
+    item: PhysicalItemAvant,
     { pwol = false, notMatchingTraditionModifier }: IdentifyItemOptions,
 ): IdentifyMagicDCs | IdentifyAlchemyDCs {
     const baseDC = calculateDC(item.level, { pwol });
@@ -73,7 +73,7 @@ function getItemIdentificationDCs(
     }
 }
 
-function getUnidentifiedPlaceholderImage(item: PhysicalItemPF2e): string {
+function getUnidentifiedPlaceholderImage(item: PhysicalItemAvant): string {
     const iconName = ((): string => {
         if (item.isOfType("weapon")) {
             const { traits } = item;
@@ -128,7 +128,7 @@ function getUnidentifiedPlaceholderImage(item: PhysicalItemPF2e): string {
         return "adventuring_gear";
     })();
 
-    return `systems/pf2e/icons/unidentified_item_icons/${iconName}.webp`;
+    return `systems/avant/icons/unidentified_item_icons/${iconName}.webp`;
 }
 
 export { getItemIdentificationDCs, getUnidentifiedPlaceholderImage };

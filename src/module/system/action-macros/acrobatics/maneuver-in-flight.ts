@@ -1,7 +1,7 @@
 import { SingleCheckAction } from "@actor/actions/index.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-const PREFIX = "PF2E.Actions.ManeuverInFlight";
+const PREFIX = "AVANT.Actions.ManeuverInFlight";
 
 async function maneuverInFlight(options: SkillActionOptions): Promise<void> {
     const slug = options?.skill ?? "acrobatics";

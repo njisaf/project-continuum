@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { PhysicalSystemSource } from "@item/physical/data.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
@@ -9,7 +9,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration901ReorganizeBulkData extends MigrationBase {
     static override version = 0.901;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         this.#migrateRules(source);
         if (!itemIsOfType(source, "physical")) return;
 
@@ -64,7 +64,7 @@ export class Migration901ReorganizeBulkData extends MigrationBase {
         }
     }
 
-    #migrateRules(source: ItemSourcePF2e): void {
+    #migrateRules(source: ItemSourceAvant): void {
         const itemAlterations = source.system.rules.filter(
             (r: MaybeItemAlteration): r is DefinitelyItemAlteration =>
                 r.key === "ItemAlteration" && typeof r.property === "string",

@@ -1,4 +1,4 @@
-import { CharacterPF2e, NPCPF2e, type ActorPF2e } from "@actor";
+import { CharacterAvant, NPCAvant, type ActorAvant } from "@actor";
 import {
     ActionCheckPreview,
     SingleCheckAction,
@@ -7,7 +7,7 @@ import {
 } from "@actor/actions/index.ts";
 import type { StrikeData } from "@actor/data/base.ts";
 import { StatisticModifier } from "@actor/modifiers.ts";
-import type { ItemPF2e } from "@item";
+import type { ItemAvant } from "@item";
 import type { CheckContextData, CheckContextOptions, CheckMacroContext } from "@system/action-macros/types.ts";
 import type { Statistic } from "@system/statistic/index.ts";
 import { CheckContextError } from "../helpers.ts";
@@ -17,7 +17,7 @@ const toHighestModifier = (highest: StrikeData | null, current: StrikeData): Str
     return current.totalModifier > (highest?.totalModifier ?? Number.MIN_SAFE_INTEGER) ? current : highest;
 };
 
-function unarmedStrikeWithHighestModifier<ItemType extends ItemPF2e<ActorPF2e>>(
+function unarmedStrikeWithHighestModifier<ItemType extends ItemAvant<ActorAvant>>(
     opts: CheckContextOptions<ItemType>,
     data: CheckContextData<ItemType>,
 ) {
@@ -29,11 +29,11 @@ function unarmedStrikeWithHighestModifier<ItemType extends ItemPF2e<ActorPF2e>>(
     });
     const actor = opts.actor;
     const strikes = (() => {
-        if (actor instanceof CharacterPF2e) {
+        if (actor instanceof CharacterAvant) {
             return actor.system.actions.filter((strike) =>
                 strike.weaponTraits.map((trait) => trait.name).includes("unarmed"),
             );
-        } else if (actor instanceof NPCPF2e) {
+        } else if (actor instanceof NPCAvant) {
             return actor.system.actions.filter((strike) => strike.item.category === "unarmed");
         }
         return [] as StrikeData[];
@@ -47,7 +47,7 @@ function unarmedStrikeWithHighestModifier<ItemType extends ItemPF2e<ActorPF2e>>(
     return statistic ? { actor, rollOptions, statistic } : null;
 }
 
-function escapeCheckContext<ItemType extends ItemPF2e<ActorPF2e>>(
+function escapeCheckContext<ItemType extends ItemAvant<ActorAvant>>(
     opts: CheckContextOptions<ItemType>,
     data: CheckContextData<ItemType>,
 ): CheckMacroContext<ItemType> | undefined {
@@ -107,15 +107,15 @@ function escape(options: SkillActionOptions): void {
         actors: options.actors,
         checkContext: (opts) => escapeCheckContext(opts, { modifiers, rollOptions, slug }),
         actionGlyph: options.glyph ?? "A",
-        title: "PF2E.Actions.Escape.Title",
+        title: "AVANT.Actions.Escape.Title",
         traits: ["attack"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass ?? "athletics",
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Escape", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Escape", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Escape", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Escape", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Escape", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Escape", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -128,7 +128,7 @@ class EscapeActionVariant extends SingleCheckActionVariant {
         return ""; // default to the highest modifier, instead of just unarmed
     }
 
-    protected override checkContext<ItemType extends ItemPF2e<ActorPF2e>>(
+    protected override checkContext<ItemType extends ItemAvant<ActorAvant>>(
         opts: CheckContextOptions<ItemType>,
         data: CheckContextData<ItemType>,
     ): CheckMacroContext<ItemType> | undefined {
@@ -136,14 +136,14 @@ class EscapeActionVariant extends SingleCheckActionVariant {
     }
 
     protected override toActionCheckPreview(options: {
-        actor?: ActorPF2e;
+        actor?: ActorAvant;
         rollOptions: string[];
         slug: string;
     }): ActionCheckPreview | null {
         return this.#unarmedCheckPreview(options) ?? super.toActionCheckPreview(options);
     }
 
-    #unarmedCheckPreview(args: { actor?: ActorPF2e; rollOptions: string[]; slug: string }): ActionCheckPreview | null {
+    #unarmedCheckPreview(args: { actor?: ActorAvant; rollOptions: string[]; slug: string }): ActionCheckPreview | null {
         if (args.slug === "unarmed") {
             if (args.actor) {
                 const options = { actor: args.actor, buildContext: () => ({ rollOptions: args.rollOptions }) };
@@ -151,14 +151,14 @@ class EscapeActionVariant extends SingleCheckActionVariant {
                 const statistic = unarmedStrikeWithHighestModifier(options, data)?.statistic;
                 if (statistic) {
                     return {
-                        label: game.i18n.localize("PF2E.TraitUnarmed"),
+                        label: game.i18n.localize("AVANT.TraitUnarmed"),
                         modifier: statistic.totalModifier,
                         slug: args.slug,
                     };
                 }
             }
             return {
-                label: game.i18n.localize("PF2E.TraitUnarmed"),
+                label: game.i18n.localize("AVANT.TraitUnarmed"),
                 slug: args.slug,
             };
         }
@@ -170,14 +170,14 @@ class EscapeAction extends SingleCheckAction {
     constructor() {
         super({
             cost: 1,
-            description: "PF2E.Actions.Escape.Description",
+            description: "AVANT.Actions.Escape.Description",
             difficultyClass: "athletics",
             img: "icons/skills/movement/figure-running-gray.webp",
-            name: "PF2E.Actions.Escape.Title",
+            name: "AVANT.Actions.Escape.Title",
             notes: [
-                { outcome: ["criticalSuccess"], text: "PF2E.Actions.Escape.Notes.criticalSuccess" },
-                { outcome: ["success"], text: "PF2E.Actions.Escape.Notes.success" },
-                { outcome: ["criticalFailure"], text: "PF2E.Actions.Escape.Notes.criticalFailure" },
+                { outcome: ["criticalSuccess"], text: "AVANT.Actions.Escape.Notes.criticalSuccess" },
+                { outcome: ["success"], text: "AVANT.Actions.Escape.Notes.success" },
+                { outcome: ["criticalFailure"], text: "AVANT.Actions.Escape.Notes.criticalFailure" },
             ],
             rollOptions: ["action:escape"],
             section: "basic",

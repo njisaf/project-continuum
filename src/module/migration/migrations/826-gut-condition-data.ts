@@ -1,12 +1,12 @@
 import { ConditionSystemSource } from "@item/condition/data.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Remove unused cruft from condition data */
 export class Migration826GutConditionData extends MigrationBase {
     static override version = 0.826;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "condition") return;
 
         const system: SystemSourceWithDeletions = source.system;

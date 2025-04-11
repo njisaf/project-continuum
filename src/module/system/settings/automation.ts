@@ -1,8 +1,8 @@
-import { PartialSettingsData, SettingsMenuPF2e } from "./menu.ts";
+import { PartialSettingsData, SettingsMenuAvant } from "./menu.ts";
 
-type ConfigPF2eListName = (typeof AutomationSettings.SETTINGS)[number];
+type ConfigAvantListName = (typeof AutomationSettings.SETTINGS)[number];
 
-export class AutomationSettings extends SettingsMenuPF2e {
+export class AutomationSettings extends SettingsMenuAvant {
     static override readonly namespace = "automation";
 
     static override readonly SETTINGS = [
@@ -15,16 +15,16 @@ export class AutomationSettings extends SettingsMenuPF2e {
         "lootableNPCs",
     ] as const;
 
-    protected static override get settings(): Record<ConfigPF2eListName, PartialSettingsData> {
+    protected static override get settings(): Record<ConfigAvantListName, PartialSettingsData> {
         return {
             rulesBasedVision: {
                 prefix: "automation.",
-                name: CONFIG.PF2E.SETTINGS.automation.rulesBasedVision.name,
-                hint: CONFIG.PF2E.SETTINGS.automation.rulesBasedVision.hint,
+                name: CONFIG.AVANT.SETTINGS.automation.rulesBasedVision.name,
+                hint: CONFIG.AVANT.SETTINGS.automation.rulesBasedVision.hint,
                 default: true,
                 type: Boolean,
                 onChange: (value) => {
-                    game.pf2e.settings.rbv = !!value;
+                    game.avant.settings.rbv = !!value;
                     for (const token of canvas.scene?.tokens ?? []) {
                         token.reset();
                     }
@@ -33,18 +33,18 @@ export class AutomationSettings extends SettingsMenuPF2e {
             },
             iwr: {
                 prefix: "automation.",
-                name: CONFIG.PF2E.SETTINGS.automation.iwr.name,
-                hint: CONFIG.PF2E.SETTINGS.automation.iwr.hint,
+                name: CONFIG.AVANT.SETTINGS.automation.iwr.name,
+                hint: CONFIG.AVANT.SETTINGS.automation.iwr.hint,
                 default: true,
                 type: Boolean,
                 onChange: (value) => {
-                    game.pf2e.settings.iwr = !!value;
+                    game.avant.settings.iwr = !!value;
                 },
             },
             effectExpiration: {
                 prefix: "automation.",
-                name: CONFIG.PF2E.SETTINGS.automation.effectExpiration.name,
-                hint: CONFIG.PF2E.SETTINGS.automation.effectExpiration.hint,
+                name: CONFIG.AVANT.SETTINGS.automation.effectExpiration.name,
+                hint: CONFIG.AVANT.SETTINGS.automation.effectExpiration.hint,
                 default: true,
                 type: Boolean,
                 onChange: () => {
@@ -59,32 +59,32 @@ export class AutomationSettings extends SettingsMenuPF2e {
             },
             removeExpiredEffects: {
                 prefix: "automation.",
-                name: CONFIG.PF2E.SETTINGS.automation.removeExpiredEffects.name,
-                hint: CONFIG.PF2E.SETTINGS.automation.removeExpiredEffects.hint,
+                name: CONFIG.AVANT.SETTINGS.automation.removeExpiredEffects.name,
+                hint: CONFIG.AVANT.SETTINGS.automation.removeExpiredEffects.hint,
                 default: false,
                 type: Boolean,
             },
             flankingDetection: {
                 prefix: "automation.",
-                name: CONFIG.PF2E.SETTINGS.automation.flankingDetection.name,
-                hint: CONFIG.PF2E.SETTINGS.automation.flankingDetection.hint,
+                name: CONFIG.AVANT.SETTINGS.automation.flankingDetection.name,
+                hint: CONFIG.AVANT.SETTINGS.automation.flankingDetection.hint,
                 default: true,
                 type: Boolean,
             },
             encumbrance: {
                 prefix: "automation.",
-                name: "PF2E.SETTINGS.Automation.Encumbrance.Name",
-                hint: "PF2E.SETTINGS.Automation.Encumbrance.Hint",
+                name: "AVANT.SETTINGS.Automation.Encumbrance.Name",
+                hint: "AVANT.SETTINGS.Automation.Encumbrance.Hint",
                 default: false,
                 type: Boolean,
                 onChange: (value) => {
-                    game.pf2e.settings.encumbrance = !!value;
+                    game.avant.settings.encumbrance = !!value;
                 },
             },
             lootableNPCs: {
                 prefix: "automation.",
-                name: CONFIG.PF2E.SETTINGS.automation.lootableNPCs.name,
-                hint: CONFIG.PF2E.SETTINGS.automation.lootableNPCs.hint,
+                name: CONFIG.AVANT.SETTINGS.automation.lootableNPCs.name,
+                hint: CONFIG.AVANT.SETTINGS.automation.lootableNPCs.hint,
                 default: true,
                 type: Boolean,
             },

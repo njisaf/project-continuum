@@ -1,11 +1,11 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Correct a misspelling in the character biography data. */
 export class Migration863FixMisspelledOrganaizationsProperty extends MigrationBase {
     static override version = 0.863;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type !== "character") return;
         const biography: WithMisspelledProperty = source.system.details.biography;
         if (biography.organaizations === undefined) return;

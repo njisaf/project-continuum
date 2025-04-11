@@ -2,7 +2,7 @@
     <div class="form-group">
         <select name="spell">
             {{#each spells as |section lvl|}}
-                <optgroup label="{{localize "PF2E.LevelN" level=lvl}}">
+                <optgroup label="{{localize "AVANT.LevelN" level=lvl}}">
                     {{#each section as |spell|}}
                         <option value="{{spell.id}}">{{spell.name}}</option>
                     {{/each}}

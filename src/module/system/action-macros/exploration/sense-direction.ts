@@ -1,11 +1,11 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
 function senseDirection(options: SkillActionOptions): void {
     const modifiers = [
-        new ModifierPF2e({
-            label: "PF2E.Actions.SenseDirection.Modifier.NoCompass",
+        new ModifierAvant({
+            label: "AVANT.Actions.SenseDirection.Modifier.NoCompass",
             modifier: -2,
             predicate: [{ not: "compass-in-possession" }],
             type: "item",
@@ -16,15 +16,15 @@ function senseDirection(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph,
-        title: "PF2E.Actions.SenseDirection.Title",
+        title: "AVANT.Actions.SenseDirection.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["exploration", "secret"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.SenseDirection", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.SenseDirection", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.SenseDirection", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.SenseDirection", "success"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -33,28 +33,28 @@ function senseDirection(options: SkillActionOptions): void {
 }
 
 const action = new SingleCheckAction({
-    description: "PF2E.Actions.SenseDirection.Description",
+    description: "AVANT.Actions.SenseDirection.Description",
     img: "icons/skills/movement/arrow-upward-yellow.webp",
     modifiers: [
         {
-            label: "PF2E.Actions.SenseDirection.Modifier.NoCompass",
+            label: "AVANT.Actions.SenseDirection.Modifier.NoCompass",
             modifier: -2,
             predicate: [{ not: "compass-in-possession" }],
             type: "item",
         },
     ],
-    name: "PF2E.Actions.SenseDirection.Title",
+    name: "AVANT.Actions.SenseDirection.Title",
     notes: [
-        { outcome: ["criticalSuccess"], text: "PF2E.Actions.SenseDirection.Notes.criticalSuccess" },
-        { outcome: ["success"], text: "PF2E.Actions.SenseDirection.Notes.success" },
+        { outcome: ["criticalSuccess"], text: "AVANT.Actions.SenseDirection.Notes.criticalSuccess" },
+        { outcome: ["success"], text: "AVANT.Actions.SenseDirection.Notes.success" },
     ],
     rollOptions: ["action:sense-direction"],
     sampleTasks: {
-        untrained: "PF2E.Actions.SenseDirection.SampleTasks.Untrained",
-        trained: "PF2E.Actions.SenseDirection.SampleTasks.Trained",
-        expert: "PF2E.Actions.SenseDirection.SampleTasks.Expert",
-        master: "PF2E.Actions.SenseDirection.SampleTasks.Master",
-        legendary: "PF2E.Actions.SenseDirection.SampleTasks.Legendary",
+        untrained: "AVANT.Actions.SenseDirection.SampleTasks.Untrained",
+        trained: "AVANT.Actions.SenseDirection.SampleTasks.Trained",
+        expert: "AVANT.Actions.SenseDirection.SampleTasks.Expert",
+        master: "AVANT.Actions.SenseDirection.SampleTasks.Master",
+        legendary: "AVANT.Actions.SenseDirection.SampleTasks.Legendary",
     },
     slug: "sense-direction",
     statistic: "survival",

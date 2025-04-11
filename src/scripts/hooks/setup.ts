@@ -1,4 +1,4 @@
-import { SetGamePF2e } from "@scripts/set-game-pf2e.ts";
+import { SetGameAvant } from "@scripts/set-game-avant.ts";
 import { InlineRollLinks } from "@scripts/ui/inline-roll-links.ts";
 import { DestroyableManager } from "@util/destroyables.ts";
 import { registerSheets } from "../register-sheets.ts";
@@ -7,7 +7,7 @@ import { registerSheets } from "../register-sheets.ts";
 export const Setup = {
     listen: (): void => {
         Hooks.once("setup", () => {
-            InlineRollLinks.activatePF2eListeners();
+            InlineRollLinks.activateAvantListeners();
 
             // Have the destroyable manager start observing the document body
             DestroyableManager.initialize();
@@ -15,8 +15,8 @@ export const Setup = {
             // Register actor and item sheets
             registerSheets();
 
-            // Some of game.pf2e must wait until the setup phase
-            SetGamePF2e.onSetup();
+            // Some of game.avant must wait until the setup phase
+            SetGameAvant.onSetup();
 
             // Forced panning is intrinsically annoying: change default to false
             game.settings.settings.get("core.chatBubblesPan").default = false;

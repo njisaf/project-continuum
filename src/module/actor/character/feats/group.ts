@@ -1,11 +1,11 @@
-import type { ActorPF2e } from "@actor";
-import type { FeatPF2e, HeritagePF2e, ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { FeatAvant, HeritageAvant, ItemAvant } from "@item";
 import { FeatOrFeatureCategory } from "@item/feat/types.ts";
 import { tupleHasValue } from "@util/misc.ts";
 import * as R from "remeda";
 import type { FeatBrowserFilterProps, FeatGroupData, FeatLike, FeatSlot } from "./types.ts";
 
-class FeatGroup<TActor extends ActorPF2e = ActorPF2e, TItem extends FeatLike = FeatPF2e> {
+class FeatGroup<TActor extends ActorAvant = ActorAvant, TItem extends FeatLike = FeatAvant> {
     actor: TActor;
 
     id: string;
@@ -48,8 +48,8 @@ class FeatGroup<TActor extends ActorPF2e = ActorPF2e, TItem extends FeatLike = F
         this.customLimit = data.customLimit ?? null;
         if (this.customLimit && actor.isOfType("character")) {
             const { min, max } = this.customLimit;
-            this.limit = Math.clamp(options.limit ?? actor.flags.pf2e.featLimits[this.id] ?? 0, min, max);
-            actor.flags.pf2e.featLimits[this.id] = this.limit;
+            this.limit = Math.clamp(options.limit ?? actor.flags.avant.featLimits[this.id] ?? 0, min, max);
+            actor.flags.avant.featLimits[this.id] = this.limit;
         } else {
             this.limit = options.limit ?? actor.level;
         }
@@ -73,7 +73,7 @@ class FeatGroup<TActor extends ActorPF2e = ActorPF2e, TItem extends FeatLike = F
                     id: slotObject.id ?? `${this.id}-${slotObject.level}`,
                     label: game.i18n.localize(String(slotObject.label ?? slotObject.level)),
                     level: slotObject.level ?? null,
-                    placeholder: slotObject.placeholder ?? data.placeholder ?? "PF2E.EmptySlot",
+                    placeholder: slotObject.placeholder ?? data.placeholder ?? "AVANT.EmptySlot",
                     children: [],
                 };
                 if (slot.filter) {
@@ -104,7 +104,7 @@ class FeatGroup<TActor extends ActorPF2e = ActorPF2e, TItem extends FeatLike = F
         if ((!slot && this.slotted) || feat.suppressed) return false;
 
         if (slot?.feat) {
-            console.debug(`PF2e System | Multiple feats with same index: ${feat.name}, ${slot.feat.name}`);
+            console.debug(`Avant System | Multiple feats with same index: ${feat.name}, ${slot.feat.name}`);
             return false;
         }
 
@@ -121,13 +121,13 @@ class FeatGroup<TActor extends ActorPF2e = ActorPF2e, TItem extends FeatLike = F
         return true;
     }
 
-    #getChildSlots(feat: Maybe<ItemPF2e>): FeatSlot<FeatPF2e<ActorPF2e> | HeritagePF2e<ActorPF2e>>[] {
+    #getChildSlots(feat: Maybe<ItemAvant>): FeatSlot<FeatAvant<ActorAvant> | HeritageAvant<ActorAvant>>[] {
         if (!feat?.isOfType("feat")) return [];
-        const grantsById = R.mapKeys(feat.flags.pf2e.itemGrants, (_, g) => g.id);
+        const grantsById = R.mapKeys(feat.flags.avant.itemGrants, (_, g) => g.id);
 
         return feat.grants
             .filter((g) => grantsById[g.id]?.nested !== false)
-            .map((grant): FeatSlot<FeatPF2e<ActorPF2e> | HeritagePF2e<ActorPF2e>> => {
+            .map((grant): FeatSlot<FeatAvant<ActorAvant> | HeritageAvant<ActorAvant>> => {
                 return {
                     id: grant.id,
                     label: null,
@@ -144,7 +144,7 @@ class FeatGroup<TActor extends ActorPF2e = ActorPF2e, TItem extends FeatLike = F
     }
 
     /** Adds a new feat to the actor, or reorders an existing one, into the correct slot */
-    async insertFeat(feat: TItem, slotId: Maybe<string> = null): Promise<ItemPF2e<TActor>[]> {
+    async insertFeat(feat: TItem, slotId: Maybe<string> = null): Promise<ItemAvant<TActor>[]> {
         // If we are inserting a feat into a slot its already in, skip, there's nothing to do
         if (this.slotted && slotId && this.slots[slotId]?.feat === feat) {
             return [];
@@ -158,7 +158,7 @@ class FeatGroup<TActor extends ActorPF2e = ActorPF2e, TItem extends FeatLike = F
         const isFeatValidInSlot = this.isFeatValid(feat);
         const alreadyHasFeat = this.actor.items.has(feat.id);
 
-        const changed: ItemPF2e<TActor>[] = [];
+        const changed: ItemAvant<TActor>[] = [];
 
         // If this is a new feat, create a new feat item on the actor first
         if (!alreadyHasFeat && (isFeatValidInSlot || !location)) {
@@ -167,7 +167,7 @@ class FeatGroup<TActor extends ActorPF2e = ActorPF2e, TItem extends FeatLike = F
             });
             changed.push(...(await this.actor.createEmbeddedDocuments("Item", [source])));
             const label = game.i18n.localize(this.label);
-            ui.notifications.info(game.i18n.format("PF2E.Item.Feat.Info.Added", { item: feat.name, category: label }));
+            ui.notifications.info(game.i18n.format("AVANT.Item.Feat.Info.Added", { item: feat.name, category: label }));
         }
 
         // Determine what feats we have to move around
@@ -213,14 +213,14 @@ interface FeatGroupOptions {
     limit?: number;
 }
 
-interface FeatNotSlot<T extends FeatLike = FeatPF2e> {
+interface FeatNotSlot<T extends FeatLike = FeatAvant> {
     feat: T;
     filter?: never;
     level?: never;
-    children: FeatSlot<FeatLike | HeritagePF2e>[];
+    children: FeatSlot<FeatLike | HeritageAvant>[];
 }
 
-function isFeatLike<TActor extends ActorPF2e | null>(item: ItemPF2e<TActor>): item is FeatLike<TActor> {
+function isFeatLike<TActor extends ActorAvant | null>(item: ItemAvant<TActor>): item is FeatLike<TActor> {
     return "category" in item && "location" in item.system && "isFeat" in item && "isFeature" in item;
 }
 

@@ -1,2 +1,2 @@
-export { KitPF2e } from "./document.ts";
-export { KitSheetPF2e } from "./sheet.ts";
+export { KitAvant } from "./document.ts";
+export { KitSheetAvant } from "./sheet.ts";

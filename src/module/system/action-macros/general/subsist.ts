@@ -1,5 +1,5 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import {
     SingleCheckAction,
     SingleCheckActionUseOptions,
@@ -10,12 +10,12 @@ import { CheckResultCallback } from "@system/action-macros/types.ts";
 
 function subsist(options: SkillActionOptions): void {
     if (!options?.skill) {
-        ui.notifications.warn(game.i18n.localize("PF2E.Actions.Subsist.Warning.NoSkill"));
+        ui.notifications.warn(game.i18n.localize("AVANT.Actions.Subsist.Warning.NoSkill"));
         return;
     }
     const modifiers = [
-        new ModifierPF2e({
-            label: "PF2E.Actions.Subsist.AfterExplorationPenalty",
+        new ModifierAvant({
+            label: "AVANT.Actions.Subsist.AfterExplorationPenalty",
             modifier: -5,
             predicate: ["action:subsist:after-exploration"],
         }),
@@ -25,17 +25,17 @@ function subsist(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph,
-        title: "PF2E.Actions.Subsist.Title",
+        title: "AVANT.Actions.Subsist.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["downtime"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Subsist", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Subsist", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Subsist", "failure"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Subsist", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Subsist", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Subsist", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Subsist", "failure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Subsist", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -46,7 +46,7 @@ function subsist(options: SkillActionOptions): void {
 class SubsistActionVariant extends SingleCheckActionVariant {
     override async use(options: Partial<SingleCheckActionUseOptions> = {}): Promise<CheckResultCallback[]> {
         if (!options?.statistic) {
-            throw new Error(game.i18n.localize("PF2E.Actions.Subsist.Warning.NoSkill"));
+            throw new Error(game.i18n.localize("AVANT.Actions.Subsist.Warning.NoSkill"));
         }
         const rollOption = `action:subsist:${options.statistic}`;
         options.rollOptions ??= [];
@@ -60,29 +60,29 @@ class SubsistActionVariant extends SingleCheckActionVariant {
 class SubsistAction extends SingleCheckAction {
     constructor() {
         super({
-            description: "PF2E.Actions.Subsist.Description",
+            description: "AVANT.Actions.Subsist.Description",
             img: "icons/environment/settlement/city-hall.webp",
             modifiers: [
                 {
-                    label: "PF2E.Actions.Subsist.AfterExplorationPenalty",
+                    label: "AVANT.Actions.Subsist.AfterExplorationPenalty",
                     modifier: -5,
                     predicate: ["action:subsist:after-exploration"],
                 },
             ],
-            name: "PF2E.Actions.Subsist.Title",
+            name: "AVANT.Actions.Subsist.Title",
             notes: [
-                { outcome: ["criticalSuccess"], text: "PF2E.Actions.Subsist.Notes.criticalSuccess" },
-                { outcome: ["success"], text: "PF2E.Actions.Subsist.Notes.success" },
-                { outcome: ["failure"], text: "PF2E.Actions.Subsist.Notes.failure" },
-                { outcome: ["criticalFailure"], text: "PF2E.Actions.Subsist.Notes.criticalFailure" },
+                { outcome: ["criticalSuccess"], text: "AVANT.Actions.Subsist.Notes.criticalSuccess" },
+                { outcome: ["success"], text: "AVANT.Actions.Subsist.Notes.success" },
+                { outcome: ["failure"], text: "AVANT.Actions.Subsist.Notes.failure" },
+                { outcome: ["criticalFailure"], text: "AVANT.Actions.Subsist.Notes.criticalFailure" },
             ],
             rollOptions: ["action:subsist"],
             sampleTasks: {
-                untrained: "PF2E.Actions.Subsist.SampleTasks.Untrained",
-                trained: "PF2E.Actions.Subsist.SampleTasks.Trained",
-                expert: "PF2E.Actions.Subsist.SampleTasks.Expert",
-                master: "PF2E.Actions.Subsist.SampleTasks.Master",
-                legendary: "PF2E.Actions.Subsist.SampleTasks.Legendary",
+                untrained: "AVANT.Actions.Subsist.SampleTasks.Untrained",
+                trained: "AVANT.Actions.Subsist.SampleTasks.Trained",
+                expert: "AVANT.Actions.Subsist.SampleTasks.Expert",
+                master: "AVANT.Actions.Subsist.SampleTasks.Master",
+                legendary: "AVANT.Actions.Subsist.SampleTasks.Legendary",
             },
             section: "skill",
             slug: "subsist",

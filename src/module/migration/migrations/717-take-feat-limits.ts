@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Indicate whether a feat must be taken at level 1 or may only be taken a limited number of times */
@@ -43,7 +43,7 @@ export class Migration717TakeFeatLimits extends MigrationBase {
         "terrain-stalker": Infinity,
     };
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "feat") return;
 
         const slug = source.system.slug ?? "";

@@ -1,11 +1,11 @@
-import type { ActorPF2e } from "@actor";
-import type { SpellPF2e } from "@item";
-import { ErrorPF2e } from "@util";
+import type { ActorAvant } from "@actor";
+import type { SpellAvant } from "@item";
+import { ErrorAvant } from "@util";
 import { SpellCollection } from "./collection.ts";
 import { BaseSpellcastingEntry, CastOptions, SpellcastingSheetData } from "./types.ts";
 
 /** An in-memory spellcasting entry for rituals */
-export class RitualSpellcasting<TActor extends ActorPF2e> implements BaseSpellcastingEntry<TActor> {
+export class RitualSpellcasting<TActor extends ActorAvant> implements BaseSpellcastingEntry<TActor> {
     actor: TActor;
 
     spells: SpellCollection<TActor>;
@@ -23,7 +23,7 @@ export class RitualSpellcasting<TActor extends ActorPF2e> implements BaseSpellca
     }
 
     get name(): string {
-        return game.i18n.localize("PF2E.Actor.Creature.Spellcasting.Rituals");
+        return game.i18n.localize("AVANT.Actor.Creature.Spellcasting.Rituals");
     }
 
     get sort(): number {
@@ -54,12 +54,12 @@ export class RitualSpellcasting<TActor extends ActorPF2e> implements BaseSpellca
         return true;
     }
 
-    canCast(spell: SpellPF2e): boolean {
+    canCast(spell: SpellAvant): boolean {
         return spell.isRitual;
     }
 
-    async cast(spell: SpellPF2e, options: CastOptions = {}): Promise<void> {
-        if (!spell.isRitual) throw ErrorPF2e("Attempted to cast non-ritual from `RitualSpellcasting`");
+    async cast(spell: SpellAvant, options: CastOptions = {}): Promise<void> {
+        if (!spell.isRitual) throw ErrorAvant("Attempted to cast non-ritual from `RitualSpellcasting`");
         await spell.toMessage(undefined, { rollMode: options.rollMode });
     }
 

@@ -1,20 +1,20 @@
 import type { ActorType } from "@actor/types.ts";
-import type { MeleePF2e, WeaponPF2e } from "@item";
+import type { MeleeAvant, WeaponAvant } from "@item";
 import { AbilityTrait } from "@item/ability/types.ts";
 import { RUNE_DATA, prunePropertyRunes } from "@item/physical/runes.ts";
 import { addOrUpgradeTrait } from "@item/weapon/helpers.ts";
 import { WeaponRangeIncrement } from "@item/weapon/types.ts";
 import { MaterialDamageEffect } from "@system/damage/index.ts";
 import { PredicateField } from "@system/schema-data-fields.ts";
-import { ErrorPF2e, objectHasKey, sluggify } from "@util";
+import { ErrorAvant, objectHasKey, sluggify } from "@util";
 import * as R from "remeda";
 import { StrikeAdjustment } from "../synthetics.ts";
 import { AELikeChangeMode, AELikeRuleElement } from "./ae-like.ts";
-import { RuleElementOptions, RuleElementPF2e } from "./base.ts";
+import { RuleElementOptions, RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema, RuleElementSource } from "./data.ts";
 import fields = foundry.data.fields;
 
-class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
+class AdjustStrikeRuleElement extends RuleElementAvant<AdjustStrikeSchema> {
     protected static override validActorTypes: ActorType[] = ["character", "familiar", "npc"];
 
     constructor(data: AdjustStrikeSource, options: RuleElementOptions) {
@@ -54,7 +54,7 @@ class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
         const change = this.resolveValue(this.value);
 
         const adjustment = ((): StrikeAdjustment => {
-            if (!this.property) throw ErrorPF2e("Unexpected error applying adjustment");
+            if (!this.property) throw ErrorAvant("Unexpected error applying adjustment");
 
             const definition = this.resolveInjectedProperties(this.definition);
 
@@ -62,7 +62,7 @@ class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
                 case "materials":
                     return {
                         adjustDamageRoll: (
-                            weapon: WeaponPF2e | MeleePF2e,
+                            weapon: WeaponAvant | MeleeAvant,
                             { materials }: { materials?: Set<MaterialDamageEffect> },
                         ): void => {
                             if (!["add", "subtract", "remove"].includes(this.mode)) {
@@ -73,7 +73,7 @@ class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
                             if (!definition.test(weapon.getRollOptions("item"))) {
                                 return;
                             }
-                            if (!objectHasKey(CONFIG.PF2E.materialDamageEffects, change)) {
+                            if (!objectHasKey(CONFIG.AVANT.materialDamageEffects, change)) {
                                 return this.failValidation(`"${change}" is not a supported weapon material effect.`);
                             }
 
@@ -83,7 +83,7 @@ class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
                     };
                 case "range-increment":
                     return {
-                        adjustWeapon: (weapon: WeaponPF2e | MeleePF2e): void => {
+                        adjustWeapon: (weapon: WeaponAvant | MeleeAvant): void => {
                             if (weapon.isOfType("melee")) return; // Currently not supported
 
                             if (typeof change !== "number") {
@@ -107,13 +107,13 @@ class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
                     };
                 case "traits":
                     return {
-                        adjustTraits: (weapon: WeaponPF2e | MeleePF2e, traits: AbilityTrait[]): void => {
+                        adjustTraits: (weapon: WeaponAvant | MeleeAvant, traits: AbilityTrait[]): void => {
                             if (!["add", "subtract", "remove"].includes(this.mode)) {
                                 return this.failValidation(
                                     'A strike adjustment of traits must be used with the "add", "subtract", or "remove" mode.',
                                 );
                             }
-                            if (!objectHasKey(CONFIG.PF2E.actionTraits, change)) {
+                            if (!objectHasKey(CONFIG.AVANT.actionTraits, change)) {
                                 return this.failValidation(`"${change}" is not a recognized action trait.`);
                             }
                             if (!definition.test(weapon.getRollOptions("item"))) {
@@ -129,15 +129,15 @@ class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
                     };
                 case "weapon-traits":
                     return {
-                        adjustWeapon: (weapon: WeaponPF2e | MeleePF2e): void => {
+                        adjustWeapon: (weapon: WeaponAvant | MeleeAvant): void => {
                             if (!["add", "subtract", "remove"].includes(this.mode)) {
                                 return this.failValidation(
                                     'A strike adjustment of weapon traits must be used with the "add", "subtract", or "remove" mode.',
                                 );
                             }
                             if (
-                                !objectHasKey(CONFIG.PF2E.weaponTraits, change) &&
-                                !(weapon.isOfType("melee") && objectHasKey(CONFIG.PF2E.npcAttackTraits, change))
+                                !objectHasKey(CONFIG.AVANT.weaponTraits, change) &&
+                                !(weapon.isOfType("melee") && objectHasKey(CONFIG.AVANT.npcAttackTraits, change))
                             ) {
                                 return this.failValidation(`"${change}" is not a recognized weapon trait.`);
                             }
@@ -171,7 +171,7 @@ class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
                     };
                 case "property-runes":
                     return {
-                        adjustWeapon: (weapon: WeaponPF2e | MeleePF2e): void => {
+                        adjustWeapon: (weapon: WeaponAvant | MeleeAvant): void => {
                             if (!["add", "subtract", "remove"].includes(this.mode)) {
                                 return this.failValidation(
                                     'A strike adjustment of weapon property runes must be used with the "add", "subtract", or "remove" mode.',
@@ -204,7 +204,7 @@ class AdjustStrikeRuleElement extends RuleElementPF2e<AdjustStrikeSchema> {
 }
 
 interface AdjustStrikeRuleElement
-    extends RuleElementPF2e<AdjustStrikeSchema>,
+    extends RuleElementAvant<AdjustStrikeSchema>,
         ModelPropsFromRESchema<AdjustStrikeSchema> {}
 
 type AdjustStrikeSchema = RuleElementSchema & {

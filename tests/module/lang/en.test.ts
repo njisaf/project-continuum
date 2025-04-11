@@ -10,8 +10,8 @@ describe("Load json file", () => {
     });
 
     test("it should contain valid translation keys", async () => {
-        const input = json.PF2E.condition.blinded.summary;
-        // EQUAL TO:  const input = json.PF2E.condition.blinded.summary;
+        const input = json.AVANT.condition.blinded.summary;
+        // EQUAL TO:  const input = json.AVANT.condition.blinded.summary;
 
         const output = "You're unable to see.";
 

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { AELikeChangeMode } from "@module/rules/rule-element/ae-like.ts";
 import { BracketedValue } from "@module/rules/rule-element/data.ts";
@@ -9,7 +9,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration854BracketedAbilityScoresToModifiers extends MigrationBase {
     static override version = 0.854;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const aeLikes = source.system.rules.filter(
             (r: MaybeAELikeSource): r is BracketedAELikeSource =>
                 r.key === "ActiveEffectLike" &&

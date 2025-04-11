@@ -1,0 +1,85 @@
+{
+    "_id": "dw2K1AJR9mQ25nDP",
+    "img": "systems/avant/icons/default-icons/alternatives/ancestries/kashrishi.svg",
+    "name": "Kashrishi",
+    "system": {
+        "additionalLanguages": {
+            "count": 0,
+            "custom": "",
+            "value": [
+                "draconic",
+                "empyrean",
+                "fey",
+                "petran",
+                "thalassic"
+            ]
+        },
+        "boosts": {
+            "0": {
+                "value": [
+                    "con"
+                ]
+            },
+            "1": {
+                "value": []
+            },
+            "2": {
+                "value": [
+                    "str",
+                    "dex",
+                    "con",
+                    "int",
+                    "wis",
+                    "cha"
+                ]
+            }
+        },
+        "description": {
+            "value": "<p>Kashrishi make their homes in remote areas of the world. These quiet beings have stout, durable frames and distinctive crystalline horns. Their inherent psychic abilities make them natural empaths but also occasionally burden them with the unceasing thoughts of their neighbors.</p>\n<p>@UUID[Compendium.avant.journals.JournalEntry.45SK8rdbbxvEHfMn.JournalEntryPage.IJOH7nk0w1IybAhp]{Kashrishi}</p>"
+        },
+        "flaws": {
+            "0": {
+                "value": []
+            }
+        },
+        "hp": 8,
+        "items": {
+            "iaCUe": {
+                "img": "systems/avant/icons/spells/enthrall.webp",
+                "level": 0,
+                "name": "Empathic Sense",
+                "uuid": "Compendium.avant.ancestryfeatures.Item.Empathic Sense"
+            },
+            "wceqv": {
+                "img": "systems/avant/icons/spells/searing-light.webp",
+                "level": 0,
+                "name": "Glowing Horn",
+                "uuid": "Compendium.avant.ancestryfeatures.Item.Glowing Horn"
+            }
+        },
+        "languages": {
+            "custom": "",
+            "value": [
+                "common"
+            ]
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Impossible Lands"
+        },
+        "reach": 5,
+        "rules": [],
+        "size": "sm",
+        "speed": 25,
+        "traits": {
+            "rarity": "rare",
+            "value": [
+                "humanoid",
+                "kashrishi"
+            ]
+        },
+        "vision": "normal"
+    },
+    "type": "ancestry"
+}

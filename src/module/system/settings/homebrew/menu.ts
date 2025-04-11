@@ -1,15 +1,15 @@
 import { LANGUAGES_BY_RARITY } from "@actor/creature/values.ts";
 import { resetActors } from "@actor/helpers.ts";
-import { ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
+import { ItemSheetAvant } from "@item/base/sheet/sheet.ts";
 import { MigrationBase } from "@module/migration/base.ts";
 import { MigrationRunner } from "@module/migration/runner/index.ts";
 import { LanguageSelector } from "@system/tag-selector/languages.ts";
-import { ErrorPF2e, htmlClosest, htmlQuery, htmlQueryAll, localizer, objectHasKey, sluggify } from "@util";
+import { ErrorAvant, htmlClosest, htmlQuery, htmlQueryAll, localizer, objectHasKey, sluggify } from "@util";
 import { DestroyableManager } from "@util/destroyables.ts";
 import Tagify from "@yaireo/tagify";
 import "@yaireo/tagify/dist/tagify.css";
 import * as R from "remeda";
-import { PartialSettingsData, SettingsMenuPF2e } from "../menu.ts";
+import { PartialSettingsData, SettingsMenuAvant } from "../menu.ts";
 import { DamageTypeManager } from "./damage.ts";
 import {
     CustomDamageData,
@@ -26,7 +26,7 @@ import {
 import { ReservedTermsRecord, prepareCleanup, prepareReservedTerms, readModuleHomebrewSettings } from "./helpers.ts";
 import { LanguagesManager } from "./languages.ts";
 
-class HomebrewElements extends SettingsMenuPF2e {
+class HomebrewElements extends SettingsMenuAvant {
     static override readonly namespace = "homebrew";
 
     /** Whether this is the first time the homebrew tags will have been injected into CONFIG and actor derived data */
@@ -53,32 +53,32 @@ class HomebrewElements extends SettingsMenuPF2e {
     static override get defaultOptions(): FormApplicationOptions {
         return {
             ...super.defaultOptions,
-            template: "systems/pf2e/templates/system/settings/homebrew.hbs",
+            template: "systems/avant/templates/system/settings/homebrew.hbs",
             width: 625,
         };
     }
 
     static #campaignSettings = {
         campaignFeats: {
-            name: "PF2E.SETTINGS.CampaignFeats.Name",
-            hint: "PF2E.SETTINGS.CampaignFeats.Hint",
+            name: "AVANT.SETTINGS.CampaignFeats.Name",
+            hint: "AVANT.SETTINGS.CampaignFeats.Hint",
             default: false,
             type: Boolean,
             tab: "campaign",
             onChange: (value) => {
-                game.pf2e.settings.campaign.feats.enabled = !!value;
+                game.avant.settings.campaign.feats.enabled = !!value;
                 resetActors(game.actors.filter((a) => a.isOfType("character")));
             },
         },
         campaignType: {
-            name: "PF2E.SETTINGS.CampaignType.Name",
-            hint: "PF2E.SETTINGS.CampaignType.Hint",
+            name: "AVANT.SETTINGS.CampaignType.Name",
+            hint: "AVANT.SETTINGS.CampaignType.Hint",
             default: "none",
-            choices: R.mapToObj(["none", "kingmaker"], (key) => [key, `PF2E.SETTINGS.CampaignType.Choices.${key}`]),
+            choices: R.mapToObj(["none", "kingmaker"], (key) => [key, `AVANT.SETTINGS.CampaignType.Choices.${key}`]),
             type: String,
             tab: "campaign",
             onChange: async (value) => {
-                game.pf2e.settings.campaign.type = value === "none" ? null : String(value);
+                game.avant.settings.campaign.type = value === "none" ? null : String(value);
                 await resetActors(game.actors.filter((a) => a.isOfType("party")));
                 ui.sidebar.render();
             },
@@ -97,8 +97,8 @@ class HomebrewElements extends SettingsMenuPF2e {
                 result[key] = {
                     prefix: "homebrew.",
                     tab,
-                    name: `PF2E.SETTINGS.Homebrew.${key.capitalize()}.Name`,
-                    hint: `PF2E.SETTINGS.Homebrew.${key.capitalize()}.Hint`,
+                    name: `AVANT.SETTINGS.Homebrew.${key.capitalize()}.Name`,
+                    hint: `AVANT.SETTINGS.Homebrew.${key.capitalize()}.Hint`,
                     default: [],
                     type: Array,
                 };
@@ -116,7 +116,7 @@ class HomebrewElements extends SettingsMenuPF2e {
             damageTypes: {
                 prefix: "homebrew.",
                 tab: "damage",
-                name: "PF2E.SETTINGS.Homebrew.DamageTypes.Name",
+                name: "AVANT.SETTINGS.Homebrew.DamageTypes.Name",
                 default: [],
                 type: Array,
                 onChange: () => {
@@ -126,7 +126,7 @@ class HomebrewElements extends SettingsMenuPF2e {
             languageRarities: {
                 prefix: "homebrew.",
                 tab: "languages",
-                name: "PF2E.Settings.Homebrew.Languages.Rarities.Name",
+                name: "AVANT.Settings.Homebrew.Languages.Rarities.Name",
                 type: LanguageSettings,
                 default: {
                     common: "taldane",
@@ -137,7 +137,7 @@ class HomebrewElements extends SettingsMenuPF2e {
                 },
                 onChange: (value) => {
                     if (value instanceof LanguageSettings) {
-                        game.pf2e.settings.campaign.languages = value;
+                        game.avant.settings.campaign.languages = value;
                     }
                     const languageSelector = Object.values(ui.windows).find((a) => a instanceof LanguageSelector);
                     languageSelector?.render();
@@ -154,8 +154,8 @@ class HomebrewElements extends SettingsMenuPF2e {
         for (const key of HOMEBREW_ELEMENT_KEYS) {
             const reservedTerms = HomebrewElements.reservedTerms[key];
             const input = htmlQuery<HTMLInputElement>(html, `input[name="${key}"]`);
-            if (!input) throw ErrorPF2e("Unexpected error preparing form");
-            const localize = localizer("PF2E.SETTINGS.Homebrew");
+            if (!input) throw ErrorAvant("Unexpected error preparing form");
+            const localize = localizer("AVANT.SETTINGS.Homebrew");
 
             const tagify = new Tagify(input, {
                 editTags: 1,
@@ -207,7 +207,7 @@ class HomebrewElements extends SettingsMenuPF2e {
         const data = await super.getData();
         this.languagesManager ??= new LanguagesManager(this);
 
-        const damageCategories = R.pick(CONFIG.PF2E.damageCategories, ["physical", "energy"]);
+        const damageCategories = R.pick(CONFIG.AVANT.damageCategories, ["physical", "energy"]);
         const languageRarities = this.languagesManager.getSheetData();
 
         return {
@@ -289,7 +289,7 @@ class HomebrewElements extends SettingsMenuPF2e {
 
     /** Prepare and run a migration for each set of tag deletions from a tag map */
     #processDeletions(listKey: HomebrewTraitKey, newTagList: HomebrewTag[]): MigrationBase | null {
-        const oldTagList = game.settings.get("pf2e", `homebrew.${listKey}`);
+        const oldTagList = game.settings.get("avant", `homebrew.${listKey}`);
         const newIDList = newTagList.map((tag) => tag.id);
         const deletions: string[] = oldTagList.flatMap((oldTag) => (newIDList.includes(oldTag.id) ? [] : oldTag.id));
 
@@ -297,7 +297,7 @@ class HomebrewElements extends SettingsMenuPF2e {
         for (const id of deletions) {
             delete coreElements[id];
             for (const recordKey of this.#getAllTraitPropagations(listKey)) {
-                const secondaryRecord: Record<string, string> = CONFIG.PF2E[recordKey];
+                const secondaryRecord: Record<string, string> = CONFIG.AVANT[recordKey];
                 delete secondaryRecord[id];
             }
         }
@@ -313,8 +313,8 @@ class HomebrewElements extends SettingsMenuPF2e {
         // Add additional skills if there any
         const moduleData = HomebrewElements.moduleData;
         if (Object.keys(moduleData.skills).length > 0) {
-            CONFIG.PF2E.skills = Object.freeze({
-                ...CONFIG.PF2E.skills,
+            CONFIG.AVANT.skills = Object.freeze({
+                ...CONFIG.AVANT.skills,
                 ...R.mapValues(moduleData.skills, (data) => ({
                     label: data.label,
                     attribute: data.attribute,
@@ -330,7 +330,7 @@ class HomebrewElements extends SettingsMenuPF2e {
         // Add custom traits from settings
         for (const listKey of HOMEBREW_ELEMENT_KEYS) {
             const settingsKey: HomebrewTraitSettingsKey = `homebrew.${listKey}` as const;
-            const elements = game.settings.get("pf2e", settingsKey);
+            const elements = game.settings.get("avant", settingsKey);
             const validElements = elements.filter((e) => !reservedTerms[listKey].has(e.id));
             this.#updateConfigRecords(validElements, listKey);
         }
@@ -340,7 +340,7 @@ class HomebrewElements extends SettingsMenuPF2e {
             this.#initialRefresh = false;
         } else {
             const sheets = Object.values(ui.windows).filter(
-                (app): app is DocumentSheet => app instanceof ActorSheet || app instanceof ItemSheetPF2e,
+                (app): app is DocumentSheet => app instanceof ActorSheet || app instanceof ItemSheetAvant,
             );
             for (const sheet of sheets) {
                 sheet.render(false);
@@ -358,15 +358,15 @@ class HomebrewElements extends SettingsMenuPF2e {
         }
 
         for (const [trait, description] of Object.entries(settings.traitDescriptions)) {
-            const hbKey = trait as keyof typeof CONFIG.PF2E.traitsDescriptions;
-            CONFIG.PF2E.traitsDescriptions[hbKey] = description;
+            const hbKey = trait as keyof typeof CONFIG.AVANT.traitsDescriptions;
+            CONFIG.AVANT.traitsDescriptions[hbKey] = description;
         }
     }
 
     #getConfigRecord(key: HomebrewTraitKey): Record<string, string> {
-        if (key === "baseArmors") return CONFIG.PF2E.baseArmorTypes;
-        if (key === "baseWeapons") return CONFIG.PF2E.baseWeaponTypes;
-        return CONFIG.PF2E[key];
+        if (key === "baseArmors") return CONFIG.AVANT.baseArmorTypes;
+        if (key === "baseWeapons") return CONFIG.AVANT.baseWeaponTypes;
+        return CONFIG.AVANT[key];
     }
 
     #updateConfigRecords(elements: HomebrewTag[], listKey: HomebrewTraitKey): void {
@@ -375,7 +375,7 @@ class HomebrewElements extends SettingsMenuPF2e {
         for (const element of elements) {
             coreElements[element.id] = element.value;
             for (const recordKey of this.#getAllTraitPropagations(listKey)) {
-                const record: Record<string, string> = CONFIG.PF2E[recordKey];
+                const record: Record<string, string> = CONFIG.AVANT[recordKey];
                 record[element.id] = element.value;
             }
         }
@@ -388,7 +388,7 @@ type HomebrewSubmitData = {
     languageRarities: LanguageSettings;
 } & Record<string, unknown> & { clear(): void };
 
-interface HomebrewElements extends SettingsMenuPF2e {
+interface HomebrewElements extends SettingsMenuAvant {
     constructor: typeof HomebrewElements;
     cache: HomebrewSubmitData;
 }

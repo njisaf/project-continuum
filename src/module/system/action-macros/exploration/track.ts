@@ -8,16 +8,16 @@ function track(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph,
-        title: "PF2E.Actions.Track.Title",
+        title: "AVANT.Actions.Track.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["concentrate", "exploration", "move"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Track", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Track", "failure"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Track", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Track", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Track", "failure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Track", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -26,21 +26,21 @@ function track(options: SkillActionOptions): void {
 }
 
 const action = new SingleCheckAction({
-    description: "PF2E.Actions.Track.Description",
+    description: "AVANT.Actions.Track.Description",
     img: "icons/skills/movement/arrows-up-trio-red.webp",
-    name: "PF2E.Actions.Track.Title",
+    name: "AVANT.Actions.Track.Title",
     notes: [
-        { outcome: ["success", "criticalSuccess"], text: "PF2E.Actions.Track.Notes.success" },
-        { outcome: ["failure"], text: "PF2E.Actions.Track.Notes.failure" },
-        { outcome: ["criticalFailure"], text: "PF2E.Actions.Track.Notes.criticalFailure" },
+        { outcome: ["success", "criticalSuccess"], text: "AVANT.Actions.Track.Notes.success" },
+        { outcome: ["failure"], text: "AVANT.Actions.Track.Notes.failure" },
+        { outcome: ["criticalFailure"], text: "AVANT.Actions.Track.Notes.criticalFailure" },
     ],
     rollOptions: ["action:track"],
     sampleTasks: {
-        untrained: "PF2E.Actions.Track.SampleTasks.Untrained",
-        trained: "PF2E.Actions.Track.SampleTasks.Trained",
-        expert: "PF2E.Actions.Track.SampleTasks.Expert",
-        master: "PF2E.Actions.Track.SampleTasks.Master",
-        legendary: "PF2E.Actions.Track.SampleTasks.Legendary",
+        untrained: "AVANT.Actions.Track.SampleTasks.Untrained",
+        trained: "AVANT.Actions.Track.SampleTasks.Trained",
+        expert: "AVANT.Actions.Track.SampleTasks.Expert",
+        master: "AVANT.Actions.Track.SampleTasks.Master",
+        legendary: "AVANT.Actions.Track.SampleTasks.Legendary",
     },
     slug: "track",
     statistic: "survival",

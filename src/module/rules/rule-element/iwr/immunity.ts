@@ -18,7 +18,7 @@ class ImmunityRuleElement extends IWRRuleElement<ImmunityRuleSchema> {
     }
 
     static override get dictionary(): Record<ImmunityType, string> {
-        return CONFIG.PF2E.immunityTypes;
+        return CONFIG.AVANT.immunityTypes;
     }
 
     get property(): Immunity[] {

@@ -1,2 +1,2 @@
-export { ItemSheetPF2e } from "./sheet.ts";
-export type { ItemSheetDataPF2e } from "./sheet.ts";
+export { ItemSheetAvant } from "./sheet.ts";
+export type { ItemSheetDataAvant } from "./sheet.ts";

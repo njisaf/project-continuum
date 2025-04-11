@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { Predicate, RawPredicate } from "@system/predication.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -12,7 +12,7 @@ export class Migration840ArrayWrapPredicates extends MigrationBase {
         return predicate && Predicate.isValid(arrayWrapped) ? arrayWrapped : undefined;
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         for (const rule of source.system.rules) {
             if ("predicate" in rule) {
                 rule.predicate = this.#wrapPredicate(rule.predicate);

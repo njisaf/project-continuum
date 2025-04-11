@@ -1,0 +1,63 @@
+{
+    "_id": "OwJRuy4EW8vW09AI",
+    "folder": "hd2GMVcUagrsm4Ob",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Metal-veined Strikes",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "ancestry",
+        "description": {
+            "value": "<p>Metallic veins grow throughout your body, giving your unarmed attacks a metallic sheen. Choose either cold iron or silver. Your unarmed attacks are treated as the chosen type of metal.</p>"
+        },
+        "level": {
+            "value": 13
+        },
+        "prerequisites": {
+            "value": []
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Ancestry Guide"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.PreciousMaterialColdIron",
+                        "value": "cold-iron"
+                    },
+                    {
+                        "label": "AVANT.PreciousMaterialSilver",
+                        "value": "silver"
+                    }
+                ],
+                "flag": "metalVeinedStrikes",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Material"
+            },
+            {
+                "definition": [
+                    "item:category:unarmed"
+                ],
+                "key": "AdjustStrike",
+                "mode": "add",
+                "property": "materials",
+                "selector": "strike-damage",
+                "value": "{item|flags.avant.rulesSelections.metalVeinedStrikes}"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "oread"
+            ]
+        }
+    },
+    "type": "feat"
+}

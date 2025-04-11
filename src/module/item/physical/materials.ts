@@ -1,5 +1,5 @@
 import type { Rarity } from "@module/data.ts";
-import type { PhysicalItemPF2e } from "./document.ts";
+import type { PhysicalItemAvant } from "./document.ts";
 import type { PreciousMaterialGrade, PreciousMaterialType } from "./types.ts";
 
 interface MaterialGradeData {
@@ -16,7 +16,7 @@ type MaterialValuationData = Partial<
     Record<PreciousMaterialType | "", Record<PreciousMaterialGrade, MaterialGradeData | null>>
 >;
 
-function getMaterialValuationData(item: PhysicalItemPF2e): MaterialGradeData | null {
+function getMaterialValuationData(item: PhysicalItemAvant): MaterialGradeData | null {
     const material = item.material;
     if (!material.type || !material.grade) return null;
 

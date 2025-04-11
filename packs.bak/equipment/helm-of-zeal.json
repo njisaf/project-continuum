@@ -1,0 +1,130 @@
+{
+    "_id": "h2gpUvHN3hTRS7jv",
+    "img": "icons/equipment/head/helm-barbute-rounded-gold.webp",
+    "name": "Helm Of Zeal",
+    "system": {
+        "baseItem": null,
+        "bulk": {
+            "value": 0.1
+        },
+        "containerId": null,
+        "description": {
+            "value": "<p>This elaborate helmet is emblazoned with the divine symbols of a deity chosen when the helmet was crafted. You gain a +2 item bonus to that deity's Divine Skill.</p>\n<p><strong>Activate—Rally to the Cause</strong> <span class=\"action-glyph\">f</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You gain 1 Focus Point, which you can spend only to cast a devotion spell. If you don't spend this Focus Point by the end of this turn, it's lost.</p>\n<p><strong>Activate—Divine Fervor</strong> <span class=\"action-glyph\">f</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Trigger</strong> You've just used your champion's reaction</p><hr /><p><strong>Effect</strong> You gain an additional reaction you can use only for your champion's reaction. You lose this reaction if you don't use it by the start of your next turn.</p>\n<p><strong>Craft Requirements</strong> You're a champion of the deity represented by the helmet.</p>"
+        },
+        "hardness": 0,
+        "hp": {
+            "max": 0,
+            "value": 0
+        },
+        "level": {
+            "value": 11
+        },
+        "material": {
+            "grade": null,
+            "type": null
+        },
+        "price": {
+            "value": {
+                "gp": 1250
+            }
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "quantity": 1,
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Skill.Acrobatics",
+                        "value": "acrobatics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Arcana",
+                        "value": "arcana"
+                    },
+                    {
+                        "label": "AVANT.Skill.Athletics",
+                        "value": "athletics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Crafting",
+                        "value": "crafting"
+                    },
+                    {
+                        "label": "AVANT.Skill.Deception",
+                        "value": "deception"
+                    },
+                    {
+                        "label": "AVANT.Skill.Diplomacy",
+                        "value": "diplomacy"
+                    },
+                    {
+                        "label": "AVANT.Skill.Intimidation",
+                        "value": "intimidation"
+                    },
+                    {
+                        "label": "AVANT.Skill.Medicine",
+                        "value": "medicine"
+                    },
+                    {
+                        "label": "AVANT.Skill.Nature",
+                        "value": "nature"
+                    },
+                    {
+                        "label": "AVANT.Skill.Occultism",
+                        "value": "occultism"
+                    },
+                    {
+                        "label": "AVANT.Skill.Performance",
+                        "value": "performance"
+                    },
+                    {
+                        "label": "AVANT.Skill.Religion",
+                        "value": "religion"
+                    },
+                    {
+                        "label": "AVANT.Skill.Society",
+                        "value": "society"
+                    },
+                    {
+                        "label": "AVANT.Skill.Stealth",
+                        "value": "stealth"
+                    },
+                    {
+                        "label": "AVANT.Skill.Survival",
+                        "value": "survival"
+                    },
+                    {
+                        "label": "AVANT.Skill.Thievery",
+                        "value": "thievery"
+                    }
+                ],
+                "flag": "skill",
+                "key": "ChoiceSet",
+                "prompt": "Select your deity's divine skill"
+            },
+            {
+                "key": "FlatModifier",
+                "selector": "{item|flags.avant.rulesSelections.skill}",
+                "type": "item",
+                "value": 2
+            }
+        ],
+        "size": "med",
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "divine",
+                "focused",
+                "invested"
+            ]
+        },
+        "usage": {
+            "value": "wornheadwear"
+        }
+    },
+    "type": "equipment"
+}

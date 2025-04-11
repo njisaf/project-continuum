@@ -23,8 +23,8 @@ class StandAction extends SimpleAction {
     constructor() {
         super({
             cost: 1,
-            description: "PF2E.Actions.Stand.Description",
-            name: "PF2E.Actions.Stand.Title",
+            description: "AVANT.Actions.Stand.Description",
+            name: "AVANT.Actions.Stand.Title",
             section: "basic",
             slug: "stand",
             traits: ["move"],

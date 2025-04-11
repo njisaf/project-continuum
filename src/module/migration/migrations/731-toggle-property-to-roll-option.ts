@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { sluggify } from "@util";
 import { Migration727TrimSelfRollOptions } from "./727-trim-self-roll-options.ts";
@@ -12,9 +12,9 @@ export class Migration731TogglePropertyToRollOption extends Migration727TrimSelf
 
     protected override optionReplacement = "target:condition:flat-footed";
 
-    pathPattern = /^flags\.pf2e\.rollOptions\.([^.]+)\.([^.]+)$/;
+    pathPattern = /^flags\.avant\.rollOptions\.([^.]+)\.([^.]+)$/;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.rules = source.system.rules.map((r) => this.trimPredicates(r)) as RuleElementSource[];
 
         const rules: TogglePropertyOrRollOption[] = source.system.rules;
@@ -44,11 +44,11 @@ export class Migration731TogglePropertyToRollOption extends Migration727TrimSelf
         }
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
-        if (source.flags.pf2e?.rollOptions?.all) {
-            source.flags.pf2e.rollOptions.all["-=panache"] = false;
-            source.flags.pf2e.rollOptions.all["-=rage"] = false;
-            source.flags.pf2e.rollOptions.all["-=target:flatFooted"] = false;
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
+        if (source.flags.avant?.rollOptions?.all) {
+            source.flags.avant.rollOptions.all["-=panache"] = false;
+            source.flags.avant.rollOptions.all["-=rage"] = false;
+            source.flags.avant.rollOptions.all["-=target:flatFooted"] = false;
         }
     }
 }

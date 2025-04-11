@@ -1,17 +1,17 @@
-import type { ActorPF2e } from "@actor/base.ts";
+import type { ActorAvant } from "@actor/base.ts";
 import type { TraitViewData } from "@actor/data/base.ts";
-import type { ActorSizePF2e } from "@actor/data/size.ts";
+import type { ActorSizeAvant } from "@actor/data/size.ts";
 import type { InventoryBulk } from "@actor/inventory/index.ts";
-import type { PhysicalItemPF2e } from "@item";
+import type { PhysicalItemAvant } from "@item";
 import type { Frequency } from "@item/base/data/index.ts";
 import type { Coins } from "@item/physical/data.ts";
 import type { RollOptionToggle } from "@module/rules/synthetics.ts";
 import type { SheetOptions } from "@module/sheet/helpers.ts";
 
-interface InventoryItem<TItem extends PhysicalItemPF2e = PhysicalItemPF2e> {
+interface InventoryItem<TItem extends PhysicalItemAvant = PhysicalItemAvant> {
     item: TItem;
     /** Item size if it causes any weight difference relative to the actor */
-    itemSize?: ActorSizePF2e | null;
+    itemSize?: ActorSizeAvant | null;
     isContainer: boolean;
     canBeEquipped: boolean;
     /** Bulk for each item is shown on an individual basis from merchant sheets */
@@ -48,7 +48,7 @@ interface SheetInventory {
     invested?: { value: number; max: number } | null;
 }
 
-interface ActorSheetDataPF2e<TActor extends ActorPF2e> extends ActorSheetData<TActor> {
+interface ActorSheetDataAvant<TActor extends ActorAvant> extends ActorSheetData<TActor> {
     data: TActor["system"];
     canDistributeCoins?: { enabled: boolean } | null;
     enrichedContent: Record<string, string>;
@@ -80,9 +80,9 @@ interface AbilityViewData {
     };
 }
 
-interface ActorSheetRenderOptionsPF2e extends RenderOptions {
+interface ActorSheetRenderOptionsAvant extends RenderOptions {
     /** What tab to switch to when rendering the sheet */
     tab?: string;
 }
 
-export type { AbilityViewData, ActorSheetDataPF2e, ActorSheetRenderOptionsPF2e, InventoryItem, SheetInventory };
+export type { AbilityViewData, ActorSheetDataAvant, ActorSheetRenderOptionsAvant, InventoryItem, SheetInventory };

@@ -1,5 +1,5 @@
-import type { CharacterPF2e } from "@actor";
-import type { ABCItemPF2e, DeityPF2e, HeritagePF2e, ItemPF2e } from "@item";
+import type { CharacterAvant } from "@actor";
+import type { ABCItemAvant, DeityAvant, HeritageAvant, ItemAvant } from "@item";
 import type { ItemType } from "@item/base/data/index.ts";
 import { RARITIES, Rarity } from "@module/data.ts";
 import { SvelteApplicationMixin, type SvelteApplicationRenderContext } from "@module/sheet/mixin.svelte.ts";
@@ -10,10 +10,10 @@ import type { ApplicationConfiguration } from "types/foundry/client-esm/applicat
 import type { ApplicationV2 } from "types/foundry/client-esm/applications/api/module.d.ts";
 import Root from "./app.svelte";
 
-type AhBCDType = Extract<ItemType, "ancestry" | "heritage" | "background" | "class" | "deity">;
+type AhBCDType = Extract<ItemType, "ancestry" | "heritage" | "background" | "class" | "deity"> | "culture" | "vocation";
 
 interface ABCPickerConfiguration extends ApplicationConfiguration {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
     itemType: AhBCDType;
 }
 
@@ -32,7 +32,7 @@ interface ABCItemRef {
 }
 
 interface ABCPickerContext extends SvelteApplicationRenderContext {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
     foundryApp: ABCPicker;
     state: { prompt: string; itemType: AhBCDType; items: ABCItemRef[] };
 }
@@ -54,30 +54,44 @@ class ABCPicker extends SvelteApplicationMixin<
 
     override get title(): string {
         const type = game.i18n.localize(`TYPES.Item.${this.options.itemType}`);
-        return game.i18n.format("PF2E.Actor.Character.ABCPicker.Title", { type });
+        return game.i18n.format("AVANT.Actor.Character.ABCPicker.Title", { type });
     }
 
     protected override _initializeApplicationOptions(options: Partial<ABCPickerConfiguration>): ABCPickerConfiguration {
         const initialized = super._initializeApplicationOptions(options) as ABCPickerConfiguration;
-        initialized.window.icon = `fa-solid ${CONFIG.Item.typeIcons[initialized.itemType]}`;
+        
+        // Map culture to heritage and vocation to background for the icon
+        const iconType = this.mapItemTypeForSystem(initialized.itemType);
+        initialized.window.icon = `fa-solid ${CONFIG.Item.typeIcons[iconType]}`;
         initialized.uniqueId = `abc-picker-${initialized.itemType}-${initialized.actor.uuid}`;
         return initialized;
     }
 
+    /** Map our custom UI types to the system item types */
+    mapItemTypeForSystem(itemType: AhBCDType): Extract<ItemType, "ancestry" | "heritage" | "background" | "class" | "deity"> {
+        if (itemType === "culture") return "heritage";
+        if (itemType === "vocation") return "background";
+        return itemType as Extract<ItemType, "ancestry" | "heritage" | "background" | "class" | "deity">;
+    }
+
     /** Gather all items of the request type from the world and across all item compendiums. */
-    async #gatherItems(): Promise<ABCItemRef[]> {
+    async gatherItems(): Promise<ABCItemRef[]> {
         const { actor, itemType } = this.options;
-        const worldItems = game.items.filter((i) => i.type === itemType && i.testUserPermission(game.user, "LIMITED"));
+        
+        // Map our custom UI types to the system item types
+        const systemItemType = this.mapItemTypeForSystem(itemType);
+        
+        const worldItems = game.items.filter((i) => i.type === systemItemType && i.testUserPermission(game.user, "LIMITED"));
         const packItems = await UUIDUtils.fromUUIDs(
             game.packs
                 .filter((p) => p.documentName === "Item" && p.testUserPermission(game.user, "LIMITED"))
-                .flatMap((p) => p.index.filter((e) => e.type === itemType).map((e) => e.uuid as CompendiumItemUUID)),
+                .flatMap((p) => p.index.filter((e) => e.type === systemItemType).map((e) => e.uuid as CompendiumItemUUID)),
         );
 
         const items = [...worldItems, ...packItems]
-            .filter((item): item is ABCItemPF2e<null> | HeritagePF2e<null> | DeityPF2e<null> => {
-                if (item.type !== itemType || item.parent) return false;
-                if (item.pack?.startsWith("pf2e-animal-companions.")) return false;
+            .filter((item): item is ABCItemAvant<null> | HeritageAvant<null> | DeityAvant<null> => {
+                if (item.type !== systemItemType || item.parent) return false;
+                if (item.pack?.startsWith("avant-animal-companions.")) return false;
                 if (item.system.traits.value?.includes("eidolon")) return false;
                 if (item.isOfType("heritage")) {
                     const ancestrySlug = actor.ancestry ? (actor.ancestry.slug ?? sluggify(actor.ancestry.name)) : null;
@@ -87,15 +101,15 @@ class ABCPicker extends SvelteApplicationMixin<
             })
             .sort((a, b) => a.name.localeCompare(b.name))
             .sort(
-                (a: ItemPF2e<null> & { rarity?: Rarity }, b: ItemPF2e<null> & { rarity?: Rarity }) =>
+                (a: ItemAvant<null> & { rarity?: Rarity }, b: ItemAvant<null> & { rarity?: Rarity }) =>
                     RARITIES.indexOf(a.rarity ?? "common") - RARITIES.indexOf(b.rarity ?? "common"),
             );
-        if (items.every((i): i is HeritagePF2e<null> => i.isOfType("heritage"))) {
+        if (items.every((i): i is HeritageAvant<null> => i.isOfType("heritage"))) {
             items.sort((a, b) => (a.isVersatile === b.isVersatile ? 0 : a.isVersatile ? 1 : -1));
         }
 
         /** Resolve a "source", preferring publication title if set and resorting to fallbacks. */
-        const resolveSource = (item: ItemPF2e): { name: string; publication: boolean } => {
+        const resolveSource = (item: ItemAvant): { name: string; publication: boolean } => {
             const publication = item.system.publication.title.trim();
             if (publication) return { name: publication, publication: true };
             if (item.uuid.startsWith("Item.")) return { name: game.world.title, publication: false };
@@ -106,9 +120,9 @@ class ABCPicker extends SvelteApplicationMixin<
         };
 
         const rarities: Record<string, string> = {
-            uncommon: game.i18n.localize(CONFIG.PF2E.rarityTraits.uncommon),
-            rare: game.i18n.localize(CONFIG.PF2E.rarityTraits.rare),
-            unique: game.i18n.localize(CONFIG.PF2E.rarityTraits.unique),
+            uncommon: game.i18n.localize(CONFIG.AVANT.rarityTraits.uncommon),
+            rare: game.i18n.localize(CONFIG.AVANT.rarityTraits.rare),
+            unique: game.i18n.localize(CONFIG.AVANT.rarityTraits.unique),
         };
 
         return items.map((item) => {
@@ -134,9 +148,9 @@ class ABCPicker extends SvelteApplicationMixin<
             actor: this.options.actor,
             foundryApp: this,
             state: {
-                prompt: game.i18n.localize(`PF2E.Actor.Character.ABCPicker.Prompt.${itemType}`),
+                prompt: game.i18n.localize(`AVANT.Actor.Character.ABCPicker.Prompt.${itemType}`),
                 itemType,
-                items: await this.#gatherItems(),
+                items: await this.gatherItems(),
             },
         };
     }

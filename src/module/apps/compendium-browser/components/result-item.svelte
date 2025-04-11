@@ -29,7 +29,7 @@
     function onDragStart(event: DragEvent, uuid: string): void {
         event.stopPropagation();
         const item = htmlClosest(event.target, "li");
-        const browser = game.pf2e.compendiumBrowser;
+        const browser = game.avant.compendiumBrowser;
         if (!item || !event.dataTransfer) return;
 
         event.dataTransfer?.setDragImage(item, 0, 0);

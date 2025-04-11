@@ -8,8 +8,8 @@ import { DamageDamageContext } from "@system/damage/types.ts";
 import { DegreeAdjustmentsRecord, DegreeOfSuccessString } from "@system/degree-of-success.ts";
 import type { ChatMessageFlags } from "types/foundry/common/documents/chat-message.d.ts";
 
-type ChatMessageSourcePF2e = foundry.documents.ChatMessageSource & {
-    flags: ChatMessageFlagsPF2e;
+type ChatMessageSourceAvant = foundry.documents.ChatMessageSource & {
+    flags: ChatMessageFlagsAvant;
 };
 
 export interface ItemOriginFlag {
@@ -22,8 +22,8 @@ export interface ItemOriginFlag {
     rollOptions?: string[];
 }
 
-type ChatMessageFlagsPF2e = ChatMessageFlags & {
-    pf2e: {
+type ChatMessageFlagsAvant = ChatMessageFlags & {
+    avant: {
         damageRoll?: DamageRollFlag;
         context?: ChatContextFlag;
         origin?: ItemOriginFlag | null;
@@ -150,8 +150,8 @@ export type {
     ActorTokenFlag,
     AppliedDamageFlag,
     ChatContextFlag,
-    ChatMessageFlagsPF2e,
-    ChatMessageSourcePF2e,
+    ChatMessageFlagsAvant,
+    ChatMessageSourceAvant,
     CheckContextChatFlag,
     DamageDamageContextFlag,
     DamageRollFlag,

@@ -1,9 +1,9 @@
 import { ActorSystemSource } from "@actor/data/base.ts";
-import { ItemPF2e } from "@item";
+import { ItemAvant } from "@item";
 import type { ActorDeltaSource } from "types/foundry/common/documents/actor-delta.d.ts";
-import type { TokenDocumentPF2e } from "./document.ts";
+import type { TokenDocumentAvant } from "./document.ts";
 
-class ActorDeltaPF2e<TParent extends TokenDocumentPF2e | null> extends ActorDelta<TParent> {
+class ActorDeltaAvant<TParent extends TokenDocumentAvant | null> extends ActorDelta<TParent> {
     /** Following synthetic actor updates, send the `Token` a fake update notification to trigger redraws */
     protected override _onUpdate(
         changed: DeepPartial<this["_source"]>,
@@ -35,7 +35,7 @@ class ActorDeltaPF2e<TParent extends TokenDocumentPF2e | null> extends ActorDelt
             return;
         }
 
-        const items = (args[0] ?? []).filter((i): i is ItemPF2e => i instanceof ItemPF2e);
+        const items = (args[0] ?? []).filter((i): i is ItemAvant => i instanceof ItemAvant);
         const nameChanged = items.some((i) => i.system.rules.some((r) => r.key === "TokenName"));
         const sizeChanged = items.some((i) => i.system.rules.some((r) => r.key === "CreatureSize"));
         // Assume there is a texture change if there exists a TokenImage rule element on the synthetic actor
@@ -60,12 +60,12 @@ class ActorDeltaPF2e<TParent extends TokenDocumentPF2e | null> extends ActorDelt
     }
 }
 
-interface ActorDeltaPF2e<TParent extends TokenDocumentPF2e | null> extends ActorDelta<TParent> {
-    readonly _source: ActorDeltaSourcePF2e;
+interface ActorDeltaAvant<TParent extends TokenDocumentAvant | null> extends ActorDelta<TParent> {
+    readonly _source: ActorDeltaSourceAvant;
 }
 
-type ActorDeltaSourcePF2e = ActorDeltaSource & {
+type ActorDeltaSourceAvant = ActorDeltaSource & {
     system: ActorSystemSource | null;
 };
 
-export { ActorDeltaPF2e };
+export { ActorDeltaAvant };

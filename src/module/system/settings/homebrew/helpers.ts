@@ -1,10 +1,10 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { ATTRIBUTE_ABBREVIATIONS } from "@actor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { MigrationBase } from "@module/migration/base.ts";
 import { MigrationRunnerBase } from "@module/migration/runner/base.ts";
-import { ErrorPF2e, setHasElement, tupleHasValue } from "@util";
+import { ErrorAvant, setHasElement, tupleHasValue } from "@util";
 import * as R from "remeda";
 import {
     CustomDamageData,
@@ -60,15 +60,15 @@ function isSkillData(obj: unknown): obj is { additional: ModuleHomebrewData["ski
 
 function prepareReservedTerms(): ReservedTermsRecord {
     const universalReservedTerms = new Set([
-        ...Object.keys(CONFIG.PF2E.classTraits),
-        ...Object.keys(CONFIG.PF2E.damageCategories),
-        ...Object.keys(CONFIG.PF2E.damageTypes),
-        ...Object.keys(CONFIG.PF2E.immunityTypes),
-        ...Object.keys(CONFIG.PF2E.resistanceTypes),
-        ...Object.keys(CONFIG.PF2E.saves),
-        ...Object.keys(CONFIG.PF2E.skills),
-        ...Object.keys(CONFIG.PF2E.weaknessTypes),
-        ...Object.keys(CONFIG.PF2E.environmentTypes),
+        ...Object.keys(CONFIG.AVANT.classTraits),
+        ...Object.keys(CONFIG.AVANT.damageCategories),
+        ...Object.keys(CONFIG.AVANT.damageTypes),
+        ...Object.keys(CONFIG.AVANT.immunityTypes),
+        ...Object.keys(CONFIG.AVANT.resistanceTypes),
+        ...Object.keys(CONFIG.AVANT.saves),
+        ...Object.keys(CONFIG.AVANT.skills),
+        ...Object.keys(CONFIG.AVANT.weaknessTypes),
+        ...Object.keys(CONFIG.AVANT.environmentTypes),
         "damage",
         "healing",
         "perception",
@@ -79,24 +79,24 @@ function prepareReservedTerms(): ReservedTermsRecord {
     ]);
 
     return {
-        armorGroups: new Set([...Object.keys(CONFIG.PF2E.armorGroups), ...universalReservedTerms]),
-        baseArmors: new Set([...Object.keys(CONFIG.PF2E.baseArmorTypes), ...universalReservedTerms]),
-        weaponCategories: new Set([...Object.keys(CONFIG.PF2E.weaponCategories), ...universalReservedTerms]),
-        weaponGroups: new Set([...Object.keys(CONFIG.PF2E.weaponGroups), ...universalReservedTerms]),
-        baseWeapons: new Set([...Object.keys(CONFIG.PF2E.baseWeaponTypes), ...universalReservedTerms]),
-        creatureTraits: new Set([...Object.keys(CONFIG.PF2E.creatureTraits), ...universalReservedTerms]),
+        armorGroups: new Set([...Object.keys(CONFIG.AVANT.armorGroups), ...universalReservedTerms]),
+        baseArmors: new Set([...Object.keys(CONFIG.AVANT.baseArmorTypes), ...universalReservedTerms]),
+        weaponCategories: new Set([...Object.keys(CONFIG.AVANT.weaponCategories), ...universalReservedTerms]),
+        weaponGroups: new Set([...Object.keys(CONFIG.AVANT.weaponGroups), ...universalReservedTerms]),
+        baseWeapons: new Set([...Object.keys(CONFIG.AVANT.baseWeaponTypes), ...universalReservedTerms]),
+        creatureTraits: new Set([...Object.keys(CONFIG.AVANT.creatureTraits), ...universalReservedTerms]),
         damageTypes: universalReservedTerms,
         equipmentTraits: new Set([
-            ...Object.keys(CONFIG.PF2E.equipmentTraits),
-            ...TRAIT_PROPAGATIONS.equipmentTraits.flatMap((t) => Object.keys(CONFIG.PF2E[t])),
+            ...Object.keys(CONFIG.AVANT.equipmentTraits),
+            ...TRAIT_PROPAGATIONS.equipmentTraits.flatMap((t) => Object.keys(CONFIG.AVANT[t])),
             ...universalReservedTerms,
         ]),
-        featTraits: new Set([...Object.keys(CONFIG.PF2E.actionTraits), ...universalReservedTerms]),
-        languages: new Set([...Object.keys(CONFIG.PF2E.languages), ...universalReservedTerms]),
-        shieldTraits: new Set([...Object.keys(CONFIG.PF2E.shieldTraits), ...universalReservedTerms]),
-        spellTraits: new Set([...Object.keys(CONFIG.PF2E.spellTraits), ...universalReservedTerms]),
+        featTraits: new Set([...Object.keys(CONFIG.AVANT.actionTraits), ...universalReservedTerms]),
+        languages: new Set([...Object.keys(CONFIG.AVANT.languages), ...universalReservedTerms]),
+        shieldTraits: new Set([...Object.keys(CONFIG.AVANT.shieldTraits), ...universalReservedTerms]),
+        spellTraits: new Set([...Object.keys(CONFIG.AVANT.spellTraits), ...universalReservedTerms]),
         skills: universalReservedTerms,
-        weaponTraits: new Set([...Object.keys(CONFIG.PF2E.weaponTraits), ...universalReservedTerms]),
+        weaponTraits: new Set([...Object.keys(CONFIG.AVANT.weaponTraits), ...universalReservedTerms]),
     };
 }
 
@@ -114,20 +114,20 @@ function readModuleHomebrewSettings(): ModuleHomebrewData {
     const activeModules = [...game.modules.entries()].filter(([_key, foundryModule]) => foundryModule.active);
 
     for (const [key, foundryModule] of activeModules) {
-        const homebrew = foundryModule.flags[key]?.["pf2e-homebrew"];
+        const homebrew = foundryModule.flags[key]?.["avant-homebrew"];
         if (!R.isPlainObject(homebrew)) continue;
 
         for (const [recordKey, elements] of Object.entries(homebrew)) {
             if (recordKey === "skills") {
                 if (!isSkillData(elements)) {
-                    console.warn(ErrorPF2e(`Homebrew record skills is malformed in module ${key}`).message);
+                    console.warn(ErrorAvant(`Homebrew record skills is malformed in module ${key}`).message);
                     continue;
                 }
 
                 for (const [slug, data] of Object.entries(elements.additional)) {
                     if (HomebrewElements.reservedTerms.skills.has(slug)) {
                         console.warn(
-                            ErrorPF2e(`Homebrew skill "${slug}" from module ${foundryModule.title} is a reserved term.`)
+                            ErrorAvant(`Homebrew skill "${slug}" from module ${foundryModule.title} is a reserved term.`)
                                 .message,
                         );
                     } else {
@@ -136,14 +136,14 @@ function readModuleHomebrewSettings(): ModuleHomebrewData {
                 }
             } else if (recordKey === "damageTypes") {
                 if (!R.isPlainObject(elements) || !isHomebrewCustomDamage(elements)) {
-                    console.warn(ErrorPF2e(`Homebrew record damageTypes is malformed in module ${key}`).message);
+                    console.warn(ErrorAvant(`Homebrew record damageTypes is malformed in module ${key}`).message);
                     continue;
                 }
 
                 for (const [slug, value] of Object.entries(elements)) {
                     if (HomebrewElements.reservedTerms.damageTypes.has(slug)) {
                         console.warn(
-                            ErrorPF2e(
+                            ErrorAvant(
                                 `Homebrew damage type "${slug}" from module ${foundryModule.title} is a reserved term.`,
                             ).message,
                         );
@@ -153,7 +153,7 @@ function readModuleHomebrewSettings(): ModuleHomebrewData {
                 }
             } else if (tupleHasValue(HOMEBREW_ELEMENT_KEYS, recordKey)) {
                 if (!R.isPlainObject(elements) || !isHomebrewFlagCategory(elements)) {
-                    console.warn(ErrorPF2e(`Homebrew record ${recordKey} is malformed in module ${key}`).message);
+                    console.warn(ErrorAvant(`Homebrew record ${recordKey} is malformed in module ${key}`).message);
                     continue;
                 }
 
@@ -177,7 +177,7 @@ function readModuleHomebrewSettings(): ModuleHomebrewData {
                     }
                 }
             } else {
-                console.warn(ErrorPF2e(`Invalid homebrew record "${recordKey}" in module ${key}`).message);
+                console.warn(ErrorAvant(`Invalid homebrew record "${recordKey}" in module ${key}`).message);
                 continue;
             }
         }
@@ -190,7 +190,7 @@ function prepareCleanup(listKey: HomebrewTraitKey, deletions: string[]): Migrati
     const Migration = class extends MigrationBase {
         static override version = MigrationRunnerBase.LATEST_SCHEMA_VERSION;
 
-        override async updateActor(source: ActorSourcePF2e) {
+        override async updateActor(source: ActorSourceAvant) {
             if (!(source.type === "character" || source.type === "npc")) {
                 return;
             }
@@ -249,7 +249,7 @@ function prepareCleanup(listKey: HomebrewTraitKey, deletions: string[]): Migrati
             }
         }
 
-        override async updateItem(source: ItemSourcePF2e) {
+        override async updateItem(source: ItemSourceAvant) {
             switch (listKey) {
                 // Creature traits can be on many items
                 case "creatureTraits": {

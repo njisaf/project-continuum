@@ -1,7 +1,7 @@
 import { CreatureTrait } from "@actor/creature/index.ts";
 import { Language } from "@actor/creature/types.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString } from "@util";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -26,7 +26,7 @@ export class Migration888RemasterLanguagesHeritages extends MigrationBase {
         tiefling: "nephilim",
     };
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type === "character" || source.type === "npc") {
             const traits: unknown = source.system.traits;
             if (R.isPlainObject(traits)) {
@@ -41,7 +41,7 @@ export class Migration888RemasterLanguagesHeritages extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.system.slug === "bloodline-genie") return;
 
         source.system = recursiveReplaceString(

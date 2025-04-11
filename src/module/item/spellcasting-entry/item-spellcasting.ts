@@ -1,6 +1,6 @@
-import type { CreaturePF2e } from "@actor";
+import type { CreatureAvant } from "@actor";
 import { AttributeString } from "@actor/types.ts";
-import type { PhysicalItemPF2e, SpellPF2e } from "@item";
+import type { PhysicalItemAvant, SpellAvant } from "@item";
 import { MagicTradition } from "@item/spell/types.ts";
 import type { Predicate } from "@system/predication.ts";
 import type { Statistic } from "@system/statistic/statistic.ts";
@@ -10,7 +10,7 @@ import { createCounteractStatistic } from "./helpers.ts";
 import type { CastOptions, SpellcastingEntry, SpellcastingSheetData } from "./types.ts";
 
 /** An in-memory spellcasting entry for items-only spellcasting */
-class ItemSpellcasting<TActor extends CreaturePF2e = CreaturePF2e> implements SpellcastingEntry<TActor> {
+class ItemSpellcasting<TActor extends CreatureAvant = CreatureAvant> implements SpellcastingEntry<TActor> {
     id: string;
 
     name: string;
@@ -65,7 +65,7 @@ class ItemSpellcasting<TActor extends CreaturePF2e = CreaturePF2e> implements Sp
         return true;
     }
 
-    canCast(spell: SpellPF2e, { origin }: { origin?: Maybe<PhysicalItemPF2e> } = {}): boolean {
+    canCast(spell: SpellAvant, { origin }: { origin?: Maybe<PhysicalItemAvant> } = {}): boolean {
         if (!origin || !spell.actor?.isOfType("creature")) return false;
         const rollOptions = new Set([
             ...this.actor.getRollOptions(),
@@ -75,7 +75,7 @@ class ItemSpellcasting<TActor extends CreaturePF2e = CreaturePF2e> implements Sp
         return this.castPredicate.test(rollOptions);
     }
 
-    async cast(spell: SpellPF2e, options: CastOptions = {}): Promise<void> {
+    async cast(spell: SpellAvant, options: CastOptions = {}): Promise<void> {
         const message = options.message ?? true;
         if (message && this.canCast(spell, { origin: spell.parentItem })) {
             spell.system.location.value = this.id;
@@ -99,7 +99,7 @@ class ItemSpellcasting<TActor extends CreaturePF2e = CreaturePF2e> implements Sp
     }
 }
 
-interface ItemsSpellcastingConstructorParams<TActor extends CreaturePF2e> {
+interface ItemsSpellcastingConstructorParams<TActor extends CreatureAvant> {
     id: string;
     name: string;
     actor: TActor;

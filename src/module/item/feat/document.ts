@@ -1,24 +1,24 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { CraftingAbility } from "@actor/character/crafting/ability.ts";
 import { ClassDCData } from "@actor/character/data.ts";
 import type { FeatGroup } from "@actor/character/feats/index.ts";
 import type { SenseData } from "@actor/creature/index.ts";
-import { ItemPF2e, type HeritagePF2e } from "@item";
+import { ItemAvant, type HeritageAvant } from "@item";
 import { getActionCostRollOptions, normalizeActionChangeData, processSanctification } from "@item/ability/helpers.ts";
 import { ActionCost, Frequency, RawItemChatData } from "@item/base/data/index.ts";
 import { Rarity } from "@module/data.ts";
-import { RuleElementOptions, RuleElementPF2e, RuleElementSource } from "@module/rules/index.ts";
-import type { UserPF2e } from "@module/user/index.ts";
-import { ErrorPF2e, objectHasKey, setHasElement, sluggify } from "@util";
+import { RuleElementOptions, RuleElementAvant, RuleElementSource } from "@module/rules/index.ts";
+import type { UserAvant } from "@module/user/index.ts";
+import { ErrorAvant, objectHasKey, setHasElement, sluggify } from "@util";
 import * as R from "remeda";
 import { FeatSource, FeatSystemData } from "./data.ts";
 import { featCanHaveKeyOptions, suppressFeats } from "./helpers.ts";
 import { FeatOrFeatureCategory, FeatTrait } from "./types.ts";
 import { FEATURE_CATEGORIES, FEAT_CATEGORIES } from "./values.ts";
 
-class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+class FeatAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     declare group: FeatGroup | null;
-    declare grants: (FeatPF2e<ActorPF2e> | HeritagePF2e<ActorPF2e>)[];
+    declare grants: (FeatAvant<ActorAvant> | HeritageAvant<ActorAvant>)[];
 
     /** If this ability can craft, what is the crafting ability */
     declare crafting: CraftingAbility | null;
@@ -27,7 +27,7 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     declare suppressed: boolean;
 
     static override get validTraits(): Record<FeatTrait, string> {
-        return CONFIG.PF2E.featTraits;
+        return CONFIG.AVANT.featTraits;
     }
 
     get category(): FeatOrFeatureCategory {
@@ -136,7 +136,7 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     override prepareActorData(): void {
         const actor = this.actor;
         if (!actor?.isOfType("character")) {
-            throw ErrorPF2e("Feats much be embedded in PC-type actors");
+            throw ErrorAvant("Feats much be embedded in PC-type actors");
         }
 
         // Exit early if the feat is being suppressed
@@ -170,14 +170,14 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
             const proficiency = ((): { rank: number } | null => {
                 if (slug === "perception") return actor.system.perception;
                 if (slug === "spellcasting") return proficiencies.spellcasting;
-                if (objectHasKey(CONFIG.PF2E.saves, slug)) return saves[slug];
-                if (objectHasKey(CONFIG.PF2E.weaponCategories, slug)) return proficiencies.attacks[slug];
-                if (objectHasKey(CONFIG.PF2E.armorCategories, slug)) return proficiencies.defenses[slug];
-                if (objectHasKey(CONFIG.PF2E.classTraits, slug)) {
+                if (objectHasKey(CONFIG.AVANT.saves, slug)) return saves[slug];
+                if (objectHasKey(CONFIG.AVANT.weaponCategories, slug)) return proficiencies.attacks[slug];
+                if (objectHasKey(CONFIG.AVANT.armorCategories, slug)) return proficiencies.defenses[slug];
+                if (objectHasKey(CONFIG.AVANT.classTraits, slug)) {
                     type PartialClassDCData = Pick<ClassDCData, "attribute" | "label" | "rank">;
                     const classDCs: Record<string, PartialClassDCData> = proficiencies.classDCs;
                     const attribute = increase.attribute ?? "str";
-                    return (classDCs[slug] ??= { attribute, label: CONFIG.PF2E.classTraits[slug], rank: 0 });
+                    return (classDCs[slug] ??= { attribute, label: CONFIG.AVANT.classTraits[slug], rank: 0 });
                 }
                 return null;
             })();
@@ -201,15 +201,15 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
                 // character to have low-light vision from any prior source, or that this feat has been taken twice.
                 const special = data.special;
                 const llvFeats = actor.itemTypes.feat.filter(
-                    (f: FeatPF2e) => f !== this && f.system.subfeatures.senses["low-light-vision"],
+                    (f: FeatAvant) => f !== this && f.system.subfeatures.senses["low-light-vision"],
                 );
-                const ancestryFeatures = (): FeatPF2e[] => {
+                const ancestryFeatures = (): FeatAvant[] => {
                     return ancestry
                         ? llvFeats.filter(
                               (f) =>
                                   f.category === "ancestryfeature" &&
                                   f.system.subfeatures.senses["low-light-vision"] &&
-                                  f.flags.pf2e.grantedBy?.id === ancestry.id,
+                                  f.flags.avant.grantedBy?.id === ancestry.id,
                           )
                         : [];
                 };
@@ -225,7 +225,7 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
                 const ancestryLLVSatisfied = ancestryHasLLV;
                 const takenTwiceSatisfied = () =>
                     actor.itemTypes.feat.some(
-                        (f: FeatPF2e) =>
+                        (f: FeatAvant) =>
                             f.sourceId === this.sourceId && f !== this && (f.system.level.taken ?? 1) <= levelTaken,
                     );
                 const llvAnywhereSatisfied = () =>
@@ -233,7 +233,7 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
                     heritageHasLLV() ||
                     backgroundHasLLV() ||
                     llvFeats.some(
-                        (f: FeatPF2e) =>
+                        (f: FeatAvant) =>
                             (f.system.level.taken ?? 1) <= levelTaken &&
                             (f.system.subfeatures.senses["low-light-vision"] || hasLLVRule(f.system.rules)),
                     );
@@ -264,11 +264,11 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
 
     /** Assigns the grants of this item based on the given item. */
     establishHierarchy(): void {
-        this.grants = Object.values(this.flags.pf2e.itemGrants).flatMap((grant) => {
+        this.grants = Object.values(this.flags.avant.itemGrants).flatMap((grant) => {
             const item = this.actor?.items.get(grant.id);
             return (item?.isOfType("feat") && !item.system.location) || item?.isOfType("heritage") ? [item] : [];
         });
-        for (const grant of this.grants.filter((g): g is FeatPF2e<NonNullable<TParent>> => g.isOfType("feat"))) {
+        for (const grant of this.grants.filter((g): g is FeatAvant<NonNullable<TParent>> => g.isOfType("feat"))) {
             grant.system.level.taken = this.system.level.taken;
         }
     }
@@ -286,18 +286,18 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         }
     }
 
-    override onPrepareSynthetics(this: FeatPF2e<ActorPF2e>): void {
+    override onPrepareSynthetics(this: FeatAvant<ActorAvant>): void {
         processSanctification(this);
     }
 
     /** Overriden to not create rule elements when suppressed */
-    override prepareRuleElements(options?: Omit<RuleElementOptions, "parent">): RuleElementPF2e[] {
+    override prepareRuleElements(options?: Omit<RuleElementOptions, "parent">): RuleElementAvant[] {
         if (this.suppressed) return [];
         return super.prepareRuleElements(options);
     }
 
     override async getChatData(
-        this: FeatPF2e<ActorPF2e>,
+        this: FeatAvant<ActorAvant>,
         htmlOptions: EnrichmentOptions = {},
     ): Promise<RawItemChatData> {
         const actor = this.actor;
@@ -308,18 +308,18 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
             actor.isOfType("character") &&
             classSlug &&
             this.system.traits.value.includes(classSlug)
-                ? this.system.traits.value.filter((t) => t === classSlug || !(t in CONFIG.PF2E.classTraits))
+                ? this.system.traits.value.filter((t) => t === classSlug || !(t in CONFIG.AVANT.classTraits))
                 : this.system.traits.value;
-        const traits = this.traitChatData(CONFIG.PF2E.featTraits, traitSlugs);
+        const traits = this.traitChatData(CONFIG.AVANT.featTraits, traitSlugs);
         const levelLabel =
-            this.isFeat && this.level > 0 ? game.i18n.format("PF2E.Item.Feat.LevelN", { level: this.level }) : null;
+            this.isFeat && this.level > 0 ? game.i18n.format("AVANT.Item.Feat.LevelN", { level: this.level }) : null;
         const rarity =
             this.rarity === "common"
                 ? null
                 : {
                       slug: this.rarity,
-                      label: CONFIG.PF2E.rarityTraits[this.rarity],
-                      description: CONFIG.PF2E.traitsDescriptions[this.rarity],
+                      label: CONFIG.AVANT.rarityTraits[this.rarity],
+                      description: CONFIG.AVANT.traitsDescriptions[this.rarity],
                   };
 
         return this.processChatData(htmlOptions, {
@@ -348,7 +348,7 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         const list = this.system.prerequisites?.value?.map((item) => item.value).join(", ") ?? "";
         return (
             (list
-                ? `<p><strong>${game.i18n.localize("PF2E.FeatPrereqLabel")}</strong> ${list}</p>` +
+                ? `<p><strong>${game.i18n.localize("AVANT.FeatPrereqLabel")}</strong> ${list}</p>` +
                   (_config.hr === false ? "" : "<hr>")
                 : "") + this.description
         );
@@ -361,7 +361,7 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     protected override async _preCreate(
         data: this["_source"],
         operation: DatabaseCreateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         // In case this was copied from an actor, clear the location if there's no parent.
         if (!this.parent) {
@@ -378,7 +378,7 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     protected override async _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) return super._preUpdate(changed, operation, user);
 
@@ -428,26 +428,26 @@ class FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
 
         if (this.onlyLevel1 && this.actor.level > 1) {
             const formatParams = { ...actorItemNames, actorLevel: this.actor.level };
-            const warning = game.i18n.format("PF2E.Item.Feat.Warning.TakenAfterLevel1", formatParams);
+            const warning = game.i18n.format("AVANT.Item.Feat.Warning.TakenAfterLevel1", formatParams);
             ui.notifications.warn(warning);
         }
 
         // Skip subsequent warnings if this feat is from a grant
-        if (this.flags.pf2e.grantedBy) return;
+        if (this.flags.avant.grantedBy) return;
 
         const slug = this.slug ?? sluggify(this.name);
         const timesTaken = this.actor.itemTypes.feat.filter((f) => f.slug === slug).length;
         const { maxTakable } = this;
         if (maxTakable === 1 && timesTaken > 1) {
-            ui.notifications.warn(game.i18n.format("PF2E.Item.Feat.Warning.TakenMoreThanOnce", actorItemNames));
+            ui.notifications.warn(game.i18n.format("AVANT.Item.Feat.Warning.TakenMoreThanOnce", actorItemNames));
         } else if (timesTaken > maxTakable) {
             const formatParams = { ...actorItemNames, maxTakable, timesTaken };
-            ui.notifications.warn(game.i18n.format("PF2E.Item.Feat.Warning.TakenMoreThanMax", formatParams));
+            ui.notifications.warn(game.i18n.format("AVANT.Item.Feat.Warning.TakenMoreThanMax", formatParams));
         }
     }
 }
 
-interface FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface FeatAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: FeatSource;
     system: FeatSystemData;
 
@@ -455,4 +455,4 @@ interface FeatPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends 
     readonly range?: never;
 }
 
-export { FeatPF2e };
+export { FeatAvant };

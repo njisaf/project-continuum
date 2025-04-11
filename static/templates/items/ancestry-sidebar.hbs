@@ -1,26 +1,26 @@
 <div class="inventory-details">
     <div class="form-group">
-        <label>{{localize "PF2E.HitPointsHeader"}}</label>
+        <label>{{localize "AVANT.HitPointsHeader"}}</label>
         <input type="number" name="system.hp" value="{{data.hp}}" />
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.SizeLabel"}}</label>
+        <label>{{localize "AVANT.SizeLabel"}}</label>
         <select name="system.size">
             {{selectOptions sizes selected=data.size labelAttr="label" localize=true}}
         </select>
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.Reach"}}</label>
+        <label>{{localize "AVANT.Reach"}}</label>
         <input type="number" name="system.reach" value="{{data.reach}}" />
     </div>
     <div class="form-group">
-        <label>{{localize "PF2E.Actor.Speed.LabelFeet"}}</label>
+        <label>{{localize "AVANT.Actor.Speed.LabelFeet"}}</label>
         <input type="number" name="system.speed" value="{{data.speed}}" />
     </div>
     <div class="form-group">
-        <label>{{localize "PF2E.Item.Ancestry.Vision.Label"}}</label>
+        <label>{{localize "AVANT.Item.Ancestry.Vision.Label"}}</label>
         <select name="system.vision">
             {{selectOptions visionTypeOptions selected=data.vision localize=true}}
         </select>

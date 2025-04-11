@@ -8,12 +8,12 @@
             {{#if (or modifier.enabled (not modifier.hideIfDisabled))}}
                 <li class="item {{#unless modifier.enabled}}no-effect{{/unless}}">
                     <span class="tag-legacy">
-                        {{localize (concat "PF2E.ModifierType." modifier.type)}}
+                        {{localize (concat "AVANT.ModifierType." modifier.type)}}
                     </span>
                     <span class="label">{{modifier.label}}</span>
                     <span class="data">{{numberFormat modifier.modifier decimals=0 sign=true}}</span>
                     {{#if modifier.custom}}
-                        <i class="fa-regular fa-circle-xmark remove-modifier" data-action="remove-modifier" data-slug="{{modifier.slug}}" title="{{localize "PF2E.RemoveModifierTitle"}}"></i>
+                        <i class="fa-regular fa-circle-xmark remove-modifier" data-action="remove-modifier" data-slug="{{modifier.slug}}" title="{{localize "AVANT.RemoveModifierTitle"}}"></i>
                     {{/if}}
                 </li>
             {{/if}}
@@ -26,20 +26,20 @@
                     <i class="fa-solid fa-minus-circle" data-action="decrement"></i>
                 </div>
 
-                <input type="text" class="add-modifier-name" placeholder={{localize "PF2E.ModifierNamePlaceholder"}}>
+                <input type="text" class="add-modifier-name" placeholder={{localize "AVANT.ModifierNamePlaceholder"}}>
 
                 <select class="tag-legacy add-modifier-type">
-                    <option value="">{{localize "PF2E.ModifierTypeTitle"}}</option>
-                    <option value="ability">{{localize "PF2E.ModifierType.ability"}}</option>
-                    <option value="proficiency">{{localize "PF2E.ModifierType.proficiency"}}</option>
-                    <option value="item">{{localize "PF2E.ModifierType.item"}}</option>
-                    <option value="status">{{localize "PF2E.ModifierType.status"}}</option>
-                    <option value="circumstance">{{localize "PF2E.ModifierType.circumstance"}}</option>
-                    {{#if abpEnabled}}<option value="potency">{{localize "PF2E.ModifierType.potency"}}</option>{{/if}}
-                    <option value="untyped">{{localize "PF2E.ModifierType.untyped"}}</option>
+                    <option value="">{{localize "AVANT.ModifierTypeTitle"}}</option>
+                    <option value="ability">{{localize "AVANT.ModifierType.ability"}}</option>
+                    <option value="proficiency">{{localize "AVANT.ModifierType.proficiency"}}</option>
+                    <option value="item">{{localize "AVANT.ModifierType.item"}}</option>
+                    <option value="status">{{localize "AVANT.ModifierType.status"}}</option>
+                    <option value="circumstance">{{localize "AVANT.ModifierType.circumstance"}}</option>
+                    {{#if abpEnabled}}<option value="potency">{{localize "AVANT.ModifierType.potency"}}</option>{{/if}}
+                    <option value="untyped">{{localize "AVANT.ModifierType.untyped"}}</option>
                 </select>
 
-                <button type="button" class="add-modifier-submit" data-action="create-custom-modifier">{{localize "PF2E.AddModifierTitle"}}</button>
+                <button type="button" class="add-modifier-submit" data-action="create-custom-modifier">{{localize "AVANT.AddModifierTitle"}}</button>
             </li>
         {{/if}}
     </ul>

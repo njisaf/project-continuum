@@ -1,7 +1,7 @@
-import type { ActorPF2e } from "@actor";
-import type { ShieldPF2e } from "./document.ts";
+import type { ActorAvant } from "@actor";
+import type { ShieldAvant } from "./document.ts";
 
-function setActorShieldData(shield: ShieldPF2e<ActorPF2e>): void {
+function setActorShieldData(shield: ShieldAvant<ActorAvant>): void {
     const { actor } = shield;
     const isEquippedShield = shield.isEquipped && actor.heldShield === shield;
     if (!isEquippedShield || !actor.isOfType("character", "npc")) {

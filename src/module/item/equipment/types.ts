@@ -1,3 +1,3 @@
-type EquipmentTrait = keyof typeof CONFIG.PF2E.equipmentTraits;
+type EquipmentTrait = keyof typeof CONFIG.AVANT.equipmentTraits;
 
 export type { EquipmentTrait };

@@ -1,4 +1,4 @@
-<div class="pf2e chat-card item-card"
+<div class="avant chat-card item-card"
     data-cast-rank="{{data.castRank}}"
     data-actor-id="{{actor.id}}"
     data-item-id="{{item.id}}"
@@ -10,7 +10,7 @@
         <h4 class="rank">{{data.rankLabel}}</h4>
     </header>
 
-    <section class="tags" data-tooltip-class="pf2e">
+    <section class="tags" data-tooltip-class="avant">
         {{#each data.traits as |trait|}}
             <span class="tag" data-trait="{{trait.name}}" data-tooltip="{{trait.description}}">{{trait.label}}</span>
         {{/each}}
@@ -19,7 +19,7 @@
     <section class="card-content">
         {{{data.description.value}}}
         {{#if data.materials.value}}
-            <p><strong>{{localize "PF2E.SpellRequirementsLabel"}}</strong> {{data.materials.value}}</p>
+            <p><strong>{{localize "AVANT.SpellRequirementsLabel"}}</strong> {{data.materials.value}}</p>
         {{/if}}
     </section>
 
@@ -39,9 +39,9 @@
                 <section class="owner-buttons">
                     {{#if data.check}}
                         <div class="spell-attack-buttons">
-                            <button type="button" data-action="spell-attack" data-visibility="owner">{{localize "PF2E.AttackLabel"}}</button>
-                            <button type="button" data-action="spell-attack-2" data-visibility="owner">{{localize "PF2E.MAPAbbreviationLabel" penalty=data.check.map1}}</button>
-                            <button type="button" data-action="spell-attack-3" data-visibility="owner">{{localize "PF2E.MAPAbbreviationLabel" penalty=data.check.map2}}</button>
+                            <button type="button" data-action="spell-attack" data-visibility="owner">{{localize "AVANT.AttackLabel"}}</button>
+                            <button type="button" data-action="spell-attack-2" data-visibility="owner">{{localize "AVANT.MAPAbbreviationLabel" penalty=data.check.map1}}</button>
+                            <button type="button" data-action="spell-attack-3" data-visibility="owner">{{localize "AVANT.MAPAbbreviationLabel" penalty=data.check.map2}}</button>
                         </div>
                     {{/if}}
                     {{#if data.hasDamage}}
@@ -51,21 +51,21 @@
                     {{/if}}
                     {{#if data.counteraction}}
                         <div class="spell-button">
-                            <button type="button" data-action="spell-counteract" data-visibility="owner">{{localize "PF2E.Item.Spell.Counteract.Label"}}</button>
+                            <button type="button" data-action="spell-counteract" data-visibility="owner">{{localize "AVANT.Item.Spell.Counteract.Label"}}</button>
                         </div>
                     {{/if}}
                     {{#if (and data.area (not data.isAura))}}
                         <div class="spell-button">
                             <button type="button" data-action="spell-template" data-visibility="owner">
-                                {{localize "PF2E.Item.Spell.MeasuredTemplate.Place" area=data.area.label}}
+                                {{localize "AVANT.Item.Spell.MeasuredTemplate.Place" area=data.area.label}}
                             </button>
-                            <button class="small hidden" type="button" data-action="spell-template-clear" data-visibility="owner" data-tooltip="{{localize "PF2E.Item.Spell.MeasuredTemplate.Clear"}}">
+                            <button class="small hidden" type="button" data-action="spell-template-clear" data-visibility="owner" data-tooltip="{{localize "AVANT.Item.Spell.MeasuredTemplate.Clear"}}">
                                 <i class="fa-solid fa-fw fa-trash"></i>
                             </button>
                         </div>
                     {{/if}}
                     {{#if (gt item.appliedOverlays.size 0)}}
-                        <button type="button" data-action="spell-variant" data-visibility="owner" data-original-id="{{item.original.id}}">{{localize "PF2E.Item.Spell.Variants.SelectOtherVariantLabel"}}</button>
+                        <button type="button" data-action="spell-variant" data-visibility="owner" data-original-id="{{item.original.id}}">{{localize "AVANT.Item.Spell.Variants.SelectOtherVariantLabel"}}</button>
                     {{/if}}
                 </section>
             {{/if}}

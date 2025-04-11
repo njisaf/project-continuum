@@ -6,7 +6,7 @@ import {
 } from "@actor/actions/index.ts";
 import { CheckResultCallback } from "@system/action-macros/types.ts";
 
-const PREFIX = "PF2E.Actions.LearnASpell";
+const PREFIX = "AVANT.Actions.LearnASpell";
 
 class LearnASpellActionVariant extends SingleCheckActionVariant {
     override async use(options: Partial<SingleCheckActionUseOptions>): Promise<CheckResultCallback[]> {

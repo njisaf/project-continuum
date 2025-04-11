@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -8,7 +8,7 @@ export class Migration733ItemBonusFromEquipment extends MigrationBase {
 
     slugs = new Set(["animal-skin", "stance-mountain-stance", "spell-effect-mage-armor"]);
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const compendiumItem = this.slugs.has(source.system.slug ?? "");
         const homebrewItem = !compendiumItem && source.type === "feat";
         if (!(compendiumItem || homebrewItem)) return;

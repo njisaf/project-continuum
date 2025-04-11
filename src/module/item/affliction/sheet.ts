@@ -1,6 +1,6 @@
-import { ItemPF2e, type AfflictionPF2e, type ConditionPF2e } from "@item";
+import { ItemAvant, type AfflictionAvant, type ConditionAvant } from "@item";
 import type { EffectTrait } from "@item/abstract-effect/types.ts";
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
 import { ConditionManager } from "@system/conditions/index.ts";
 import { DamageCategoryUnique } from "@system/damage/types.ts";
 import { htmlClosest, htmlQuery, htmlQueryAll } from "@util";
@@ -8,7 +8,7 @@ import { UUIDUtils } from "@util/uuid.ts";
 import * as R from "remeda";
 import type { AfflictionConditionData, AfflictionDamage, AfflictionOnset, AfflictionStageData } from "./data.ts";
 
-class AfflictionSheetPF2e extends ItemSheetPF2e<AfflictionPF2e> {
+class AfflictionSheetAvant extends ItemSheetAvant<AfflictionAvant> {
     static override get defaultOptions(): ItemSheetOptions {
         return {
             ...super.defaultOptions,
@@ -27,18 +27,18 @@ class AfflictionSheetPF2e extends ItemSheetPF2e<AfflictionPF2e> {
 
         return {
             ...sheetData,
-            itemType: game.i18n.localize(definingTrait ? CONFIG.PF2E.actionTraits[definingTrait] : "PF2E.LevelLabel"),
-            conditionTypes: R.omit(CONFIG.PF2E.conditionTypes, ["persistent-damage"]),
-            damageTypes: CONFIG.PF2E.damageTypes,
-            damageCategories: R.pick(CONFIG.PF2E.damageCategories, ["precision", "persistent", "splash"]),
-            durationUnits: R.omit(CONFIG.PF2E.timeUnits, ["encounter"]),
-            onsetUnits: R.omit(CONFIG.PF2E.timeUnits, ["encounter", "unlimited"]),
-            saves: CONFIG.PF2E.saves,
+            itemType: game.i18n.localize(definingTrait ? CONFIG.AVANT.actionTraits[definingTrait] : "AVANT.LevelLabel"),
+            conditionTypes: R.omit(CONFIG.AVANT.conditionTypes, ["persistent-damage"]),
+            damageTypes: CONFIG.AVANT.damageTypes,
+            damageCategories: R.pick(CONFIG.AVANT.damageCategories, ["precision", "persistent", "splash"]),
+            durationUnits: R.omit(CONFIG.AVANT.timeUnits, ["encounter"]),
+            onsetUnits: R.omit(CONFIG.AVANT.timeUnits, ["encounter", "unlimited"]),
+            saves: CONFIG.AVANT.saves,
             stages: await this.prepareStages(),
             stageOptions: Object.fromEntries(
                 Array.fromRange(this.item.maxStage).map((s) => [
                     s.toString(),
-                    game.i18n.format("PF2E.Item.Affliction.Stage", { stage: s }),
+                    game.i18n.format("AVANT.Item.Affliction.Stage", { stage: s }),
                 ]),
             ),
         };
@@ -61,7 +61,7 @@ class AfflictionSheetPF2e extends ItemSheetPF2e<AfflictionPF2e> {
 
             const effects = stage.effects.map((effect) => {
                 const document = effectDocuments.find((d) => d.uuid === effect.uuid);
-                if (!(document instanceof ItemPF2e)) return effect;
+                if (!(document instanceof ItemAvant)) return effect;
 
                 return {
                     ...effect,
@@ -194,11 +194,11 @@ class AfflictionSheetPF2e extends ItemSheetPF2e<AfflictionPF2e> {
         const stage = stages[stageId];
         if (!stage) return;
 
-        const item = await (async (): Promise<ItemPF2e | null> => {
+        const item = await (async (): Promise<ItemAvant | null> => {
             try {
                 const dataString = event.dataTransfer?.getData("text/plain");
                 const dropData = JSON.parse(dataString ?? "");
-                return (await ItemPF2e.fromDropData(dropData)) ?? null;
+                return (await ItemAvant.fromDropData(dropData)) ?? null;
             } catch {
                 return null;
             }
@@ -208,7 +208,7 @@ class AfflictionSheetPF2e extends ItemSheetPF2e<AfflictionPF2e> {
             const effects = [...stage.effects, { uuid: item.uuid }];
             this.item.update({ system: { stages: { [stageId]: { effects } } } });
         } else {
-            ui.notifications.error("PF2E.Item.Affliction.Error.RestrictedStageItem", { localize: true });
+            ui.notifications.error("AVANT.Item.Affliction.Error.RestrictedStageItem", { localize: true });
         }
     }
 
@@ -225,13 +225,13 @@ class AfflictionSheetPF2e extends ItemSheetPF2e<AfflictionPF2e> {
     }
 }
 
-interface AfflictionSheetData extends ItemSheetDataPF2e<AfflictionPF2e> {
-    conditionTypes: Omit<ConfigPF2e["PF2E"]["conditionTypes"], "persistent-damage">;
-    damageTypes: ConfigPF2e["PF2E"]["damageTypes"];
-    damageCategories: Pick<ConfigPF2e["PF2E"]["damageCategories"], DamageCategoryUnique>;
-    durationUnits: Omit<ConfigPF2e["PF2E"]["timeUnits"], "encounter">;
-    onsetUnits: Omit<ConfigPF2e["PF2E"]["timeUnits"], "unlimited" | "encounter">;
-    saves: ConfigPF2e["PF2E"]["saves"];
+interface AfflictionSheetData extends ItemSheetDataAvant<AfflictionAvant> {
+    conditionTypes: Omit<ConfigAvant["AVANT"]["conditionTypes"], "persistent-damage">;
+    damageTypes: ConfigAvant["AVANT"]["damageTypes"];
+    damageCategories: Pick<ConfigAvant["AVANT"]["damageCategories"], DamageCategoryUnique>;
+    durationUnits: Omit<ConfigAvant["AVANT"]["timeUnits"], "encounter">;
+    onsetUnits: Omit<ConfigAvant["AVANT"]["timeUnits"], "unlimited" | "encounter">;
+    saves: ConfigAvant["AVANT"]["saves"];
     stages: Record<string, AfflictionStageSheetData>;
     stageOptions: Record<string, string>;
 }
@@ -247,7 +247,7 @@ interface AfflictionStageSheetData extends AfflictionStageData {
 }
 
 interface AfflictionConditionSheetData extends AfflictionConditionData {
-    document: ConditionPF2e | null;
+    document: ConditionAvant | null;
 }
 
-export { AfflictionSheetPF2e };
+export { AfflictionSheetAvant };

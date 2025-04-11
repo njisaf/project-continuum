@@ -1,4 +1,4 @@
-import type { AbilityItemPF2e, FeatPF2e } from "@item";
+import type { AbilityItemAvant, FeatAvant } from "@item";
 import type { FeatSystemData } from "@item/feat/data.ts";
 import { DamageAlteration } from "@module/rules/rule-element/damage-alteration/alteration.ts";
 import * as R from "remeda";
@@ -17,7 +17,7 @@ class AbilityTraitToggles extends foundry.abstract.DataModel<AbilitySystemData |
     }
 
     /** The grandparent item */
-    get item(): AbilityItemPF2e | FeatPF2e {
+    get item(): AbilityItemAvant | FeatAvant {
         return this.parent.parent;
     }
 
@@ -58,7 +58,7 @@ class AbilityTraitToggles extends foundry.abstract.DataModel<AbilitySystemData |
                           selected: data.selected,
                           icon: "brain",
                           classes: "damage color mental",
-                          tooltip: CONFIG.PF2E.actionTraits[t],
+                          tooltip: CONFIG.AVANT.actionTraits[t],
                       }
                     : null;
             })

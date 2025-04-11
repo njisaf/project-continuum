@@ -1,0 +1,48 @@
+{
+    "_id": "k4AU5tjtngDOIqrB",
+    "folder": "oSLm3tiqZDq59ZK5",
+    "img": "systems/avant/icons/default-icons/heritage.svg",
+    "name": "Deep Fetchling",
+    "system": {
+        "ancestry": {
+            "name": "Fetchling",
+            "slug": "fetchling",
+            "uuid": "Compendium.avant.ancestries.Item.hIA3qiUsxvLZXrFP"
+        },
+        "description": {
+            "value": "<p>Your predecessors dwelled in the Shadow Plane's deepest, most treacherous regions. You might cast a denser shadow, have a slower pulse, or find comfort in the embrace of darkness. You gain cold or void resistance equal to half your level (minimum 1), chosen when you gain this heritage.</p>"
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Ancestry Guide"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    }
+                ],
+                "flag": "heritageDeepFetchling",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Fetchling.DeepFetchling.Prompt"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.heritageDeepFetchling}",
+                "value": "max(1,floor(@actor.level/2))"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "heritage"
+}

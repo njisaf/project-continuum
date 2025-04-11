@@ -1,29 +1,29 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { ActorSystemSource } from "@actor/data/base.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import type { ItemPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
-import type { ActiveEffectPF2e } from "@module/active-effect.ts";
-import type { ScenePF2e } from "@scene";
-import type { TokenDocumentPF2e } from "@scene/token-document/document.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import type { ItemAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
+import type { ActiveEffectAvant } from "@module/active-effect.ts";
+import type { SceneAvant } from "@scene";
+import type { TokenDocumentAvant } from "@scene/token-document/document.ts";
 import { MockCollection } from "./collection.ts";
 import { MockItem } from "./item.ts";
 
 export class MockActor {
-    _source: ActorSourcePF2e;
+    _source: ActorSourceAvant;
 
-    readonly parent: TokenDocumentPF2e<ScenePF2e | null> | null = null;
+    readonly parent: TokenDocumentAvant<SceneAvant | null> | null = null;
 
-    readonly items: MockCollection<ItemPF2e<ActorPF2e>> = new MockCollection();
+    readonly items: MockCollection<ItemAvant<ActorAvant>> = new MockCollection();
 
-    readonly effects: MockCollection<ActiveEffectPF2e<ActorPF2e>> = new MockCollection();
+    readonly effects: MockCollection<ActiveEffectAvant<ActorAvant>> = new MockCollection();
 
     prototypeToken = {};
 
     _itemGuid = 1;
 
     constructor(
-        data: ActorSourcePF2e,
+        data: ActorSourceAvant,
         public options: DocumentConstructionContext<null> = {},
     ) {
         this._source = fu.duplicate(data);
@@ -58,7 +58,7 @@ export class MockActor {
             } else {
                 this.items.set(
                     source._id ?? "",
-                    new MockItem(source, { parent: this as unknown as ActorPF2e }) as unknown as ItemPF2e<ActorPF2e>,
+                    new MockItem(source, { parent: this as unknown as ActorAvant }) as unknown as ItemAvant<ActorAvant>,
                 );
             }
         }
@@ -74,19 +74,19 @@ export class MockActor {
 
     static async updateDocuments(
         updates: Record<string, unknown>[] = [],
-        _operation: Partial<DatabaseUpdateOperation<TokenDocumentPF2e<ScenePF2e | null>>> = {},
-    ): Promise<ActorPF2e[]> {
+        _operation: Partial<DatabaseUpdateOperation<TokenDocumentAvant<SceneAvant | null>>> = {},
+    ): Promise<ActorAvant[]> {
         return updates.flatMap((update) => {
             const actor = game.actors.find((a) => a.id === update._id);
             if (!actor) throw Error("PANIC!");
 
-            const itemUpdates = (update.items ?? []) as DeepPartial<ItemSourcePF2e>[];
+            const itemUpdates = (update.items ?? []) as DeepPartial<ItemSourceAvant>[];
             delete update.items;
             fu.mergeObject(actor._source, update);
             for (const partial of itemUpdates) {
                 partial._id ??= "item1";
                 const source = actor._source.items.find(
-                    (maybeSource: ItemSourcePF2e) => maybeSource._id === partial._id,
+                    (maybeSource: ItemSourceAvant) => maybeSource._id === partial._id,
                 );
                 if (source) {
                     fu.mergeObject(source, partial);
@@ -111,8 +111,8 @@ export class MockActor {
 
     async createEmbeddedDocuments(
         type: string,
-        data: ItemSourcePF2e[],
-        _context: DatabaseCreateOperation<ActorPF2e>,
+        data: ItemSourceAvant[],
+        _context: DatabaseCreateOperation<ActorAvant>,
     ): Promise<void> {
         if (type === "Item") {
             for (const source of data) {
@@ -131,7 +131,7 @@ export class MockActor {
         this.prepareData();
     }
 
-    toObject(): ActorSourcePF2e {
+    toObject(): ActorSourceAvant {
         return fu.duplicate(this._source);
     }
 }

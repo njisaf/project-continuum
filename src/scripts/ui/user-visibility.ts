@@ -1,9 +1,9 @@
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
-import { TokenDocumentPF2e } from "@scene";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
+import { TokenDocumentAvant } from "@scene";
 import { htmlQueryAll, objectHasKey } from "@util";
 import { InlineRollLinks } from "./inline-roll-links.ts";
 
-class UserVisibilityPF2e {
+class UserVisibilityAvant {
     /** Edits HTML live based on permission settings. Used to hide certain blocks and values */
     static process(html: HTMLElement, options: ProcessOptions = {}): void {
         const visibilityElements = htmlQueryAll(html, "[data-visibility]");
@@ -40,15 +40,15 @@ class UserVisibilityPF2e {
 
         const hasOwnership = document?.isOwner ?? game.user.isGM;
         // Hide DC for explicit save buttons (such as in spell cards)
-        const dcSetting = game.pf2e.settings.metagame.dcs;
+        const dcSetting = game.avant.settings.metagame.dcs;
         const saveButtons = htmlQueryAll(html, "button[data-action=save]");
         const hideDC = !document?.hasPlayerOwner && !hasOwnership && !dcSetting;
         if (hideDC) {
             for (const button of saveButtons) {
                 const saveType = button.dataset.save;
-                if (objectHasKey(CONFIG.PF2E.saves, saveType)) {
-                    const saveName = game.i18n.localize(CONFIG.PF2E.saves[saveType]);
-                    button.innerText = game.i18n.format("PF2E.SavingThrowWithName", { saveName });
+                if (objectHasKey(CONFIG.AVANT.saves, saveType)) {
+                    const saveName = game.i18n.localize(CONFIG.AVANT.saves[saveType]);
+                    button.innerText = game.i18n.format("AVANT.SavingThrowWithName", { saveName });
                 }
             }
         } else if (!document?.hasPlayerOwner && !dcSetting) {
@@ -77,11 +77,11 @@ class UserVisibilityPF2e {
         InlineRollLinks.flavorDamageRolls(html, document);
     }
 
-    static processMessageSender(message: ChatMessagePF2e, html: HTMLElement): void {
+    static processMessageSender(message: ChatMessageAvant, html: HTMLElement): void {
         // Hide the sender name from the card if it can't be seen from the canvas
-        if (!game.pf2e.settings.tokens.nameVisibility) return;
+        if (!game.avant.settings.tokens.nameVisibility) return;
         const token =
-            message.token ?? (message.actor ? new TokenDocumentPF2e(message.actor.prototypeToken.toObject()) : null);
+            message.token ?? (message.actor ? new TokenDocumentAvant(message.actor.prototypeToken.toObject()) : null);
         if (token) {
             const sender = html.querySelector<HTMLElement>("h4.message-sender");
             const nameToHide = token.name.trim();
@@ -102,7 +102,7 @@ type UserVisibility = SetElement<typeof USER_VISIBILITIES>;
 
 interface ProcessOptions {
     document?: ClientDocument | null;
-    message?: ChatMessagePF2e | null;
+    message?: ChatMessageAvant | null;
 }
 
-export { USER_VISIBILITIES, UserVisibilityPF2e, type UserVisibility };
+export { USER_VISIBILITIES, UserVisibilityAvant, type UserVisibility };

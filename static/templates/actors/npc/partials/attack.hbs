@@ -41,14 +41,14 @@
         {{#if action.damageFormula}}
             <div class="subsection damage">
                 <button type="button" data-action="strike-damage">{{action.damageFormula}}</button>
-                <button type="button" data-action="strike-critical">{{localize "PF2E.CriticalDamageLabel"}}</button>
+                <button type="button" data-action="strike-critical">{{localize "AVANT.CriticalDamageLabel"}}</button>
             </div>
         {{/if}}
     </div>
 
     {{#if action.effects~}}
         <div class="effects">
-            {{~localize "PF2E.Actor.AttackEffects.PlusList" list=action.effects~}}
+            {{~localize "AVANT.Actor.AttackEffects.PlusList" list=action.effects~}}
         </div>
     {{~/if}}
 

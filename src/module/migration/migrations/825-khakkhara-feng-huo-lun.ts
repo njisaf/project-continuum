@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { BaseWeaponType } from "@item/weapon/types.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration825KhakkharaFengHuoLun extends MigrationBase {
     static override version = 0.825;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.img.endsWith("icons/equipment/weapons/khakkara.webp")) {
             source.img = source.img.replace("khakkara.webp", "khakkhara.webp") as ImageFilePath;
         }
@@ -26,8 +26,8 @@ export class Migration825KhakkharaFengHuoLun extends MigrationBase {
             fixBaseItemAndSlug("khakkara", "khakkhara");
             fixBaseItemAndSlug("wind-and-fire-wheel", "feng-huo-lun");
         } else if (source.type === "feat") {
-            const oldLink = "@UUID[Compendium.pf2e.equipment-srd.Khakkara]";
-            const newLink = "@UUID[Compendium.pf2e.equipment-srd.Khakkhara]";
+            const oldLink = "@UUID[Compendium.avant.equipment-srd.Khakkara]";
+            const newLink = "@UUID[Compendium.avant.equipment-srd.Khakkhara]";
 
             source.system.description.value = source.system.description.value.replace(oldLink, newLink);
 

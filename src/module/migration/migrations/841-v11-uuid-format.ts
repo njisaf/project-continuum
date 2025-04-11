@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { recursiveReplaceString } from "@util";
 import * as R from "remeda";
@@ -42,7 +42,7 @@ export class Migration841V11UUIDFormat extends MigrationBase {
         );
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source._stats.compendiumSource) {
             source._stats.compendiumSource = this.#replaceUUID(source._stats.compendiumSource, "Actor");
         }
@@ -66,7 +66,7 @@ export class Migration841V11UUIDFormat extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source._stats.compendiumSource) {
             source._stats.compendiumSource = this.#replaceUUID(source._stats.compendiumSource, "Item");
         }
@@ -103,8 +103,8 @@ export class Migration841V11UUIDFormat extends MigrationBase {
         description.value ??= "";
         description.value = this.#replaceUUIDsInLinks(description.value);
         description.value = description.value.replace(
-            /Compendium\.pf2e\.journals\.(?!JournalEntry)/g,
-            "Compendium.pf2e.journals.JournalEntry.",
+            /Compendium\.avant\.journals\.(?!JournalEntry)/g,
+            "Compendium.avant.journals.JournalEntry.",
         );
         description.gm &&= this.#replaceUUIDsInLinks(description.gm);
     }

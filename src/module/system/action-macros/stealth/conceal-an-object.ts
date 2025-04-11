@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.ConcealAnObject";
+const PREFIX = "AVANT.Actions.ConcealAnObject";
 
 function concealAnObject(options: SkillActionOptions): Promise<void> {
     const slug = options?.skill ?? "stealth";
@@ -30,7 +30,7 @@ const action = new SingleCheckAction({
     cost: 1,
     description: `${PREFIX}.Description`,
     difficultyClass: "perception",
-    img: "systems/pf2e/icons/conditions/hidden.webp",
+    img: "systems/avant/icons/conditions/hidden.webp",
     name: `${PREFIX}.Title`,
     notes: [
         { outcome: ["success", "criticalSuccess"], text: `${PREFIX}.Notes.success` },

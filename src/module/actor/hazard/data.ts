@@ -1,7 +1,7 @@
-import { ActorAttributes, ActorDetails, ActorHitPoints, BaseActorSourcePF2e } from "@actor/data/base.ts";
+import { ActorAttributes, ActorDetails, ActorHitPoints, BaseActorSourceAvant } from "@actor/data/base.ts";
 import { Immunity, Resistance, Weakness } from "@actor/data/iwr.ts";
 import { ActorHitPointsSchema, ActorSystemModel, ActorSystemSchema } from "@actor/data/model.ts";
-import type { ActorSizePF2e } from "@actor/data/size.ts";
+import type { ActorSizeAvant } from "@actor/data/size.ts";
 import type { InitiativeTraceData } from "@actor/initiative.ts";
 import type { NPCStrike } from "@actor/npc/index.ts";
 import type { ImmunityType, ResistanceType, WeaknessType } from "@actor/types.ts";
@@ -9,20 +9,20 @@ import type { Rarity, Size } from "@module/data.ts";
 import { PublicationField, RarityField } from "@module/model.ts";
 import { DataUnionField, LaxArrayField } from "@system/schema-data-fields.ts";
 import type { StatisticTraceData } from "@system/statistic/data.ts";
-import type { HazardPF2e } from "./document.ts";
+import type { HazardAvant } from "./document.ts";
 import type { HazardTrait } from "./types.ts";
 import fields = foundry.data.fields;
 
 /** The stored source data of a hazard actor */
-type HazardSource = BaseActorSourcePF2e<"hazard", HazardSystemSource>;
+type HazardSource = BaseActorSourceAvant<"hazard", HazardSystemSource>;
 
-class HazardSystemData extends ActorSystemModel<HazardPF2e, HazardSystemSchema> {
+class HazardSystemData extends ActorSystemModel<HazardAvant, HazardSystemSchema> {
     static override defineSchema(): HazardSystemSchema {
-        const hazardTraits: Record<HazardTrait, string> = CONFIG.PF2E.hazardTraits;
-        const sizes: Record<Size, string> = CONFIG.PF2E.actorSizes;
-        const immunityTypes: Record<ImmunityType, string> = CONFIG.PF2E.immunityTypes;
-        const weaknessTypes: Record<WeaknessType, string> = CONFIG.PF2E.weaknessTypes;
-        const resistanceTypes: Record<ResistanceType, string> = CONFIG.PF2E.resistanceTypes;
+        const hazardTraits: Record<HazardTrait, string> = CONFIG.AVANT.hazardTraits;
+        const sizes: Record<Size, string> = CONFIG.AVANT.actorSizes;
+        const immunityTypes: Record<ImmunityType, string> = CONFIG.AVANT.immunityTypes;
+        const weaknessTypes: Record<WeaknessType, string> = CONFIG.AVANT.weaknessTypes;
+        const resistanceTypes: Record<ResistanceType, string> = CONFIG.AVANT.resistanceTypes;
 
         const requiredInteger = ({ min, initial = min }: { min: number; initial?: number }) =>
             new fields.NumberField({ required: true, nullable: false, integer: true, min, initial });
@@ -168,7 +168,7 @@ class HazardSystemData extends ActorSystemModel<HazardPF2e, HazardSystemSchema> 
 }
 
 interface HazardSystemData
-    extends ActorSystemModel<HazardPF2e, HazardSystemSchema>,
+    extends ActorSystemModel<HazardAvant, HazardSystemSchema>,
         ModelPropsFromSchema<HazardSystemSchema> {
     traits: HazardTraits;
     attributes: HazardAttributes;
@@ -198,7 +198,7 @@ type HazardTraitsSchema = {
 };
 
 interface HazardTraits extends ModelPropsFromSchema<HazardTraitsSchema> {
-    size: ActorSizePF2e;
+    size: ActorSizeAvant;
 }
 
 type HazardSaveDataSchema = {

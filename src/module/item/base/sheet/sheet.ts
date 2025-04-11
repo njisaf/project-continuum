@@ -1,5 +1,5 @@
-import { ItemPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { Rarity } from "@module/data.ts";
 import { RuleElements, RuleElementSource } from "@module/rules/index.ts";
 import {
@@ -19,7 +19,7 @@ import {
 } from "@system/tag-selector/index.ts";
 import {
     createHTMLElement,
-    ErrorPF2e,
+    ErrorAvant,
     fontAwesomeIcon,
     htmlClosest,
     htmlQuery,
@@ -36,7 +36,7 @@ import type * as TinyMCE from "tinymce";
 import { CodeMirror } from "./codemirror.ts";
 import { RULE_ELEMENT_FORMS, RuleElementForm } from "./rule-element-form/index.ts";
 
-class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOptions> {
+class ItemSheetAvant<TItem extends ItemAvant> extends ItemSheet<TItem, ItemSheetOptions> {
     constructor(item: TItem, options: Partial<ItemSheetOptions> = {}) {
         super(item, options);
         this.options.classes.push(this.item.type);
@@ -44,13 +44,13 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
 
     static override get defaultOptions(): ItemSheetOptions {
         const options = super.defaultOptions;
-        options.classes.push("pf2e", "item");
+        options.classes.push("avant", "item");
 
         return {
             ...options,
             width: 695,
             height: 460,
-            template: "systems/pf2e/templates/items/sheet.hbs",
+            template: "systems/avant/templates/items/sheet.hbs",
             scrollY: [".tab.active", ".inventory-details", "div[data-rule-tab]"],
             tabs: [
                 {
@@ -87,7 +87,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
     }
 
     /** An alternative to super.getData() for subclasses that don't need this class's `getData` */
-    override async getData(options: Partial<ItemSheetOptions> = {}): Promise<ItemSheetDataPF2e<TItem>> {
+    override async getData(options: Partial<ItemSheetOptions> = {}): Promise<ItemSheetDataAvant<TItem>> {
         options.id = this.id;
         options.editable = this.isEditable;
         options.sheetConfig &&=
@@ -119,13 +119,13 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
         return {
             itemType: null,
             showTraits: !R.isEmpty(this.validTraits),
-            sidebarTitle: game.i18n.format("PF2E.Item.SidebarSummary", {
+            sidebarTitle: game.i18n.format("AVANT.Item.SidebarSummary", {
                 type: game.i18n.localize(`TYPES.Item.${this.item.type}`),
             }),
             sidebarTemplate: options.hasSidebar
-                ? `systems/pf2e/templates/items/${sluggify(item.type)}-sidebar.hbs`
+                ? `systems/avant/templates/items/${sluggify(item.type)}-sidebar.hbs`
                 : null,
-            detailsTemplate: `systems/pf2e/templates/items/${sluggify(item.type)}-details.hbs`,
+            detailsTemplate: `systems/avant/templates/items/${sluggify(item.type)}-details.hbs`,
             cssClass: this.isEditable ? "editable" : "locked",
             editable: this.isEditable,
             document: item,
@@ -141,11 +141,11 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
             title: this.title,
             user: { isGM: game.user.isGM },
             rarity: hasRarity ? (this.item.system.traits?.rarity ?? "common") : null,
-            rarities: CONFIG.PF2E.rarityTraits,
+            rarities: CONFIG.AVANT.rarityTraits,
             traits,
             traitTagifyData,
             otherTagsTagifyData,
-            enabledRulesUI: game.user.hasRole(game.settings.get("pf2e", "minimumRulesUI")),
+            enabledRulesUI: game.user.hasRole(game.settings.get("avant", "minimumRulesUI")),
             ruleEditing: !!this.editingRuleElement,
             rules: {
                 selection: {
@@ -153,7 +153,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
                     types: sortStringRecord(
                         Object.keys(RuleElements.all).reduce(
                             (result: Record<string, string>, key) =>
-                                fu.mergeObject(result, { [key]: `PF2E.RuleElement.${key}` }),
+                                fu.mergeObject(result, { [key]: `AVANT.RuleElement.${key}` }),
                             {},
                         ),
                     ),
@@ -164,10 +164,10 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
                     })),
                 ),
             },
-            proficiencyRanks: CONFIG.PF2E.proficiencyLevels, // lore only, will be removed later
+            proficiencyRanks: CONFIG.AVANT.proficiencyLevels, // lore only, will be removed later
             publicationLicenses: [
-                { label: "PF2E.Publication.License.OGL", value: "OGL" },
-                { label: "PF2E.Publication.License.ORC", value: "ORC" },
+                { label: "AVANT.Publication.License.OGL", value: "OGL" },
+                { label: "AVANT.Publication.License.ORC", value: "ORC" },
             ],
         };
     }
@@ -222,7 +222,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
     protected onTagSelector(anchor: HTMLAnchorElement): void {
         const selectorType = anchor.dataset.tagSelector ?? "";
         if (!["basic", "languages"].includes(selectorType)) {
-            throw ErrorPF2e("Item sheets can only use the basic tag selector");
+            throw ErrorAvant("Item sheets can only use the basic tag selector");
         }
         const objectProperty = anchor.dataset.property ?? "";
         const configTypes = (anchor.dataset.configTypes ?? "")
@@ -253,7 +253,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
             .reduce((options, item) => {
                 const key = item.slug ?? sluggify(item.name);
                 return { ...options, [key]: item.name };
-            }, fu.deepClone(CONFIG.PF2E.attackEffects));
+            }, fu.deepClone(CONFIG.AVANT.attackEffects));
     }
 
     override async activateEditor(
@@ -350,8 +350,8 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
         // Add implementation for viewing an item's roll options
         const viewRollOptionsElement = htmlQuery(rulesPanel, "a[data-action=view-roll-options]");
         viewRollOptionsElement?.addEventListener("click", async () => {
-            const content = await renderTemplate("systems/pf2e/templates/system/roll-options-tooltip.hbs", {
-                description: game.i18n.localize("PF2E.Item.Rules.Hint.RollOptions"),
+            const content = await renderTemplate("systems/avant/templates/system/roll-options-tooltip.hbs", {
+                description: game.i18n.localize("AVANT.Item.Rules.Hint.RollOptions"),
                 rollOptions: R.sortBy(this.item.getRollOptions("item").sort(), (o) => o.includes(":")),
             });
             game.tooltip.dismissLockedTooltips();
@@ -397,7 +397,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
                 const clipText = anchor.dataset.clipboard;
                 if (clipText) {
                     game.clipboard.copyPlainText(clipText);
-                    ui.notifications.info(game.i18n.format("PF2E.ClipboardNotification", { clipText }));
+                    ui.notifications.info(game.i18n.format("AVANT.ClipboardNotification", { clipText }));
                 }
             });
         }
@@ -445,7 +445,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
                     } catch (error) {
                         if (error instanceof Error) {
                             ui.notifications.error(
-                                game.i18n.format("PF2E.ErrorMessage.RuleElementSyntax", { message: error.message }),
+                                game.i18n.format("AVANT.ErrorMessage.RuleElementSyntax", { message: error.message }),
                             );
                             console.warn("Syntax error in rule element definition.", error.message, value);
                             throw error;
@@ -508,12 +508,12 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
         ) {
             const descriptionEditors = htmlQuery(html, ".tab[data-tab=description]");
             const mainEditor = htmlQuery(descriptionEditors, ".main .editor");
-            if (!mainEditor) throw ErrorPF2e("Unexpected error retrieving description editor");
+            if (!mainEditor) throw ErrorAvant("Unexpected error retrieving description editor");
 
             const addGMNotesLink = document.createElement("a");
             addGMNotesLink.className = addGMNotesLink.dataset.action = "add-gm-notes";
             addGMNotesLink.innerHTML = fontAwesomeIcon("fa-note-medical", { style: "regular" }).outerHTML;
-            addGMNotesLink.dataset.tooltip = "PF2E.Item.GMNotes.Add";
+            addGMNotesLink.dataset.tooltip = "AVANT.Item.GMNotes.Add";
             mainEditor.prepend(addGMNotesLink);
             addGMNotesLink.addEventListener("click", () => {
                 htmlQuery(descriptionEditors, ".gm-notes")?.classList.add("has-content");
@@ -558,9 +558,9 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
                 )
             ) {
                 refreshAnchor.classList.add("disabled");
-                refreshAnchor.dataset.tooltip = "PF2E.Item.RefreshFromCompendium.Tooltip.Disabled";
+                refreshAnchor.dataset.tooltip = "AVANT.Item.RefreshFromCompendium.Tooltip.Disabled";
             } else {
-                refreshAnchor.dataset.tooltip = "PF2E.Item.RefreshFromCompendium.Tooltip.Enabled";
+                refreshAnchor.dataset.tooltip = "AVANT.Item.RefreshFromCompendium.Tooltip.Enabled";
             }
         }
 
@@ -569,7 +569,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
             link.addEventListener("click", async (): Promise<void> => {
                 const uuid = htmlClosest(link, "li")?.dataset.uuid ?? "";
                 const item = await fromUuid(uuid);
-                if (!(item instanceof ItemPF2e)) {
+                if (!(item instanceof ItemAvant)) {
                     this.render(false);
                     ui.notifications.error(`An item with the UUID "${uuid}" no longer exists`);
                     return;
@@ -590,7 +590,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
             (this.actor || !this.item.uuid.startsWith("Compendium."))
         ) {
             buttons.unshift({
-                label: "PF2E.Item.RefreshFromCompendium.Label",
+                label: "AVANT.Item.RefreshFromCompendium.Label",
                 class: "refresh-from-compendium",
                 icon: "fa-solid fa-rotate",
                 onclick: () => {
@@ -610,7 +610,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
     }
 
     protected override async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
-        const expanded = fu.expandObject(formData) as DeepPartial<ItemSourcePF2e>;
+        const expanded = fu.expandObject(formData) as DeepPartial<ItemSourceAvant>;
 
         // If the submission is coming from a rule element, update that rule element
         // This avoids updates from forms if that form has a problematic implementation
@@ -620,7 +620,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
             const ruleForm = this.#ruleElementForms[idx];
             const itemRules = this.item.toObject().system.rules;
             if (idx >= itemRules.length || !ruleForm) {
-                throw ErrorPF2e(`Invalid rule form update, no rule form available at index ${idx}`);
+                throw ErrorAvant(`Invalid rule form update, no rule form available at index ${idx}`);
             }
 
             const incomingData = expanded.system?.rules?.[idx];
@@ -653,7 +653,7 @@ class ItemSheetPF2e<TItem extends ItemPF2e> extends ItemSheet<TItem, ItemSheetOp
     }
 }
 
-interface ItemSheetDataPF2e<TItem extends ItemPF2e> extends ItemSheetData<TItem> {
+interface ItemSheetDataAvant<TItem extends ItemAvant> extends ItemSheetData<TItem> {
     /** The item type label that shows at the top right (for example, "Feat" for "Feat 6") */
     itemType: string | null;
     showTraits: boolean;
@@ -673,7 +673,7 @@ interface ItemSheetDataPF2e<TItem extends ItemPF2e> extends ItemSheetData<TItem>
     enabledRulesUI: boolean;
     ruleEditing: boolean;
     rarity: Rarity | null;
-    rarities: typeof CONFIG.PF2E.rarityTraits;
+    rarities: typeof CONFIG.AVANT.rarityTraits;
     traits: SheetOptions | null;
     traitTagifyData: TagifyEntry[] | null;
     otherTagsTagifyData: TagifyEntry[] | null;
@@ -688,12 +688,12 @@ interface ItemSheetDataPF2e<TItem extends ItemPF2e> extends ItemSheetData<TItem>
     };
     publicationLicenses: FormSelectOption[];
     /** Lore only, will be removed later */
-    proficiencyRanks: typeof CONFIG.PF2E.proficiencyLevels;
+    proficiencyRanks: typeof CONFIG.AVANT.proficiencyLevels;
 }
 
 interface ItemSheetOptions extends DocumentSheetOptions {
     hasSidebar: boolean;
 }
 
-export { ItemSheetPF2e };
-export type { ItemSheetDataPF2e, ItemSheetOptions };
+export { ItemSheetAvant };
+export type { ItemSheetDataAvant, ItemSheetOptions };

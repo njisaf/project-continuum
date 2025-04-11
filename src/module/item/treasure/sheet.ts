@@ -1,14 +1,14 @@
 import { ItemSheetOptions } from "@item/base/sheet/sheet.ts";
-import { PhysicalItemSheetData, PhysicalItemSheetPF2e } from "@item/physical/index.ts";
+import { PhysicalItemSheetData, PhysicalItemSheetAvant } from "@item/physical/index.ts";
 import * as R from "remeda";
-import type { TreasurePF2e } from "./document.ts";
+import type { TreasureAvant } from "./document.ts";
 
-export class TreasureSheetPF2e extends PhysicalItemSheetPF2e<TreasurePF2e> {
+export class TreasureSheetAvant extends PhysicalItemSheetAvant<TreasureAvant> {
     override async getData(options?: Partial<ItemSheetOptions>): Promise<TreasureSheetData> {
         return {
             ...(await super.getData(options)),
-            currencies: CONFIG.PF2E.currencies,
-            stackGroups: R.pick(CONFIG.PF2E.stackGroups, ["coins", "gems"]),
+            currencies: CONFIG.AVANT.currencies,
+            stackGroups: R.pick(CONFIG.AVANT.stackGroups, ["coins", "gems"]),
         };
     }
 
@@ -21,7 +21,7 @@ export class TreasureSheetPF2e extends PhysicalItemSheetPF2e<TreasurePF2e> {
     }
 }
 
-interface TreasureSheetData extends PhysicalItemSheetData<TreasurePF2e> {
-    currencies: ConfigPF2e["PF2E"]["currencies"];
-    stackGroups: Pick<typeof CONFIG.PF2E.stackGroups, "coins" | "gems">;
+interface TreasureSheetData extends PhysicalItemSheetData<TreasureAvant> {
+    currencies: ConfigAvant["AVANT"]["currencies"];
+    stackGroups: Pick<typeof CONFIG.AVANT.stackGroups, "coins" | "gems">;
 }

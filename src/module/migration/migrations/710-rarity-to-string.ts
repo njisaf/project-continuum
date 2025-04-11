@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 export class Migration710RarityToString extends MigrationBase {
@@ -11,11 +11,11 @@ export class Migration710RarityToString extends MigrationBase {
         }
     }
 
-    override async updateActor(actorSource: ActorSourcePF2e): Promise<void> {
+    override async updateActor(actorSource: ActorSourceAvant): Promise<void> {
         if ("traits" in actorSource.system) this.updateTraits(actorSource.system.traits ?? null);
     }
 
-    override async updateItem(itemSource: ItemSourcePF2e): Promise<void> {
+    override async updateItem(itemSource: ItemSourceAvant): Promise<void> {
         if ("traits" in itemSource.system) this.updateTraits(itemSource.system.traits ?? null);
     }
 }

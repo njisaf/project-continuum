@@ -1,18 +1,18 @@
-import type { ActorPF2e, CreaturePF2e } from "@actor";
+import type { ActorAvant, CreatureAvant } from "@actor";
 import { createShoddyPenalty } from "@actor/character/helpers.ts";
-import { ModifierPF2e, StatisticModifier } from "@actor/modifiers.ts";
+import { ModifierAvant, StatisticModifier } from "@actor/modifiers.ts";
 import { AttributeString } from "@actor/types.ts";
-import type { ArmorPF2e } from "@item";
+import type { ArmorAvant } from "@item";
 import { ZeroToFour } from "@module/data.ts";
 import { extractModifierAdjustments } from "@module/rules/helpers.ts";
 import { sluggify } from "@util";
 import * as R from "remeda";
 import { Statistic, StatisticData, StatisticTraceData } from "./index.ts";
 
-class ArmorStatistic<TActor extends ActorPF2e = ActorPF2e> extends Statistic<TActor> {
+class ArmorStatistic<TActor extends ActorAvant = ActorAvant> extends Statistic<TActor> {
     details: string;
 
-    get item(): ArmorPF2e<TActor> | null {
+    get item(): ArmorAvant<TActor> | null {
         return this.actor.isOfType("character") ? this.actor.wornArmor : null;
     }
 
@@ -27,7 +27,7 @@ class ArmorStatistic<TActor extends ActorPF2e = ActorPF2e> extends Statistic<TAc
             attribute,
             domains,
             proficient: data.rank > 0,
-            dc: { label: "PF2E.ArmorClassLabel", domains: ["ac"], modifiers: [] },
+            dc: { label: "AVANT.ArmorClassLabel", domains: ["ac"], modifiers: [] },
         };
 
         super(actor, fullData);
@@ -38,13 +38,13 @@ class ArmorStatistic<TActor extends ActorPF2e = ActorPF2e> extends Statistic<TAc
     }
 
     /** If this statistic belongs to a PC, create bonuses and penalties from their worn armor */
-    #createBonusesAndPenalties(): ModifierPF2e[] {
+    #createBonusesAndPenalties(): ModifierAvant[] {
         const { actor } = this;
 
         const armor = actor.isOfType("character") ? actor.wornArmor : null;
         const armorSlug = armor?.baseType ?? armor?.slug ?? sluggify(armor?.name ?? "");
         const itemBonus = armor
-            ? new ModifierPF2e({
+            ? new ModifierAvant({
                   label: armor.name,
                   type: "item",
                   slug: armorSlug,
@@ -62,7 +62,7 @@ class ArmorStatistic<TActor extends ActorPF2e = ActorPF2e> extends Statistic<TAc
         );
     }
 
-    #createShieldBonus(): ModifierPF2e | null {
+    #createShieldBonus(): ModifierAvant | null {
         const { actor } = this;
         if (!actor.isOfType("character", "npc")) return null;
 
@@ -70,7 +70,7 @@ class ArmorStatistic<TActor extends ActorPF2e = ActorPF2e> extends Statistic<TAc
         const slug = "raised-shield";
 
         return shieldData.raised && !shieldData.broken
-            ? new ModifierPF2e({
+            ? new ModifierAvant({
                   label: shieldData.name,
                   slug,
                   adjustments: extractModifierAdjustments(
@@ -84,7 +84,7 @@ class ArmorStatistic<TActor extends ActorPF2e = ActorPF2e> extends Statistic<TAc
             : null;
     }
 
-    override getTraceData(this: ArmorStatistic<CreaturePF2e>): ArmorClassTraceData<AttributeString>;
+    override getTraceData(this: ArmorStatistic<CreatureAvant>): ArmorClassTraceData<AttributeString>;
     override getTraceData(): ArmorClassTraceData;
     override getTraceData(): ArmorClassTraceData {
         return {

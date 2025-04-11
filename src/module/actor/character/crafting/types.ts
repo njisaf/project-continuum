@@ -1,4 +1,4 @@
-import { PhysicalItemPF2e } from "@item";
+import { PhysicalItemAvant } from "@item";
 import { Predicate, RawPredicate } from "@system/predication.ts";
 
 interface CraftingFormulaData {
@@ -14,7 +14,7 @@ interface PreparedFormulaData extends CraftingFormulaData {
 
 /** A crafting formula whose item has been loaded */
 interface CraftingFormula extends CraftingFormulaData {
-    item: PhysicalItemPF2e;
+    item: PhysicalItemAvant;
     batchSize: number;
     dc: number;
 }

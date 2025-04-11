@@ -1,11 +1,11 @@
 import { SenseData } from "@actor/creature/data.ts";
 import { SenseAcuity } from "@actor/creature/index.ts";
 import { SENSES_WITH_MANDATORY_ACUITIES, SENSES_WITH_UNLIMITED_RANGE, SENSE_TYPES } from "@actor/creature/values.ts";
-import { ActorSourcePF2e, CharacterSource } from "@actor/data/index.ts";
+import { ActorSourceAvant, CharacterSource } from "@actor/data/index.ts";
 import { NPCPerceptionSource } from "@actor/npc/data.ts";
 import { CORE_SKILL_SLUGS, SAVE_TYPES } from "@actor/values.ts";
 import { ARMOR_CATEGORIES } from "@item/armor/values.ts";
-import { AncestrySource, FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { AncestrySource, FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { HeritageSource } from "@item/heritage/data.ts";
 import { WEAPON_CATEGORIES } from "@item/weapon/values.ts";
 import { recursiveReplaceString, setHasElement, sluggify, tupleHasValue } from "@util";
@@ -16,7 +16,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration914MovePerceptionSenses extends MigrationBase {
     static override version = 0.914;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type === "character" || source.type === "npc") {
             const attributes: OldAttributesSource = source.system.attributes;
             if ("initiative" in attributes) {
@@ -61,7 +61,7 @@ export class Migration914MovePerceptionSenses extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         for (const rule of source.system.rules) {
             if (rule.key === "Sense" && "selector" in rule && typeof rule.selector === "string") {
                 rule.selector = sluggify(rule.selector);
@@ -78,7 +78,7 @@ export class Migration914MovePerceptionSenses extends MigrationBase {
             source.system.rules = source.system.rules.map((r) =>
                 recursiveReplaceString(r, (s) => s.replace(pattern, fieldName)),
             );
-            source.flags.pf2e &&= recursiveReplaceString(source.flags.pf2e, (s) => s.replace(pattern, fieldName));
+            source.flags.avant &&= recursiveReplaceString(source.flags.avant, (s) => s.replace(pattern, fieldName));
         }
 
         if (source.type === "ancestry") {
@@ -87,7 +87,7 @@ export class Migration914MovePerceptionSenses extends MigrationBase {
         } else if (source.type === "feat" && source.system.slug === "multilingual") {
             const ternary =
                 "ternary(eq(@actor.system.skills.soc.rank, 4), 2, ternary(eq(@actor.system.skills.soc.rank, 3), 1, 0))";
-            const flagPath = "flags.pf2e.multilingualTaken";
+            const flagPath = "flags.avant.multilingualTaken";
             const rules = [
                 { key: "ActiveEffectLike", mode: "add", path: "system.build.languages.max", value: ternary },
                 { key: "ActiveEffectLike", mode: "override", path: flagPath, priority: 19, value: 0 },
@@ -230,7 +230,7 @@ export class Migration914MovePerceptionSenses extends MigrationBase {
         }
 
         if (customChangesFeat.system?.subfeatures) {
-            source.items.push(customChangesFeat as ItemSourcePF2e);
+            source.items.push(customChangesFeat as ItemSourceAvant);
         }
     }
 

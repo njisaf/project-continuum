@@ -1,7 +1,7 @@
 {
-    "name": "foundry-pf2e",
-    "version": "6.11.1",
-    "description": "",
+    "name": "foundry-avant",
+    "version": "0.0.1",
+    "description": "Avant system for Foundry VTT, forked from Avant",
     "private": true,
     "type": "module",
     "scripts": {
@@ -21,7 +21,7 @@
         "prettier:scss-svelte": "prettier --check src/styles src/**/*.svelte",
         "lint:fix": "eslint --fix && prettier --write src/styles src/**/*.svelte"
     },
-    "author": "The PF2e System Developers",
+    "author": "The Avant System Developers",
     "license": "Apache-2.0",
     "engines": {
         "node": ">=20.15.0"

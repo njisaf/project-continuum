@@ -1,6 +1,6 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import type { ItemPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import type { ItemAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -8,18 +8,18 @@ import { MigrationBase } from "../base.ts";
 export class Migration738UpdateLaughingShadow extends MigrationBase {
     static override version = 0.738;
 
-    #shadowPromise = fromUuid<ItemPF2e>("Compendium.pf2e.classfeatures.3gVDqDPSz4fB5T9G");
+    #shadowPromise = fromUuid<ItemAvant>("Compendium.avant.classfeatures.3gVDqDPSz4fB5T9G");
 
-    #cascadePromise = fromUuid<ItemPF2e>("Compendium.pf2e.feature-effects.fsjO5oTKttsbpaKl");
+    #cascadePromise = fromUuid<ItemAvant>("Compendium.avant.feature-effects.fsjO5oTKttsbpaKl");
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
-        const rollOptionsAll = source.flags.pf2e?.rollOptions?.all;
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
+        const rollOptionsAll = source.flags.avant?.rollOptions?.all;
         if (rollOptionsAll instanceof Object && "feature:laughing-shadow:damage" in rollOptionsAll) {
             rollOptionsAll["-=feature:laughing-shadow:damage"] = false;
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "feat" && source.system.slug === "laughing-shadow") {
             const laughingShadow = await this.#shadowPromise;
             if (!laughingShadow) return;

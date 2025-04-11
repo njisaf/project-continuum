@@ -1,14 +1,14 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { transferItemsBetweenActors } from "@actor/helpers.js";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 
-class LootNPCsPopup extends FormApplication<ActorPF2e> {
+class LootNPCsPopup extends FormApplication<ActorAvant> {
     static override get defaultOptions(): FormApplicationOptions {
         const options = super.defaultOptions;
         options.id = "loot-NPCs";
         options.classes = [];
         options.title = "Loot NPCs";
-        options.template = "systems/pf2e/templates/actors/loot/loot-npcs-popup.hbs";
+        options.template = "systems/avant/templates/actors/loot/loot-npcs-popup.hbs";
         options.width = "auto";
         return options;
     }
@@ -37,7 +37,7 @@ class LootNPCsPopup extends FormApplication<ActorPF2e> {
         for (let i = 0; i < selectionData.length; i++) {
             const token = canvas.tokens.placeables.find((token) => token.actor && token.id === this.form[i]?.id);
             if (!token) {
-                throw ErrorPF2e(`Token ${this.form[i]?.id} not found`);
+                throw ErrorAvant(`Token ${this.form[i]?.id} not found`);
             }
 
             if (selectionData[i] && token.actor) {
@@ -47,7 +47,7 @@ class LootNPCsPopup extends FormApplication<ActorPF2e> {
     }
 }
 
-interface PopupData extends FormApplicationData<ActorPF2e> {
+interface PopupData extends FormApplicationData<ActorAvant> {
     tokenInfo: {
         id: string;
         name: string;

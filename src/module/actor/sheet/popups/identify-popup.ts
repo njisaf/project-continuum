@@ -1,23 +1,23 @@
 import { IdentifyAlchemyDCs, IdentifyMagicDCs, getItemIdentificationDCs } from "@item/identification.ts";
-import type { PhysicalItemPF2e } from "@item/physical/index.ts";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import type { PhysicalItemAvant } from "@item/physical/index.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import * as R from "remeda";
 
-export class IdentifyItemPopup extends FormApplication<PhysicalItemPF2e> {
+export class IdentifyItemPopup extends FormApplication<PhysicalItemAvant> {
     static override get defaultOptions(): FormApplicationOptions {
         return {
             ...super.defaultOptions,
             id: "identify-item",
-            title: game.i18n.localize("PF2E.identification.Identify"),
-            template: "systems/pf2e/templates/actors/identify-item.hbs",
+            title: game.i18n.localize("AVANT.identification.Identify"),
+            template: "systems/avant/templates/actors/identify-item.hbs",
             width: "auto",
             classes: ["identify-popup"],
         };
     }
 
     dcs = getItemIdentificationDCs(this.object, {
-        pwol: game.pf2e.settings.variants.pwol.enabled,
-        notMatchingTraditionModifier: game.settings.get("pf2e", "identifyMagicNotMatchingTraditionModifier"),
+        pwol: game.avant.settings.variants.pwol.enabled,
+        notMatchingTraditionModifier: game.settings.get("avant", "identifyMagicNotMatchingTraditionModifier"),
     });
 
     override async getData(): Promise<IdentifyPopupData> {
@@ -49,7 +49,7 @@ export class IdentifyItemPopup extends FormApplication<PhysicalItemPF2e> {
                   ? "identify-alchemy"
                   : "recall-knowledge";
 
-            const content = await renderTemplate("systems/pf2e/templates/actors/identify-item-chat-skill-checks.hbs", {
+            const content = await renderTemplate("systems/avant/templates/actors/identify-item-chat-skill-checks.hbs", {
                 identifiedName,
                 action,
                 skills: R.omit(dcs, ["dc"]),
@@ -57,7 +57,7 @@ export class IdentifyItemPopup extends FormApplication<PhysicalItemPF2e> {
                 uuid: item.uuid,
             });
 
-            await ChatMessagePF2e.create({ author: game.user.id, content });
+            await ChatMessageAvant.create({ author: game.user.id, content });
         });
     }
 

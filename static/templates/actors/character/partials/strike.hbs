@@ -10,7 +10,7 @@
                 {{#if action.item.isTemporary}}
                     <i
                         class="fa-solid fa-circle-info"
-                        data-tooltip="PF2E.TemporaryItemToolTip"
+                        data-tooltip="AVANT.TemporaryItemToolTip"
                         data-tooltip-direction="RIGHT"
                     ></i>
                 {{/if}}
@@ -21,16 +21,16 @@
             <!-- ATTACK/DAMAGE -->
             {{#if action.canStrike}}{{#> attackDamage action}}{{/attackDamage}}{{/if}}
         {{else if (not action.handsAvailable)}}
-            <span class="hands-occupied">{{localize "PF2E.Actor.Character.HandsOccupied"}}</span>
+            <span class="hands-occupied">{{localize "AVANT.Actor.Character.HandsOccupied"}}</span>
         {{/if}}
 
         {{#if (and action.altUsages action.ready)}}
             {{#each action.altUsages as |usage|}}
                 <div class="alt-usage" data-tooltip-direction="LEFT">
                     {{#if usage.item.isThrown}}
-                        <img class="alt-usage-icon" src="systems/pf2e/icons/mdi/thrown.svg" data-tooltip="{{localize "PF2E.Item.Weapon.ThrownUsage.Label"}}" />
+                        <img class="alt-usage-icon" src="systems/avant/icons/mdi/thrown.svg" data-tooltip="{{localize "AVANT.Item.Weapon.ThrownUsage.Label"}}" />
                     {{else}}
-                        <img class="alt-usage-icon" src="systems/pf2e/icons/mdi/sword.svg" data-tooltip="{{localize "PF2E.Item.Weapon.MeleeUsage.Label"}}" />
+                        <img class="alt-usage-icon" src="systems/avant/icons/mdi/sword.svg" data-tooltip="{{localize "AVANT.Item.Weapon.MeleeUsage.Label"}}" />
                     {{/if}}
                     {{#> attackDamage usage isAltUsage=true}}{{/attackDamage}}
                 </div>
@@ -42,7 +42,7 @@
                 <select class="linked"
                     data-action="link-ammo"
                     {{#if action.ammunition.selected}} data-compatible="{{action.ammunition.selected.compatible}}"{{/if}}>
-                    {{selectOptions action.ammunition.compatible selected=action.ammunition.selected.id valueAttr="id" blank="PF2E.NoAmmoLabel" localize=true}}
+                    {{selectOptions action.ammunition.compatible selected=action.ammunition.selected.id valueAttr="id" blank="AVANT.NoAmmoLabel" localize=true}}
                 </select>
 
                 <span class="magazine" data-item-id="{{action.item.id}}">
@@ -79,9 +79,9 @@
             <p>{{{localize action.description}}}</p>
             <hr />
             <dl>
-                <dt>{{{localize "PF2E.CritSuccess"}}}</dt>
+                <dt>{{{localize "AVANT.CritSuccess"}}}</dt>
                 <dd>{{{localize action.criticalSuccess}}}</dd>
-                <dt>{{{localize "PF2E.Success"}}}</dt>
+                <dt>{{{localize "AVANT.Success"}}}</dt>
                 <dd>{{{localize action.success}}}</dd>
             </dl>
         </div>
@@ -96,9 +96,9 @@
                 <span class="tag tag_secondary">{{action.item.system.reload.label}}</span>
             {{/if}}
             {{#if action.item.system.maxRange}}
-                <span class="tag tag_secondary">{{localize (concat "PF2E.TraitRange" action.item.system.maxRange)}}</span>
+                <span class="tag tag_secondary">{{localize (concat "AVANT.TraitRange" action.item.system.maxRange)}}</span>
             {{else if action.item.system.range}}
-                <span class="tag tag_secondary">{{localize (concat "PF2E.TraitRangeIncrement" action.item.system.range)}}</span>
+                <span class="tag tag_secondary">{{localize (concat "AVANT.TraitRangeIncrement" action.item.system.range)}}</span>
             {{/if}}
         </div>
     </div>
@@ -109,10 +109,10 @@
         {{#each variants as |variant index|}}
             <button type="button" class="tag tag_secondary variant-strike" data-action="strike-attack" data-variant-index="{{index}}"
                 {{#if ../isAltUsage}} data-alt-usage="{{#if ../item.isThrown}}thrown{{else}}melee{{/if}}"{{/if}}
-                {{#if (eq ../quantity 0)}} disabled data-tooltip="{{localize "PF2E.ErrorMessage.WeaponQuantityZero"}}"{{/if}}
+                {{#if (eq ../quantity 0)}} disabled data-tooltip="{{localize "AVANT.ErrorMessage.WeaponQuantityZero"}}"{{/if}}
             >
                 {{#if (eq index 0)}}
-                    <span class="name">{{localize "PF2E.WeaponStrikeLabel"}}</span>
+                    <span class="name">{{localize "AVANT.WeaponStrikeLabel"}}</span>
                     <span class="action-glyph">{{../glyph}}</span>
                 {{/if}}
                 {{variant.label}}
@@ -121,10 +121,10 @@
         {{#if item.dealsDamage}}
             <button type="button" class="tag damage" data-action="strike-damage"
                 {{#if isAltUsage}}data-alt-usage="{{#if item.isThrown}}thrown{{else}}melee{{/if}}"{{/if}}
-                >{{localize "PF2E.DamageLabel"}}</button>
+                >{{localize "AVANT.DamageLabel"}}</button>
             <button type="button" class="tag damage" data-action="strike-critical"
                 {{#if isAltUsage}}data-alt-usage="{{#if item.isThrown}}thrown{{else}}melee{{/if}}"{{/if}}
-            >{{localize "PF2E.CriticalDamageLabel"}}</button>
+            >{{localize "AVANT.CriticalDamageLabel"}}</button>
 
             {{#if (or doubleBarrel versatileOptions)}}
                 <div class="toggles">
@@ -134,7 +134,7 @@
                             class="damage double-barrel color physical{{#if doubleBarrel.selected}} selected{{/if}}"
                             data-action="toggle-weapon-trait"
                             data-trait="double-barrel"
-                            data-tooltip="{{localize "PF2E.TraitDoubleBarrel"}}"
+                            data-tooltip="{{localize "AVANT.TraitDoubleBarrel"}}"
                         >
                             <span class="fa-stack fa-fw">
                                 <i class="fa-solid barrels fa-pause fa-rotate-90 fa-stack-1x icon"></i>

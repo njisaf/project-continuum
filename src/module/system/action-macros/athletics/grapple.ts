@@ -1,12 +1,12 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { SingleCheckAction, SingleCheckActionVariant, SingleCheckActionVariantData } from "@actor/actions/index.ts";
-import { ItemPF2e, WeaponPF2e } from "@item";
+import { ItemAvant, WeaponAvant } from "@item";
 import { CheckContextData, CheckContextOptions, CheckMacroContext } from "@system/action-macros/types.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-const PREFIX = "PF2E.Actions.Grapple";
+const PREFIX = "AVANT.Actions.Grapple";
 
-function grappleCheckContext<ItemType extends ItemPF2e<ActorPF2e>>(
+function grappleCheckContext<ItemType extends ItemAvant<ActorAvant>>(
     opts: CheckContextOptions<ItemType>,
     data: CheckContextData<ItemType>,
 ): CheckMacroContext<ItemType> | undefined {
@@ -29,7 +29,7 @@ function grapple(options: SkillActionOptions): void {
     const slug = options?.skill ?? "athletics";
     const modifiers = options?.modifiers;
     const rollOptions = ["action:grapple"];
-    ActionMacroHelpers.simpleRollActionCheck<WeaponPF2e<ActorPF2e>>({
+    ActionMacroHelpers.simpleRollActionCheck<WeaponAvant<ActorAvant>>({
         actors: options.actors,
         actionGlyph: options.glyph ?? "A",
         title: `${PREFIX}.Title`,
@@ -51,7 +51,7 @@ function grapple(options: SkillActionOptions): void {
 }
 
 class GrappleActionVariant extends SingleCheckActionVariant {
-    protected override checkContext<ItemType extends ItemPF2e<ActorPF2e>>(
+    protected override checkContext<ItemType extends ItemAvant<ActorAvant>>(
         opts: CheckContextOptions<ItemType>,
         data: CheckContextData<ItemType>,
     ): CheckMacroContext<ItemType> | undefined {

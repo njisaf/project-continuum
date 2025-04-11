@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { PredicateStatement } from "@system/predication.ts";
@@ -12,7 +12,7 @@ export class Migration724CraftingMaxItemLevel extends MigrationBase {
 
     private pathPattern = /^data\.crafting\.entries\.([-a-z]+)\.maxItemLevel$/i;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "feat") return;
 
         /** Predicate all Advanced Alchemy REs on the presence of the Alchemist class */
@@ -23,7 +23,7 @@ export class Migration724CraftingMaxItemLevel extends MigrationBase {
                 rule.predicate = { all: ["self:class:alchemist"] };
                 if (rule.key === "CraftingEntry") {
                     delete rule.name;
-                    rule.label = "PF2E.TraitAlchemist";
+                    rule.label = "AVANT.TraitAlchemist";
                 }
             }
         } else if (source.system.slug?.endsWith("-dedication") && source.system.slug !== "alchemist-dedication") {
@@ -32,7 +32,7 @@ export class Migration724CraftingMaxItemLevel extends MigrationBase {
             for (const rule of rules) {
                 delete rule.name;
                 const i18nKey = sluggify(source.system.slug.replace(/-dedication$/, ""), { camel: "bactrian" });
-                rule.label = `PF2E.SpecificRule.DedicationCraftingEntry.${i18nKey}`;
+                rule.label = `AVANT.SpecificRule.DedicationCraftingEntry.${i18nKey}`;
             }
         }
 

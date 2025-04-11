@@ -1,6 +1,6 @@
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.IdentifyAlchemy";
+const PREFIX = "AVANT.Actions.IdentifyAlchemy";
 
 const action = new SingleCheckAction({
     description: `${PREFIX}.Description`,

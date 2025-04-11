@@ -1,29 +1,29 @@
 import { ItemSheetOptions } from "@item/base/sheet/sheet.ts";
-import type { ClassPF2e } from "@item/class/document.ts";
+import type { ClassAvant } from "@item/class/document.ts";
 import { createSheetTags, SheetOptions } from "@module/sheet/helpers.ts";
-import { ABCSheetData, ABCSheetPF2e } from "../abc/sheet.ts";
+import { ABCSheetData, ABCSheetAvant } from "../abc/sheet.ts";
 
-export class ClassSheetPF2e extends ABCSheetPF2e<ClassPF2e> {
+export class ClassSheetAvant extends ABCSheetAvant<ClassAvant> {
     override async getData(options?: Partial<ItemSheetOptions>): Promise<ClassSheetData> {
         const sheetData = await super.getData(options);
         const itemData = sheetData.item;
 
         return {
             ...sheetData,
-            proficiencyChoices: CONFIG.PF2E.proficiencyLevels,
+            proficiencyChoices: CONFIG.AVANT.proficiencyLevels,
             selectedKeyAbility: this.getLocalizedAbilities(itemData.system.keyAbility),
-            trainedSkills: createSheetTags(CONFIG.PF2E.skills, itemData.system.trainedSkills),
-            ancestryFeatLevels: createSheetTags(CONFIG.PF2E.levels, itemData.system.ancestryFeatLevels),
-            classFeatLevels: createSheetTags(CONFIG.PF2E.levels, itemData.system.classFeatLevels),
-            generalFeatLevels: createSheetTags(CONFIG.PF2E.levels, itemData.system.generalFeatLevels),
-            skillFeatLevels: createSheetTags(CONFIG.PF2E.levels, itemData.system.skillFeatLevels),
-            skillIncreaseLevels: createSheetTags(CONFIG.PF2E.levels, itemData.system.skillIncreaseLevels),
+            trainedSkills: createSheetTags(CONFIG.AVANT.skills, itemData.system.trainedSkills),
+            ancestryFeatLevels: createSheetTags(CONFIG.AVANT.levels, itemData.system.ancestryFeatLevels),
+            classFeatLevels: createSheetTags(CONFIG.AVANT.levels, itemData.system.classFeatLevels),
+            generalFeatLevels: createSheetTags(CONFIG.AVANT.levels, itemData.system.generalFeatLevels),
+            skillFeatLevels: createSheetTags(CONFIG.AVANT.levels, itemData.system.skillFeatLevels),
+            skillIncreaseLevels: createSheetTags(CONFIG.AVANT.levels, itemData.system.skillIncreaseLevels),
         };
     }
 }
 
-interface ClassSheetData extends ABCSheetData<ClassPF2e> {
-    proficiencyChoices: typeof CONFIG.PF2E.proficiencyLevels;
+interface ClassSheetData extends ABCSheetData<ClassAvant> {
+    proficiencyChoices: typeof CONFIG.AVANT.proficiencyLevels;
     selectedKeyAbility: Record<string, string>;
     trainedSkills: SheetOptions;
     ancestryFeatLevels: SheetOptions;

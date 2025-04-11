@@ -1,5 +1,5 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import { MockActor } from "./actor.ts";
 import { MockItem } from "./item.ts";
 
@@ -63,14 +63,14 @@ export class MockCollection<V> {
 
 export class MockWorldCollection<V extends { readonly parent: null }> extends MockCollection<V> {}
 
-export class MockActors extends MockWorldCollection<ActorPF2e<null>> {
-    tokens: Record<string, ActorPF2e | undefined> = {};
+export class MockActors extends MockWorldCollection<ActorAvant<null>> {
+    tokens: Record<string, ActorAvant | undefined> = {};
 
-    documentClass = MockActor as unknown as typeof ActorPF2e;
+    documentClass = MockActor as unknown as typeof ActorAvant;
 }
 
-export class MockItems extends MockWorldCollection<ItemPF2e<null>> {
-    tokens: Record<string, ActorPF2e | undefined> = {};
+export class MockItems extends MockWorldCollection<ItemAvant<null>> {
+    tokens: Record<string, ActorAvant | undefined> = {};
 
-    documentClass = MockItem as unknown as typeof ItemPF2e;
+    documentClass = MockItem as unknown as typeof ItemAvant;
 }

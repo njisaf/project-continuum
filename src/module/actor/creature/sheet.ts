@@ -1,17 +1,17 @@
-import type { ActorPF2e, CreaturePF2e } from "@actor";
-import { ActorSheetDataPF2e } from "@actor/sheet/data-types.ts";
+import type { ActorAvant, CreatureAvant } from "@actor";
+import { ActorSheetDataAvant } from "@actor/sheet/data-types.ts";
 import { createSpellcastingDialog } from "@actor/sheet/spellcasting-dialog.ts";
-import { ItemPF2e, type SpellPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemAvant, type SpellAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { ITEM_CARRY_TYPES } from "@item/base/data/values.ts";
 import { coerceToSpellGroupId, spellSlotGroupIdToNumber } from "@item/spellcasting-entry/helpers.ts";
 import { SpellcastingSheetData } from "@item/spellcasting-entry/index.ts";
-import { DropCanvasItemDataPF2e } from "@module/canvas/drop-canvas-data.ts";
+import { DropCanvasItemDataAvant } from "@module/canvas/drop-canvas-data.ts";
 import { OneToTen, ZeroToFour, goesToEleven } from "@module/data.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
-import { ErrorPF2e, createHTMLElement, fontAwesomeIcon, htmlClosest, htmlQueryAll, tupleHasValue } from "@util";
+import { ErrorAvant, createHTMLElement, fontAwesomeIcon, htmlClosest, htmlQueryAll, tupleHasValue } from "@util";
 import * as R from "remeda";
-import { ActorSheetPF2e, SheetClickActionHandlers } from "../sheet/base.ts";
+import { ActorSheetAvant, SheetClickActionHandlers } from "../sheet/base.ts";
 import { CreatureConfig } from "./config.ts";
 import { Language, ResourceData } from "./index.ts";
 import { SpellPreparationSheet } from "./spell-preparation-sheet.ts";
@@ -20,33 +20,33 @@ import { SpellPreparationSheet } from "./spell-preparation-sheet.ts";
  * Base class for NPC and character sheets
  * @category Actor
  */
-abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheetPF2e<TActor> {
+abstract class CreatureSheetAvant<TActor extends CreatureAvant> extends ActorSheetAvant<TActor> {
     /** A DocumentSheet class presenting additional, per-actor settings */
-    protected abstract readonly actorConfigClass: ConstructorOf<CreatureConfig<CreaturePF2e>> | null;
+    protected abstract readonly actorConfigClass: ConstructorOf<CreatureConfig<CreatureAvant>> | null;
 
     override async getData(options?: Partial<ActorSheetOptions>): Promise<CreatureSheetData<TActor>> {
         const sheetData = await super.getData(options);
         const actor = this.actor;
 
-        const unavailableLanguages: Set<string> = game.settings.get("pf2e", "homebrew.languageRarities").unavailable;
+        const unavailableLanguages: Set<string> = game.settings.get("avant", "homebrew.languageRarities").unavailable;
         const languages = actor.isOfType("character")
             ? [] // Languages for PCs are handled in the PC sheet subclass
             : actor.system.details.languages.value
-                  .filter((l) => l in CONFIG.PF2E.languages && !unavailableLanguages.has(l))
-                  .map((slug) => ({ slug, label: game.i18n.localize(CONFIG.PF2E.languages[slug] ?? slug) }))
+                  .filter((l) => l in CONFIG.AVANT.languages && !unavailableLanguages.has(l))
+                  .map((slug) => ({ slug, label: game.i18n.localize(CONFIG.AVANT.languages[slug] ?? slug) }))
                   .sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang));
 
         sheetData.data.perception.senses = R.sortBy(sheetData.data.perception.senses, (a) => a.label ?? "");
-        const initiativeOptions = [{ value: "perception", label: "PF2E.PerceptionLabel" }];
+        const initiativeOptions = [{ value: "perception", label: "AVANT.PerceptionLabel" }];
         initiativeOptions.push(...Object.values(this.actor.skills).map((s) => ({ value: s.slug, label: s.label })));
 
         return {
             ...sheetData,
             languages,
-            actorSizes: CONFIG.PF2E.actorSizes,
-            rarity: CONFIG.PF2E.rarityTraits,
-            frequencies: CONFIG.PF2E.frequencies,
-            pfsFactions: CONFIG.PF2E.pfsFactions,
+            actorSizes: CONFIG.AVANT.actorSizes,
+            rarity: CONFIG.AVANT.rarityTraits,
+            frequencies: CONFIG.AVANT.frequencies,
+            pfsFactions: CONFIG.AVANT.pfsFactions,
             initiativeOptions,
             dying: {
                 maxed: actor.attributes.dying.value >= actor.attributes.dying.max,
@@ -184,7 +184,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
 
         handlers["open-spell-preparation"] = (event) => {
             const collectionId = htmlClosest(event.target, "[data-container-id]")?.dataset.containerId;
-            if (!collectionId) throw ErrorPF2e("Unexpected failure looking up spell collection");
+            if (!collectionId) throw ErrorAvant("Unexpected failure looking up spell collection");
             this.#openSpellPreparation(collectionId, event);
         };
 
@@ -192,7 +192,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
         handlers["unprepare-spell"] = (event) => {
             const row = htmlClosest(event.target, "[data-item-id]");
             const groupId = coerceToSpellGroupId(row?.dataset.groupId);
-            if (!groupId) throw ErrorPF2e("Unexpected slot group ID");
+            if (!groupId) throw ErrorAvant("Unexpected slot group ID");
 
             const slotIndex = Number(row?.dataset.slotId) || 0;
             const entryId = row?.dataset.entryId;
@@ -204,7 +204,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
         handlers["toggle-slot-expended"] = (event) => {
             const row = htmlClosest(event.target, "[data-item-id]");
             const groupId = coerceToSpellGroupId(row?.dataset.groupId);
-            if (!groupId) throw ErrorPF2e("Unexpected error toggling expended state");
+            if (!groupId) throw ErrorAvant("Unexpected error toggling expended state");
 
             const slotId = Number(row?.dataset.slotId) || 0;
             const entryId = row?.dataset.entryId ?? "";
@@ -225,7 +225,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
             const collectionId = htmlClosest(event.target, "[data-container-id]")?.dataset.containerId;
             const spellcastingEntry = actor.items.get(collectionId, { strict: true });
             if (!spellcastingEntry.isOfType("spellcastingEntry")) {
-                throw ErrorPF2e("Tried to toggle visibility of slotless ranks on a non-spellcasting entry");
+                throw ErrorAvant("Tried to toggle visibility of slotless ranks on a non-spellcasting entry");
             }
             return spellcastingEntry.update({
                 "system.showSlotlessLevels.value": !spellcastingEntry.showSlotlessRanks,
@@ -265,11 +265,11 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
                 return createSpellcastingDialog(entry);
             }
         };
-        handlers["spellcasting-remove"] = async (event): Promise<ItemPF2e<TActor> | void> => {
+        handlers["spellcasting-remove"] = async (event): Promise<ItemAvant<TActor> | void> => {
             const itemId = htmlClosest(event.target, "[data-item-id]")?.dataset.itemId;
             const item = actor.items.get(itemId, { strict: true });
-            const title = game.i18n.localize("PF2E.DeleteSpellcastEntryTitle");
-            const content = await renderTemplate("systems/pf2e/templates/actors/delete-spellcasting-dialog.hbs");
+            const title = game.i18n.localize("AVANT.DeleteSpellcastEntryTitle");
+            const content = await renderTemplate("systems/avant/templates/actors/delete-spellcasting-dialog.hbs");
 
             // Render confirmation modal dialog
             if (await Dialog.confirm({ title, content })) {
@@ -290,7 +290,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
         const item = this.actor.inventory.get(itemId, { strict: true });
         const hasStowingContainers = this.actor.itemTypes.backpack.some((i) => i.system.stowing && !i.isInContainer);
         const templateArgs = { item, hasStowingContainers };
-        const template = await renderTemplate("systems/pf2e/templates/actors/partials/carry-type.hbs", templateArgs);
+        const template = await renderTemplate("systems/avant/templates/actors/partials/carry-type.hbs", templateArgs);
         const content = createHTMLElement("ul", { innerHTML: template });
 
         content.addEventListener("click", (event) => {
@@ -299,12 +299,12 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
 
             const carryType = menuOption.dataset.carryType;
             if (!tupleHasValue(ITEM_CARRY_TYPES, carryType)) {
-                throw ErrorPF2e("Unexpected error retrieving requested carry type");
+                throw ErrorAvant("Unexpected error retrieving requested carry type");
             }
 
             const handsHeld = Number(menuOption.dataset.handsHeld) || 0;
             if (!tupleHasValue([0, 1, 2], handsHeld)) {
-                throw ErrorPF2e("Invalid number of hands specified");
+                throw ErrorAvant("Invalid number of hands specified");
             }
 
             const inSlot = "inSlot" in menuOption.dataset;
@@ -319,10 +319,10 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
             }
         });
 
-        game.tooltip.activate(anchor, { cssClass: "pf2e carry-type-menu", content, locked: true });
+        game.tooltip.activate(anchor, { cssClass: "avant carry-type-menu", content, locked: true });
     }
 
-    protected override async _onDropItem(event: DragEvent, data: DropCanvasItemDataPF2e): Promise<ItemPF2e[]> {
+    protected override async _onDropItem(event: DragEvent, data: DropCanvasItemDataAvant): Promise<ItemAvant[]> {
         event.preventDefault();
 
         const spellFrom = data.spellFrom;
@@ -339,10 +339,10 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
             const targetIsEmpty = targetDataset.itemId?.length !== 16;
 
             if (isPrepared && sameCollectionId && sameGroupId && !targetIsEmpty) {
-                const draggedSpell = await ItemPF2e.fromDropData(data);
+                const draggedSpell = await ItemAvant.fromDropData(data);
                 const dropTargetSpell = this.actor.items.get(targetDataset.itemId ?? "");
                 if (!draggedSpell?.isOfType("spell") || !dropTargetSpell?.isOfType("spell")) {
-                    throw ErrorPF2e("Unexpected data received while swapping spells");
+                    throw ErrorAvant("Unexpected data received while swapping spells");
                 }
                 collection.swapSlotPositions(groupId, slotIndex, Number(targetDataset.slotId));
 
@@ -354,7 +354,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
     }
 
     /** Adds support for moving spells between spell levels, spell collections, and spell preparation */
-    protected override async _onSortItem(event: DragEvent, itemData: ItemSourcePF2e): Promise<ItemPF2e[]> {
+    protected override async _onSortItem(event: DragEvent, itemData: ItemSourceAvant): Promise<ItemAvant[]> {
         const dropItemEl = htmlClosest(event.target, "[data-item-id]");
         const dropContainerEl = htmlClosest(event.target, "[data-container-id]");
         const dropSlotType = dropItemEl?.dataset.itemType;
@@ -386,7 +386,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
                     const sourceLocation = item.system.location.value;
 
                     // Inner helper to test if two spells are siblings
-                    const testSibling = (item: SpellPF2e, test: SpellPF2e) => {
+                    const testSibling = (item: SpellAvant, test: SpellAvant) => {
                         if (item.isCantrip !== test.isCantrip) return false;
                         if (item.isCantrip && test.isCantrip) return true;
                         if (item.isFocusSpell && test.isFocusSpell) return true;
@@ -408,7 +408,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
                 // if the drop container target is a spellcastingEntry then check if the item is a spell and if so update its location.
                 // if the dragged item is a spell and is from the same actor
                 if (CONFIG.debug.hooks) {
-                    console.debug("PF2e System | ***** spell from same actor dropped on a spellcasting entry *****");
+                    console.debug("Avant System | ***** spell from same actor dropped on a spellcasting entry *****");
                 }
 
                 const dropId = htmlClosest(event.target, "li[data-container-id]")?.dataset.containerId;
@@ -439,9 +439,9 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
     /** Handle dragging spells onto spell slots. */
     protected override async _handleDroppedItem(
         event: DragEvent,
-        item: ItemPF2e<ActorPF2e | null>,
-        data: DropCanvasItemDataPF2e,
-    ): Promise<ItemPF2e<ActorPF2e | null>[]> {
+        item: ItemAvant<ActorAvant | null>,
+        data: DropCanvasItemDataAvant,
+    ): Promise<ItemAvant<ActorAvant | null>[]> {
         const containerEl = htmlClosest(event.target, "[data-container-type=spellcastingEntry]");
         if (containerEl && item.isOfType("spell") && !item.isRitual) {
             const collectionId = containerEl.dataset.containerId;
@@ -486,7 +486,7 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
 
         const maxRank = Number(anchor.dataset.rank) || 10;
         const category = anchor.dataset.category ?? null;
-        game.pf2e.compendiumBrowser.openSpellTab(entry, maxRank, category);
+        game.avant.compendiumBrowser.openSpellTab(entry, maxRank, category);
     }
 
     /** Redirect an update to shield HP to the actual item */
@@ -503,11 +503,11 @@ abstract class CreatureSheetPF2e<TActor extends CreaturePF2e> extends ActorSheet
     }
 }
 
-interface CreatureSheetData<TActor extends CreaturePF2e> extends ActorSheetDataPF2e<TActor> {
-    actorSizes: typeof CONFIG.PF2E.actorSizes;
-    rarity: typeof CONFIG.PF2E.rarityTraits;
-    frequencies: typeof CONFIG.PF2E.frequencies;
-    pfsFactions: typeof CONFIG.PF2E.pfsFactions;
+interface CreatureSheetData<TActor extends CreatureAvant> extends ActorSheetDataAvant<TActor> {
+    actorSizes: typeof CONFIG.AVANT.actorSizes;
+    rarity: typeof CONFIG.AVANT.rarityTraits;
+    frequencies: typeof CONFIG.AVANT.frequencies;
+    pfsFactions: typeof CONFIG.AVANT.pfsFactions;
     languages: { slug: Language | null; label: string }[];
     initiativeOptions: FormSelectOption[];
     dying: {
@@ -518,4 +518,4 @@ interface CreatureSheetData<TActor extends CreaturePF2e> extends ActorSheetDataP
     specialResources: ResourceData[];
 }
 
-export { CreatureSheetPF2e, type CreatureSheetData };
+export { CreatureSheetAvant, type CreatureSheetData };

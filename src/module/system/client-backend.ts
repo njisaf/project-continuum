@@ -1,22 +1,22 @@
-import { ActorPF2e } from "@actor";
-import { ItemPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import { ItemAvant } from "@item";
 import { MigrationList, MigrationRunner } from "@module/migration/index.ts";
-import type { UserPF2e } from "@module/user/document.ts";
+import type { UserAvant } from "@module/user/document.ts";
 import * as R from "remeda";
 import type { DatabaseGetOperation } from "types/foundry/common/abstract/_types.d.ts";
 
-class ClientDatabaseBackendPF2e extends foundry.data.ClientDatabaseBackend {
+class ClientDatabaseBackendAvant extends foundry.data.ClientDatabaseBackend {
     protected override async _getDocuments(
         documentClass: typeof foundry.abstract.Document,
         operation: DatabaseGetOperation<foundry.abstract.Document | null>,
-        user?: UserPF2e,
+        user?: UserAvant,
     ): Promise<(DeepPartial<ClientDocument["_source"]> & CompendiumIndexData)[] | foundry.abstract.Document[]> {
         const type = documentClass.documentName;
         if (
             !["Actor", "Item"].includes(type) ||
             operation.index ||
             operation.parent ||
-            operation.pack?.startsWith("pf2e.")
+            operation.pack?.startsWith("avant.")
         ) {
             return super._getDocuments(documentClass, operation, user);
         }
@@ -36,7 +36,7 @@ class ClientDatabaseBackendPF2e extends foundry.data.ClientDatabaseBackend {
                     if (R.isPlainObject((data._stats ??= {})) && operation.pack) {
                         data._stats.compendiumSource = `Compendium.${operation.pack}.${type}.${data._id}`;
                     }
-                    const document = documentClass.fromSource(data, { pack: operation.pack }) as ActorPF2e | ItemPF2e;
+                    const document = documentClass.fromSource(data, { pack: operation.pack }) as ActorAvant | ItemAvant;
                     const migrations = MigrationList.constructFromVersion(document.schemaVersion);
                     if (migrations.length > 0) {
                         try {
@@ -52,4 +52,4 @@ class ClientDatabaseBackendPF2e extends foundry.data.ClientDatabaseBackend {
     }
 }
 
-export { ClientDatabaseBackendPF2e };
+export { ClientDatabaseBackendAvant };

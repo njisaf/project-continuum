@@ -1,10 +1,10 @@
-import type { TokenDocumentPF2e } from "@scene";
+import type { TokenDocumentAvant } from "@scene";
 import { getSelectedActors } from "@util/token-actor-utils.ts";
 
 export const TargetToken = {
     listen: (): void => {
         Hooks.on("targetToken", (user, token): void => {
-            const tokenDocument = token.document as TokenDocumentPF2e;
+            const tokenDocument = token.document as TokenDocumentAvant;
             ui.combat.refreshTargetDisplay(tokenDocument);
 
             // Draw flanking highlights if applicable

@@ -1,8 +1,8 @@
 <fieldset class="basics">
-    {{> "systems/pf2e/templates/items/partials/apex.hbs"}}
+    {{> "systems/avant/templates/items/partials/apex.hbs"}}
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}category">{{localize "PF2E.Category"}}</label>
+        <label for="{{fieldIdPrefix}}category">{{localize "AVANT.Category"}}</label>
         <select id="{{fieldIdPrefix}}category" data-property="system.category">
             {{selectOptions categories selected=data.category localize=true}}
         </select>
@@ -10,14 +10,14 @@
 
     {{#unless item.isBarding}}
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}group">{{localize "PF2E.ArmorGroupLabel"}}</label>
+            <label for="{{fieldIdPrefix}}group">{{localize "AVANT.ArmorGroupLabel"}}</label>
             <select id="{{fieldIdPrefix}}group" data-property="system.group">
                 {{selectOptions groups selected=item.group blank=""}}
             </select>
         </div>
 
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}base">{{localize "PF2E.Item.Physical.Base"}}</label>
+            <label for="{{fieldIdPrefix}}base">{{localize "AVANT.Item.Physical.Base"}}</label>
             <select id="{{fieldIdPrefix}}base" data-property="system.baseItem">
                 {{selectOptions baseTypes selected=item.baseType blank=""}}
             </select>
@@ -25,7 +25,7 @@
     {{/unless}}
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}ac-bonus">{{localize "PF2E.ArmorArmorLabel"}}</label>
+        <label for="{{fieldIdPrefix}}ac-bonus">{{localize "AVANT.ArmorArmorLabel"}}</label>
         <input
             type="number"
             id="{{fieldIdPrefix}}ac-bonus"
@@ -40,7 +40,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.ArmorDexLabel"}}</label>
+        <label>{{localize "AVANT.ArmorDexLabel"}}</label>
         <input
             type="number"
             value="{{data.dexCap}}"
@@ -54,7 +54,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.ArmorCheckLabel"}}</label>
+        <label>{{localize "AVANT.ArmorCheckLabel"}}</label>
         <input
             type="number"
             value="{{data.checkPenalty}}"
@@ -68,7 +68,7 @@
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}speed-penalty">{{localize "PF2E.ArmorSpeedLabel"}}</label>
+        <label for="{{fieldIdPrefix}}speed-penalty">{{localize "AVANT.ArmorSpeedLabel"}}</label>
         <input
             type="number"
             id="{{fieldIdPrefix}}speed-penalty"
@@ -83,7 +83,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.ArmorStrengthLabel"}}</label>
+        <label>{{localize "AVANT.ArmorStrengthLabel"}}</label>
         <input
             type="number"
             value="{{data.strength}}"
@@ -98,7 +98,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.HardnessLabel"}}</label>
+        <label>{{localize "AVANT.HardnessLabel"}}</label>
         <input
             type="number"
             {{#if (gt item.hardness item._source.system.hardness)}}class="adjusted-higher"{{else if (lt item.hardness item._source.system.hardness)}}class="adjusted-lower"{{/if}}
@@ -107,7 +107,7 @@
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}hp">{{localize "PF2E.HitPointsHeader"}}</label>
+        <label for="{{fieldIdPrefix}}hp">{{localize "AVANT.HitPointsHeader"}}</label>
         <div class="form-fields">
             <input id="{{fieldIdPrefix}}hp" type="number" name="system.hp.value" value="{{data.hp.value}}" />
             /
@@ -124,9 +124,9 @@
 </fieldset>
 
 <fieldset class="material-runes">
-    <legend>{{localize "PF2E.Item.Physical.MaterialRunes.Label"}}</legend>
+    <legend>{{localize "AVANT.Item.Physical.MaterialRunes.Label"}}</legend>
     <div class="form-group precious-material">
-        <label for="{{fieldIdPrefix}}material">{{localize "PF2E.PreciousMaterialLabel"}}</label>
+        <label for="{{fieldIdPrefix}}material">{{localize "AVANT.PreciousMaterialLabel"}}</label>
         <select
             id="{{fieldIdPrefix}}material"
             data-property="system.material"
@@ -140,14 +140,14 @@
     {{#unless item.isBarding}}
         {{#unless abpEnabled}}
             <div class="form-group">
-                <label for="{{fieldIdPrefix}}rune-potency">{{localize "PF2E.PotencyRuneLabel"}}</label>
+                <label for="{{fieldIdPrefix}}rune-potency">{{localize "AVANT.PotencyRuneLabel"}}</label>
                 <select name="system.runes.potency" id="{{fieldIdPrefix}}rune-potency" data-dtype="Number">
                     <option value="0"></option>
                     {{selectOptions (omit runeTypes.potency 0) selected=data.runes.potency labelAttr="name" localize=true}}
                 </select>
             </div>
             <div class="form-group">
-                <label for="{{fieldIdPrefix}}rune-resilient">{{localize "PF2E.Item.Armor.Rune.Resilient.Label"}}</label>
+                <label for="{{fieldIdPrefix}}rune-resilient">{{localize "AVANT.Item.Armor.Rune.Resilient.Label"}}</label>
                 <select name="system.runes.resilient" id="{{fieldIdPrefix}}rune-resilient" data-dtype="Number">
                     <option value="0"></option>
                     {{selectOptions (omit runeTypes.resilient 0) selected=data.runes.resilient labelAttr="name" localize=true}}
@@ -161,7 +161,7 @@
                     for="{{../fieldIdPrefix}}runes-property-{{index}}"
                     {{#if slot.disabled}}class="disabled"{{/if}}
                 >
-                    {{localize (concat "PF2E.PropertyRuneLabel" (add index 1))}}
+                    {{localize (concat "AVANT.PropertyRuneLabel" (add index 1))}}
                 </label>
                 <select
                     name="system.runes.property.{{index}}"
@@ -182,8 +182,8 @@
 
         <div class="form-group">
             <label class="large" for="{{../fieldIdPrefix}}specific-magic-{{index}}">
-                {{localize "PF2E.Item.Armor.Specific.Label"}}
-                <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.Armor.Specific.Hint"></i>
+                {{localize "AVANT.Item.Armor.Specific.Label"}}
+                <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.Armor.Specific.Hint"></i>
             </label>
             <input
                 type="checkbox"
@@ -200,10 +200,10 @@
 
 <div class="form-group stacked">
     <label>
-        {{localize "PF2E.Item.Physical.OtherTags.Label"}}
-        <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.Physical.OtherTags.Hint"></i>
+        {{localize "AVANT.Item.Physical.OtherTags.Label"}}
+        <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.Physical.OtherTags.Hint"></i>
         {{#if editable}}
-            <a class="tag-selector" data-tag-selector="basic" data-config-types="otherArmorTags" data-title="PF2E.Item.Physical.OtherTags.Label" data-property="system.traits.otherTags"><i class="fa-solid fa-edit"></i></a>
+            <a class="tag-selector" data-tag-selector="basic" data-config-types="otherArmorTags" data-title="AVANT.Item.Physical.OtherTags.Label" data-property="system.traits.otherTags"><i class="fa-solid fa-edit"></i></a>
         {{/if}}
     </label>
     <ul class="traits-list tags">

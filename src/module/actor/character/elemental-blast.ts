@@ -1,9 +1,9 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { AttackTraitHelpers } from "@actor/creature/helpers.ts";
 import { calculateMAPs } from "@actor/helpers.ts";
-import { ModifierPF2e, StatisticModifier } from "@actor/modifiers.ts";
+import { ModifierAvant, StatisticModifier } from "@actor/modifiers.ts";
 import { DamageContext } from "@actor/roll-context/damage.ts";
-import type { AbilityItemPF2e } from "@item";
+import type { AbilityItemAvant } from "@item";
 import { AbilityTrait } from "@item/ability/types.ts";
 import { EffectTrait } from "@item/abstract-effect/types.ts";
 import { RangeData } from "@item/types.ts";
@@ -18,7 +18,7 @@ import {
 import { eventToRollParams } from "@module/sheet/helpers.ts";
 import { effectTraits } from "@scripts/config/traits.ts";
 import { CheckRoll } from "@system/check/index.ts";
-import { DamagePF2e } from "@system/damage/damage.ts";
+import { DamageAvant } from "@system/damage/damage.ts";
 import { DamageModifierDialog } from "@system/damage/dialog.ts";
 import { createDamageFormula } from "@system/damage/formula.ts";
 import { DamageCategorization, processBaseDamage } from "@system/damage/helpers.ts";
@@ -35,7 +35,7 @@ import { DAMAGE_TYPE_ICONS } from "@system/damage/values.ts";
 import { DEGREE_OF_SUCCESS } from "@system/degree-of-success.ts";
 import { AttackRollParams, DamageRollParams } from "@system/rolls.ts";
 import { Statistic } from "@system/statistic/index.ts";
-import { ErrorPF2e, objectHasKey, signedInteger } from "@util";
+import { ErrorAvant, objectHasKey, signedInteger } from "@util";
 import * as R from "remeda";
 import type {
     ArrayField,
@@ -44,16 +44,16 @@ import type {
     SchemaField,
     StringField,
 } from "types/foundry/common/data/fields.d.ts";
-import type { CharacterPF2e } from "./document.ts";
+import type { CharacterAvant } from "./document.ts";
 
 class ElementalBlast {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
 
     /** The actor's impulse statistic */
     statistic: Statistic | null;
 
     /** The actor's Elemental Blast item */
-    item: AbilityItemPF2e<CharacterPF2e> | null;
+    item: AbilityItemAvant<CharacterAvant> | null;
 
     /** Blast element/damage-type configurations available to the character */
     configs: ElementalBlastConfig[];
@@ -61,8 +61,8 @@ class ElementalBlast {
     /** Modifications of the blast from infusions */
     infusion: BlastInfusionData | null;
 
-    constructor(actor: CharacterPF2e) {
-        if (!actor.isOfType("character")) throw ErrorPF2e("Must construct with a PC");
+    constructor(actor: CharacterAvant) {
+        if (!actor.isOfType("character")) throw ErrorAvant("Must construct with a PC");
         this.actor = actor;
         this.statistic = this.actor.getStatistic("impulse");
         this.item = this.actor.itemTypes.action.find((a) => a.slug === "elemental-blast") ?? null;
@@ -76,7 +76,7 @@ class ElementalBlast {
         return new fields.SchemaField({
             element: new fields.StringField<EffectTrait, EffectTrait, true, false, false>({
                 required: true,
-                choices: () => CONFIG.PF2E.effectTraits,
+                choices: () => CONFIG.AVANT.effectTraits,
                 initial: undefined,
             }),
             label: new fields.StringField({ required: true, blank: false, initial: undefined }),
@@ -84,10 +84,10 @@ class ElementalBlast {
                 required: true,
                 categories: ["IMAGE"],
                 nullable: false,
-                initial: "systems/pf2e/icons/default-icons/spell.svg" as ImageFilePath,
+                initial: "systems/avant/icons/default-icons/spell.svg" as ImageFilePath,
             }),
             damageTypes: new fields.ArrayField(
-                new fields.StringField({ required: true, choices: () => CONFIG.PF2E.damageTypes, initial: undefined }),
+                new fields.StringField({ required: true, choices: () => CONFIG.AVANT.damageTypes, initial: undefined }),
             ),
             dieFaces: new fields.NumberField({
                 required: true,
@@ -111,7 +111,7 @@ class ElementalBlast {
 
         return new fields.SchemaField({
             damageTypes: new fields.ArrayField(
-                new fields.StringField({ required: true, choices: () => CONFIG.PF2E.damageTypes, initial: undefined }),
+                new fields.StringField({ required: true, choices: () => CONFIG.AVANT.damageTypes, initial: undefined }),
             ),
             range: new fields.SchemaField(
                 {
@@ -135,7 +135,7 @@ class ElementalBlast {
                     new fields.StringField<WeaponTrait, WeaponTrait, true, false, false>({
                         required: true,
                         nullable: false,
-                        choices: () => CONFIG.PF2E.weaponTraits,
+                        choices: () => CONFIG.AVANT.weaponTraits,
                         initial: undefined,
                     }),
                 ),
@@ -143,7 +143,7 @@ class ElementalBlast {
                     new fields.StringField<WeaponTrait, WeaponTrait, true, false, false>({
                         required: true,
                         nullable: false,
-                        choices: () => CONFIG.PF2E.weaponTraits,
+                        choices: () => CONFIG.AVANT.weaponTraits,
                         initial: undefined,
                     }),
                 ),
@@ -152,8 +152,8 @@ class ElementalBlast {
     })();
 
     get actionCost(): 1 | 2 {
-        const cost = this.item?.flags.pf2e.rulesSelections.actionCost ?? 1;
-        if (cost !== 1 && cost !== 2) throw ErrorPF2e("Action cost must be 1 or 2");
+        const cost = this.item?.flags.avant.rulesSelections.actionCost ?? 1;
+        if (cost !== 1 && cost !== 2) throw ErrorAvant("Action cost must be 1 or 2");
         return cost;
     }
 
@@ -161,13 +161,13 @@ class ElementalBlast {
     #prepareBlastConfigs(): ElementalBlastConfig[] {
         const { item, statistic, actionCost, infusion } = this;
         if (!item || !statistic) return [];
-        const kineticist = this.actor.flags.pf2e.kineticist;
+        const kineticist = this.actor.flags.avant.kineticist;
         if (!R.isPlainObject(kineticist) || !R.isPlainObject(kineticist.elementalBlast)) {
             return [];
         }
         const schema = ElementalBlast.#blastConfigSchema;
         const damageTypeSelections = ((): Record<string, unknown> => {
-            const flag = item.flags.pf2e.damageSelections;
+            const flag = item.flags.avant.damageSelections;
             return R.isPlainObject(flag) ? flag : {};
         })();
         const blasts = Object.values(kineticist.elementalBlast)
@@ -180,7 +180,7 @@ class ElementalBlast {
         }
 
         // Set in the same fashion as weapons
-        item.flags.pf2e.attackItemBonus =
+        item.flags.avant.attackItemBonus =
             statistic.check.modifiers.find((m) => m.enabled && ["item", "potency"].includes(m.type))?.value ?? 0;
 
         // In case of infusions, get separate MAPs for melee and ranged attacks
@@ -195,11 +195,11 @@ class ElementalBlast {
                 const penalties = calculateMAPs(modifiedItem, { domains, options });
                 return {
                     map0: signedInteger(modifier),
-                    map1: game.i18n.format("PF2E.MAPAbbreviationValueLabel", {
+                    map1: game.i18n.format("AVANT.MAPAbbreviationValueLabel", {
                         value: signedInteger(modifier + penalties.map1),
                         penalty: penalties.map1,
                     }),
-                    map2: game.i18n.format("PF2E.MAPAbbreviationValueLabel", {
+                    map2: game.i18n.format("AVANT.MAPAbbreviationValueLabel", {
                         value: signedInteger(modifier + penalties.map2),
                         penalty: penalties.map2,
                     }),
@@ -215,7 +215,7 @@ class ElementalBlast {
             )
                 .map((dt) => ({
                     value: dt,
-                    label: game.i18n.localize(CONFIG.PF2E.damageTypes[dt]),
+                    label: game.i18n.localize(CONFIG.AVANT.damageTypes[dt]),
                     icon: DAMAGE_TYPE_ICONS[dt] ?? "",
                     selected: damageTypeSelections[blast.element] === dt,
                 }))
@@ -230,12 +230,12 @@ class ElementalBlast {
                 ? {
                       increment: infusion.range.increment,
                       max: infusion.range.increment * 6,
-                      label: game.i18n.format("PF2E.Action.Range.IncrementN", { n: infusion.range.increment }),
+                      label: game.i18n.format("AVANT.Action.Range.IncrementN", { n: infusion.range.increment }),
                   }
                 : {
                       increment: null,
                       max: maxRange,
-                      label: game.i18n.format("PF2E.Action.Range.MaxN", { n: maxRange }),
+                      label: game.i18n.format("AVANT.Action.Range.MaxN", { n: maxRange }),
                   };
 
             return {
@@ -252,7 +252,7 @@ class ElementalBlast {
 
     #prepareBlastInfusion(): BlastInfusionData | null {
         const schema = ElementalBlast.#blastInfusionSchema;
-        const flag = this.actor.flags.pf2e.kineticist;
+        const flag = this.actor.flags.avant.kineticist;
         const infusionData =
             R.isPlainObject(flag) && R.isPlainObject(flag.elementalBlast) ? flag.elementalBlast.infusion : null;
 
@@ -265,7 +265,7 @@ class ElementalBlast {
             (c) => c.element === element && c.damageTypes.some((t) => t.value === damageType),
         );
         if (!config) {
-            throw ErrorPF2e(
+            throw ErrorAvant(
                 `Elemental blast configuration of element ${element} and damage type ${damageType} not found.`,
             );
         }
@@ -277,7 +277,7 @@ class ElementalBlast {
         melee,
         config,
         damageType,
-    }: CreateModifiedItemParams): AbilityItemPF2e<CharacterPF2e> | null {
+    }: CreateModifiedItemParams): AbilityItemAvant<CharacterAvant> | null {
         const item = this.item;
         if (!item) return null;
 
@@ -287,7 +287,7 @@ class ElementalBlast {
             return R.unique(
                 [baseTraits, infusionTraits, config?.element, damageType]
                     .flat()
-                    .filter((t): t is AbilityTrait => !!t && t in CONFIG.PF2E.actionTraits),
+                    .filter((t): t is AbilityTrait => !!t && t in CONFIG.AVANT.actionTraits),
             ).sort();
         })();
 
@@ -298,7 +298,7 @@ class ElementalBlast {
         return clone;
     }
 
-    #createAttackStatistic(statistic: Statistic, item: AbilityItemPF2e<ActorPF2e>): Statistic {
+    #createAttackStatistic(statistic: Statistic, item: AbilityItemAvant<ActorAvant>): Statistic {
         const newDomain = "elemental-blast-attack-roll";
         const domains = [...statistic.check.domains, newDomain];
         return statistic.extend({
@@ -312,19 +312,19 @@ class ElementalBlast {
     /** Make an impulse attack roll as part of an elemental blast. */
     async attack(params: BlastAttackParams): Promise<Rolled<CheckRoll> | null> {
         const { statistic, actionCost } = this;
-        if (!(statistic && this.item)) throw ErrorPF2e("Unable to blast");
+        if (!(statistic && this.item)) throw ErrorAvant("Unable to blast");
         if (!this.actor.rollOptions.all["self:effect:kinetic-aura"]) {
-            throw ErrorPF2e("No kinetic gate");
+            throw ErrorAvant("No kinetic gate");
         }
 
         const { element, damageType } = params;
-        if (!element) throw ErrorPF2e("No element provided");
+        if (!element) throw ErrorAvant("No element provided");
         if (!objectHasKey(effectTraits, element)) {
-            throw ErrorPF2e(`Unrecognized element: ${element}`);
+            throw ErrorAvant(`Unrecognized element: ${element}`);
         }
-        if (!damageType) throw ErrorPF2e("No damage type provided");
-        if (!objectHasKey(CONFIG.PF2E.damageTypes, damageType)) {
-            throw ErrorPF2e(`Unrecognized damage type: ${damageType}`);
+        if (!damageType) throw ErrorAvant("No damage type provided");
+        if (!objectHasKey(CONFIG.AVANT.damageTypes, damageType)) {
+            throw ErrorAvant(`Unrecognized damage type: ${damageType}`);
         }
 
         const blastConfig = this.#getBlastConfig(element, damageType);
@@ -335,15 +335,15 @@ class ElementalBlast {
         const thisToken = this.actor.getActiveTokens(true, false).shift() ?? null;
         const targetToken = game.user.targets.first() ?? null;
         if (!params.melee && thisToken && targetToken && thisToken.distanceTo(targetToken) > blastConfig.range.max) {
-            ui.notifications.warn("PF2E.Action.Strike.OutOfRange", { localize: true });
+            ui.notifications.warn("AVANT.Action.Strike.OutOfRange", { localize: true });
             return null;
         }
 
         const blastStatistic = this.#createAttackStatistic(statistic, item);
-        const label = await renderTemplate("systems/pf2e/templates/chat/action/header.hbs", {
+        const label = await renderTemplate("systems/avant/templates/chat/action/header.hbs", {
             title: item.name,
             glyph: actionCost.toString(),
-            subtitle: game.i18n.format("PF2E.ActionsCheck.x-attack-roll", { type: statistic.label }),
+            subtitle: game.i18n.format("AVANT.ActionsCheck.x-attack-roll", { type: statistic.label }),
         });
         const meleeOrRanged = params.melee ? "melee" : "ranged";
         const mapIncreases = Math.clamp(params.mapIncreases ?? 0, 0, 2) || 0;
@@ -393,7 +393,7 @@ class ElementalBlast {
         const domains = ["damage", "attack-damage", "impulse-damage", `${actionSlug}-damage`];
         const targetToken = game.user.targets.first()?.document ?? null;
         const damageCategory = DamageCategorization.fromDamageType(params.damageType);
-        item.flags.pf2e.attackItemBonus =
+        item.flags.avant.attackItemBonus =
             blastConfig.statistic.check.modifiers.find((m) => m.enabled && ["item", "potency"].includes(m.type))
                 ?.value ?? 0;
 
@@ -495,16 +495,16 @@ class ElementalBlast {
         if (params.getFormula) return roll.formula;
 
         const damageTemplate: SimpleDamageTemplate = {
-            name: `${game.i18n.localize("PF2E.DamageRoll")}: ${item.name}`,
+            name: `${game.i18n.localize("AVANT.DamageRoll")}: ${item.name}`,
             materials: [],
             modifiers,
             damage: { roll, breakdown: damageData.breakdown },
         };
 
-        return DamagePF2e.roll(damageTemplate, damageContext);
+        return DamageAvant.roll(damageTemplate, damageContext);
     }
 
-    #strengthModToDamage(item: AbilityItemPF2e, domains: string[]): ModifierPF2e | null {
+    #strengthModToDamage(item: AbilityItemAvant, domains: string[]): ModifierAvant | null {
         if (!item.range) return null;
         const strengthModValue = this.actor.abilities.str.mod;
         const { traits } = item;
@@ -517,9 +517,9 @@ class ElementalBlast {
               : null;
 
         return typeof modifierValue === "number"
-            ? new ModifierPF2e({
+            ? new ModifierAvant({
                   slug: "str",
-                  label: CONFIG.PF2E.abilities.str,
+                  label: CONFIG.AVANT.abilities.str,
                   ability: "str",
                   modifier: modifierValue,
                   type: "ability",
@@ -531,9 +531,9 @@ class ElementalBlast {
     /** Set damage type according to the user's selection on the PC sheet */
     async setDamageType({ element, damageType }: { element: EffectTrait; damageType: DamageType }): Promise<void> {
         if (!this.configs.some((c) => c.element === element && c.damageTypes.some((dt) => dt.value === damageType))) {
-            throw ErrorPF2e(`Damage type "${damageType}" not available for ${element}`);
+            throw ErrorAvant(`Damage type "${damageType}" not available for ${element}`);
         }
-        await this.item?.update({ [`flags.pf2e.damageSelections.${element}`]: damageType });
+        await this.item?.update({ [`flags.avant.damageSelections.${element}`]: damageType });
     }
 }
 

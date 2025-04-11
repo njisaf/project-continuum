@@ -1,21 +1,21 @@
-import { PartyPF2e } from "@actor";
+import { PartyAvant } from "@actor";
 import { ItemTransfer, ItemTransferData } from "@actor/item-transfer.ts";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 
 function activateSocketListener(): void {
-    game.socket.on("system.pf2e", async (...[message, userId]: PF2eSocketEventParams) => {
+    game.socket.on("system.avant", async (...[message, userId]: AvantSocketEventParams) => {
         const sender = game.users.get(userId, { strict: true });
         switch (message.request) {
             case "itemTransfer":
                 if (game.user.isGM) {
-                    console.debug(`PF2e System | Received item-transfer request from ${sender.name}`);
+                    console.debug(`Avant System | Received item-transfer request from ${sender.name}`);
                     const transfer = new ItemTransfer(message.data);
                     transfer.enact(sender);
                 }
                 break;
             case "refreshSceneControls":
                 if (!game.user.isGM && message.data.layer === ui.controls.control?.layer) {
-                    console.debug("PF2e System | Refreshing Scene Controls");
+                    console.debug("Avant System | Refreshing Scene Controls");
                     ui.controls.initialize({ layer: message.data.layer });
                 }
                 break;
@@ -27,7 +27,7 @@ function activateSocketListener(): void {
 
                 // If campaign is defined, defer to the party's campaign model
                 if (campaign) {
-                    if (!(document instanceof PartyPF2e)) return;
+                    if (!(document instanceof PartyAvant)) return;
                     const type = campaign === true ? null : campaign;
                     return document.campaign?.renderSheet?.({ tab, type });
                 }
@@ -37,7 +37,7 @@ function activateSocketListener(): void {
                 break;
             }
             default:
-                throw ErrorPF2e(`Received unrecognized socket emission: ${message.request}`);
+                throw ErrorAvant(`Received unrecognized socket emission: ${message.request}`);
         }
     });
 }
@@ -64,6 +64,6 @@ interface ShowSheetMessage {
 }
 
 type SocketMessage = TransferCallbackMessage | RefreshControlsMessage | ShowSheetMessage | { request?: never };
-type PF2eSocketEventParams = [message: SocketMessage, userId: string];
+type AvantSocketEventParams = [message: SocketMessage, userId: string];
 
 export { activateSocketListener, type SocketMessage };

@@ -1,5 +1,5 @@
 import { Coins } from "@item/physical/data.ts";
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 
 interface PopupFormData extends Coins {
     removeByValue: boolean;
@@ -8,13 +8,13 @@ interface PopupFormData extends Coins {
 /**
  * @category Other
  */
-export class RemoveCoinsPopup extends FormApplication<ActorPF2e> {
+export class RemoveCoinsPopup extends FormApplication<ActorAvant> {
     static override get defaultOptions(): FormApplicationOptions {
         return {
             ...super.defaultOptions,
             id: "remove-coins",
-            title: "PF2E.RemoveCoinsTitle",
-            template: "systems/pf2e/templates/actors/remove-coins.hbs",
+            title: "AVANT.RemoveCoinsTitle",
+            template: "systems/avant/templates/actors/remove-coins.hbs",
         };
     }
 
@@ -29,7 +29,7 @@ export class RemoveCoinsPopup extends FormApplication<ActorPF2e> {
 
         const isSuccess = await actor.inventory.removeCoins(coinsToRemove, { byValue: !!formData.removeByValue });
         if (!isSuccess) {
-            ui.notifications.warn("PF2E.ErrorMessage.NotEnoughCoins", { localize: true });
+            ui.notifications.warn("AVANT.ErrorMessage.NotEnoughCoins", { localize: true });
         }
     }
 }

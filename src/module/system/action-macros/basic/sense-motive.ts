@@ -8,17 +8,17 @@ function senseMotive(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph ?? "A",
-        title: "PF2E.Actions.SenseMotive.Title",
+        title: "AVANT.Actions.SenseMotive.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["concentrate", "secret"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass ?? "deception",
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.SenseMotive", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.SenseMotive", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.SenseMotive", "failure"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.SenseMotive", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.SenseMotive", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.SenseMotive", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.SenseMotive", "failure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.SenseMotive", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -28,15 +28,15 @@ function senseMotive(options: SkillActionOptions): void {
 
 const action = new SingleCheckAction({
     cost: 1,
-    description: "PF2E.Actions.SenseMotive.Description",
+    description: "AVANT.Actions.SenseMotive.Description",
     difficultyClass: "deception",
     img: "icons/skills/movement/arrow-upward-yellow.webp",
-    name: "PF2E.Actions.SenseMotive.Title",
+    name: "AVANT.Actions.SenseMotive.Title",
     notes: [
-        { outcome: ["criticalSuccess"], text: "PF2E.Actions.SenseMotive.Notes.criticalSuccess" },
-        { outcome: ["success"], text: "PF2E.Actions.SenseMotive.Notes.success" },
-        { outcome: ["failure"], text: "PF2E.Actions.SenseMotive.Notes.failure" },
-        { outcome: ["criticalFailure"], text: "PF2E.Actions.SenseMotive.Notes.criticalFailure" },
+        { outcome: ["criticalSuccess"], text: "AVANT.Actions.SenseMotive.Notes.criticalSuccess" },
+        { outcome: ["success"], text: "AVANT.Actions.SenseMotive.Notes.success" },
+        { outcome: ["failure"], text: "AVANT.Actions.SenseMotive.Notes.failure" },
+        { outcome: ["criticalFailure"], text: "AVANT.Actions.SenseMotive.Notes.criticalFailure" },
     ],
     rollOptions: ["action:sense-motive"],
     section: "basic",

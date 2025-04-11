@@ -1,17 +1,17 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { AutomaticBonusProgression as ABP } from "@actor/character/automatic-bonus-progression.ts";
 import { RawItemChatData } from "@item/base/data/index.ts";
-import { PhysicalItemPF2e, getPropertyRuneSlots } from "@item/physical/index.ts";
+import { PhysicalItemAvant, getPropertyRuneSlots } from "@item/physical/index.ts";
 import { MAGIC_TRADITIONS } from "@item/spell/values.ts";
-import { UserPF2e } from "@module/user/index.ts";
-import { ErrorPF2e, setHasElement, signedInteger, sluggify } from "@util";
+import { UserAvant } from "@module/user/index.ts";
+import { ErrorAvant, setHasElement, signedInteger, sluggify } from "@util";
 import * as R from "remeda";
 import { ArmorSource, ArmorSystemData } from "./data.ts";
 import { ArmorCategory, ArmorGroup, ArmorTrait, BaseArmorType } from "./types.ts";
 
-class ArmorPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+class ArmorAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     static override get validTraits(): Record<ArmorTrait, string> {
-        return CONFIG.PF2E.armorTraits;
+        return CONFIG.AVANT.armorTraits;
     }
 
     get isBarding(): boolean {
@@ -74,7 +74,7 @@ class ArmorPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Phy
         return rollOptions;
     }
 
-    override isStackableWith(item: PhysicalItemPF2e<TParent>): boolean {
+    override isStackableWith(item: PhysicalItemAvant<TParent>): boolean {
         if (this.isEquipped || item.isEquipped) return false;
         return super.isStackableWith(item);
     }
@@ -114,10 +114,10 @@ class ArmorPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Phy
         this.system.acBonus = baseArmor + potencyRune;
     }
 
-    override prepareActorData(this: ArmorPF2e<ActorPF2e>): void {
+    override prepareActorData(this: ArmorAvant<ActorAvant>): void {
         super.prepareActorData();
         const actor = this.actor;
-        if (!actor) throw ErrorPF2e("This method may only be called from embedded items");
+        if (!actor) throw ErrorAvant("This method may only be called from embedded items");
         if (!this.isEquipped) return;
 
         for (const option of this.getRollOptions("armor")) {
@@ -128,10 +128,10 @@ class ArmorPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Phy
     override onPrepareSynthetics(): void {
         super.onPrepareSynthetics();
         const actor = this.actor;
-        if (!actor) throw ErrorPF2e("This method may only be called from embedded items");
+        if (!actor) throw ErrorAvant("This method may only be called from embedded items");
         if (!this.isEquipped) return;
 
-        const rollOptionsAll = this.actor.flags.pf2e.rollOptions.all;
+        const rollOptionsAll = this.actor.flags.avant.rollOptions.all;
         for (const option of Object.keys(rollOptionsAll)) {
             if (option.startsWith("armor:")) delete rollOptionsAll[option];
         }
@@ -141,38 +141,38 @@ class ArmorPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Phy
     }
 
     override async getChatData(
-        this: ArmorPF2e<ActorPF2e>,
+        this: ArmorAvant<ActorAvant>,
         htmlOptions: EnrichmentOptions = {},
     ): Promise<RawItemChatData> {
         const properties = [
-            CONFIG.PF2E.armorCategories[this.category],
-            `${signedInteger(this.acBonus)} ${game.i18n.localize("PF2E.ArmorArmorLabel")}`,
-            `${this.system.dexCap || 0} ${game.i18n.localize("PF2E.ArmorDexLabel")}`,
-            `${this.system.checkPenalty || 0} ${game.i18n.localize("PF2E.ArmorCheckLabel")}`,
-            this.speedPenalty ? `${this.system.speedPenalty} ${game.i18n.localize("PF2E.ArmorSpeedLabel")}` : null,
+            CONFIG.AVANT.armorCategories[this.category],
+            `${signedInteger(this.acBonus)} ${game.i18n.localize("AVANT.ArmorArmorLabel")}`,
+            `${this.system.dexCap || 0} ${game.i18n.localize("AVANT.ArmorDexLabel")}`,
+            `${this.system.checkPenalty || 0} ${game.i18n.localize("AVANT.ArmorCheckLabel")}`,
+            this.speedPenalty ? `${this.system.speedPenalty} ${game.i18n.localize("AVANT.ArmorSpeedLabel")}` : null,
         ].filter(R.isTruthy);
 
         return this.processChatData(htmlOptions, {
             ...(await super.getChatData()),
-            traits: this.traitChatData(CONFIG.PF2E.armorTraits),
+            traits: this.traitChatData(CONFIG.AVANT.armorTraits),
             properties,
         });
     }
 
     override generateUnidentifiedName({ typeOnly = false }: { typeOnly?: boolean } = { typeOnly: false }): string {
-        const base = this.baseType ? CONFIG.PF2E.baseArmorTypes[this.baseType] : null;
-        const group = this.group ? CONFIG.PF2E.armorGroups[this.group] : null;
+        const base = this.baseType ? CONFIG.AVANT.baseArmorTypes[this.baseType] : null;
+        const group = this.group ? CONFIG.AVANT.armorGroups[this.group] : null;
         const fallback = "TYPES.Item.armor";
         const itemType = game.i18n.localize(base ?? group ?? fallback);
 
-        return typeOnly ? itemType : game.i18n.format("PF2E.identification.UnidentifiedItem", { item: itemType });
+        return typeOnly ? itemType : game.i18n.format("AVANT.identification.UnidentifiedItem", { item: itemType });
     }
 
     /** Ensure correct shield/actual-armor usage */
     protected override async _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) return super._preUpdate(changed, operation, user);
 
@@ -200,9 +200,9 @@ class ArmorPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Phy
     }
 }
 
-interface ArmorPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+interface ArmorAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     readonly _source: ArmorSource;
     system: ArmorSystemData;
 }
 
-export { ArmorPF2e };
+export { ArmorAvant };

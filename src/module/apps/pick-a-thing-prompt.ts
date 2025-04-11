@@ -1,11 +1,11 @@
-import type { ItemPF2e } from "@item";
-import type { UserPF2e } from "@module/user/document.ts";
+import type { ItemAvant } from "@item";
+import type { UserAvant } from "@module/user/document.ts";
 import { Predicate } from "@system/predication.ts";
 import { htmlClosest, htmlQuery, htmlQueryAll } from "@util";
 import Tagify from "@yaireo/tagify";
 
 /** Prompt the user to pick from a number of options */
-abstract class PickAThingPrompt<TItem extends ItemPF2e, TThing extends string | number | object> extends Application {
+abstract class PickAThingPrompt<TItem extends ItemAvant, TThing extends string | number | object> extends Application {
     protected item: TItem;
 
     #resolve?: (value: PickableThing<TThing> | null) => void;
@@ -115,7 +115,7 @@ abstract class PickAThingPrompt<TItem extends ItemPF2e, TThing extends string | 
     }
 }
 
-interface PickAThingConstructorArgs<TItem extends ItemPF2e, TThing extends string | number | object> {
+interface PickAThingConstructorArgs<TItem extends ItemAvant, TThing extends string | number | object> {
     title?: string;
     prompt?: string;
     choices: PickableThing<TThing>[];
@@ -135,8 +135,8 @@ interface PickableThing<T extends string | number | object = string | number | o
 interface PromptTemplateData {
     choices: PickableThing[];
     /** An item pertinent to the selection being made */
-    item: ItemPF2e;
-    user: UserPF2e;
+    item: ItemAvant;
+    user: UserAvant;
 }
 
 export { PickAThingPrompt };

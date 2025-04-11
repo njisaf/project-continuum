@@ -1,12 +1,12 @@
-import { ActorPF2e, ArmyPF2e, CreaturePF2e, type PartyPF2e } from "@actor";
+import { ActorAvant, ArmyAvant, CreatureAvant, type PartyAvant } from "@actor";
 import type { FeatGroup } from "@actor/character/feats/index.ts";
 import { MODIFIER_TYPES } from "@actor/modifiers.ts";
-import { ActorSheetPF2e, SheetClickActionHandlers } from "@actor/sheet/base.ts";
-import { ActorSheetDataPF2e } from "@actor/sheet/data-types.ts";
-import { ItemPF2e, type CampaignFeaturePF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
-import { DropCanvasItemDataPF2e } from "@module/canvas/drop-canvas-data.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import { ActorSheetAvant, SheetClickActionHandlers } from "@actor/sheet/base.ts";
+import { ActorSheetDataAvant } from "@actor/sheet/data-types.ts";
+import { ItemAvant, type CampaignFeatureAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
+import { DropCanvasItemDataAvant } from "@module/canvas/drop-canvas-data.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { ValueAndMax } from "@module/data.ts";
 import {
     AdjustedValue,
@@ -20,7 +20,7 @@ import {
 import { SocketMessage } from "@scripts/socket.ts";
 import { Statistic } from "@system/statistic/index.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     SORTABLE_BASE_OPTIONS,
     createHTMLElement,
     fontAwesomeIcon,
@@ -58,7 +58,7 @@ import {
 // Kingdom traits in order of when the phases occur in the process
 const KINGDOM_TRAITS = ["commerce", "leadership", "region", "civic", "army"] as const;
 
-class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
+class KingdomSheetAvant extends ActorSheetAvant<PartyAvant> {
     /** The current selected activity filter, which doubles as an active kingdom phase */
     protected selectedFilter: string | null = null;
 
@@ -67,7 +67,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
 
     #editingSettlements: Record<string, boolean> = {};
 
-    constructor(actor: PartyPF2e, options?: Partial<ActorSheetOptions>) {
+    constructor(actor: PartyAvant, options?: Partial<ActorSheetOptions>) {
         super(actor, options);
     }
 
@@ -75,7 +75,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
         const campaign = this.actor.campaign;
         if (!(campaign instanceof Kingdom)) {
             this.close();
-            throw ErrorPF2e("Only actors with kingdom data is supported");
+            throw ErrorAvant("Only actors with kingdom data is supported");
         }
 
         return campaign;
@@ -93,7 +93,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             classes: [...options.classes, "kingdom"],
             width: 750,
             height: 620,
-            template: "systems/pf2e/templates/actors/party/kingdom/sheet.hbs",
+            template: "systems/avant/templates/actors/party/kingdom/sheet.hbs",
             scrollY: [...options.scrollY, ".tab.active", ".tab.active .content", ".sidebar"],
             tabs: [
                 {
@@ -114,7 +114,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                 icon: "fa-solid fa-eye",
                 onclick: () => {
                     const users = game.users.filter((u) => !u.isSelf);
-                    game.socket.emit("system.pf2e", {
+                    game.socket.emit("system.avant", {
                         request: "showSheet",
                         users: users.map((u) => u.uuid),
                         document: this.actor.uuid,
@@ -143,7 +143,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             ...data,
             actor: this.actor,
             kingdom: this.kingdom,
-            nationTypeLabel: game.i18n.localize(`PF2E.Kingmaker.Kingdom.NationType.${kingdom.nationType}`),
+            nationTypeLabel: game.i18n.localize(`AVANT.Kingmaker.Kingdom.NationType.${kingdom.nationType}`),
             abilities: KINGDOM_ABILITIES.map((slug) => {
                 return {
                     ...this.kingdom.abilities[slug],
@@ -157,8 +157,8 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                 type,
                 label: game.i18n.localize(KINGDOM_COMMODITY_LABELS[type]),
                 workSites: {
-                    label: game.i18n.localize(`PF2E.Kingmaker.WorkSites.${type}.Name`),
-                    description: game.i18n.localize(`PF2E.Kingmaker.WorkSites.${type}.Description`),
+                    label: game.i18n.localize(`AVANT.Kingmaker.WorkSites.${type}.Name`),
+                    description: game.i18n.localize(`AVANT.Kingmaker.WorkSites.${type}.Description`),
                     hasResource: ["lumber", "ore", "stone"].includes(type),
                     value: kingdom.resources.workSites[type].value,
                     resource: kingdom.resources.workSites[type].resource,
@@ -176,28 +176,28 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             leadership: KINGDOM_LEADERSHIP.map((slug) => {
                 const data = this.kingdom.leadership[slug];
                 const document = fromUuidSync(data.uuid ?? "");
-                const actor = document instanceof ActorPF2e ? document : null;
+                const actor = document instanceof ActorAvant ? document : null;
                 return {
                     ...data,
                     slug,
-                    label: game.i18n.localize(`PF2E.Kingmaker.Kingdom.LeadershipRole.${slug}`),
+                    label: game.i18n.localize(`AVANT.Kingmaker.Kingdom.LeadershipRole.${slug}`),
                     actor,
-                    img: actor?.prototypeToken.texture.src ?? actor?.img ?? ActorPF2e.DEFAULT_ICON,
+                    img: actor?.prototypeToken.texture.src ?? actor?.img ?? ActorAvant.DEFAULT_ICON,
                     abilityLabel: game.i18n.localize(KINGDOM_ABILITY_LABELS[KINGDOM_LEADERSHIP_ABILITIES[slug]]),
-                    penaltyLabel: game.i18n.localize(`PF2E.Kingmaker.Kingdom.VacancyPenalty.${slug}`),
+                    penaltyLabel: game.i18n.localize(`AVANT.Kingmaker.Kingdom.VacancyPenalty.${slug}`),
                 };
             }),
             actions: R.sortBy(kingdom.activities, (a) => a.name).map((item) => ({
                 item,
                 traits: createSheetTags(
-                    CONFIG.PF2E.kingmakerTraits,
+                    CONFIG.AVANT.kingmakerTraits,
                     item.system.traits.value.filter((t) => t !== "downtime"),
                 ),
             })),
             skills: R.sortBy(Object.values(this.kingdom.skills), (s) => s.label),
             feats: [kingdom.features, kingdom.feats, kingdom.bonusFeats],
             actionFilterChoices: KINGDOM_TRAITS.map((trait) => ({
-                label: game.i18n.localize(CONFIG.PF2E.kingmakerTraits[trait]),
+                label: game.i18n.localize(CONFIG.AVANT.kingmakerTraits[trait]),
                 value: trait,
                 selected: false, // selected is handled without re-render
             })),
@@ -213,7 +213,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             settlementTypes: KINGDOM_SETTLEMENT_TYPE_LABELS,
             abilityLabels: KINGDOM_ABILITY_LABELS,
             skillLabels: KINGDOM_SKILL_LABELS,
-            proficiencyOptions: Object.values(CONFIG.PF2E.proficiencyRanks).map((label, i) => ({
+            proficiencyOptions: Object.values(CONFIG.AVANT.proficiencyRanks).map((label, i) => ({
                 value: i.toString(),
                 label,
             })),
@@ -354,12 +354,12 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
         }
 
         htmlQuery(html, "[data-action=collect]")?.addEventListener("click", async () => {
-            ChatMessagePF2e.create({
+            ChatMessageAvant.create({
                 speaker: {
-                    ...ChatMessagePF2e.getSpeaker(this.actor),
+                    ...ChatMessageAvant.getSpeaker(this.actor),
                     alias: this.kingdom.name,
                 },
-                content: await renderTemplate("systems/pf2e/templates/actors/party/kingdom/collection.hbs", {
+                content: await renderTemplate("systems/avant/templates/actors/party/kingdom/collection.hbs", {
                     ...calculateKingdomCollectionData(this.kingdom),
                 }),
             });
@@ -412,7 +412,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                 const type = htmlQuery<HTMLSelectElement>(customModifierEl, ".add-modifier-type")?.value ?? "";
                 const label =
                     htmlQuery<HTMLInputElement>(customModifierEl, ".add-modifier-name")?.value?.trim() ??
-                    game.i18n.localize(`PF2E.ModifierType.${type}`);
+                    game.i18n.localize(`AVANT.ModifierType.${type}`);
                 if (!setHasElement(MODIFIER_TYPES, type)) {
                     ui.notifications.error("Type is required.");
                     return;
@@ -437,7 +437,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             const maxLevel = Number(link.dataset.level) || this.kingdom.level;
 
             link.addEventListener("click", async () => {
-                const compendiumTab = game.pf2e.compendiumBrowser.tabs.campaignFeature;
+                const compendiumTab = game.avant.compendiumBrowser.tabs.campaignFeature;
                 const filter = await compendiumTab.getFilterData();
 
                 // Configure level filters
@@ -505,7 +505,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
         handlers["create-feat"] = () => {
             this.actor.createEmbeddedDocuments("Item", [
                 {
-                    name: game.i18n.localize(CONFIG.PF2E.featCategories.bonus),
+                    name: game.i18n.localize(CONFIG.AVANT.featCategories.bonus),
                     type: "campaignFeature",
                     system: {
                         campaign: "kingmaker",
@@ -528,7 +528,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             if (!settlement) return;
 
             const newHTML = await renderTemplate(
-                "systems/pf2e/templates/actors/party/kingdom/partials/settlement.hbs",
+                "systems/avant/templates/actors/party/kingdom/partials/settlement.hbs",
                 {
                     ...(await this.getData()),
                     settlement: await this.#prepareSettlement(id, settlement),
@@ -569,8 +569,8 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             const result =
                 event?.ctrlKey ||
                 (await Dialog.confirm({
-                    title: game.i18n.localize("PF2E.DeleteItemTitle"),
-                    content: `<p>${game.i18n.format("PF2E.DeleteQuestion", { name: `"${settlement.name}"` })}</p>`,
+                    title: game.i18n.localize("AVANT.DeleteItemTitle"),
+                    content: `<p>${game.i18n.format("AVANT.DeleteQuestion", { name: `"${settlement.name}"` })}</p>`,
                 }));
             if (result) {
                 this.kingdom.update({ [`settlements.-=${id}`]: null });
@@ -635,9 +635,9 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
         }
     }
 
-    protected override async _onDropItem(event: DragEvent, data: DropCanvasItemDataPF2e): Promise<ItemPF2e[]> {
-        const item = await ItemPF2e.fromDropData(data);
-        if (!item) throw ErrorPF2e("Unable to create item from drop data!");
+    protected override async _onDropItem(event: DragEvent, data: DropCanvasItemDataAvant): Promise<ItemAvant[]> {
+        const item = await ItemAvant.fromDropData(data);
+        if (!item) throw ErrorAvant("Unable to create item from drop data!");
 
         // If the actor is the same, call the parent method, which will eventually call the sort instead
         if (this.actor.uuid === item.parent?.uuid) {
@@ -654,7 +654,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
     }
 
     /** Handle a drop event for an existing Owned Item to sort that item */
-    protected override async _onSortItem(event: DragEvent, itemData: ItemSourcePF2e): Promise<ItemPF2e[]> {
+    protected override async _onSortItem(event: DragEvent, itemData: ItemSourceAvant): Promise<ItemAvant[]> {
         const item = this.actor.items.get(itemData._id!);
         if (item?.isOfType("campaignFeature") && (item.isFeat || item.isFeature)) {
             const featSlot = this.#getFeatSlotData(event);
@@ -674,13 +674,13 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
 
     protected override async _onDropActor(
         event: DragEvent,
-        data: DropCanvasData<"Actor", PartyPF2e>,
+        data: DropCanvasData<"Actor", PartyAvant>,
     ): Promise<false | void> {
         await super._onDropActor(event, data);
 
         const actor = fromUuidSync(data.uuid as ActorUUID);
         const closestLeader = htmlClosest(event.target, ".leader[data-role]");
-        if (actor instanceof CreaturePF2e && closestLeader) {
+        if (actor instanceof CreatureAvant && closestLeader) {
             const role = String(closestLeader.dataset.role);
             const uuid = actor.uuid;
             this.kingdom.update({ leadership: { [role]: { uuid } } });
@@ -722,7 +722,7 @@ class KingdomSheetPF2e extends ActorSheetPF2e<PartyPF2e> {
     }
 }
 
-interface KingdomSheetData extends ActorSheetDataPF2e<PartyPF2e> {
+interface KingdomSheetData extends ActorSheetDataAvant<PartyAvant> {
     kingdom: Kingdom;
     nationTypeLabel: string;
     abilities: (KingdomAbilityData & {
@@ -737,9 +737,9 @@ interface KingdomSheetData extends ActorSheetDataPF2e<PartyPF2e> {
         penaltyAdjustment: string | null;
     };
     leadership: LeaderSheetData[];
-    actions: { item: CampaignFeaturePF2e; traits: SheetOptions }[];
+    actions: { item: CampaignFeatureAvant; traits: SheetOptions }[];
     skills: Statistic[];
-    feats: FeatGroup<PartyPF2e, CampaignFeaturePF2e>[];
+    feats: FeatGroup<PartyAvant, CampaignFeatureAvant>[];
     actionFilterChoices: SheetOption[];
     armies: ArmySheetData[];
     settlements: SettlementSheetData[];
@@ -753,12 +753,12 @@ interface KingdomSheetData extends ActorSheetDataPF2e<PartyPF2e> {
 
 interface ArmySheetData {
     link: string;
-    document: ArmyPF2e;
+    document: ArmyAvant;
     consumption: AdjustedValue;
 }
 
 interface LeaderSheetData extends KingdomLeadershipData {
-    actor: ActorPF2e | null;
+    actor: ActorAvant | null;
     img: string;
     slug: string;
     label: string;
@@ -793,4 +793,4 @@ type SettlementSheetData = Omit<KingdomSettlementData, "storage"> & {
     }[];
 };
 
-export { KingdomSheetPF2e };
+export { KingdomSheetAvant };

@@ -1,0 +1,93 @@
+{
+    "_id": "XstFvzPDKCfmoIED",
+    "img": "systems/avant/icons/spells/scintillating-safeguard.webp",
+    "name": "Spell Effect: Scintillating Safeguard",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Scintillating Safeguard]</p>\n<p>You gain resistance to a physical or energy damage type.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 6
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "value": "slashing"
+                    },
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitForce",
+                        "value": "force"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    },
+                    {
+                        "label": "AVANT.TraitVitality",
+                        "value": "vitality"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    }
+                ],
+                "flag": "damageType",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DamageType"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.damageType}",
+                "value": "4 + @item.level"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

@@ -1,4 +1,4 @@
-import { ActorSystemSource, BaseActorSourcePF2e } from "@actor/data/base.ts";
+import { ActorSystemSource, BaseActorSourceAvant } from "@actor/data/base.ts";
 import { Immunity, ImmunitySource, Resistance, ResistanceSource, Weakness, WeaknessSource } from "@actor/data/iwr.ts";
 import { ActorSystemModel, ActorSystemSchema } from "@actor/data/model.ts";
 import { InitiativeTraceData } from "@actor/initiative.ts";
@@ -6,12 +6,12 @@ import { ActorAlliance } from "@actor/types.ts";
 import { RARITIES, Rarity, ValueAndMax } from "@module/data.ts";
 import { AutoChangeEntry } from "@module/rules/rule-element/ae-like.ts";
 import { PerceptionTraceData } from "@system/statistic/perception.ts";
-import { ArmyPF2e } from "./document.ts";
+import { ArmyAvant } from "./document.ts";
 import { ArmyType } from "./types.ts";
 import { ARMY_STATS, ARMY_TYPES } from "./values.ts";
 import fields = foundry.data.fields;
 
-class ArmySystemData extends ActorSystemModel<ArmyPF2e, ArmySystemSchema> {
+class ArmySystemData extends ActorSystemModel<ArmyAvant, ArmySystemSchema> {
     static override defineSchema(): ArmySystemSchema {
         const parent = super.defineSchema();
 
@@ -126,7 +126,7 @@ class ArmySystemData extends ActorSystemModel<ArmyPF2e, ArmySystemSchema> {
     }
 }
 
-interface ArmySystemData extends ActorSystemModel<ArmyPF2e, ArmySystemSchema>, ModelPropsFromSchema<ArmySystemSchema> {
+interface ArmySystemData extends ActorSystemModel<ArmyAvant, ArmySystemSchema>, ModelPropsFromSchema<ArmySystemSchema> {
     attributes: ModelPropsFromSchema<ArmyAttributesSchema> & {
         hp: {
             max: number;
@@ -246,7 +246,7 @@ type ArmySystemSource = SourceFromSchema<ArmySystemSchema> & {
     schema?: ActorSystemSource["schema"];
 };
 
-type ArmySource = BaseActorSourcePF2e<"army", ArmySystemSource>;
+type ArmySource = BaseActorSourceAvant<"army", ArmySystemSource>;
 
 export { ArmySystemData };
 export type { ArmySource };

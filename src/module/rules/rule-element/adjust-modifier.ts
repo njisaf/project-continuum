@@ -6,11 +6,11 @@ import { objectHasKey } from "@util";
 import * as R from "remeda";
 import { AELikeChangeMode, AELikeRuleElement } from "./ae-like.ts";
 import { ModelPropsFromRESchema, ResolvableValueField } from "./data.ts";
-import { RuleElementOptions, RuleElementPF2e, RuleElementSchema, RuleElementSource } from "./index.ts";
+import { RuleElementOptions, RuleElementAvant, RuleElementSchema, RuleElementSource } from "./index.ts";
 import fields = foundry.data.fields;
 
 /** Adjust the value of a modifier, change its damage type (in case of damage modifiers) or suppress it entirely */
-class AdjustModifierRuleElement extends RuleElementPF2e<AdjustModifierSchema> {
+class AdjustModifierRuleElement extends RuleElementAvant<AdjustModifierSchema> {
     /** The number of times this adjustment has been applied */
     applications = 0;
 
@@ -99,7 +99,7 @@ class AdjustModifierRuleElement extends RuleElementPF2e<AdjustModifierSchema> {
                 if (!this.damageType) return current;
 
                 const damageType = this.resolveInjectedProperties(this.damageType);
-                if (!objectHasKey(CONFIG.PF2E.damageTypes, damageType)) {
+                if (!objectHasKey(CONFIG.AVANT.damageTypes, damageType)) {
                     this.failValidation(`${damageType} is an unrecognized damage type.`);
                     return current;
                 }
@@ -122,7 +122,7 @@ class AdjustModifierRuleElement extends RuleElementPF2e<AdjustModifierSchema> {
 }
 
 interface AdjustModifierRuleElement
-    extends RuleElementPF2e<AdjustModifierSchema>,
+    extends RuleElementAvant<AdjustModifierSchema>,
         ModelPropsFromRESchema<AdjustModifierSchema> {
     suppress: boolean;
     maxApplications: number;

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration817FieldDiscoveryPredicates extends MigrationBase {
     static override version = 0.817;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const aeLikes = source.system.rules.filter(
             (r): r is AELikeSource =>
                 r.key === "ActiveEffectLike" &&

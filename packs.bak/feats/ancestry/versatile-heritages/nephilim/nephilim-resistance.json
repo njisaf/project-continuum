@@ -1,0 +1,70 @@
+{
+    "_id": "8CSewrCVEmL8sjnk",
+    "folder": "mCO6gdJ68cnsdtlN",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Nephilim Resistance",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "ancestry",
+        "description": {
+            "value": "<p>You resist energy like your extraplanar predecessors. Choose one of the following energy damage types: acid, cold, electricity, fire, or sonic. You gain resistance 5 to that damage type.</p>\n<p>The damage type typically matches an extraplanar entity associated with your bloodline. For instance, an @UUID[Compendium.avant.feats-srd.Item.Angelkin] might choose resistance to cold, while a @UUID[Compendium.avant.feats-srd.Item.Hellspawn] might choose resistance to fire.</p>"
+        },
+        "level": {
+            "value": 5
+        },
+        "prerequisites": {
+            "value": []
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    }
+                ],
+                "flag": "featCelestialResistance",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.CelestialResistance.Prompt"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.featCelestialResistance}",
+                "value": 5
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "nephilim"
+            ]
+        }
+    },
+    "type": "feat"
+}

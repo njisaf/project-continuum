@@ -1,9 +1,9 @@
 import { ActorTraitsSource } from "@actor/data/base.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { ImmunitySource, ResistanceSource, WeaknessSource } from "@actor/data/iwr.ts";
 import { ImmunityType, ResistanceType, WeaknessType } from "@actor/types.ts";
 import { IMMUNITY_TYPES, RESISTANCE_TYPES, WEAKNESS_TYPES } from "@actor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { setHasElement, sluggify } from "@util";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -12,7 +12,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration812RestructureIWR extends MigrationBase {
     static override version = 0.812;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         const traits: MaybeWithOldIWRData | undefined = source.system.traits;
         if (!traits || source.type === "familiar") return;
         const attributes = source.system.attributes;
@@ -161,12 +161,12 @@ export class Migration812RestructureIWR extends MigrationBase {
     }
 
     #oldENmappings: Record<string, string | undefined> = {
-        "PF2E.ResistanceException.Bludgeoning": "except bludgeoning",
-        "PF2E.ResistanceException.ForceGhostTouchDoubleNonMagical":
+        "AVANT.ResistanceException.Bludgeoning": "except bludgeoning",
+        "AVANT.ResistanceException.ForceGhostTouchDoubleNonMagical":
             "except force, or ghost touch; double resistance vs. non-magical",
-        "PF2E.ResistanceException.ForceGhostTouchNegativeDoubleNonMagical":
+        "AVANT.ResistanceException.ForceGhostTouchNegativeDoubleNonMagical":
             "except force, ghost touch, or negative; double resistance vs. non-magical",
-        "PF2E.ResistanceException.ForceGhostTouchPositiveDoubleNonMagical":
+        "AVANT.ResistanceException.ForceGhostTouchPositiveDoubleNonMagical":
             "except force, ghost touch, or positive; double resistance vs. non-magical",
     };
 
@@ -174,8 +174,8 @@ export class Migration812RestructureIWR extends MigrationBase {
     #parseExceptions(text: string): { exceptions: string[]; doubleVs: string[] } {
         const normalized = (this.#oldENmappings[text] ?? text)
             .toLowerCase()
-            .replace("PF2E.TraitForce", "force")
-            .replace("PF2E.TraitPositive", "positive")
+            .replace("AVANT.TraitForce", "force")
+            .replace("AVANT.TraitPositive", "positive")
             .replace("cold iron", "cold-iron")
             .replace("critical hits", "critical-hits")
             .replace("ghost touch", "ghost-touch")
@@ -237,7 +237,7 @@ interface MaybeWithOldIWRData extends ActorTraitsSource<string> {
     "-=dr"?: null;
 }
 
-type MaybeWithOldMaterialData = ItemSourcePF2e & {
+type MaybeWithOldMaterialData = ItemSourceAvant & {
     system: {
         preciousMaterial?: { value?: unknown };
         preciousMaterialGrade?: { value?: unknown };

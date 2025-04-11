@@ -1,20 +1,20 @@
-import type { ActorPF2e } from "@actor";
-import { ErrorPF2e } from "@util";
+import type { ActorAvant } from "@actor";
+import { ErrorAvant } from "@util";
 import * as R from "remeda";
 import type { SpellOverlay, SpellOverlayType, SpellSource } from "./data.ts";
-import type { SpellPF2e } from "./document.ts";
+import type { SpellAvant } from "./document.ts";
 
 class SpellOverlayCollection extends Collection<SpellOverlay> {
-    readonly spell: SpellPF2e;
+    readonly spell: SpellAvant;
 
-    constructor(spell: SpellPF2e, entries?: Record<string, SpellOverlay>) {
+    constructor(spell: SpellAvant, entries?: Record<string, SpellOverlay>) {
         super(Object.entries(entries ?? {}));
         this.spell = spell;
     }
 
     /** Returns all variants based on override overlays */
-    get overrideVariants(): SpellPF2e[] {
-        return [...this.entries()].reduce((result: SpellPF2e[], [overlayId, data]) => {
+    get overrideVariants(): SpellAvant[] {
+        return [...this.entries()].reduce((result: SpellAvant[], [overlayId, data]) => {
             if (data.overlayType === "override") {
                 const spell = this.spell.loadVariant({ overlayIds: [overlayId] });
                 if (spell) return [...result, spell];
@@ -52,10 +52,10 @@ class SpellOverlayCollection extends Collection<SpellOverlay> {
         }
     }
 
-    async updateOverride<TSpell extends SpellPF2e>(
+    async updateOverride<TSpell extends SpellAvant>(
         variantSpell: TSpell,
         data: Partial<SpellSource>,
-        operation?: Partial<DatabaseUpdateOperation<ActorPF2e>>,
+        operation?: Partial<DatabaseUpdateOperation<ActorAvant>>,
     ): Promise<TSpell | null> {
         const variantId = variantSpell.variantId;
         if (!variantId) return null;
@@ -108,7 +108,7 @@ class SpellOverlayCollection extends Collection<SpellOverlay> {
 
     protected verifyOverlayId(overlayId: string): void {
         if (!this.has(overlayId)) {
-            throw ErrorPF2e(
+            throw ErrorAvant(
                 `Spell ${this.spell.name} (${this.spell.uuid}) does not have an overlay with id: ${overlayId}`,
             );
         }

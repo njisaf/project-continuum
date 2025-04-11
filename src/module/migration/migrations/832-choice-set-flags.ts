@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { recursiveReplaceString, sluggify } from "@util";
 import { MigrationBase } from "../base.ts";
@@ -7,7 +7,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration832ChoiceSetFlags extends MigrationBase {
     static override version = 0.832;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const choiceSets = source.system.rules.filter(
             (r): r is RuleElementSource & { flag: string } =>
                 r.key === "ChoiceSet" && "flag" in r && typeof r.flag === "string",

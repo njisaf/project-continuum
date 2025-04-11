@@ -1,7 +1,7 @@
-import { ActorProxyPF2e } from "@actor";
-import { ItemPF2e, ItemProxyPF2e } from "@item";
+import { ActorProxyAvant } from "@actor";
+import { ItemAvant, ItemProxyAvant } from "@item";
 import { isBracketedValue } from "@module/rules/helpers.ts";
-import { RuleElements, type RuleElementPF2e, type RuleElementSource } from "@module/rules/index.ts";
+import { RuleElements, type RuleElementAvant, type RuleElementSource } from "@module/rules/index.ts";
 import { ResolvableValueField, RuleElementSchema } from "@module/rules/rule-element/data.ts";
 import type { HTMLTagifyTagsElement } from "@system/html-elements/tagify-tags.ts";
 import type { LaxSchemaField } from "@system/schema-data-fields.ts";
@@ -9,10 +9,10 @@ import { createHTMLElement, fontAwesomeIcon, htmlClosest, htmlQuery, htmlQueryAl
 import { tagify } from "@util/tags.ts";
 import * as R from "remeda";
 import type { DataField } from "types/foundry/common/data/fields.d.ts";
-import type { ItemSheetPF2e } from "../index.ts";
+import type { ItemSheetAvant } from "../index.ts";
 
-interface RuleElementFormOptions<TSource extends RuleElementSource, TObject extends RuleElementPF2e | null> {
-    sheet: ItemSheetPF2e<ItemPF2e>;
+interface RuleElementFormOptions<TSource extends RuleElementSource, TObject extends RuleElementAvant | null> {
+    sheet: ItemSheetAvant<ItemAvant>;
     index: number;
     rule: TSource;
     object: TObject;
@@ -21,11 +21,11 @@ interface RuleElementFormOptions<TSource extends RuleElementSource, TObject exte
 /** Base Rule Element form handler. Form handlers intercept sheet events to support new UI */
 class RuleElementForm<
     TSource extends RuleElementSource = RuleElementSource,
-    TObject extends RuleElementPF2e | null = RuleElementPF2e | null,
+    TObject extends RuleElementAvant | null = RuleElementAvant | null,
 > {
-    template = "systems/pf2e/templates/items/rules/default.hbs";
+    template = "systems/avant/templates/items/rules/default.hbs";
 
-    declare sheet: ItemSheetPF2e<ItemPF2e>;
+    declare sheet: ItemSheetAvant<ItemAvant>;
     declare index: number;
     declare rule: TSource;
     declare object: TObject;
@@ -56,8 +56,8 @@ class RuleElementForm<
             (() => {
                 const RuleElementClass = RuleElements.all[String(this.rule.key)];
                 if (!RuleElementClass) return null as TObject;
-                const actor = new ActorProxyPF2e({ _id: fu.randomID(), name: "temp", type: "character" });
-                const item = new ItemProxyPF2e(this.item.toObject(), { parent: actor });
+                const actor = new ActorProxyAvant({ _id: fu.randomID(), name: "temp", type: "character" });
+                const item = new ItemProxyAvant(this.item.toObject(), { parent: actor });
                 return new RuleElementClass(fu.deepClone(this.rule), {
                     parent: item,
                     strict: false,
@@ -68,7 +68,7 @@ class RuleElementForm<
         this.schema = this.object?.schema ?? RuleElements.all[String(this.rule.key)]?.schema ?? null;
     }
 
-    get item(): ItemPF2e {
+    get item(): ItemAvant {
         return this.sheet.item;
     }
 
@@ -103,10 +103,10 @@ class RuleElementForm<
 
     async getData(): Promise<RuleElementFormSheetData<TSource, TObject>> {
         const [label, recognized] = ((): [string, boolean] => {
-            const locPath = `PF2E.RuleElement.${this.rule.key}`;
+            const locPath = `AVANT.RuleElement.${this.rule.key}`;
             const localized = game.i18n.localize(locPath);
             return localized === locPath
-                ? [game.i18n.localize("PF2E.RuleElement.Unrecognized"), false]
+                ? [game.i18n.localize("AVANT.RuleElement.Unrecognized"), false]
                 : [localized, true];
         })();
         const mergedRule = fu.mergeObject(this.getInitialValue(), this.rule);
@@ -138,11 +138,11 @@ class RuleElementForm<
     }
 
     async #getFormHelpers(rule: TSource): Promise<Record<string, unknown>> {
-        const valueTemplate = await getTemplate("systems/pf2e/templates/items/rules/partials/resolvable-value.hbs");
+        const valueTemplate = await getTemplate("systems/avant/templates/items/rules/partials/resolvable-value.hbs");
         const bracketsTemplate = await getTemplate(
-            "systems/pf2e/templates/items/rules/partials/resolvable-brackets.hbs",
+            "systems/avant/templates/items/rules/partials/resolvable-brackets.hbs",
         );
-        const dropZoneTemplate = await getTemplate("systems/pf2e/templates/items/rules/partials/drop-zone.hbs");
+        const dropZoneTemplate = await getTemplate("systems/avant/templates/items/rules/partials/drop-zone.hbs");
 
         const getResolvableData = (property: string) => {
             const value = fu.getProperty(rule, property);
@@ -177,7 +177,7 @@ class RuleElementForm<
 
     async render(): Promise<string> {
         const data = await this.getData();
-        return renderTemplate("systems/pf2e/templates/items/rules/partials/outer.hbs", {
+        return renderTemplate("systems/avant/templates/items/rules/partials/outer.hbs", {
             ...data,
             template: await renderTemplate(this.template, data),
         });
@@ -267,10 +267,10 @@ class RuleElementForm<
         }
     }
 
-    protected async onDrop(event: DragEvent, _element: HTMLElement): Promise<ItemPF2e | null> {
+    protected async onDrop(event: DragEvent, _element: HTMLElement): Promise<ItemAvant | null> {
         const data = event.dataTransfer?.getData("text/plain");
         if (!data) return null;
-        const item = await ItemPF2e.fromDropData(JSON.parse(data));
+        const item = await ItemAvant.fromDropData(JSON.parse(data));
         return item ?? null;
     }
 
@@ -303,7 +303,7 @@ class RuleElementForm<
             } catch (error) {
                 if (error instanceof Error) {
                     ui.notifications.error(
-                        game.i18n.format("PF2E.ErrorMessage.RuleElementSyntax", { message: error.message }),
+                        game.i18n.format("AVANT.ErrorMessage.RuleElementSyntax", { message: error.message }),
                     );
                     console.warn("Syntax error in rule element definition.", error.message, source);
                     throw error; // prevent update, to give the user a chance to correct, and prevent bad data
@@ -405,7 +405,7 @@ function cleanPredicate(source: { predicate?: unknown }) {
             } catch (error) {
                 if (error instanceof Error) {
                     ui.notifications.error(
-                        game.i18n.format("PF2E.ErrorMessage.RuleElementSyntax", { message: error.message }),
+                        game.i18n.format("AVANT.ErrorMessage.RuleElementSyntax", { message: error.message }),
                     );
                     throw error; // prevent update, to give the user a chance to correct, and prevent bad data
                 }
@@ -414,9 +414,9 @@ function cleanPredicate(source: { predicate?: unknown }) {
     }
 }
 
-interface RuleElementFormSheetData<TSource extends RuleElementSource, TObject extends RuleElementPF2e | null>
+interface RuleElementFormSheetData<TSource extends RuleElementSource, TObject extends RuleElementAvant | null>
     extends Omit<RuleElementFormOptions<TSource, TObject>, "sheet"> {
-    item: ItemPF2e;
+    item: ItemAvant;
     label: string;
     /** A prefix for use in label-input/select pairs */
     fieldIdPrefix: string;

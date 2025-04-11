@@ -1,7 +1,7 @@
 import { resetActors } from "@actor/helpers.ts";
-import { ActorSheetPF2e } from "@actor/sheet/base.ts";
-import { ItemSheetPF2e, type ItemPF2e } from "@item";
-import { RulerPF2e } from "@module/canvas/ruler.ts";
+import { ActorSheetAvant } from "@actor/sheet/base.ts";
+import { ItemSheetAvant, type ItemAvant } from "@item";
+import { RulerAvant } from "@module/canvas/ruler.ts";
 import { StatusEffects } from "@module/canvas/status-effects.ts";
 import { MigrationRunner } from "@module/migration/runner/index.ts";
 import { isImageOrVideoPath, tupleHasValue } from "@util";
@@ -16,26 +16,26 @@ export function registerSettings(): void {
         registerWorldSchemaVersion();
     }
 
-    game.settings.register("pf2e", "tokens.autoscale", {
-        name: "PF2E.SETTINGS.Tokens.Autoscale.Name",
-        hint: "PF2E.SETTINGS.Tokens.Autoscale.Hint",
+    game.settings.register("avant", "tokens.autoscale", {
+        name: "AVANT.SETTINGS.Tokens.Autoscale.Name",
+        hint: "AVANT.SETTINGS.Tokens.Autoscale.Hint",
         scope: "world",
         config: true,
         default: true,
         type: Boolean,
         onChange: (value) => {
-            game.pf2e.settings.tokens.autoscale = !!value;
+            game.avant.settings.tokens.autoscale = !!value;
         },
     });
 
-    game.settings.register("pf2e", "identifyMagicNotMatchingTraditionModifier", {
-        name: "PF2E.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Name",
-        hint: "PF2E.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Hint",
+    game.settings.register("avant", "identifyMagicNotMatchingTraditionModifier", {
+        name: "AVANT.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Name",
+        hint: "AVANT.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Hint",
         choices: {
-            0: "PF2E.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Choices.0",
-            2: "PF2E.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Choices.2",
-            5: "PF2E.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Choices.5",
-            10: "PF2E.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Choices.10",
+            0: "AVANT.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Choices.0",
+            2: "AVANT.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Choices.2",
+            5: "AVANT.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Choices.5",
+            10: "AVANT.SETTINGS.IdentifyMagicNotMatchingTraditionModifier.Choices.10",
         },
         type: Number,
         default: 5,
@@ -43,38 +43,38 @@ export function registerSettings(): void {
         config: true,
     });
 
-    game.settings.register("pf2e", "critRule", {
-        name: "PF2E.SETTINGS.CritRule.Name",
-        hint: "PF2E.SETTINGS.CritRule.Hint",
+    game.settings.register("avant", "critRule", {
+        name: "AVANT.SETTINGS.CritRule.Name",
+        hint: "AVANT.SETTINGS.CritRule.Hint",
         scope: "world",
         config: true,
         default: "doubledamage",
         type: String,
         choices: {
-            doubledamage: "PF2E.SETTINGS.CritRule.Choices.Doubledamage",
-            doubledice: "PF2E.SETTINGS.CritRule.Choices.Doubledice",
+            doubledamage: "AVANT.SETTINGS.CritRule.Choices.Doubledamage",
+            doubledice: "AVANT.SETTINGS.CritRule.Choices.Doubledice",
         },
         onChange: () => {
-            for (const sheet of Object.values(ui.windows).filter((w) => w instanceof ActorSheetPF2e)) {
+            for (const sheet of Object.values(ui.windows).filter((w) => w instanceof ActorSheetAvant)) {
                 sheet.render();
             }
         },
     });
 
-    game.settings.register("pf2e", "compendiumBrowserPacks", {
-        name: "PF2E.SETTINGS.CompendiumBrowserPacks.Name",
-        hint: "PF2E.SETTINGS.CompendiumBrowserPacks.Hint",
+    game.settings.register("avant", "compendiumBrowserPacks", {
+        name: "AVANT.SETTINGS.CompendiumBrowserPacks.Name",
+        hint: "AVANT.SETTINGS.CompendiumBrowserPacks.Hint",
         default: {},
         type: Object,
         scope: "world",
         onChange: () => {
-            game.pf2e.compendiumBrowser.initCompendiumList();
+            game.avant.compendiumBrowser.initCompendiumList();
         },
     });
 
-    game.settings.register("pf2e", "compendiumBrowserSources", {
-        name: "PF2E.SETTINGS.compendiumBrowserSources.Name",
-        hint: "PF2E.SETTINGS.compendiumBrowserSources.Hint",
+    game.settings.register("avant", "compendiumBrowserSources", {
+        name: "AVANT.SETTINGS.compendiumBrowserSources.Name",
+        hint: "AVANT.SETTINGS.compendiumBrowserSources.Hint",
         default: {
             ignoreAsGM: true,
             showEmptySources: true,
@@ -84,14 +84,14 @@ export function registerSettings(): void {
         type: Object,
         scope: "world",
         onChange: () => {
-            game.pf2e.compendiumBrowser.packLoader.reset();
-            game.pf2e.compendiumBrowser.initCompendiumList();
+            game.avant.compendiumBrowser.packLoader.reset();
+            game.avant.compendiumBrowser.initCompendiumList();
         },
     });
 
-    game.settings.register("pf2e", "minimumRulesUI", {
-        name: "PF2E.SETTINGS.MinimumRulesUI.Name",
-        hint: "PF2E.SETTINGS.MinimumRulesUI.Hint",
+    game.settings.register("avant", "minimumRulesUI", {
+        name: "AVANT.SETTINGS.MinimumRulesUI.Name",
+        hint: "AVANT.SETTINGS.MinimumRulesUI.Hint",
         scope: "world",
         config: true,
         default: CONST.USER_ROLES.ASSISTANT,
@@ -104,7 +104,7 @@ export function registerSettings(): void {
         },
         onChange: () => {
             const itemSheets = Object.values(ui.windows).filter(
-                (w): w is ItemSheetPF2e<ItemPF2e> => w instanceof ItemSheetPF2e,
+                (w): w is ItemSheetAvant<ItemAvant> => w instanceof ItemSheetAvant,
             );
             for (const sheet of itemSheets) {
                 sheet.render();
@@ -112,9 +112,9 @@ export function registerSettings(): void {
         },
     });
 
-    game.settings.register("pf2e", "critFumbleButtons", {
-        name: game.i18n.localize("PF2E.SETTINGS.critFumbleCardButtons.name"),
-        hint: game.i18n.localize("PF2E.SETTINGS.critFumbleCardButtons.hint"),
+    game.settings.register("avant", "critFumbleButtons", {
+        name: game.i18n.localize("AVANT.SETTINGS.critFumbleCardButtons.name"),
+        hint: game.i18n.localize("AVANT.SETTINGS.critFumbleCardButtons.hint"),
         scope: "world",
         config: true,
         default: false,
@@ -122,25 +122,25 @@ export function registerSettings(): void {
         requiresReload: true,
     });
 
-    game.settings.register("pf2e", "drawCritFumble", {
-        name: game.i18n.localize("PF2E.SETTINGS.critFumbleCards.name"),
-        hint: game.i18n.localize("PF2E.SETTINGS.critFumbleCards.hint"),
+    game.settings.register("avant", "drawCritFumble", {
+        name: game.i18n.localize("AVANT.SETTINGS.critFumbleCards.name"),
+        hint: game.i18n.localize("AVANT.SETTINGS.critFumbleCards.hint"),
         scope: "world",
         config: true,
         default: false,
         type: Boolean,
         onChange: (value) => {
-            game.pf2e.settings.critFumble.cards = !!value;
+            game.avant.settings.critFumble.cards = !!value;
         },
     });
 
     const iconChoices = {
-        blackWhite: "PF2E.SETTINGS.statusEffectType.blackWhite",
-        default: "PF2E.SETTINGS.statusEffectType.default",
+        blackWhite: "AVANT.SETTINGS.statusEffectType.blackWhite",
+        default: "AVANT.SETTINGS.statusEffectType.default",
     };
-    game.settings.register("pf2e", "statusEffectType", {
-        name: "PF2E.SETTINGS.statusEffectType.name",
-        hint: "PF2E.SETTINGS.statusEffectType.hint",
+    game.settings.register("avant", "statusEffectType", {
+        name: "AVANT.SETTINGS.statusEffectType.name",
+        hint: "AVANT.SETTINGS.statusEffectType.hint",
         scope: "world",
         config: true,
         default: "default",
@@ -151,22 +151,22 @@ export function registerSettings(): void {
         },
     });
 
-    game.settings.register("pf2e", "totmToggles", {
-        name: "PF2E.SETTINGS.TOTMToggles.Name",
-        hint: "PF2E.SETTINGS.TOTMToggles.Hint",
+    game.settings.register("avant", "totmToggles", {
+        name: "AVANT.SETTINGS.TOTMToggles.Name",
+        hint: "AVANT.SETTINGS.TOTMToggles.Hint",
         scope: "world",
         config: true,
         default: false,
         type: Boolean,
         onChange: (value) => {
-            game.pf2e.settings.totm = !!value;
+            game.avant.settings.totm = !!value;
             resetActors();
         },
     });
 
-    game.settings.register("pf2e", "deathIcon", {
-        name: "PF2E.SETTINGS.DeathIcon.Name",
-        hint: "PF2E.SETTINGS.DeathIcon.Hint",
+    game.settings.register("avant", "deathIcon", {
+        name: "AVANT.SETTINGS.DeathIcon.Name",
+        hint: "AVANT.SETTINGS.DeathIcon.Hint",
         scope: "world",
         config: false,
         default: "icons/svg/skull.svg",
@@ -175,86 +175,86 @@ export function registerSettings(): void {
             if (isImageOrVideoPath(choice)) {
                 StatusEffects.reset();
             } else if (!choice) {
-                game.settings.set("pf2e", "deathIcon", "icons/svg/skull.svg");
+                game.settings.set("avant", "deathIcon", "icons/svg/skull.svg");
             }
         },
     });
 
     // Don't tell Nath
-    game.settings.register("pf2e", "nathMode", {
-        name: "PF2E.SETTINGS.NathMode.Name",
-        hint: "PF2E.SETTINGS.NathMode.Hint",
+    game.settings.register("avant", "nathMode", {
+        name: "AVANT.SETTINGS.NathMode.Name",
+        hint: "AVANT.SETTINGS.NathMode.Hint",
         scope: "world",
         config: BUILD_MODE === "development",
         default: false,
         type: Boolean,
     });
 
-    game.settings.register("pf2e", "statusEffectShowCombatMessage", {
-        name: "PF2E.SETTINGS.statusEffectShowCombatMessage.name",
-        hint: "PF2E.SETTINGS.statusEffectShowCombatMessage.hint",
+    game.settings.register("avant", "statusEffectShowCombatMessage", {
+        name: "AVANT.SETTINGS.statusEffectShowCombatMessage.name",
+        hint: "AVANT.SETTINGS.statusEffectShowCombatMessage.hint",
         scope: "world",
         config: true,
         default: true,
         type: Boolean,
     });
 
-    game.settings.registerMenu("pf2e", "automation", {
-        name: "PF2E.SETTINGS.Automation.Name",
-        label: "PF2E.SETTINGS.Automation.Label",
-        hint: "PF2E.SETTINGS.Automation.Hint",
+    game.settings.registerMenu("avant", "automation", {
+        name: "AVANT.SETTINGS.Automation.Name",
+        label: "AVANT.SETTINGS.Automation.Label",
+        hint: "AVANT.SETTINGS.Automation.Hint",
         icon: "fa-solid fa-robot",
         type: AutomationSettings,
         restricted: true,
     });
-    game.settings.register("pf2e", "automation.actorsDeadAtZero", {
-        name: CONFIG.PF2E.SETTINGS.automation.actorsDeadAtZero.name,
+    game.settings.register("avant", "automation.actorsDeadAtZero", {
+        name: CONFIG.AVANT.SETTINGS.automation.actorsDeadAtZero.name,
         scope: "world",
         config: false,
         choices: {
-            neither: "PF2E.SETTINGS.Automation.ActorsDeadAtZero.Neither",
-            npcsOnly: "PF2E.SETTINGS.Automation.ActorsDeadAtZero.NPCsOnly",
-            both: "PF2E.SETTINGS.Automation.ActorsDeadAtZero.Both",
+            neither: "AVANT.SETTINGS.Automation.ActorsDeadAtZero.Neither",
+            npcsOnly: "AVANT.SETTINGS.Automation.ActorsDeadAtZero.NPCsOnly",
+            both: "AVANT.SETTINGS.Automation.ActorsDeadAtZero.Both",
         },
         default: "both",
         type: String,
     });
     AutomationSettings.registerSettings();
 
-    game.settings.registerMenu("pf2e", "metagame", {
-        name: "PF2E.SETTINGS.Metagame.Name",
-        label: "PF2E.SETTINGS.Metagame.Label",
-        hint: "PF2E.SETTINGS.Metagame.Hint",
+    game.settings.registerMenu("avant", "metagame", {
+        name: "AVANT.SETTINGS.Metagame.Name",
+        label: "AVANT.SETTINGS.Metagame.Label",
+        hint: "AVANT.SETTINGS.Metagame.Hint",
         icon: "fa-solid fa-brain",
         type: MetagameSettings,
         restricted: true,
     });
     MetagameSettings.registerSettings();
 
-    game.settings.registerMenu("pf2e", "variantRules", {
-        name: "PF2E.SETTINGS.Variant.Name",
-        label: "PF2E.SETTINGS.Variant.Label",
-        hint: "PF2E.SETTINGS.Variant.Hint",
+    game.settings.registerMenu("avant", "variantRules", {
+        name: "AVANT.SETTINGS.Variant.Name",
+        label: "AVANT.SETTINGS.Variant.Label",
+        hint: "AVANT.SETTINGS.Variant.Hint",
         icon: "fa-solid fa-book",
         type: VariantRulesSettings,
         restricted: true,
     });
     VariantRulesSettings.registerSettings();
 
-    game.settings.registerMenu("pf2e", "homebrew", {
-        name: "PF2E.SETTINGS.Homebrew.Name",
-        label: "PF2E.SETTINGS.Homebrew.Label",
-        hint: "PF2E.SETTINGS.Homebrew.Hint",
+    game.settings.registerMenu("avant", "homebrew", {
+        name: "AVANT.SETTINGS.Homebrew.Name",
+        label: "AVANT.SETTINGS.Homebrew.Label",
+        hint: "AVANT.SETTINGS.Homebrew.Hint",
         icon: "fa-solid fa-beer-mug-empty",
         type: HomebrewElements,
         restricted: true,
     });
     HomebrewElements.registerSettings();
 
-    game.settings.registerMenu("pf2e", "worldClock", {
-        name: game.i18n.localize(CONFIG.PF2E.SETTINGS.worldClock.name),
-        label: game.i18n.localize(CONFIG.PF2E.SETTINGS.worldClock.label),
-        hint: game.i18n.localize(CONFIG.PF2E.SETTINGS.worldClock.hint),
+    game.settings.registerMenu("avant", "worldClock", {
+        name: game.i18n.localize(CONFIG.AVANT.SETTINGS.worldClock.name),
+        label: game.i18n.localize(CONFIG.AVANT.SETTINGS.worldClock.label),
+        hint: game.i18n.localize(CONFIG.AVANT.SETTINGS.worldClock.hint),
         icon: "fa-regular fa-clock",
         type: WorldClockSettings,
         restricted: true,
@@ -262,30 +262,30 @@ export function registerSettings(): void {
     WorldClockSettings.registerSettings();
 
     // Secret for now until the user side is complete and a UI is built
-    game.settings.register("pf2e", "campaignFeatSections", {
+    game.settings.register("avant", "campaignFeatSections", {
         name: "Campaign Feat Sections",
         scope: "world",
         config: false,
         default: [],
         type: Array,
         onChange: (value) => {
-            game.pf2e.settings.campaign.feats.sections = Array.isArray(value)
+            game.avant.settings.campaign.feats.sections = Array.isArray(value)
                 ? value
-                : game.pf2e.settings.campaign.feats.sections;
+                : game.avant.settings.campaign.feats.sections;
             resetActors(game.actors.filter((a) => a.isOfType("character")));
         },
     });
 
     // Increase brightness of darkness color for GMs
-    game.settings.register("pf2e", "gmVision", {
-        name: "PF2E.SETTINGS.GMVision",
+    game.settings.register("avant", "gmVision", {
+        name: "AVANT.SETTINGS.GMVision",
         scope: "client",
         config: false,
         default: false,
         type: Boolean,
         onChange: (value) => {
-            game.pf2e.settings.gmVision = !!value;
-            const color = value ? CONFIG.PF2E.Canvas.darkness.gmVision : CONFIG.PF2E.Canvas.darkness.default;
+            game.avant.settings.gmVision = !!value;
+            const color = value ? CONFIG.AVANT.Canvas.darkness.gmVision : CONFIG.AVANT.Canvas.darkness.default;
             CONFIG.Canvas.darknessColor = color;
             if (ui.controls && canvas.activeLayer) {
                 ui.controls.initialize({ layer: canvas.activeLayer.constructor.layerOptions.name });
@@ -297,35 +297,35 @@ export function registerSettings(): void {
 
     // Called from hook to ensure keybindings are available
     Hooks.once("canvasInit", () => {
-        if (RulerPF2e.hasModuleConflict) return;
+        if (RulerAvant.hasModuleConflict) return;
 
         const placeWaypointKey = ((): string => {
-            const action = game.keybindings.bindings.get("pf2e.placeWaypoint")?.at(0);
+            const action = game.keybindings.bindings.get("avant.placeWaypoint")?.at(0);
             return action ? KeybindingsConfig._humanizeBinding(action) : "";
         })();
-        game.settings.register("pf2e", "dragMeasurement", {
-            name: game.i18n.localize("PF2E.SETTINGS.DragMeasurement.Name"),
-            hint: game.i18n.format("PF2E.SETTINGS.DragMeasurement.Hint", { key: placeWaypointKey }),
+        game.settings.register("avant", "dragMeasurement", {
+            name: game.i18n.localize("AVANT.SETTINGS.DragMeasurement.Name"),
+            hint: game.i18n.format("AVANT.SETTINGS.DragMeasurement.Hint", { key: placeWaypointKey }),
             scope: "world",
             config: true,
             type: String,
             default: "never",
             choices: {
-                always: "PF2E.SETTINGS.DragMeasurement.Always",
-                encounters: "PF2E.SETTINGS.DragMeasurement.Encounters",
-                never: "PF2E.SETTINGS.DragMeasurement.Never",
+                always: "AVANT.SETTINGS.DragMeasurement.Always",
+                encounters: "AVANT.SETTINGS.DragMeasurement.Encounters",
+                never: "AVANT.SETTINGS.DragMeasurement.Never",
             },
             onChange: (value) => {
                 const options = ["always", "encounters", "never"] as const;
-                game.pf2e.settings.dragMeasurement = tupleHasValue(options, value)
+                game.avant.settings.dragMeasurement = tupleHasValue(options, value)
                     ? value
-                    : game.pf2e.settings.dragMeasurement;
+                    : game.avant.settings.dragMeasurement;
             },
         });
-        game.pf2e.settings.dragMeasurement = game.settings.get("pf2e", "dragMeasurement");
+        game.avant.settings.dragMeasurement = game.settings.get("avant", "dragMeasurement");
     });
 
-    game.settings.register("pf2e", "seenLastStopMessage", {
+    game.settings.register("avant", "seenLastStopMessage", {
         name: "Seen Last Stop Before Remaster Message",
         scope: "world",
         config: false,
@@ -343,7 +343,7 @@ export function registerSettings(): void {
 /** Registers temporary settings for tracking things like first time launches or active party */
 function registerTrackingSettings(): void {
     // Whether the world's first party actor has been created
-    game.settings.register("pf2e", "createdFirstParty", {
+    game.settings.register("avant", "createdFirstParty", {
         name: "Created First Party", // Doesn't appear in any UI
         scope: "world",
         config: false,
@@ -351,7 +351,7 @@ function registerTrackingSettings(): void {
         type: Boolean,
     });
 
-    game.settings.register("pf2e", "activeParty", {
+    game.settings.register("avant", "activeParty", {
         name: "Active Party",
         scope: "world",
         config: false,
@@ -363,7 +363,7 @@ function registerTrackingSettings(): void {
     });
 
     // Tracks the last party folder state for next launch. Defaults to true so that "No Members" shows on initial creation.
-    game.settings.register("pf2e", "activePartyFolderState", {
+    game.settings.register("avant", "activePartyFolderState", {
         name: "Active Party Opened or closed",
         scope: "client",
         config: false,
@@ -371,7 +371,7 @@ function registerTrackingSettings(): void {
         default: true,
     });
 
-    game.settings.register("pf2e", "worldSystemVersion", {
+    game.settings.register("avant", "worldSystemVersion", {
         name: "World System Version",
         scope: "world",
         config: false,
@@ -380,7 +380,7 @@ function registerTrackingSettings(): void {
     });
 
     // Show the GM information about the remaster
-    game.settings.register("pf2e", "seenRemasterJournalEntry", {
+    game.settings.register("avant", "seenRemasterJournalEntry", {
         name: "Seen Remaster journal entry?",
         scope: "world",
         config: false,
@@ -390,9 +390,9 @@ function registerTrackingSettings(): void {
 }
 
 function registerWorldSchemaVersion(): void {
-    game.settings.register("pf2e", "worldSchemaVersion", {
-        name: "PF2E.SETTINGS.WorldSchemaVersion.Name",
-        hint: "PF2E.SETTINGS.WorldSchemaVersion.Hint",
+    game.settings.register("avant", "worldSchemaVersion", {
+        name: "AVANT.SETTINGS.WorldSchemaVersion.Name",
+        hint: "AVANT.SETTINGS.WorldSchemaVersion.Hint",
         scope: "world",
         config: true,
         default: MigrationRunner.LATEST_SCHEMA_VERSION,

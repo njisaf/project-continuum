@@ -1,9 +1,9 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
+import type { ActorAvant, CharacterAvant } from "@actor";
 import { ClassDCData } from "@actor/character/data.ts";
 import type { FeatSlotData } from "@actor/character/feats/index.ts";
 import { SaveType } from "@actor/types.ts";
 import { SAVE_TYPES } from "@actor/values.ts";
-import { ABCItemPF2e, FeatPF2e } from "@item";
+import { ABCItemAvant, FeatAvant } from "@item";
 import { ArmorCategory } from "@item/armor/index.ts";
 import { ARMOR_CATEGORIES } from "@item/armor/values.ts";
 import { WEAPON_CATEGORIES } from "@item/weapon/values.ts";
@@ -13,7 +13,7 @@ import * as R from "remeda";
 import { ClassAttackProficiencies, ClassDefenseProficiencies, ClassSource, ClassSystemData } from "./data.ts";
 import { ClassTrait } from "./types.ts";
 
-class ClassPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABCItemPF2e<TParent> {
+class ClassAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ABCItemAvant<TParent> {
     get attacks(): ClassAttackProficiencies {
         return this.system.attacks;
     }
@@ -46,7 +46,7 @@ class ClassPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABC
     }
 
     /** Include all top-level class features in addition to any with the expected location ID */
-    override getLinkedItems(): FeatPF2e<ActorPF2e>[] {
+    override getLinkedItems(): FeatAvant<ActorAvant>[] {
         const { actor } = this;
         if (!actor) return [];
 
@@ -56,14 +56,14 @@ class ClassPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABC
                 ...actor.itemTypes.feat.filter(
                     (f) =>
                         f.category === "classfeature" &&
-                        !(f.flags.pf2e.grantedBy && actor.items.has(f.flags.pf2e.grantedBy.id)),
+                        !(f.flags.avant.grantedBy && actor.items.has(f.flags.avant.grantedBy.id)),
                 ),
             ]),
         );
     }
 
     /** Pulls the features that should be granted by this class, sorted by level */
-    override async createGrantedItems(options: { level?: number } = {}): Promise<FeatPF2e<null>[]> {
+    override async createGrantedItems(options: { level?: number } = {}): Promise<FeatAvant<null>[]> {
         return (await super.createGrantedItems(options)).sort((a, b) => a.system.level.value - b.system.level.value);
     }
 
@@ -75,7 +75,7 @@ class ClassPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABC
     }
 
     /** Prepare a character's data derived from their class */
-    override prepareActorData(this: ClassPF2e<CharacterPF2e>): void {
+    override prepareActorData(this: ClassAvant<CharacterAvant>): void {
         const actor = this.actor;
         if (!actor.isOfType("character")) {
             console.error("Only a character can have a class");
@@ -150,11 +150,11 @@ class ClassPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABC
     }
 }
 
-interface ClassPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABCItemPF2e<TParent> {
+interface ClassAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ABCItemAvant<TParent> {
     readonly _source: ClassSource;
     system: ClassSystemData;
 
     get slug(): ClassTrait | null;
 }
 
-export { ClassPF2e };
+export { ClassAvant };

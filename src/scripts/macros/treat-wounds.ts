@@ -1,5 +1,5 @@
-import type { ActorPF2e, CreaturePF2e } from "@actor";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import type { ActorAvant, CreatureAvant } from "@actor";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import type { RollOptionRuleElement } from "@module/rules/rule-element/roll-option/rule-element.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
 import type { ActionDefaultOptions } from "@system/action-macros/index.ts";
@@ -12,7 +12,7 @@ import {
 } from "@system/degree-of-success.ts";
 import { fontAwesomeIcon, objectHasKey } from "@util";
 
-function CheckFeat(actor: ActorPF2e, slug: string): boolean {
+function CheckFeat(actor: ActorAvant, slug: string): boolean {
     if (actor.items.find((i) => i.slug === slug && i.type === "feat")) {
         return true;
     }
@@ -20,7 +20,7 @@ function CheckFeat(actor: ActorPF2e, slug: string): boolean {
 }
 
 /** Override in-memory value of the risky surgery roll option RE */
-function toggleRiskySurgery(actor: ActorPF2e, value: boolean | string | null): boolean | string | null {
+function toggleRiskySurgery(actor: ActorAvant, value: boolean | string | null): boolean | string | null {
     if (value === null) return null;
 
     const rollOption = actor.rules.find(
@@ -39,46 +39,46 @@ async function treatWounds(options: ActionDefaultOptions): Promise<void> {
     const actors = Array.isArray(options.actors) ? options.actors : [options.actors];
     const actor = actors[0];
     if (!actor || !actor.isOfType("creature")) {
-        ui.notifications.error("PF2E.ErrorMessage.NoPCTokenSelected", { localize: true });
+        ui.notifications.error("AVANT.ErrorMessage.NoPCTokenSelected", { localize: true });
         return;
     }
 
-    const medicineName = game.i18n.localize("PF2E.Skill.Medicine");
+    const medicineName = game.i18n.localize("AVANT.Skill.Medicine");
     const chirurgeon = CheckFeat(actor, "chirurgeon");
     const naturalMedicine = CheckFeat(actor, "natural-medicine");
     const domIdAppend = fu.randomID(); // Attached to element id attributes for DOM uniqueness
     const riskySurgeryChecked = actor.getRollOptions(["medicine"]).includes("risky-surgery") ? " checked" : "";
     const dialog = new Dialog({
-        title: game.i18n.localize("PF2E.Actions.TreatWounds.Label"),
+        title: game.i18n.localize("AVANT.Actions.TreatWounds.Label"),
         content: `
-<div>${game.i18n.localize("PF2E.Actions.TreatWounds.Label")}</div>
+<div>${game.i18n.localize("AVANT.Actions.TreatWounds.Label")}</div>
 <hr/>
 <form>
 <div class="form-group">
-<label for="skill-${domIdAppend}">${game.i18n.localize("PF2E.Actions.TreatWounds.SkillSelect")}</label>
+<label for="skill-${domIdAppend}">${game.i18n.localize("AVANT.Actions.TreatWounds.SkillSelect")}</label>
 <select id="skill-${domIdAppend}"${!chirurgeon && !naturalMedicine ? " disabled" : ""}>
-  ${chirurgeon ? `<option value="crafting">${game.i18n.localize("PF2E.Skill.Crafting")}</option>` : ``}
-  ${naturalMedicine ? `<option value="nature">${game.i18n.localize("PF2E.Skill.Nature")}</option>` : ``}
+  ${chirurgeon ? `<option value="crafting">${game.i18n.localize("AVANT.Skill.Crafting")}</option>` : ``}
+  ${naturalMedicine ? `<option value="nature">${game.i18n.localize("AVANT.Skill.Nature")}</option>` : ``}
   <option value="medicine">${medicineName}</option>
 </select>
 </div>
 <div class="form-group">
-<label for="dc-type-${domIdAppend}">${game.i18n.format("PF2E.InlineCheck.DCWithName", { name: medicineName })}</label>
+<label for="dc-type-${domIdAppend}">${game.i18n.format("AVANT.InlineCheck.DCWithName", { name: medicineName })}</label>
 <select id="dc-type-${domIdAppend}" name="dc-type">
-  <option value="1">${game.i18n.localize("PF2E.Actions.TreatWounds.DC.Trained")}</option>
-  <option value="2">${game.i18n.localize("PF2E.Actions.TreatWounds.DC.Expert")}</option>
-  <option value="3">${game.i18n.localize("PF2E.Actions.TreatWounds.DC.Master")}</option>
-  <option value="4">${game.i18n.localize("PF2E.Actions.TreatWounds.DC.Legendary")}</option>
+  <option value="1">${game.i18n.localize("AVANT.Actions.TreatWounds.DC.Trained")}</option>
+  <option value="2">${game.i18n.localize("AVANT.Actions.TreatWounds.DC.Expert")}</option>
+  <option value="3">${game.i18n.localize("AVANT.Actions.TreatWounds.DC.Master")}</option>
+  <option value="4">${game.i18n.localize("AVANT.Actions.TreatWounds.DC.Legendary")}</option>
 </select>
 </div>
 <div class="form-group">
-<label for="modifier-${domIdAppend}">${game.i18n.localize("PF2E.Actions.TreatWounds.DC.Mod")}</label>
+<label for="modifier-${domIdAppend}">${game.i18n.localize("AVANT.Actions.TreatWounds.DC.Mod")}</label>
 <input id="modifier-${domIdAppend}" type="number" />
 </div>
 ${
     CheckFeat(actor, "risky-surgery")
         ? `<div class="form-group">
-<label for="risky-surgery-${domIdAppend}">${game.i18n.localize("PF2E.Actions.TreatWounds.Feats.RiskySurgery")}</label>
+<label for="risky-surgery-${domIdAppend}">${game.i18n.localize("AVANT.Actions.TreatWounds.Feats.RiskySurgery")}</label>
 <input type="checkbox" id="risky-surgery-${domIdAppend}"${riskySurgeryChecked} />
 </div>`
         : ``
@@ -86,7 +86,7 @@ ${
 ${
     CheckFeat(actor, "mortal-healing")
         ? `<div class="form-group">
-<label for="mortal-healing-${domIdAppend}">${game.i18n.localize("PF2E.Actions.TreatWounds.Feats.MortalHealing")}</label>
+<label for="mortal-healing-${domIdAppend}">${game.i18n.localize("AVANT.Actions.TreatWounds.Feats.MortalHealing")}</label>
 <input type="checkbox" id="mortal-healing-${domIdAppend}" checked />
 </div>`
         : ``
@@ -96,7 +96,7 @@ ${
         buttons: {
             yes: {
                 icon: fontAwesomeIcon("hand-holding-medical").outerHTML,
-                label: game.i18n.localize("PF2E.Actions.TreatWounds.Label"),
+                label: game.i18n.localize("AVANT.Actions.TreatWounds.Label"),
                 callback: ($html) => treat(actor, $html, options.event, domIdAppend),
             },
             no: {
@@ -110,7 +110,7 @@ ${
 }
 
 async function treat(
-    actor: CreaturePF2e,
+    actor: CreatureAvant,
     $html: JQuery,
     event: JQuery.TriggeredEvent | Event | null = null,
     domIdAppend: string,
@@ -123,10 +123,10 @@ async function treat(
     const skillSlug = html.querySelector<HTMLSelectElement>(`#skill-${domIdAppend}`)?.value ?? "medicine";
     const skill = actor.skills[skillSlug];
     if (!skill?.proficient) {
-        const skillName = objectHasKey(CONFIG.PF2E.skills, skillSlug)
-            ? game.i18n.localize(CONFIG.PF2E.skills[skillSlug].label)
+        const skillName = objectHasKey(CONFIG.AVANT.skills, skillSlug)
+            ? game.i18n.localize(CONFIG.AVANT.skills[skillSlug].label)
             : skillSlug;
-        const message = game.i18n.format("PF2E.Actions.TreatWounds.Error", { name: actor.name, skill: skillName });
+        const message = game.i18n.format("AVANT.Actions.TreatWounds.Error", { name: actor.name, skill: skillName });
         ui.notifications.warn(message);
         return;
     }
@@ -145,7 +145,7 @@ async function treat(
     const increaseDoS = (locKey: string): DegreeOfSuccessAdjustment => ({
         adjustments: {
             success: {
-                label: `PF2E.Actions.TreatWounds.Rolls.${locKey}`,
+                label: `AVANT.Actions.TreatWounds.Rolls.${locKey}`,
                 amount: DEGREE_ADJUSTMENT_AMOUNTS.INCREASE,
             },
         },
@@ -166,7 +166,7 @@ async function treat(
                 if (m.id !== message.id) return;
                 const flags = foundry.utils.mergeObject(
                     m._source.flags,
-                    { pf2e: { treatWoundsMacroFlag: { bonus } } },
+                    { avant: { treatWoundsMacroFlag: { bonus } } },
                     { inplace: false },
                 );
                 m.update({ flags }, { render: false });
@@ -184,15 +184,15 @@ async function treatWoundsMacroCallback({
     originalMessageId,
     outcome,
 }: {
-    actor: ActorPF2e;
+    actor: ActorAvant;
     bonus: number;
-    message: ChatMessagePF2e;
+    message: ChatMessageAvant;
     originalMessageId?: string;
     outcome?: DegreeOfSuccessString | null;
 }): Promise<void> {
-    const successLabel = outcome ? game.i18n.localize(`PF2E.Check.Result.Degree.Check.${outcome}`) : "";
+    const successLabel = outcome ? game.i18n.localize(`AVANT.Check.Result.Degree.Check.${outcome}`) : "";
     const magicHands = CheckFeat(actor, "magic-hands");
-    const riskySurgery = !!message.flags.pf2e.modifiers?.some((m) => m.slug === "risky-surgery" && m.enabled);
+    const riskySurgery = !!message.flags.avant.modifiers?.some((m) => m.slug === "risky-surgery" && m.enabled);
     const bonusString = bonus > 0 ? `+ ${bonus}` : "";
 
     const healFormula = (() => {
@@ -212,21 +212,21 @@ async function treatWoundsMacroCallback({
     if (originalMessageId) {
         const messages = game.messages.contents
             .slice(game.messages.size - 25)
-            .filter((m) => m.flags.pf2e.origin?.messageId === originalMessageId);
-        const toDelete: Promise<ChatMessagePF2e | undefined>[] = [];
+            .filter((m) => m.flags.avant.origin?.messageId === originalMessageId);
+        const toDelete: Promise<ChatMessageAvant | undefined>[] = [];
         for (const m of messages) {
             toDelete.push(m.delete());
         }
         await Promise.all(toDelete);
     }
 
-    const speaker = ChatMessagePF2e.getSpeaker({ actor });
-    const flags = foundry.utils.mergeObject(message.toObject().flags, { pf2e: { origin: { messageId: message.id } } });
+    const speaker = ChatMessageAvant.getSpeaker({ actor });
+    const flags = foundry.utils.mergeObject(message.toObject().flags, { avant: { origin: { messageId: message.id } } });
 
     if (riskySurgery) {
-        ChatMessagePF2e.create({
+        ChatMessageAvant.create({
             flags,
-            flavor: `<strong>${game.i18n.localize("PF2E.Actions.TreatWounds.Rolls.RiskySurgery")}</strong>`,
+            flavor: `<strong>${game.i18n.localize("AVANT.Actions.TreatWounds.Rolls.RiskySurgery")}</strong>`,
             rolls: [(await new DamageRoll("{1d8[slashing]}").roll()).toJSON()],
             speaker,
         });
@@ -237,9 +237,9 @@ async function treatWoundsMacroCallback({
         const healRoll = await new DamageRoll(`{(${healFormula})${formulaModifier}}`).roll();
         const rollType =
             outcome !== "criticalFailure"
-                ? game.i18n.localize("PF2E.Actions.TreatWounds.Rolls.TreatWounds")
-                : game.i18n.localize("PF2E.Actions.TreatWounds.Rolls.TreatWoundsCriticalFailure");
-        ChatMessagePF2e.create({
+                ? game.i18n.localize("AVANT.Actions.TreatWounds.Rolls.TreatWounds")
+                : game.i18n.localize("AVANT.Actions.TreatWounds.Rolls.TreatWoundsCriticalFailure");
+        ChatMessageAvant.create({
             flags,
             flavor: `<strong>${rollType}</strong> (${successLabel})`,
             rolls: [healRoll.toJSON()],

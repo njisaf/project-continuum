@@ -1,21 +1,21 @@
-import type { ActorPF2e } from "@actor";
-import { ItemProxyPF2e, type WeaponPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import { ItemProxyAvant, type WeaponAvant } from "@item";
 import { RawItemChatData } from "@item/base/data/index.ts";
-import { PhysicalItemPF2e, RUNE_DATA, getMaterialValuationData } from "@item/physical/index.ts";
+import { PhysicalItemAvant, RUNE_DATA, getMaterialValuationData } from "@item/physical/index.ts";
 import { MAGIC_TRADITIONS } from "@item/spell/values.ts";
 import { WeaponMaterialSource, WeaponSource, WeaponSystemSource, WeaponTraitsSource } from "@item/weapon/data.ts";
 import { WeaponTrait } from "@item/weapon/types.ts";
-import type { UserPF2e } from "@module/user/document.ts";
+import type { UserAvant } from "@module/user/document.ts";
 import { DamageType } from "@system/damage/types.ts";
-import { ErrorPF2e, objectHasKey, setHasElement, signedInteger } from "@util";
+import { ErrorAvant, objectHasKey, setHasElement, signedInteger } from "@util";
 import * as R from "remeda";
 import { IntegratedWeaponData, ShieldSource, ShieldSystemData } from "./data.ts";
 import { setActorShieldData } from "./helpers.ts";
 import { BaseShieldType, ShieldTrait } from "./types.ts";
 
-class ShieldPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+class ShieldAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     static override get validTraits(): Record<ShieldTrait, string> {
-        return CONFIG.PF2E.shieldTraits;
+        return CONFIG.AVANT.shieldTraits;
     }
 
     get baseType(): BaseShieldType | null {
@@ -53,12 +53,12 @@ class ShieldPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         );
     }
 
-    override isStackableWith(item: PhysicalItemPF2e<TParent>): boolean {
+    override isStackableWith(item: PhysicalItemAvant<TParent>): boolean {
         if (this.isEquipped || item.isEquipped) return false;
         return super.isStackableWith(item);
     }
 
-    override acceptsSubitem(candidate: PhysicalItemPF2e): boolean {
+    override acceptsSubitem(candidate: PhysicalItemAvant): boolean {
         return (
             candidate.isOfType("weapon") &&
             candidate.system.traits.value.some((t) => t === "attached-to-shield") &&
@@ -176,44 +176,44 @@ class ShieldPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         this.system.acBonus = this.isBroken || this.isDestroyed ? 0 : this.acBonus;
     }
 
-    override prepareActorData(this: ShieldPF2e<ActorPF2e>): void {
+    override prepareActorData(this: ShieldAvant<ActorAvant>): void {
         super.prepareActorData();
         const { actor } = this;
-        if (!actor) throw ErrorPF2e("This method may only be called from embedded items");
+        if (!actor) throw ErrorAvant("This method may only be called from embedded items");
         setActorShieldData(this);
     }
 
-    override onPrepareSynthetics(this: ShieldPF2e<ActorPF2e>): void {
+    override onPrepareSynthetics(this: ShieldAvant<ActorAvant>): void {
         super.onPrepareSynthetics();
         setActorShieldData(this); // Call again after REs have possibly adjusted shield data
     }
 
     override async getChatData(
-        this: ShieldPF2e<ActorPF2e>,
+        this: ShieldAvant<ActorAvant>,
         htmlOptions: EnrichmentOptions = {},
     ): Promise<RawItemChatData> {
         const properties = [
-            `${signedInteger(this.acBonus)} ${game.i18n.localize("PF2E.ArmorArmorLabel")}`,
-            this.speedPenalty ? `${this.system.speedPenalty} ${game.i18n.localize("PF2E.ArmorSpeedLabel")}` : null,
+            `${signedInteger(this.acBonus)} ${game.i18n.localize("AVANT.ArmorArmorLabel")}`,
+            this.speedPenalty ? `${this.system.speedPenalty} ${game.i18n.localize("AVANT.ArmorSpeedLabel")}` : null,
         ].filter(R.isTruthy);
 
         return this.processChatData(htmlOptions, {
             ...(await super.getChatData()),
-            traits: this.traitChatData(CONFIG.PF2E.shieldTraits),
+            traits: this.traitChatData(CONFIG.AVANT.shieldTraits),
             properties,
         });
     }
 
     override generateUnidentifiedName({ typeOnly = false }: { typeOnly?: boolean } = { typeOnly: false }): string {
-        const base = this.baseType ? CONFIG.PF2E.baseShieldTypes[this.baseType] : null;
+        const base = this.baseType ? CONFIG.AVANT.baseShieldTypes[this.baseType] : null;
         const fallback = "TYPES.Item.shield";
         const itemType = game.i18n.localize(base ?? fallback);
 
-        return typeOnly ? itemType : game.i18n.format("PF2E.identification.UnidentifiedItem", { item: itemType });
+        return typeOnly ? itemType : game.i18n.format("AVANT.identification.UnidentifiedItem", { item: itemType });
     }
 
     /** Generate a shield bash or other weapon(-like) item from this shield */
-    generateWeapon(): WeaponPF2e<TParent> | null {
+    generateWeapon(): WeaponAvant<TParent> | null {
         if (this.isStowed) return null;
 
         type BaseWeaponData = Pick<WeaponSource, "_id" | "type" | "name" | "img"> & {
@@ -221,7 +221,7 @@ class ShieldPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
         };
 
         const shieldTraits: string[] = this.system.traits.value;
-        const weaponTraits: WeaponTrait[] = shieldTraits.filter((t): t is WeaponTrait => t in CONFIG.PF2E.weaponTraits);
+        const weaponTraits: WeaponTrait[] = shieldTraits.filter((t): t is WeaponTrait => t in CONFIG.AVANT.weaponTraits);
         const shieldThrowTrait = this.system.traits.value.find((t) => t.startsWith("shield-throw-"));
         if (shieldThrowTrait) weaponTraits.push(`thrown-${shieldThrowTrait.slice(-2)}` as WeaponTrait);
 
@@ -248,7 +248,7 @@ class ShieldPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
             const damageType = this.system.traits.integrated.damageType;
             const versatileTrait = this.system.traits.value.find((t) => t.includes("versatile"));
             const versatileWeaponTrait = versatileTrait?.slice(versatileTrait.indexOf("versatile")) ?? null;
-            if (objectHasKey(CONFIG.PF2E.weaponTraits, versatileWeaponTrait)) {
+            if (objectHasKey(CONFIG.AVANT.weaponTraits, versatileWeaponTrait)) {
                 baseData.system.traits.value.push(versatileWeaponTrait);
                 baseData.system.traits.toggles = {
                     versatile: { selected: this.system.traits.integrated.versatile?.selected ?? damageType },
@@ -268,16 +268,16 @@ class ShieldPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
             }
             const combinedData = fu.mergeObject(baseData, additionalData);
 
-            return new ItemProxyPF2e(combinedData, { parent: this.parent, shield: this }) as WeaponPF2e<TParent>;
+            return new ItemProxyAvant(combinedData, { parent: this.parent, shield: this }) as WeaponAvant<TParent>;
         }
 
-        return new ItemProxyPF2e(baseData, { parent: this.parent, shield: this }) as WeaponPF2e<TParent>;
+        return new ItemProxyAvant(baseData, { parent: this.parent, shield: this }) as WeaponAvant<TParent>;
     }
 
     protected override _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) return super._preUpdate(changed, operation, user);
 
@@ -305,11 +305,11 @@ class ShieldPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ph
     }
 }
 
-interface ShieldPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+interface ShieldAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     readonly _source: ShieldSource;
     system: ShieldSystemData;
 
     get traits(): Set<ShieldTrait>;
 }
 
-export { ShieldPF2e };
+export { ShieldAvant };

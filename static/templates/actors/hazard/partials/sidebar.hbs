@@ -1,7 +1,7 @@
 <div class="sidebar">
     <section>
         <div class="sidebar-title">
-            <h2>{{localize "PF2E.DefensesLabel"}}</h2>
+            <h2>{{localize "AVANT.DefensesLabel"}}</h2>
         </div>
         {{#if (or editing hasDefenses)}}
             <div class="health-line">
@@ -13,23 +13,23 @@
                 </div>
                 <div class="hardness valued-icon">
                     <input name="system.attributes.hardness" type="number" value="{{data.attributes.hardness}}" placeholder="0" />
-                    {{localize "PF2E.Actor.Hardness.ShortLabel"}}
+                    {{localize "AVANT.Actor.Hardness.ShortLabel"}}
                 </div>
                 <div class="armor-class valued-icon">
                     <input name="system.attributes.ac.value" type="number" value="{{data.attributes.ac.value}}" placeholder="0" />
-                    {{localize "PF2E.ArmorClassShortLabel"}}
+                    {{localize "AVANT.ArmorClassShortLabel"}}
                 </div>
             </div>
-            <input class="hp-details" name="system.attributes.hp.details" type="text" value="{{data.attributes.hp.details}}" placeholder="{{localize "PF2E.NPC.HPExtraInfoLabelPlaceholder"}}"/>
+            <input class="hp-details" name="system.attributes.hp.details" type="text" value="{{data.attributes.hp.details}}" placeholder="{{localize "AVANT.NPC.HPExtraInfoLabelPlaceholder"}}"/>
         {{else}}
-            {{localize "PF2E.NoneOption"}}
+            {{localize "AVANT.NoneOption"}}
         {{/if}}
     </section>
 
     {{#if document.isComplex}}
         <section>
             <div class="sidebar-title">
-                <h2>{{localize "PF2E.InitiativeLabel"}}</h2>
+                <h2>{{localize "AVANT.InitiativeLabel"}}</h2>
             </div>
             <div>
                 <div class="initiative">
@@ -46,7 +46,7 @@
                     </div>
                     <a class="roll-init {{#if (and hasStealth editable)}}rollable{{else}}disabled{{/if}}" data-action="roll-initiative">
                         <i class="fa-solid fa-dice-d20"></i>
-                        {{localize "PF2E.StealthLabel"}}
+                        {{localize "AVANT.StealthLabel"}}
                     </a>
                 </div>
             </div>
@@ -56,7 +56,7 @@
     {{#if (or hasSaves editing)}}
         <section>
             <div class="sidebar-title">
-                <h2>{{localize "PF2E.SavesHeader"}}</h2>
+                <h2>{{localize "AVANT.SavesHeader"}}</h2>
             </div>
             <div class="sidebar-saves">
                 {{#each saves as |save|}}
@@ -90,8 +90,8 @@
     <section class="emits-sound">
         <div class="sidebar-title">
             <h2>
-                <span>{{localize "PF2E.Actor.Hazard.EmitsSound.Title"}}</span>
-                <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Actor.Hazard.EmitsSound.Hint" data-tooltip-direction="RIGHT"></i>
+                <span>{{localize "AVANT.Actor.Hazard.EmitsSound.Title"}}</span>
+                <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Actor.Hazard.EmitsSound.Hint" data-tooltip-direction="RIGHT"></i>
             </h2>
         </div>
         <select name="system.attributes.emitsSound">
@@ -102,9 +102,9 @@
     {{#if (or editing hasIWR)}}
         <section>
             <div class="sidebar-title">
-                <h2>{{localize "PF2E.ImmunitiesLabel"}}</h2>
+                <h2>{{localize "AVANT.ImmunitiesLabel"}}</h2>
                 {{#if editing}}
-                    <a data-action="edit-immunities" data-tooltip="PF2E.NPC.EditImmunities"><i class="fa-solid fa-edit"></i></a>
+                    <a data-action="edit-immunities" data-tooltip="AVANT.NPC.EditImmunities"><i class="fa-solid fa-edit"></i></a>
                 {{/if}}
             </div>
             <div class="tags">
@@ -116,9 +116,9 @@
 
         <section>
             <div class="sidebar-title">
-                <h2>{{localize "PF2E.WeaknessesLabel"}}</h2>
+                <h2>{{localize "AVANT.WeaknessesLabel"}}</h2>
                 {{#if editing}}
-                    <a data-action="edit-weaknesses" data-tooltip="PF2E.NPC.EditWeaknesses"><i class="fa-solid fa-edit"></i></a>
+                    <a data-action="edit-weaknesses" data-tooltip="AVANT.NPC.EditWeaknesses"><i class="fa-solid fa-edit"></i></a>
                 {{/if}}
             </div>
             <div class="tags">
@@ -130,9 +130,9 @@
 
         <section>
             <div class="sidebar-title">
-                <h2>{{localize "PF2E.ResistancesLabel"}}</h2>
+                <h2>{{localize "AVANT.ResistancesLabel"}}</h2>
                 {{#if editing}}
-                    <a data-action="edit-resistances" data-tooltip="PF2E.NPC.EditResistances"><i class="fa-solid fa-edit"></i></a>
+                    <a data-action="edit-resistances" data-tooltip="AVANT.NPC.EditResistances"><i class="fa-solid fa-edit"></i></a>
                 {{/if}}
             </div>
             <div class="tags">

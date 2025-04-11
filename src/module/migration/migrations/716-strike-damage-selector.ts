@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -16,7 +16,7 @@ export class Migration716StrikeDamageSelector extends MigrationBase {
         "spell-effect-stoke-the-heart",
     ]);
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (this.itemsToSkip.has(source.system.slug ?? "")) return;
 
         const rules: unknown[] = source.system.rules;

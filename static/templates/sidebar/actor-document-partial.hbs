@@ -6,11 +6,11 @@
         <a>{{this.name}}</a>
         {{#if (ne this.type "loot")}}
             {{#if (eq this.type "hazard")}}
-                <span class="actor-level">{{localize "PF2E.Actor.Hazard.Level" level=this.level}}</span>
+                <span class="actor-level">{{localize "AVANT.Actor.Hazard.Level" level=this.level}}</span>
             {{else if (eq this.type "vehicle")}}
-                <span class="actor-level">{{localize "PF2E.vehicle.LevelN" level=this.level}}</span>
+                <span class="actor-level">{{localize "AVANT.vehicle.LevelN" level=this.level}}</span>
             {{else}}
-                <span class="actor-level">{{localize "PF2E.LevelN" level=this.level}}</span>
+                <span class="actor-level">{{localize "AVANT.LevelN" level=this.level}}</span>
             {{/if}}
         {{/if}}
     </h4>

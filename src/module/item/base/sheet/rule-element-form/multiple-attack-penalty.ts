@@ -3,7 +3,7 @@ import { MultipleAttackPenaltyRuleElement } from "@module/rules/rule-element/mul
 import { RuleElementForm } from "./base.ts";
 
 class MultipleAttackPenaltyForm extends RuleElementForm<RuleElementSource, MultipleAttackPenaltyRuleElement> {
-    override template = "systems/pf2e/templates/items/rules/multiple-attack-penalty.hbs";
+    override template = "systems/avant/templates/items/rules/multiple-attack-penalty.hbs";
 }
 
 export { MultipleAttackPenaltyForm };

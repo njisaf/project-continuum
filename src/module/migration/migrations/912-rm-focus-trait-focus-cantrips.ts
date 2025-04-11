@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MagicTradition } from "@item/spell/types.ts";
 import { MAGIC_TRADITIONS } from "@item/spell/values.ts";
 import * as R from "remeda";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration912RmFocusTraitFocusCantrips extends MigrationBase {
     static override version = 0.912;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "spell") return;
 
         const magicTraditions: Set<string> = MAGIC_TRADITIONS;

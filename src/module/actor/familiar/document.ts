@@ -1,22 +1,22 @@
-import { CreaturePF2e, type CharacterPF2e } from "@actor";
-import type { ActorPF2e, ActorUpdateOperation } from "@actor/base.ts";
+import { CreatureAvant, type CharacterAvant } from "@actor";
+import type { ActorAvant, ActorUpdateOperation } from "@actor/base.ts";
 import { CreatureSaves, LabeledSpeed } from "@actor/creature/data.ts";
-import { ActorSizePF2e } from "@actor/data/size.ts";
+import { ActorSizeAvant } from "@actor/data/size.ts";
 import { createEncounterRollOptions, setHitPointsRollOptions } from "@actor/helpers.ts";
-import { ModifierPF2e, applyStackingRules } from "@actor/modifiers.ts";
+import { ModifierAvant, applyStackingRules } from "@actor/modifiers.ts";
 import { SaveType } from "@actor/types.ts";
 import { SAVE_TYPES } from "@actor/values.ts";
 import type { ItemType } from "@item/base/data/index.ts";
-import type { CombatantPF2e, EncounterPF2e } from "@module/encounter/index.ts";
-import type { RuleElementPF2e } from "@module/rules/index.ts";
-import type { UserPF2e } from "@module/user/document.ts";
-import type { TokenDocumentPF2e } from "@scene";
+import type { CombatantAvant, EncounterAvant } from "@module/encounter/index.ts";
+import type { RuleElementAvant } from "@module/rules/index.ts";
+import type { UserAvant } from "@module/user/document.ts";
+import type { TokenDocumentAvant } from "@scene";
 import { Predicate } from "@system/predication.ts";
 import { ArmorStatistic, HitPointsStatistic, PerceptionStatistic, Statistic } from "@system/statistic/index.ts";
 import * as R from "remeda";
 import type { FamiliarSource, FamiliarSystemData } from "./data.ts";
 
-class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends CreaturePF2e<TParent> {
+class FamiliarAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends CreatureAvant<TParent> {
     /** The familiar's attack statistic, for the rare occasion it must make an attack roll */
     declare attackStatistic: Statistic;
 
@@ -25,7 +25,7 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
     }
 
     /** The familiar's master, if selected */
-    get master(): CharacterPF2e | null {
+    get master(): CharacterAvant | null {
         // The Actors world collection needs to be initialized for data preparation
         if (!game.ready || !this.system.master.id) return null;
 
@@ -49,7 +49,7 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
         return this.masterAttributeModifier;
     }
 
-    override get combatant(): CombatantPF2e<EncounterPF2e> | null {
+    override get combatant(): CombatantAvant<EncounterAvant> | null {
         return this.master?.combatant ?? null;
     }
 
@@ -70,7 +70,7 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
         this.system.traits = {
             value: ["minion"],
             rarity: "common",
-            size: new ActorSizePF2e({ value: "tiny" }),
+            size: new ActorSizeAvant({ value: "tiny" }),
         };
 
         super.prepareBaseData();
@@ -103,7 +103,7 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
         system.attributes.speed = {
             value: 25,
             total: 25,
-            label: CONFIG.PF2E.speedTypes.land,
+            label: CONFIG.AVANT.speedTypes.land,
             otherSpeeds: [],
         };
 
@@ -124,15 +124,15 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
 
         // Set encounter roll options from the master's perspective
         if (master) {
-            this.flags.pf2e.rollOptions.all = fu.mergeObject(
-                this.flags.pf2e.rollOptions.all,
+            this.flags.avant.rollOptions.all = fu.mergeObject(
+                this.flags.avant.rollOptions.all,
                 createEncounterRollOptions(master),
             );
         }
     }
 
     /** Skip rule-element preparation if there is no master */
-    protected override prepareRuleElements(): RuleElementPF2e[] {
+    protected override prepareRuleElements(): RuleElementAvant[] {
         return this.master ? super.prepareRuleElements() : [];
     }
 
@@ -143,12 +143,12 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
         const { attributes, traits } = system;
         const attributeModifier =
             masterAttributeModifier > 2
-                ? new ModifierPF2e(`PF2E.MasterAbility.${system.master.ability}`, masterAttributeModifier, "untyped")
-                : new ModifierPF2e(`PF2E.Actor.Familiar.MinimumAttributeModifier`, 3, "untyped");
+                ? new ModifierAvant(`AVANT.MasterAbility.${system.master.ability}`, masterAttributeModifier, "untyped")
+                : new ModifierAvant(`AVANT.Actor.Familiar.MinimumAttributeModifier`, 3, "untyped");
 
         // Ensure uniqueness of traits
         traits.value = [...this.traits].sort();
-        const masterLevel = game.pf2e.settings.variants.pwol.enabled ? 0 : level;
+        const masterLevel = game.avant.settings.variants.pwol.enabled ? 0 : level;
 
         const speeds = (attributes.speed = this.prepareSpeed("land"));
         speeds.otherSpeeds = (["burrow", "climb", "fly", "swim"] as const).flatMap((m) => this.prepareSpeed(m) ?? []);
@@ -160,8 +160,8 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
 
         // Armor Class
         const masterModifier = master
-            ? new ModifierPF2e({
-                  label: "PF2E.Actor.Familiar.Master.ArmorClass",
+            ? new ModifierAvant({
+                  label: "AVANT.Actor.Familiar.Master.ArmorClass",
                   slug: "base",
                   modifier: master.armorClass.modifiers
                       .filter((m) => m.enabled && !["status", "circumstance"].includes(m.type))
@@ -179,13 +179,13 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
                 const save = master?.saves[saveType];
                 const source = save?.modifiers.filter((m) => !["status", "circumstance"].includes(m.type)) ?? [];
                 const totalMod = applyStackingRules(source);
-                const attribute = CONFIG.PF2E.savingThrowDefaultAttributes[saveType];
+                const attribute = CONFIG.AVANT.savingThrowDefaultAttributes[saveType];
                 const selectors = [saveType, `${attribute}-based`, "saving-throw", "all"];
                 const stat = new Statistic(this, {
                     slug: saveType,
-                    label: game.i18n.localize(CONFIG.PF2E.saves[saveType]),
+                    label: game.i18n.localize(CONFIG.AVANT.saves[saveType]),
                     domains: selectors,
-                    modifiers: [new ModifierPF2e(`PF2E.MasterSavingThrow.${saveType}`, totalMod, "untyped")],
+                    modifiers: [new ModifierAvant(`AVANT.MasterSavingThrow.${saveType}`, totalMod, "untyped")],
                     check: { type: "saving-throw" },
                 });
 
@@ -201,8 +201,8 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
         // Attack
         this.attackStatistic = new Statistic(this, {
             slug: "attack-roll",
-            label: "PF2E.Familiar.AttackRoll",
-            modifiers: [new ModifierPF2e("PF2E.MasterLevel", masterLevel, "untyped")],
+            label: "AVANT.Familiar.AttackRoll",
+            modifiers: [new ModifierAvant("AVANT.MasterLevel", masterLevel, "untyped")],
             check: { type: "attack-roll" },
         });
         system.attack = this.attackStatistic.getTraceData();
@@ -210,18 +210,18 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
         // Perception
         this.perception = new PerceptionStatistic(this, {
             slug: "perception",
-            label: "PF2E.PerceptionLabel",
+            label: "AVANT.PerceptionLabel",
             attribute: "wis",
             domains: ["perception", "wis-based", "all"],
-            modifiers: [new ModifierPF2e("PF2E.MasterLevel", masterLevel, "untyped"), attributeModifier],
+            modifiers: [new ModifierAvant("AVANT.MasterLevel", masterLevel, "untyped"), attributeModifier],
             check: { type: "perception-check" },
             senses: system.perception.senses,
         });
         system.perception = fu.mergeObject(this.perception.getTraceData(), { attribute: "wis" as const });
 
         // Skills
-        this.skills = R.mapToObj(R.entries(CONFIG.PF2E.skills), ([skill, { label, attribute }]) => {
-            const modifiers = [new ModifierPF2e("PF2E.MasterLevel", masterLevel, "untyped")];
+        this.skills = R.mapToObj(R.entries(CONFIG.AVANT.skills), ([skill, { label, attribute }]) => {
+            const modifiers = [new ModifierAvant("AVANT.MasterLevel", masterLevel, "untyped")];
             if (["acrobatics", "stealth"].includes(skill)) {
                 modifiers.push(attributeModifier);
             }
@@ -252,7 +252,7 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
     protected override async _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: FamiliarUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         const newId = changed.system?.master?.id ?? this.system.master.id;
         if (newId !== this.system.master.id) {
@@ -275,7 +275,7 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
         super._onUpdate(changed, operation, userId);
 
         if (operation.previousMaster && operation.previousMaster !== this.master?.uuid) {
-            const previousMaster = fromUuidSync<ActorPF2e>(operation.previousMaster);
+            const previousMaster = fromUuidSync<ActorAvant>(operation.previousMaster);
             if (previousMaster?.isOfType("character")) {
                 previousMaster.familiar = null;
             }
@@ -289,14 +289,14 @@ class FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
     }
 }
 
-interface FamiliarPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null>
-    extends CreaturePF2e<TParent> {
+interface FamiliarAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null>
+    extends CreatureAvant<TParent> {
     readonly _source: FamiliarSource;
     system: FamiliarSystemData;
 }
 
-interface FamiliarUpdateOperation<TParent extends TokenDocumentPF2e | null> extends ActorUpdateOperation<TParent> {
+interface FamiliarUpdateOperation<TParent extends TokenDocumentAvant | null> extends ActorUpdateOperation<TParent> {
     previousMaster?: ActorUUID;
 }
 
-export { FamiliarPF2e };
+export { FamiliarAvant };

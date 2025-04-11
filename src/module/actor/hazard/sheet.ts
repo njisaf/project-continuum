@@ -1,13 +1,13 @@
 import { StrikeData } from "@actor/data/base.ts";
-import { ActorSheetPF2e, SheetClickActionHandlers } from "@actor/sheet/base.ts";
+import { ActorSheetAvant, SheetClickActionHandlers } from "@actor/sheet/base.ts";
 import { SAVE_TYPES } from "@actor/values.ts";
 import { HTMLTagifyTagsElement } from "@system/html-elements/tagify-tags.ts";
 import { htmlClosest, htmlQuery } from "@util/dom.ts";
 import { tagify, traitSlugToObject } from "@util/tags.ts";
-import type { HazardPF2e } from "./document.ts";
+import type { HazardAvant } from "./document.ts";
 import { HazardActionSheetData, HazardSaveSheetData, HazardSheetData } from "./types.ts";
 
-export class HazardSheetPF2e extends ActorSheetPF2e<HazardPF2e> {
+export class HazardSheetAvant extends ActorSheetAvant<HazardAvant> {
     static override get defaultOptions(): ActorSheetOptions {
         const options = super.defaultOptions;
         return {
@@ -16,16 +16,16 @@ export class HazardSheetPF2e extends ActorSheetPF2e<HazardPF2e> {
             scrollY: ["section.content"],
             width: 700,
             height: 680,
-            template: "systems/pf2e/templates/actors/hazard/sheet.hbs",
+            template: "systems/avant/templates/actors/hazard/sheet.hbs",
         };
     }
 
     override get title(): string {
-        return this.editing ? game.i18n.format("PF2E.Actor.Hazard.TitleEdit", { name: super.title }) : super.title;
+        return this.editing ? game.i18n.format("AVANT.Actor.Hazard.TitleEdit", { name: super.title }) : super.title;
     }
 
     get editing(): boolean {
-        return this.isEditable && !!this.actor.getFlag("pf2e", "editHazard.value");
+        return this.isEditable && !!this.actor.getFlag("avant", "editHazard.value");
     }
 
     override async getData(options?: ActorSheetOptions): Promise<HazardSheetData> {
@@ -67,18 +67,18 @@ export class HazardSheetPF2e extends ActorSheetPF2e<HazardPF2e> {
             ...sheetData,
             actions: this.#prepareActions(),
             complexityOptions: [
-                { value: "false", label: "PF2E.Actor.Hazard.Simple" },
-                { value: "true", label: "PF2E.TraitComplex" },
+                { value: "false", label: "AVANT.Actor.Hazard.Simple" },
+                { value: "true", label: "AVANT.TraitComplex" },
             ],
             emitsSoundOptions: [
-                { value: "true", label: "PF2E.Actor.Hazard.EmitsSound.True" },
-                { value: "false", label: "PF2E.Actor.Hazard.EmitsSound.False" },
-                { value: "encounter", label: "PF2E.Actor.Hazard.EmitsSound.Encounter" },
+                { value: "true", label: "AVANT.Actor.Hazard.EmitsSound.True" },
+                { value: "false", label: "AVANT.Actor.Hazard.EmitsSound.False" },
+                { value: "encounter", label: "AVANT.Actor.Hazard.EmitsSound.Encounter" },
             ],
             editing: this.editing,
-            actorTraits: system.traits.value.map((t) => traitSlugToObject(t, CONFIG.PF2E.hazardTraits)),
-            rarity: CONFIG.PF2E.rarityTraits,
-            rarityLabel: CONFIG.PF2E.rarityTraits[this.actor.rarity],
+            actorTraits: system.traits.value.map((t) => traitSlugToObject(t, CONFIG.AVANT.hazardTraits)),
+            rarity: CONFIG.AVANT.rarityTraits,
+            rarityLabel: CONFIG.AVANT.rarityTraits[this.actor.rarity],
             brokenThreshold: system.attributes.hp.brokenThreshold,
             saves: this.#prepareSaves(),
 
@@ -111,7 +111,7 @@ export class HazardSheetPF2e extends ActorSheetPF2e<HazardPF2e> {
             const save = this.actor.saves[saveType];
             if (this.editing || save) {
                 results.push({
-                    label: game.i18n.localize(`PF2E.Saves${saveType.titleCase()}Short`),
+                    label: game.i18n.localize(`AVANT.Saves${saveType.titleCase()}Short`),
                     type: saveType,
                     mod: save?.check.mod,
                 });
@@ -132,7 +132,7 @@ export class HazardSheetPF2e extends ActorSheetPF2e<HazardPF2e> {
         // Tagify the traits selection
         const traitsEl = htmlQuery<HTMLTagifyTagsElement>(html, 'tagify-tags[name="system.traits.value"]');
         if (traitsEl) {
-            const tags = tagify(traitsEl, { whitelist: CONFIG.PF2E.hazardTraits });
+            const tags = tagify(traitsEl, { whitelist: CONFIG.AVANT.hazardTraits });
             const traitsPrepend = html.querySelector<HTMLTemplateElement>(".traits-extra");
             if (traitsPrepend) {
                 tags.DOM.scope.prepend(traitsPrepend.content);
@@ -144,7 +144,7 @@ export class HazardSheetPF2e extends ActorSheetPF2e<HazardPF2e> {
         const handlers = super.activateClickListener(html);
 
         handlers["toggle-edit-mode"] = () => {
-            return this.actor.update({ "flags.pf2e.editHazard.value": !this.editing });
+            return this.actor.update({ "flags.avant.editHazard.value": !this.editing });
         };
 
         handlers["edit-section"] = (event) => {

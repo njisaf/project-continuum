@@ -1,18 +1,18 @@
-import type { ActorPF2e } from "@actor";
-import { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import { ItemAvant } from "@item";
 import {
     PickableThing,
     PickAThingConstructorArgs,
     PickAThingPrompt,
     PromptTemplateData,
 } from "@module/apps/pick-a-thing-prompt.ts";
-import { DropCanvasItemDataPF2e } from "@module/canvas/drop-canvas-data.ts";
+import { DropCanvasItemDataAvant } from "@module/canvas/drop-canvas-data.ts";
 import type { Predicate } from "@system/predication.ts";
-import { createHTMLElement, ErrorPF2e, htmlQuery, htmlQueryAll, sluggify } from "@util";
+import { createHTMLElement, ErrorAvant, htmlQuery, htmlQueryAll, sluggify } from "@util";
 import { UUIDUtils } from "@util/uuid.ts";
 
 /** Prompt the user for a selection among a set of options */
-class ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | number | object> {
+class ChoiceSetPrompt extends PickAThingPrompt<ItemAvant<ActorAvant>, string | number | object> {
     /** The prompt statement to present the user in this application's window */
     prompt: string;
 
@@ -35,7 +35,7 @@ class ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | num
             ...super.defaultOptions,
             classes: ["choice-set-prompt"],
             dragDrop: [{ dropSelector: ".drop-zone" }],
-            template: "systems/pf2e/templates/system/rules-elements/choice-set-prompt.hbs",
+            template: "systems/avant/templates/system/rules-elements/choice-set-prompt.hbs",
         };
     }
 
@@ -79,8 +79,8 @@ class ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | num
                     itemInfoAnchor.classList.toggle("disabled", disable);
                     itemInfoAnchor.dataset.tooltip = game.i18n.localize(
                         disable
-                            ? "PF2E.UI.RuleElements.ChoiceSet.ViewItem.Disabled"
-                            : "PF2E.UI.RuleElements.ChoiceSet.ViewItem.Tooltip",
+                            ? "AVANT.UI.RuleElements.ChoiceSet.ViewItem.Disabled"
+                            : "AVANT.UI.RuleElements.ChoiceSet.ViewItem.Tooltip",
                     );
                 };
 
@@ -123,7 +123,7 @@ class ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | num
         // Exit early if there are no valid choices
         if (this.choices.length === 0 && !this.allowedDrops) {
             ui.notifications.warn(
-                game.i18n.format("PF2E.UI.RuleElements.Prompt.NoValidOptions", {
+                game.i18n.format("AVANT.UI.RuleElements.Prompt.NoValidOptions", {
                     actor: this.actor.name,
                     item: this.item.name,
                 }),
@@ -138,7 +138,7 @@ class ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | num
     override async close(options?: { force?: boolean }): Promise<void> {
         if (this.choices.length > 0 && !this.selection && !this.allowNoSelection) {
             ui.notifications.warn(
-                game.i18n.format("PF2E.UI.RuleElements.Prompt.NoSelectionMade", { item: this.item.name }),
+                game.i18n.format("AVANT.UI.RuleElements.Prompt.NoSelectionMade", { item: this.item.name }),
             );
         }
 
@@ -149,18 +149,18 @@ class ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | num
     protected override async _onDrop(event: DragEvent): Promise<void> {
         event.preventDefault();
         const dataString = event.dataTransfer?.getData("text/plain");
-        const dropData: DropCanvasItemDataPF2e | undefined = JSON.parse(dataString ?? "");
+        const dropData: DropCanvasItemDataAvant | undefined = JSON.parse(dataString ?? "");
         if (dropData?.type !== "Item") {
             ui.notifications.error("Only an item can be dropped here.");
             return;
         }
-        const droppedItem = await ItemPF2e.fromDropData(dropData);
-        if (!droppedItem) throw ErrorPF2e("Unexpected error resolving drop");
+        const droppedItem = await ItemAvant.fromDropData(dropData);
+        if (!droppedItem) throw ErrorAvant("Unexpected error resolving drop");
 
         const isAllowedDrop = !!this.allowedDrops?.predicate.test(droppedItem.getRollOptions("item"));
         if (this.allowedDrops && !isAllowedDrop) {
             ui.notifications.error(
-                game.i18n.format("PF2E.Item.ABC.InvalidDrop", {
+                game.i18n.format("AVANT.Item.ABC.InvalidDrop", {
                     badType: droppedItem.name,
                     goodType: game.i18n.localize(this.allowedDrops.label ?? ""),
                 }),
@@ -180,7 +180,7 @@ class ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | num
 
         const prompt = document.querySelector<HTMLElement>(`#${this.id}`);
         const dropZone = prompt?.querySelector(".drop-zone");
-        if (!prompt) throw ErrorPF2e("Unexpected error retrieving ChoiceSet dialog");
+        if (!prompt) throw ErrorAvant("Unexpected error retrieving ChoiceSet dialog");
 
         // The dialog will resize when the following DOM change occurs, so allow it to dynamically adjust
         prompt.style.height = "unset";
@@ -223,11 +223,11 @@ class ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | num
     }
 }
 
-interface ChoiceSetPrompt extends PickAThingPrompt<ItemPF2e<ActorPF2e>, string | number | object> {
+interface ChoiceSetPrompt extends PickAThingPrompt<ItemAvant<ActorAvant>, string | number | object> {
     getSelection(event: MouseEvent): ChoiceSetChoice | null;
 }
 
-interface ChoiceSetPromptData extends PickAThingConstructorArgs<ItemPF2e<ActorPF2e>, string | number | object> {
+interface ChoiceSetPromptData extends PickAThingConstructorArgs<ItemAvant<ActorAvant>, string | number | object> {
     prompt: string;
     containsItems: boolean;
     allowedDrops: { label: string | null; predicate: Predicate } | null;

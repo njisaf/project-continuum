@@ -1,5 +1,5 @@
-import { ActorPF2e } from "@actor";
-import { ItemPF2e, ItemProxyPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import { ItemAvant, ItemProxyAvant } from "@item";
 import { htmlClosest, htmlQuery, sortLabeledRecord } from "@util";
 import * as R from "remeda";
 
@@ -42,7 +42,7 @@ function createTagifyTraits(traits: Iterable<string>, { sourceTraits, record }: 
     return [...traitSlugs, ...hiddenTraits]
         .map((slug) => {
             const label = game.i18n.localize(record?.[slug] ?? slug);
-            const traitDescriptions: Record<string, string | undefined> = CONFIG.PF2E.traitsDescriptions;
+            const traitDescriptions: Record<string, string | undefined> = CONFIG.AVANT.traitsDescriptions;
             const tooltip = traitDescriptions[slug];
             return {
                 id: slug,
@@ -109,11 +109,11 @@ async function maintainFocusInRender(sheet: Application, renderLogic: () => Prom
     }
 }
 
-async function getItemFromDragEvent(event: DragEvent): Promise<ItemPF2e | null> {
+async function getItemFromDragEvent(event: DragEvent): Promise<ItemAvant | null> {
     try {
         const dataString = event.dataTransfer?.getData("text/plain");
         const dropData = JSON.parse(dataString ?? "");
-        return (await ItemPF2e.fromDropData(dropData)) ?? null;
+        return (await ItemAvant.fromDropData(dropData)) ?? null;
     } catch {
         return null;
     }
@@ -152,13 +152,13 @@ function eventToRollMode(event: Maybe<Event>): RollMode | "roll" {
 }
 
 /** Given a uuid, loads the item and sends it to chat, potentially recontextualizing it with a given actor */
-async function sendItemToChat(itemUuid: ItemUUID, options: { event?: Event; actor?: ActorPF2e }): Promise<void> {
-    const itemLoaded = await fromUuid<ItemPF2e>(itemUuid);
+async function sendItemToChat(itemUuid: ItemUUID, options: { event?: Event; actor?: ActorAvant }): Promise<void> {
+    const itemLoaded = await fromUuid<ItemAvant>(itemUuid);
     if (!itemLoaded) return;
 
     const item =
         options.actor && itemLoaded.actor?.uuid !== options.actor.uuid
-            ? new ItemProxyPF2e(itemLoaded.toObject(), { parent: options.actor })
+            ? new ItemProxyAvant(itemLoaded.toObject(), { parent: options.actor })
             : itemLoaded;
     item.toMessage(options.event);
 }

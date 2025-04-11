@@ -1,11 +1,11 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { NumberField, StringField } from "types/foundry/common/data/fields.d.ts";
 import type { SenseData } from "./data.ts";
 import type { SenseAcuity, SenseType } from "./index.ts";
 import { SENSES_WITH_MANDATORY_ACUITIES, SENSE_ACUITIES, SENSE_TYPES } from "./values.ts";
 
-class Sense extends foundry.abstract.DataModel<ActorPF2e, SenseSchema> {
-    constructor(data: SenseConstructorParams, options: DataModelConstructionOptions<ActorPF2e>) {
+class Sense extends foundry.abstract.DataModel<ActorAvant, SenseSchema> {
+    constructor(data: SenseConstructorParams, options: DataModelConstructionOptions<ActorAvant>) {
         if (data.range === Infinity) data.range = null;
         super(data, { ...options, strict: false });
         this.range ??= Infinity;
@@ -41,19 +41,19 @@ class Sense extends foundry.abstract.DataModel<ActorPF2e, SenseSchema> {
     /** The localized label of the sense */
     get label(): string | null {
         const buildLabel = (type: string, acuity?: Maybe<SenseAcuity>, range?: Maybe<number>): string => {
-            const senses: Record<string, string | undefined> = CONFIG.PF2E.senses;
+            const senses: Record<string, string | undefined> = CONFIG.AVANT.senses;
             const sense = game.i18n.localize(senses[type] ?? "") || type;
-            const acuityLabel = acuity ? game.i18n.localize(CONFIG.PF2E.senseAcuities[acuity]) : null;
+            const acuityLabel = acuity ? game.i18n.localize(CONFIG.AVANT.senseAcuities[acuity]) : null;
             return acuity && range
-                ? game.i18n.format("PF2E.Actor.Creature.Sense.WithAcuityAndRange", {
+                ? game.i18n.format("AVANT.Actor.Creature.Sense.WithAcuityAndRange", {
                       sense,
                       acuity: acuityLabel,
                       range,
                   })
                 : acuity
-                  ? game.i18n.format("PF2E.Actor.Creature.Sense.WithAcuity", { sense, acuity: acuityLabel })
+                  ? game.i18n.format("AVANT.Actor.Creature.Sense.WithAcuity", { sense, acuity: acuityLabel })
                   : range
-                    ? game.i18n.format("PF2E.Actor.Creature.Sense.WithRange", { sense, range })
+                    ? game.i18n.format("AVANT.Actor.Creature.Sense.WithRange", { sense, range })
                     : sense;
         };
 
@@ -104,7 +104,7 @@ class Sense extends foundry.abstract.DataModel<ActorPF2e, SenseSchema> {
     }
 }
 
-interface Sense extends foundry.abstract.DataModel<ActorPF2e, SenseSchema>, ModelPropsFromSchema<SenseSchema> {
+interface Sense extends foundry.abstract.DataModel<ActorAvant, SenseSchema>, ModelPropsFromSchema<SenseSchema> {
     range: number;
 }
 

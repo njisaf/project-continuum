@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { SpellSource, SpellSystemSource } from "@item/spell/data.ts";
 import { DamageType } from "@system/damage/types.ts";
 import * as R from "remeda";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration895FixVariantSpellTraits extends MigrationBase {
     static override version = 0.895;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "spell") return;
 
         switch (source.system.slug) {

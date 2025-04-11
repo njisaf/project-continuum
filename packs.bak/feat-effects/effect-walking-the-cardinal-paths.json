@@ -1,0 +1,85 @@
+{
+    "_id": "kui8yKIVsxfJnrYe",
+    "img": "icons/magic/symbols/elements-air-earth-fire-water.webp",
+    "name": "Effect: Walking the Cardinal Paths",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.adventure-specific-actions.Item.(Affinity Ablaze) Arms of Balance: Walking the Cardinal Paths]</p>\n<p>One of your weapons or your unarmed Strikes deal an additional 2d6 fire, cold, acid, or electricity damage. The Strikes gain the appropriate energy trait as well.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "minutes",
+            "value": 1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Fists of the Ruby Phoenix Hardcover Compilation"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    }
+                ],
+                "flag": "damage",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DamageType"
+            },
+            {
+                "choices": {
+                    "attacks": true
+                },
+                "flag": "strike",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.WeaponOrUnarmed"
+            },
+            {
+                "damageType": "{item|flags.avant.rulesSelections.damage}",
+                "diceNumber": 2,
+                "dieSize": "d6",
+                "key": "DamageDice",
+                "selector": "{item|flags.avant.rulesSelections.strike}-damage"
+            },
+            {
+                "itemType": "weapon",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "predicate": [
+                    "item:{item|flags.avant.rulesSelections.strike}"
+                ],
+                "property": "traits",
+                "value": "{item|flags.avant.rulesSelections.damage}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

@@ -1,4 +1,4 @@
-import type { ActorType, CharacterPF2e } from "@actor";
+import type { ActorType, CharacterAvant } from "@actor";
 import { ArmorCategory } from "@item/armor/types.ts";
 import { ARMOR_CATEGORIES } from "@item/armor/values.ts";
 import { ProficiencyRank } from "@item/base/data/index.ts";
@@ -7,11 +7,11 @@ import { WEAPON_CATEGORIES } from "@item/weapon/values.ts";
 import { OneToFour } from "@module/data.ts";
 import { PredicateField } from "@system/schema-data-fields.ts";
 import { sluggify } from "@util";
-import { RuleElementOptions, RuleElementPF2e } from "./base.ts";
+import { RuleElementOptions, RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema, RuleElementSource } from "./data.ts";
 import fields = foundry.data.fields;
 
-class MartialProficiencyRuleElement extends RuleElementPF2e<MartialProficiencySchema> {
+class MartialProficiencyRuleElement extends RuleElementAvant<MartialProficiencySchema> {
     protected static override validActorTypes: ActorType[] = ["character"];
 
     declare slug: string;
@@ -67,9 +67,9 @@ class MartialProficiencyRuleElement extends RuleElementPF2e<MartialProficiencySc
 }
 
 interface MartialProficiencyRuleElement
-    extends RuleElementPF2e<MartialProficiencySchema>,
+    extends RuleElementAvant<MartialProficiencySchema>,
         ModelPropsFromRESchema<MartialProficiencySchema> {
-    get actor(): CharacterPF2e;
+    get actor(): CharacterAvant;
 }
 
 type MartialProficiencySchema = RuleElementSchema & {

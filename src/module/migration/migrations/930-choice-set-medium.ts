@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { ChoiceSetSource } from "@module/rules/rule-element/choice-set/data.ts";
 import { recursiveReplaceString } from "@util";
@@ -9,7 +9,7 @@ import { isSizeChoice, resolveLongForm } from "./929-remove-skill-abbreviations.
 export class Migration930ChoiceSetMedium extends MigrationBase {
     static override version = 0.93;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         for (const rule of source.system.rules) {
             if (!isChoiceSource(rule)) continue;
 

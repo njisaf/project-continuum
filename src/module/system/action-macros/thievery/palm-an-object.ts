@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.PalmAnObject";
+const PREFIX = "AVANT.Actions.PalmAnObject";
 
 function palmAnObject(options: SkillActionOptions): void {
     const slug = options?.skill ?? "thievery";
@@ -30,7 +30,7 @@ const action = new SingleCheckAction({
     cost: 1,
     description: `${PREFIX}.Description`,
     difficultyClass: "perception",
-    img: "systems/pf2e/icons/features/classes/thief.webp",
+    img: "systems/avant/icons/features/classes/thief.webp",
     name: `${PREFIX}.Title`,
     notes: [
         { outcome: ["success", "criticalSuccess"], text: `${PREFIX}.Notes.success` },

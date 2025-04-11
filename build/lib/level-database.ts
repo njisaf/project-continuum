@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { tupleHasValue } from "@util";
 import type { AbstractSublevel } from "abstract-level";
 import { ClassicLevel, type DatabaseOptions } from "classic-level";
@@ -145,7 +145,7 @@ type EmbeddedKey = "items" | "pages" | "results";
 
 type Sublevel<T> = AbstractSublevel<ClassicLevel<string, T>, string | Buffer | Uint8Array, string, T>;
 
-type EmbeddedEntry = ItemSourcePF2e | SourceFromSchema<JournalEntryPageSchema> | TableResultSource;
+type EmbeddedEntry = ItemSourceAvant | SourceFromSchema<JournalEntryPageSchema> | TableResultSource;
 type DBEntry = Omit<PackEntry, "pages" | "items" | "results"> & {
     folder?: string | null;
     items?: (EmbeddedEntry | string)[];

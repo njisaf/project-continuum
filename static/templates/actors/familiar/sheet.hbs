@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off" spellcheck="false" data-tooltip-class="pf2e">
+<form class="{{cssClass}}" autocomplete="off" spellcheck="false" data-tooltip-class="avant">
     {{!-- HEADER --}}
     <header>
         <div class="image-container">
@@ -25,14 +25,14 @@
                     <li class="tag size">{{localize size}}</li>
                 </ul>
                 <div>
-                    <label for="{{document.uuid}}-master"><strong>{{localize "PF2E.Familiar.Master"}}</strong></label>
+                    <label for="{{document.uuid}}-master"><strong>{{localize "AVANT.Familiar.Master"}}</strong></label>
                     <select id="{{document.uuid}}-master" name="system.master.id">
                         {{selectOptions
                             masters
                             selected=master.id
                             valueAttr="id"
                             labelAttr="name"
-                            blank=(localize "PF2E.Familiar.SelectMaster")}}
+                            blank=(localize "AVANT.Familiar.SelectMaster")}}
                     </select>
                 </div>
             </div>
@@ -53,11 +53,11 @@
             {{#if document.itemTypes.condition}}
                 <div class="section-container">
                     <div class="section-header">
-                        <h4>{{localize "PF2E.ConditionsLabel"}}</h4>
+                        <h4>{{localize "AVANT.ConditionsLabel"}}</h4>
                     </div>
                     <div class="section-body">
                         <ol class="effects-list item-list">
-                            {{> "systems/pf2e/templates/actors/partials/effects.hbs" effects=document.conditions.active}}
+                            {{> "systems/avant/templates/actors/partials/effects.hbs" effects=document.conditions.active}}
                         </ol>
                     </div>
                 </div>
@@ -66,11 +66,11 @@
             {{#if document.itemTypes.effect}}
                 <div class="section-container">
                     <div class="section-header">
-                        <h4>{{localize "PF2E.EffectsLabel"}}</h4>
+                        <h4>{{localize "AVANT.EffectsLabel"}}</h4>
                     </div>
                     <div class="section-body">
                         <ol class="effects-list item-list">
-                            {{> "systems/pf2e/templates/actors/partials/effects.hbs" effects=document.itemTypes.effect}}
+                            {{> "systems/avant/templates/actors/partials/effects.hbs" effects=document.itemTypes.effect}}
                         </ol>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
     <div class="hp-section">
         <div class="label">
             <i class="fa-solid fa-heart"></i>
-            <h4>{{localize "PF2E.HitPointsHeader"}}</h4>
+            <h4>{{localize "AVANT.HitPointsHeader"}}</h4>
         </div>
         <div class="value">
             <input class="current-hp" id="{{actor.id}}-hit-points" type="number"
@@ -97,11 +97,11 @@
         </div>
         <div class="label">
             <i class="fa-solid fa-heart-broken"></i>
-            <h4>{{localize "PF2E.condition.dying.name"}}</h4>
+            <h4>{{localize "AVANT.condition.dying.name"}}</h4>
         </div>
         <div class="value dying-section">
             {{#if data.attributes.dying.value}}
-                <a class="rollable roll-icon" data-action="recovery-check" data-tooltip="PF2E.Check.Specific.Recovery">
+                <a class="rollable roll-icon" data-action="recovery-check" data-tooltip="AVANT.Check.Specific.Recovery">
                     <i class="fa-solid fa-dice-d20"></i>
                 </a>
             {{/if}}
@@ -109,15 +109,15 @@
                 class="pips"
                 data-action="adjust-condition-value"
                 data-condition="dying"
-                data-tooltip="PF2E.condition.dying.summary"
-            >{{> "systems/pf2e/templates/actors/partials/dying-pips.hbs"}}</a>
+                data-tooltip="AVANT.condition.dying.summary"
+            >{{> "systems/avant/templates/actors/partials/dying-pips.hbs"}}</a>
         </div>
     </div>
     <div class="defenses-section">
         {{#if data.master.id}}
             <div class="defenses-list">
                 <div class="ac" data-tooltip="{{data.attributes.ac.breakdown}}">
-                    <div class="name">{{localize "PF2E.ArmorClassShortLabel"}}</div>
+                    <div class="name">{{localize "AVANT.ArmorClassShortLabel"}}</div>
                     <div class="value"><i class="fa-solid fa-shield-blank"></i>{{numberFormat data.attributes.ac.value decimals=0 sign=false}}</div>
                 </div>
                 {{#each data.saves as |save|}}
@@ -134,7 +134,7 @@
 {{#*inline "skills"}}
     <div class="section-container">
         <div class="section-header">
-            <h4>{{localize "PF2E.Familiar.Skills"}}</h4>
+            <h4>{{localize "AVANT.Familiar.Skills"}}</h4>
         </div>
         <div class="section-body">
             <div class="skills-content">
@@ -142,7 +142,7 @@
                     <div class="skills-list">
                         <a data-action="roll-check" data-statistic="perception" data-tooltip="{{data.perception.breakdown}}">
                             <div class="mod">{{numberFormat data.perception.totalModifier sign=true}}</div>
-                            <div class="name">{{localize "PF2E.Familiar.Perception"}}</div>
+                            <div class="name">{{localize "AVANT.Familiar.Perception"}}</div>
                         </a>
                     </div>
                     <div class="skills-list">
@@ -154,7 +154,7 @@
                         {{/each}}
                     </div>
                     <a class="rollable skills-attack" data-action="familiar-attack-roll" data-tooltip="{{data.attack.breakdown}}">
-                        <strong>{{localize "PF2E.Familiar.AttackRoll"}}</strong>
+                        <strong>{{localize "AVANT.Familiar.AttackRoll"}}</strong>
                         <span>{{numberFormat data.attack.value sign=true}}</span>
                     </a>
                 {{/if}}
@@ -166,14 +166,14 @@
 {{#*inline "details"}}
     <div class="familiar-section section-container">
         <div class="section-header">
-            <h4>{{localize "PF2E.Familiar.Familiar"}}</h4>
+            <h4>{{localize "AVANT.Familiar.Familiar"}}</h4>
         </div>
         <div class="section-body">
             <div class="familiar-content">
                 {{!-- Textual "creature type" --}}
                 <div class="familiar-species">
                     <div class="detail">
-                        <label for="{{document.uuid}}-creature">{{localize "PF2E.Familiar.CreatureType"}}</label>
+                        <label for="{{document.uuid}}-creature">{{localize "AVANT.Familiar.CreatureType"}}</label>
                         <input id="{{document.uuid}}-creature" type="text" name="system.details.creature.value"
                             value="{{data.details.creature.value}}" placeholder="Rat, imp, leshy, etc." />
                     </div>
@@ -183,9 +183,9 @@
                 {{#if data.master.id}}
                     <div class="familiar-modifier">
                         <div class="detail">
-                            <label for="{{document.uuid}}-attribute">{{localize "PF2E.Familiar.MasterSpellcastingAbility"}}</label>
+                            <label for="{{document.uuid}}-attribute">{{localize "AVANT.Familiar.MasterSpellcastingAbility"}}</label>
                             <select id="{{document.uuid}}-attribute" name="system.master.ability">
-                                {{selectOptions attributes selected=data.master.ability localize=true blank="PF2E.Actor.Familiar.NoAttribute"}}
+                                {{selectOptions attributes selected=data.master.ability localize=true blank="AVANT.Actor.Familiar.NoAttribute"}}
                             </select>
                         </div>
                     </div>
@@ -194,7 +194,7 @@
             {{#if data.master.id}}
                 <div class="familiar-content">
                     <div class="detail">
-                        <label>{{localize "PF2E.Familiar.TotalNumberFamiliarAbilities"}}</label>
+                        <label>{{localize "AVANT.Familiar.TotalNumberFamiliarAbilities"}}</label>
                         <div>
                             <h4>{{numberFormat familiarAbilities.value decimals=0}}</h4>
                         </div>
@@ -204,7 +204,7 @@
                     {{!-- Speed --}}
                     <div class="familiar-senses">
                         <div class="detail">
-                            <label>{{localize "PF2E.Actor.Speed.Plural"}}</label>
+                            <label>{{localize "AVANT.Actor.Speed.Plural"}}</label>
                             <ol class="tags speeds">
                                 {{#with data.attributes.speed as |landSpeed|}}
                                     <li class="tag tag_alt" data-tooltip="{{landSpeed.breakdown}}">{{localize landSpeed.label}}
@@ -222,7 +222,7 @@
                     {{!-- Senses --}}
                     <div class="familiar-senses">
                         <div class="detail">
-                            <label>{{localize "PF2E.Senses"}}</label>
+                            <label>{{localize "AVANT.Senses"}}</label>
                             <ol class="tags senses">
                                 {{#each data.perception.senses as |sense|}}
                                     <li class="tag tag_alt {{sense.slug}}">{{localize sense.label}}</li>
@@ -237,20 +237,20 @@
     {{!-- ABILITIES --}}
     {{#if toggles.actions}}
         <div class="toggles section-container headerless">
-            {{> "systems/pf2e/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}
+            {{> "systems/avant/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}
         </div>
     {{/if}}
     <div class="section-container">
         <div class="section-header">
-            <h4>{{localize "PF2E.Familiar.AbilitiesLabel"}}</h4>
+            <h4>{{localize "AVANT.Familiar.AbilitiesLabel"}}</h4>
             <div class="controls">
-                <a data-action="browse-abilities" data-action-category="familiar"><i class="fa-solid fa-search"></i> {{localize "PF2E.BrowseLabel"}}</a>
+                <a data-action="browse-abilities" data-action-category="familiar"><i class="fa-solid fa-search"></i> {{localize "AVANT.BrowseLabel"}}</a>
             </div>
         </div>
         <div class="section-body">
             <ol class="actions-list item-list">
                 {{#each familiarAbilities.items as |action|}}
-                    {{> "systems/pf2e/templates/actors/npc/partials/action.hbs" action=action}}
+                    {{> "systems/avant/templates/actors/npc/partials/action.hbs" action=action}}
                 {{/each}}
             </ol>
         </div>

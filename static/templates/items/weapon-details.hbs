@@ -1,34 +1,34 @@
 <fieldset class="basics">
-    {{> "systems/pf2e/templates/items/partials/apex.hbs"}}
+    {{> "systems/avant/templates/items/partials/apex.hbs"}}
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}category">{{localize "PF2E.Category"}}</label>
+        <label for="{{fieldIdPrefix}}category">{{localize "AVANT.Category"}}</label>
         <select name="system.category" id="{{fieldIdPrefix}}category">
             {{selectOptions categories selected=data.category localize=true}}
         </select>
     </div>
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}group">{{localize "PF2E.WeaponGroupLabel"}}</label>
+        <label for="{{fieldIdPrefix}}group">{{localize "AVANT.WeaponGroupLabel"}}</label>
         <select name="system.group" id="{{fieldIdPrefix}}group">
             {{selectOptions groups selected=data.group blank=""}}
         </select>
     </div>
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}base">{{localize "PF2E.WeaponBaseLabel"}}</label>
+        <label for="{{fieldIdPrefix}}base">{{localize "AVANT.WeaponBaseLabel"}}</label>
         <select id="{{fieldIdPrefix}}base" data-property="system.baseItem">
             {{selectOptions baseTypes selected=data.baseItem blank=""}}
         </select>
     </div>
     <div class="form-group">
         <label for="{{fieldIdPrefix}}range">
-            {{localize "PF2E.TraitRange"}}
+            {{localize "AVANT.TraitRange"}}
             {{#if mandatoryMelee}}
-                <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.Weapon.MandatoryMelee"></i>
+                <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.Weapon.MandatoryMelee"></i>
             {{/if}}
         </label>
         <select name="system.range" id="{{fieldIdPrefix}}range" data-dtype="Number" {{disabled mandatoryMelee}}>
             {{#if (not mandatoryRanged)}}
-                {{selectOptions weaponRanges selected=item._source.system.range blank="PF2E.Item.Weapon.NoRangeMelee" localize=true}}
+                {{selectOptions weaponRanges selected=item._source.system.range blank="AVANT.Item.Weapon.NoRangeMelee" localize=true}}
             {{else}}
                 {{selectOptions weaponRanges selected=item._source.system.range}}
             {{/if}}
@@ -36,7 +36,7 @@
     </div>
     {{#if data.range}}
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}reload">{{localize "PF2E.WeaponReloadLabel"}}</label>
+            <label for="{{fieldIdPrefix}}reload">{{localize "AVANT.WeaponReloadLabel"}}</label>
             <select name="system.reload.value" id="{{fieldIdPrefix}}reload">
                 {{selectOptions weaponReload selected=data.reload.value blank="" localize=true}}
             </select>
@@ -45,7 +45,7 @@
 
     {{#if isBomb}}
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}bomb-bonus">{{localize "PF2E.WeaponBonusAttackLabel"}}</label>
+            <label for="{{fieldIdPrefix}}bomb-bonus">{{localize "AVANT.WeaponBonusAttackLabel"}}</label>
             <input type="number" name="system.bonus.value" id="{{fieldIdPrefix}}bomb-bonus" value="{{data.bonus.value}}" />
         </div>
     {{/if}}
@@ -53,10 +53,10 @@
 
 {{#unless isBomb}}
     <fieldset class="material-runes">
-        <legend>{{localize "PF2E.Item.Physical.MaterialRunes.Label"}}</legend>
+        <legend>{{localize "AVANT.Item.Physical.MaterialRunes.Label"}}</legend>
 
         <div class="form-group precious-material">
-            <label for="{{fieldIdPrefix}}material">{{localize "PF2E.PreciousMaterialLabel"}}</label>
+            <label for="{{fieldIdPrefix}}material">{{localize "AVANT.PreciousMaterialLabel"}}</label>
             <select
                 id="{{fieldIdPrefix}}material"
                 data-property="system.material"
@@ -69,14 +69,14 @@
 
         {{#unless abpEnabled}}
             <div class="form-group">
-                <label for="{{fieldIdPrefix}}rune-potency">{{localize "PF2E.PotencyRuneLabel"}}</label>
+                <label for="{{fieldIdPrefix}}rune-potency">{{localize "AVANT.PotencyRuneLabel"}}</label>
                 <select data-property="system.runes.potency" id="{{fieldIdPrefix}}rune-potency" data-dtype="Number">
                     <option value="0"></option>
                     {{selectOptions (omit runeTypes.potency 0) selected=data.runes.potency labelAttr="name" localize=true}}
                 </select>
             </div>
             <div class="form-group">
-                <label for="{{fieldIdPrefix}}rune-striking">{{localize "PF2E.StrikingRuneLabel"}}</label>
+                <label for="{{fieldIdPrefix}}rune-striking">{{localize "AVANT.StrikingRuneLabel"}}</label>
                 <select data-property="system.runes.striking" id="{{fieldIdPrefix}}rune-striking" data-dtype="Number">
                     <option value="0"></option>
                     {{selectOptions (omit runeTypes.striking 0) selected=data.runes.striking labelAttr="name" localize=true}}
@@ -90,7 +90,7 @@
                     for="{{../fieldIdPrefix}}runes-property-{{index}}"
                     {{#if slot.disabled}}class="disabled"{{/if}}
                 >
-                    {{localize (concat "PF2E.PropertyRuneLabel" (add index 1))}}
+                    {{localize (concat "AVANT.PropertyRuneLabel" (add index 1))}}
                 </label>
                 <select
                     name="system.runes.property.{{index}}"
@@ -111,8 +111,8 @@
 
         <div class="form-group">
             <label for="{{fieldIdPrefix}}specific" class="large">
-                {{localize "PF2E.Item.Weapon.SpecificMagicWeapon.Label"}}
-                <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.Weapon.SpecificMagicWeapon.Hint"></i>
+                {{localize "AVANT.Item.Weapon.SpecificMagicWeapon.Label"}}
+                <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.Weapon.SpecificMagicWeapon.Hint"></i>
             </label>
             <input
                 type="checkbox"
@@ -128,13 +128,13 @@
 
 <fieldset>
     <legend>
-        {{localize "PF2E.DamageLabel"}}
-        <i class="fa-solid fa-circle-info" data-tooltip="PF2E.WeaponBaseDamageTitle"></i>
+        {{localize "AVANT.DamageLabel"}}
+        <i class="fa-solid fa-circle-info" data-tooltip="AVANT.WeaponBaseDamageTitle"></i>
     </legend>
 
     <div class="form-group">
         <label for="{{fieldIdPrefix}}damage-dice-number">
-            {{localize "PF2E.WeaponBaseLabel"}}
+            {{localize "AVANT.WeaponBaseLabel"}}
             {{#if adjustedDiceHint}}<i class="fa-solid fa-circle-info" data-tooltip="{{adjustedDiceHint}}"></i>{{/if}}
         </label>
 
@@ -157,14 +157,14 @@
 
     <div class="form-group">
         <label{{#unless data.splashDamage.value}} class="no-data"{{/unless}} for="{{fieldIdPrefix}}damage-splash">
-            {{localize "PF2E.TraitSplash"}}
+            {{localize "AVANT.TraitSplash"}}
         </label>
         <input type="number" name="system.splashDamage.value" id="{{fieldIdPrefix}}damage-splash" value="{{data.splashDamage.value}}" />
     </div>
 
     <div class="form-group">
         <label{{#unless data.damage.persistent}} class="no-data"{{/unless}} for="{{fieldIdPrefix}}damage-persistent">
-            {{localize "PF2E.ConditionTypePersistentShort"}}
+            {{localize "AVANT.ConditionTypePersistentShort"}}
         </label>
 
         <div class="dice-data">
@@ -187,7 +187,7 @@
 
     <div class="form-group">
         <label{{#unless data.bonusDamage.value}} class="no-data"{{/unless}} for="{{fieldIdPrefix}}damage-bonus">
-            {{localize "PF2E.Bonus"}}
+            {{localize "AVANT.Bonus"}}
         </label>
         <input type="number" name="system.bonusDamage.value" id="{{fieldIdPrefix}}damage-bonus" value="{{data.bonusDamage.value}}" />
     </div>
@@ -195,8 +195,8 @@
 
 <fieldset>
     <legend>
-        {{localize "PF2E.WeaponCustomDamageLabel"}}
-        <i class="fa-solid fa-circle-info" data-tooltip="PF2E.WeaponCustomDamageTitle"></i>
+        {{localize "AVANT.WeaponCustomDamageLabel"}}
+        <i class="fa-solid fa-circle-info" data-tooltip="AVANT.WeaponCustomDamageTitle"></i>
     </legend>
     <div class="form-group">
         <label>{{localize "Description"}}</label>
@@ -204,7 +204,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.WeaponPropertyStrikeDamageLabel"}}</label>
+        <label>{{localize "AVANT.WeaponPropertyStrikeDamageLabel"}}</label>
         <div class="dice-data">
             <input type="number" name="system.property1.dice" value="{{data.property1.dice}}" />
             <select name="system.property1.die">
@@ -217,7 +217,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.WeaponPropertyStrikeEffectLabel"}}</label>
+        <label>{{localize "AVANT.WeaponPropertyStrikeEffectLabel"}}</label>
         <div class="effects-container">
             <select name="system.property1.strikeConditionType">
                 {{selectOptions conditionTypes selected=data.property1.strikeConditionType blank="" localize=true}}
@@ -229,7 +229,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.WeaponPropertyCriticalDamageLabel"}}</label>
+        <label>{{localize "AVANT.WeaponPropertyCriticalDamageLabel"}}</label>
         <div class="dice-data">
             <input type="number" name="system.property1.critDice" value="{{data.property1.critDice}}" />
             <select name="system.property1.critDie">
@@ -242,7 +242,7 @@
     </div>
 
     <div class="form-group">
-        <label>{{localize "PF2E.WeaponPropertyCriticalEffectLabel"}}</label>
+        <label>{{localize "AVANT.WeaponPropertyCriticalEffectLabel"}}</label>
         <div class="effects-container">
             <select name="system.property1.criticalConditionType">
                 {{selectOptions conditionTypes selected=data.property1.criticalConditionType blank="" localize=true}}
@@ -257,17 +257,17 @@
 {{#if isComboWeapon}}
     <ol class="form-list">
         <h3>
-            {{localize "PF2E.Item.Weapon.MeleeUsage.Label"}}
-            <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.Weapon.MeleeUsage.Hint"></i>
+            {{localize "AVANT.Item.Weapon.MeleeUsage.Label"}}
+            <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.Weapon.MeleeUsage.Hint"></i>
         </h3>
         <div class="form-group">
-            <label>{{localize "PF2E.WeaponGroupLabel"}}</label>
+            <label>{{localize "AVANT.WeaponGroupLabel"}}</label>
             <select name="system.meleeUsage.group">
                 {{selectOptions meleeGroups selected=meleeUsage.group}}
             </select>
         </div>
         <div class="form-group">
-            <label>{{localize "PF2E.WeaponDamageLabel"}}</label>
+            <label>{{localize "AVANT.WeaponDamageLabel"}}</label>
             <div class="details-container-three-columns">
                 <select name="system.meleeUsage.damage.die">
                     {{selectOptions meleeUsageBaseDamage selected=meleeUsage.damage.die}}
@@ -279,7 +279,7 @@
         </div>
         <div class="form-group">
             <label>
-                {{localize "PF2E.TraitsLabel"}}
+                {{localize "AVANT.TraitsLabel"}}
                 <a class="tag-selector" data-tag-selector="basic" data-config-types="weaponTraits" data-property="system.meleeUsage.traits" data-no-custom="true" data-flat="true">
                     <i class="fa-solid fa-edit"></i>
                 </a>
@@ -295,10 +295,10 @@
 
 <div class="form-group stacked">
     <label>
-        {{localize "PF2E.Item.Physical.OtherTags.Label"}}
-        <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.Physical.OtherTags.Hint"></i>
+        {{localize "AVANT.Item.Physical.OtherTags.Label"}}
+        <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.Physical.OtherTags.Hint"></i>
         {{#if editable}}
-            <a class="tag-selector" data-tag-selector="basic" data-config-types="otherWeaponTags" data-title="PF2E.Item.Physical.OtherTags.Label" data-property="system.traits.otherTags"><i class="fa-solid fa-edit"></i></a>
+            <a class="tag-selector" data-tag-selector="basic" data-config-types="otherWeaponTags" data-title="AVANT.Item.Physical.OtherTags.Label" data-property="system.traits.otherTags"><i class="fa-solid fa-edit"></i></a>
         {{/if}}
     </label>
     <ul class="traits-list tags">
@@ -310,8 +310,8 @@
 {{#if item.isThrowable}}
     <div class="form-group">
         <label>
-            {{localize "PF2E.Item.Weapon.CanBeAmmo.Label"}}
-            <i class="fa-solid fa-circle-info" data-tooltip-width="300" data-tooltip="PF2E.Item.Weapon.CanBeAmmo.Hint"></i>
+            {{localize "AVANT.Item.Weapon.CanBeAmmo.Label"}}
+            <i class="fa-solid fa-circle-info" data-tooltip-width="300" data-tooltip="AVANT.Item.Weapon.CanBeAmmo.Hint"></i>
         </label>
         <input type="checkbox" name="system.usage.canBeAmmo" {{checked item.system.usage.canBeAmmo}} />
     </div>

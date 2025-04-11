@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -19,4 +19,4 @@ export class Migration905UnpersistUsage extends MigrationBase {
     }
 }
 
-type MaybeWithToBeDeletedUsage = ItemSourcePF2e & { system: { "-=usage"?: null } };
+type MaybeWithToBeDeletedUsage = ItemSourceAvant & { system: { "-=usage"?: null } };

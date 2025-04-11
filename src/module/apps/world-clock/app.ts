@@ -1,4 +1,4 @@
-import { ErrorPF2e, htmlQuery, htmlQueryAll, ordinalString, tupleHasValue } from "@util";
+import { ErrorAvant, htmlQuery, htmlQueryAll, ordinalString, tupleHasValue } from "@util";
 import { DateTime } from "luxon";
 import { animateDarkness } from "./animate-darkness.ts";
 import { TimeChangeMode, TimeOfDay } from "./time-of-day.ts";
@@ -21,42 +21,42 @@ export class WorldClock extends Application {
         super();
 
         /* Save world creation date/time if equal to default (i.e., server time at first retrieval of the setting) */
-        const settingValue = game.settings.get("pf2e", "worldClock.worldCreatedOn");
-        const defaultValue = game.settings.settings.get("pf2e.worldClock.worldCreatedOn")?.default;
+        const settingValue = game.settings.get("avant", "worldClock.worldCreatedOn");
+        const defaultValue = game.settings.settings.get("avant.worldClock.worldCreatedOn")?.default;
         if (typeof settingValue === "string" && settingValue === defaultValue) {
-            game.settings.set("pf2e", "worldClock.worldCreatedOn", settingValue);
+            game.settings.set("avant", "worldClock.worldCreatedOn", settingValue);
         } else if (!DateTime.fromISO(settingValue).isValid) {
-            game.settings.set("pf2e", "worldClock.worldCreatedOn", defaultValue);
+            game.settings.set("avant", "worldClock.worldCreatedOn", defaultValue);
         }
     }
 
     /** Setting: the date theme (Imperial Calendar not yet supported) */
     get dateTheme(): "AR" | "IC" | "AD" | "CE" {
-        return game.settings.get("pf2e", "worldClock.dateTheme");
+        return game.settings.get("avant", "worldClock.dateTheme");
     }
 
     /** Setting: display either a 24-hour or 12-hour clock */
     get timeConvention(): 24 | 12 {
-        const setting = game.settings.get("pf2e", "worldClock.timeConvention");
+        const setting = game.settings.get("avant", "worldClock.timeConvention");
         if (setting !== 24 && setting !== 12) {
-            throw Error("PF2e System | Unrecognized time convention");
+            throw Error("Avant System | Unrecognized time convention");
         }
         return setting;
     }
 
     /** Setting: whether to keep the scene's darkness level synchronized with the world time */
     get syncDarkness(): boolean {
-        const sceneSetting = canvas.scene?.flags.pf2e.syncDarkness ?? "default";
+        const sceneSetting = canvas.scene?.flags.avant.syncDarkness ?? "default";
         return {
             enabled: true,
             disabled: false,
-            default: game.settings.get("pf2e", "worldClock.syncDarkness"),
+            default: game.settings.get("avant", "worldClock.syncDarkness"),
         }[sceneSetting];
     }
 
     /** Setting: Date and time of the Foundry world's creation date */
     get worldCreatedOn(): DateTime {
-        const value = game.settings.get("pf2e", "worldClock.worldCreatedOn");
+        const value = game.settings.get("avant", "worldClock.worldCreatedOn");
         return DateTime.fromISO(value).toUTC();
     }
 
@@ -69,8 +69,8 @@ export class WorldClock extends Application {
         return fu.mergeObject(super.defaultOptions, {
             id: "world-clock",
             width: 400,
-            template: "systems/pf2e/templates/system/world-clock.hbs",
-            title: "PF2E.WorldClock.Title",
+            template: "systems/avant/templates/system/world-clock.hbs",
+            title: "AVANT.WorldClock.Title",
         });
     }
 
@@ -79,7 +79,7 @@ export class WorldClock extends Application {
         switch (this.dateTheme) {
             case "AR": // Absalom Reckoning
             case "IC": // Imperial Calendar
-                return game.i18n.localize(CONFIG.PF2E.worldClock[this.dateTheme].Era);
+                return game.i18n.localize(CONFIG.AVANT.worldClock[this.dateTheme].Era);
             case "AD": // Earth on the Material Plane
                 return this.worldTime.toFormat("G");
             default:
@@ -90,7 +90,7 @@ export class WorldClock extends Application {
 
     /** The year in the game */
     private get year(): number {
-        return this.worldTime.year + CONFIG.PF2E.worldClock[this.dateTheme].yearOffset;
+        return this.worldTime.year + CONFIG.AVANT.worldClock[this.dateTheme].yearOffset;
     }
 
     /** The month in the game */
@@ -98,7 +98,7 @@ export class WorldClock extends Application {
         switch (this.dateTheme) {
             case "AR":
             case "IC": {
-                const months = CONFIG.PF2E.worldClock.AR.Months;
+                const months = CONFIG.AVANT.worldClock.AR.Months;
                 const month = this.worldTime.setLocale("en-US").monthLong as keyof typeof months;
                 return game.i18n.localize(months[month]);
             }
@@ -112,7 +112,7 @@ export class WorldClock extends Application {
         switch (this.dateTheme) {
             case "AR":
             case "IC": {
-                const weekdays = CONFIG.PF2E.worldClock.AR.Weekdays;
+                const weekdays = CONFIG.AVANT.worldClock.AR.Weekdays;
                 const weekday = this.worldTime.setLocale("en-US").weekdayLong as keyof typeof weekdays;
                 return game.i18n.localize(weekdays[weekday]);
             }
@@ -125,7 +125,7 @@ export class WorldClock extends Application {
         const date =
             this.dateTheme === "CE"
                 ? this.worldTime.toLocaleString(DateTime.DATE_HUGE)
-                : game.i18n.format(CONFIG.PF2E.worldClock.Date, {
+                : game.i18n.format(CONFIG.AVANT.worldClock.Date, {
                       era: this.era,
                       year: this.year,
                       month: this.month,
@@ -146,12 +146,12 @@ export class WorldClock extends Application {
         const settingsButton: ApplicationHeaderButton[] = game.user.isGM
             ? [
                   {
-                      label: "PF2E.SETTINGS.Settings",
+                      label: "AVANT.SETTINGS.Settings",
                       class: "configure-settings",
                       icon: "fa-solid fa-gear",
                       onclick: (): void => {
-                          const menu = game.settings.menus.get("pf2e.worldClock");
-                          if (!menu) throw ErrorPF2e("PF2e System | World Clock Settings application not found");
+                          const menu = game.settings.menus.get("avant.worldClock");
+                          if (!menu) throw ErrorAvant("Avant System | World Clock Settings application not found");
                           const app = new menu.type();
                           app.render(true);
                       },
@@ -204,7 +204,7 @@ export class WorldClock extends Application {
             });
         }
 
-        for (const eventName of ["keydown.pf2e.world-clock", "keyup.pf2e.world-clock"]) {
+        for (const eventName of ["keydown.avant.world-clock", "keyup.avant.world-clock"]) {
             $(document).off(eventName);
             $(document).on(eventName, (event) => {
                 const { originalEvent } = event;
@@ -215,7 +215,7 @@ export class WorldClock extends Application {
 
                 const retractTime = (this.ctrlKeyDown = event.type === "keydown");
 
-                const { Advance, Retract, TimeOfDay } = CONFIG.PF2E.worldClock.Button;
+                const { Advance, Retract, TimeOfDay } = CONFIG.AVANT.worldClock.Button;
                 const advanceButtons = Array.from(
                     $html.get(0)?.querySelectorAll<HTMLButtonElement>("button[data-advance-time]") ?? [],
                 );
@@ -243,7 +243,7 @@ export class WorldClock extends Application {
     }
 
     override async close(options?: { force?: boolean }): Promise<void> {
-        $(document).off("keydown.pf2e.world-clock").off("keyup.pf2e.world-clock");
+        $(document).off("keydown.avant.world-clock").off("keyup.avant.world-clock");
         return super.close(options);
     }
 
@@ -251,7 +251,7 @@ export class WorldClock extends Application {
     static createSyncedMessage(): HTMLSpanElement {
         const managedBy = document.createElement("span");
         managedBy.classList.add("managed");
-        managedBy.innerHTML = " ".concat(game.i18n.localize("PF2E.SETTINGS.WorldClock.SyncDarknessScene.ManagedBy"));
+        managedBy.innerHTML = " ".concat(game.i18n.localize("AVANT.SETTINGS.WorldClock.SyncDarknessScene.ManagedBy"));
         // Create a link to open world clock settings
         const anchor = document.createElement("a");
         const wtLink = managedBy.querySelector("wt");
@@ -260,8 +260,8 @@ export class WorldClock extends Application {
         anchor.addEventListener("click", (event) => {
             event.preventDefault();
             event.stopPropagation();
-            const menu = game.settings.menus.get("pf2e.worldClock");
-            if (!menu) throw ErrorPF2e("World Clock Settings application not found");
+            const menu = game.settings.menus.get("avant.worldClock");
+            if (!menu) throw ErrorAvant("World Clock Settings application not found");
             const app = new menu.type();
             app.render(true);
         });

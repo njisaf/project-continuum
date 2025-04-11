@@ -5,7 +5,7 @@
     const { name, range = $bindable() }: { name: string; range: RangesInputData } = $props();
 
     function onChangeRange(event: Event & { currentTarget: HTMLInputElement }): void {
-        const activeTab = game.pf2e.compendiumBrowser.activeTab;
+        const activeTab = game.avant.compendiumBrowser.activeTab;
         if (!activeTab) return;
         const elName = event.currentTarget.name;
         const elValue = event.currentTarget.value;

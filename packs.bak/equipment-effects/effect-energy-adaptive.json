@@ -1,0 +1,65 @@
+{
+    "_id": "RfRoAdN9r06xId6r",
+    "img": "icons/magic/defensive/shield-barrier-flaming-diamond-blue-yellow.webp",
+    "name": "Effect: Energy Adaptive",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.equipment-srd.Item.Energy Adaptive]</p>\n<p>You gain resistance 5 to acid, cold, electricity, or fire damage.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 13
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Treasure Vault"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    }
+                ],
+                "flag": "resistance",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Resistance"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.resistance}",
+                "value": 5
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

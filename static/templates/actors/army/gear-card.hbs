@@ -1,8 +1,8 @@
-<div class="pf2e chat-card item-card" data-tooltip-class="pf2e">
+<div class="avant chat-card item-card" data-tooltip-class="avant">
     <header class="card-header flexrow">
         <img src="{{img}}" title="{{localize name}}" />
         <h3>{{localize name}}</h3>
-        <h4>{{localize "PF2E.Kingmaker.Army.Gear.ItemLevel" level=level}}</h4>
+        <h4>{{localize "AVANT.Kingmaker.Army.Gear.ItemLevel" level=level}}</h4>
     </header>
 
     <section class="item-properties tags">
@@ -22,14 +22,14 @@
         <section>
             <div class="flexrow">
                 <h4 style="min-width: 60%"><em>{{localize rank.name}}</em></h4>
-                <span>{{localize "PF2E.Kingmaker.Army.Gear.LevelLabel" level=rank.level}}</span>
-                <span style="text-align: right">{{rank.price}} {{localize "PF2E.Kingmaker.Kingdom.Resources.RP"}}</span>
+                <span>{{localize "AVANT.Kingmaker.Army.Gear.LevelLabel" level=rank.level}}</span>
+                <span style="text-align: right">{{rank.price}} {{localize "AVANT.Kingmaker.Kingdom.Resources.RP"}}</span>
             </div>
             {{#if rank.description}}<span>{{localize rank.description}}</span>{{/if}}
         </section>
     {{/each}}
     {{#if price}}
         <hr/>
-        <div>{{price}} {{localize "PF2E.Kingmaker.Kingdom.Resources.RP"}}</div>
+        <div>{{price}} {{localize "AVANT.Kingmaker.Kingdom.Resources.RP"}}</div>
     {{/if}}
 </div>

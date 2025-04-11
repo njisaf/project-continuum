@@ -1,12 +1,12 @@
-import { TextEditorPF2e } from "@system/text-editor.ts";
+import { TextEditorAvant } from "@system/text-editor.ts";
 import * as R from "remeda";
 import type { ProseMirrorMenu } from "types/foundry/common/prosemirror/menu.d.ts";
 
 function monkeyPatchFoundry(): void {
-    TextEditor.enrichHTML = TextEditorPF2e.enrichHTML;
-    TextEditor._enrichContentLinks = TextEditorPF2e._enrichContentLinks;
-    TextEditor._createInlineRoll = TextEditorPF2e._createInlineRoll;
-    TextEditor._onClickInlineRoll = TextEditorPF2e._onClickInlineRoll;
+    TextEditor.enrichHTML = TextEditorAvant.enrichHTML;
+    TextEditor._enrichContentLinks = TextEditorAvant._enrichContentLinks;
+    TextEditor._createInlineRoll = TextEditorAvant._createInlineRoll;
+    TextEditor._onClickInlineRoll = TextEditorAvant._onClickInlineRoll;
 
     foundry.prosemirror.ProseMirrorMenu.prototype._isMarkActive = isMarkActive;
     foundry.prosemirror.ProseMirrorMenu.prototype._isNodeActive = isNodeActive;
@@ -18,7 +18,7 @@ const superIsMarkActive = foundry.prosemirror.ProseMirrorMenu.prototype._isMarkA
 const superIsNodeActive = foundry.prosemirror.ProseMirrorMenu.prototype._isNodeActive;
 
 function isMarkActive(this: ProseMirrorMenu, item: ProseMirrorMenuItem): boolean {
-    if (!item.action.startsWith("pf2e-")) superIsMarkActive.call(this, item);
+    if (!item.action.startsWith("avant-")) superIsMarkActive.call(this, item);
 
     // This is the same as the super method except the `attr._preserve` property
     // is not removed from marks
@@ -40,7 +40,7 @@ function isMarkActive(this: ProseMirrorMenu, item: ProseMirrorMenuItem): boolean
 }
 
 function isNodeActive(this: ProseMirrorMenu, item: ProseMirrorMenuItem): boolean {
-    if (!item.action.startsWith("pf2e-")) return superIsNodeActive.call(this, item);
+    if (!item.action.startsWith("avant-")) return superIsNodeActive.call(this, item);
 
     // Same as the super method except the call to `hasAncestor`
     const state = this.view.state;
@@ -65,7 +65,7 @@ function toggleTextBlock(
     const inBlock = hasAncestor($from, node, attrs);
     if (inBlock) {
         node = this.schema.nodes.paragraph;
-        // Remove the preserved class property that was added by the pf2e system
+        // Remove the preserved class property that was added by the avant system
         if (R.isPlainObject(attrs?._preserve) && attrs._preserve?.class) {
             delete attrs._preserve;
         }

@@ -1,30 +1,30 @@
-import type { PartyPF2e } from "@actor";
+import type { PartyAvant } from "@actor";
 import { getAreaSquares } from "@module/canvas/token/aura/util.ts";
-import { TokenAnimationOptionsPF2e } from "@module/canvas/token/object.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene";
-import { ErrorPF2e } from "@util";
+import { TokenAnimationOptionsAvant } from "@module/canvas/token/object.ts";
+import type { SceneAvant, TokenDocumentAvant } from "@scene";
+import { ErrorAvant } from "@util";
 import * as R from "remeda";
 
 /** A helper class to manage a party token's loaded/unloaded state */
 class PartyClownCar {
-    party: PartyPF2e;
+    party: PartyAvant;
 
-    token: TokenDocumentPF2e<ScenePF2e>;
+    token: TokenDocumentAvant<SceneAvant>;
 
-    constructor(token: TokenDocumentPF2e<ScenePF2e>) {
+    constructor(token: TokenDocumentAvant<SceneAvant>) {
         this.token = token;
-        if (!this.token.scene.isOwner) throw ErrorPF2e("Cannot write to scene");
+        if (!this.token.scene.isOwner) throw ErrorAvant("Cannot write to scene");
 
         const party = token.actor;
-        if (!party?.isOfType("party")) throw ErrorPF2e("Unexpected actor type");
+        if (!party?.isOfType("party")) throw ErrorAvant("Unexpected actor type");
         this.party = party;
     }
 
-    get scene(): ScenePF2e {
+    get scene(): SceneAvant {
         return this.token.scene;
     }
 
-    get memberTokens(): TokenDocumentPF2e<ScenePF2e>[] {
+    get memberTokens(): TokenDocumentAvant<SceneAvant>[] {
         return this.party.members.flatMap((m) => m.getActiveTokens(true, true));
     }
 
@@ -40,7 +40,7 @@ class PartyClownCar {
     async #retrieve(): Promise<void> {
         const tokens = this.memberTokens;
         const updates = tokens.map((t) => ({ _id: t.id, ...R.pick(this.token, ["x", "y"]) }));
-        const animation: TokenAnimationOptionsPF2e = { spin: true };
+        const animation: TokenAnimationOptionsAvant = { spin: true };
         await this.scene.updateEmbeddedDocuments("Token", updates, { animation });
 
         await Promise.all(

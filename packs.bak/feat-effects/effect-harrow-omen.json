@@ -1,0 +1,68 @@
+{
+    "_id": "rp6hA52dWVwtuu5F",
+    "img": "icons/sundries/gaming/playing-cards-grey.webp",
+    "name": "Effect: Harrow Omen",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.feats-srd.Item.Harrower Dedication], @UUID[Compendium.avant.feats-srd.Item.Benevolent Spirit Deck], @UUID[Compendium.avant.feats-srd.Item.Restore Omen]</p>\n<p>Draw a card from your harrow deck—that card's suit becomes your active harrow omen.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "days",
+            "value": 1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Stolen Fate Player's Guide"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Books",
+                        "value": "books"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Crowns",
+                        "value": "crowns"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Hammers",
+                        "value": "hammers"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Keys",
+                        "value": "keys"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Shields",
+                        "value": "shields"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Stars",
+                        "value": "stars"
+                    }
+                ],
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.HarrowDeck.Prompt",
+                "rollOption": "harrow-omen"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

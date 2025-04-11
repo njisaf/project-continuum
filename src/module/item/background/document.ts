@@ -1,20 +1,20 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
-import { ABCItemPF2e, type FeatPF2e } from "@item";
+import type { ActorAvant, CharacterAvant } from "@actor";
+import { ABCItemAvant, type FeatAvant } from "@item";
 import { OneToFour } from "@module/data.ts";
 import { BackgroundSource, BackgroundSystemData } from "./data.ts";
 import { BackgroundTrait } from "./types.ts";
 
-class BackgroundPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABCItemPF2e<TParent> {
+class BackgroundAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ABCItemAvant<TParent> {
     get traits(): Set<BackgroundTrait> {
         return new Set(this.system.traits.value);
     }
 
     /** Set a skill feat granted by a GrantItem RE as one of this background's configured items */
-    override prepareSiblingData(this: BackgroundPF2e<ActorPF2e>): void {
+    override prepareSiblingData(this: BackgroundAvant<ActorAvant>): void {
         if (Object.keys(this.system.items).length > 0) return;
-        const grantedSkillFeat = Object.values(this.flags.pf2e.itemGrants)
+        const grantedSkillFeat = Object.values(this.flags.avant.itemGrants)
             .flatMap((g) => this.actor.items.get(g.id) ?? [])
-            .find((i): i is FeatPF2e<ActorPF2e> => i.isOfType("feat") && i.category === "skill");
+            .find((i): i is FeatAvant<ActorAvant> => i.isOfType("feat") && i.category === "skill");
 
         if (grantedSkillFeat) {
             this.system.items["GRANT"] = {
@@ -28,7 +28,7 @@ class BackgroundPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
         }
     }
 
-    override prepareActorData(this: BackgroundPF2e<CharacterPF2e>): void {
+    override prepareActorData(this: BackgroundAvant<CharacterAvant>): void {
         if (!this.actor.isOfType("character")) {
             console.error("Only a character can have a background");
             return;
@@ -55,9 +55,9 @@ class BackgroundPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     }
 }
 
-interface BackgroundPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABCItemPF2e<TParent> {
+interface BackgroundAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ABCItemAvant<TParent> {
     readonly _source: BackgroundSource;
     system: BackgroundSystemData;
 }
 
-export { BackgroundPF2e };
+export { BackgroundAvant };

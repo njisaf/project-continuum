@@ -1,0 +1,38 @@
+{
+    "TYPES": {
+        "Item": {
+            "culture": "Culture",
+            "vocation": "Vocation",
+            "background": "Vocation",
+            "heritage": "Culture"
+        }
+    },
+    "AVANT": {
+        "Background": "Background",
+        "GenderPronoun": "Gender/Pronouns",
+        "Age": "Age",
+        "Ethnicity": "Ethnicity",
+        "Nationality": "Nationality",
+        "Actor": {
+            "Character": {
+                "ABCPicker": {
+                    "Title": "{type} Selection",
+                    "Prompt": {
+                        "ancestry": "Select an ancestry for your character",
+                        "heritage": "Select a culture for your character",
+                        "background": "Select a vocation for your character",
+                        "culture": "Select a culture for your character",
+                        "vocation": "Select a vocation for your character",
+                        "class": "Select a class for your character",
+                        "deity": "Select a deity for your character"
+                    },
+                    "SearchPlaceholder": "Search {items}",
+                    "Tooltip": {
+                        "ConfirmSelection": "Confirm Selection",
+                        "ViewSheet": "View Sheet"
+                    }
+                }
+            }
+        }
+    }
+} 

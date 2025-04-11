@@ -1,6 +1,6 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { StrikeData } from "@actor/data/base.ts";
-import type { ItemPF2e } from "@item";
+import type { ItemAvant } from "@item";
 import type { CheckContextChatFlag } from "@module/chat-message/data.ts";
 import { CheckRoll } from "@system/check/roll.ts";
 import type { Statistic } from "@system/statistic/statistic.ts";
@@ -9,9 +9,9 @@ import { RollContext } from "./base.ts";
 import type { DamageContextConstructorParams } from "./types.ts";
 
 class DamageContext<
-    TSelf extends ActorPF2e,
+    TSelf extends ActorAvant,
     TStatistic extends Statistic | StrikeData,
-    TItem extends ItemPF2e<ActorPF2e> | null,
+    TItem extends ItemAvant<ActorAvant> | null,
 > extends RollContext<TSelf, TStatistic, TItem> {
     constructor(params: DamageContextConstructorParams<TSelf, TStatistic, TItem>) {
         super(params);
@@ -54,7 +54,7 @@ class DamageContext<
                 );
             });
 
-        return (checkMessage?.flags.pf2e.context ?? null) as CheckContextChatFlag | null;
+        return (checkMessage?.flags.avant.context ?? null) as CheckContextChatFlag | null;
     }
 }
 

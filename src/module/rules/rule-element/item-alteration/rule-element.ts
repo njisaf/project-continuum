@@ -1,22 +1,22 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e, PhysicalItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant, PhysicalItemAvant } from "@item";
 import type { ItemType } from "@item/base/data/index.ts";
 import { PHYSICAL_ITEM_TYPES } from "@item/physical/values.ts";
 import * as R from "remeda";
 import { AELikeRuleElement } from "../ae-like.ts";
-import { RuleElementPF2e } from "../base.ts";
+import { RuleElementAvant } from "../base.ts";
 import type { ModelPropsFromRESchema, RuleElementSchema } from "../data.ts";
 import { ItemAlteration, ItemAlterationSchema } from "./alteration.ts";
 import fields = foundry.data.fields;
 
-class ItemAlterationRuleElement extends RuleElementPF2e<ItemAlterationRuleSchema> {
+class ItemAlterationRuleElement extends RuleElementAvant<ItemAlterationRuleSchema> {
     static override defineSchema(): ItemAlterationRuleSchema {
         // Set a default priority according to AE mode yet still later than AE-likes
         const baseSchema = super.defineSchema();
         const PRIORITIES: Record<string, number | undefined> = AELikeRuleElement.CHANGE_MODE_DEFAULT_PRIORITIES;
         baseSchema.priority.initial = (d) => (PRIORITIES[String(d.mode)] ?? 50) + 100;
         const itemTypeChoices: Record<ItemType, string> = R.mapValues(
-            CONFIG.PF2E.Item.documentClasses,
+            CONFIG.AVANT.Item.documentClasses,
             (key) => `TYPES.Item.${key}`,
         );
 
@@ -57,7 +57,7 @@ class ItemAlterationRuleElement extends RuleElementPF2e<ItemAlterationRuleSchema
         return this.constructor.#LAZY_PROPERTIES.includes(this.property);
     }
 
-    override async preCreate({ tempItems }: RuleElementPF2e.PreCreateParams): Promise<void> {
+    override async preCreate({ tempItems }: RuleElementAvant.PreCreateParams): Promise<void> {
         if (this.ignored) return;
 
         // Apply feature/feature alterations during pre-creation to possibly inform subsequent REs like choice sets
@@ -68,11 +68,11 @@ class ItemAlterationRuleElement extends RuleElementPF2e<ItemAlterationRuleSchema
         // If this RE alters max HP, proportionally adjust current HP of items it would match against
         if (this.property !== "hp-max") return;
 
-        const itemsOfType: ItemPF2e<ActorPF2e>[] = this.itemType ? this.actor.itemTypes[this.itemType] : [];
+        const itemsOfType: ItemAvant<ActorAvant>[] = this.itemType ? this.actor.itemTypes[this.itemType] : [];
         const actorRollOptions = this.actor.getRollOptions();
         const parentRollOptions = this.parent.getRollOptions("parent");
         const predicate = this.resolveInjectedProperties(this.predicate);
-        const itemsToAlter = itemsOfType.filter((i): i is PhysicalItemPF2e<ActorPF2e> =>
+        const itemsToAlter = itemsOfType.filter((i): i is PhysicalItemAvant<ActorAvant> =>
             predicate.test([actorRollOptions, parentRollOptions, i.getRollOptions("item")].flat()),
         );
         const updates = itemsToAlter.flatMap((item): { _id: string; "system.hp.value": number } | never[] => {
@@ -142,7 +142,7 @@ class ItemAlterationRuleElement extends RuleElementPF2e<ItemAlterationRuleSchema
     }
 
     /** Get all items of the requested type (or `id`), searching subitems if necessary */
-    #getItemsOfType(): ItemPF2e<ActorPF2e>[] {
+    #getItemsOfType(): ItemAvant<ActorAvant>[] {
         if (this.itemId) {
             const itemId = this.resolveInjectedProperties(this.itemId);
             const item =
@@ -170,7 +170,7 @@ class ItemAlterationRuleElement extends RuleElementPF2e<ItemAlterationRuleSchema
 }
 
 interface ItemAlterationRuleElement
-    extends RuleElementPF2e<ItemAlterationRuleSchema>,
+    extends RuleElementAvant<ItemAlterationRuleSchema>,
         ModelPropsFromRESchema<ItemAlterationRuleSchema> {
     constructor: typeof ItemAlterationRuleElement;
 }
@@ -185,8 +185,8 @@ type ItemAlterationRuleSchema = RuleElementSchema &
 
 interface ApplyAlterationOptions {
     /** A single item to on which to run alterations instead of all qualifying items owned by the actor */
-    singleItem?: ItemPF2e<ActorPF2e> | null;
-    additionalItems?: ItemPF2e<ActorPF2e>[];
+    singleItem?: ItemAvant<ActorAvant> | null;
+    additionalItems?: ItemAvant<ActorAvant>[];
 }
 
 export { ItemAlterationRuleElement };

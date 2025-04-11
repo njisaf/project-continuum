@@ -8,16 +8,16 @@ function treatDisease(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph,
-        title: "PF2E.Actions.TreatDisease.Title",
+        title: "AVANT.Actions.TreatDisease.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["downtime", "manipulate"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.TreatDisease", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.TreatDisease", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.TreatDisease", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.TreatDisease", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.TreatDisease", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.TreatDisease", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -26,13 +26,13 @@ function treatDisease(options: SkillActionOptions): void {
 }
 
 const action = new SingleCheckAction({
-    description: "PF2E.Actions.TreatDisease.Description",
-    img: "systems/pf2e/icons/effects/treat-disease.webp",
-    name: "PF2E.Actions.TreatDisease.Title",
+    description: "AVANT.Actions.TreatDisease.Description",
+    img: "systems/avant/icons/effects/treat-disease.webp",
+    name: "AVANT.Actions.TreatDisease.Title",
     notes: [
-        { outcome: ["criticalSuccess"], text: "PF2E.Actions.TreatDisease.Notes.criticalSuccess" },
-        { outcome: ["success"], text: "PF2E.Actions.TreatDisease.Notes.success" },
-        { outcome: ["criticalFailure"], text: "PF2E.Actions.TreatDisease.Notes.criticalFailure" },
+        { outcome: ["criticalSuccess"], text: "AVANT.Actions.TreatDisease.Notes.criticalSuccess" },
+        { outcome: ["success"], text: "AVANT.Actions.TreatDisease.Notes.success" },
+        { outcome: ["criticalFailure"], text: "AVANT.Actions.TreatDisease.Notes.criticalFailure" },
     ],
     rollOptions: ["action:treat-disease"],
     section: "skill",

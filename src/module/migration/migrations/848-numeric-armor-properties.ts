@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { tupleHasValue } from "@util";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -38,7 +38,7 @@ export class Migration848NumericArmorProperties extends MigrationBase {
     }
 }
 
-type ItemMaybeWithOldProperty = ItemSourcePF2e & {
+type ItemMaybeWithOldProperty = ItemSourceAvant & {
     system: {
         armor?: unknown;
         "-=armor"?: unknown;

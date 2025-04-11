@@ -1,0 +1,68 @@
+{
+    "_id": "iuy6AA6sQZUZkN9X",
+    "img": "systems/avant/icons/spells/wholeness-of-body.webp",
+    "name": "Effect: Rapid Evolution - Husk",
+    "system": {
+        "description": {
+            "value": "<p>The creature gains physical damage resistance similar to the triggering type.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 4
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Bestiary 3"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "value": "slashing"
+                    }
+                ],
+                "flag": "physicalDamage",
+                "key": "ChoiceSet"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.physicalDamage}",
+                "value": 15
+            },
+            {
+                "key": "DamageDice",
+                "override": {
+                    "damageType": "{item|flags.avant.rulesSelections.physicalDamage}"
+                },
+                "selector": "weapon-arm-damage"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

@@ -1,2 +1,2 @@
-export { HeritagePF2e } from "./document.ts";
-export { HeritageSheetPF2e } from "./sheet.ts";
+export { HeritageAvant } from "./document.ts";
+export { HeritageSheetAvant } from "./sheet.ts";

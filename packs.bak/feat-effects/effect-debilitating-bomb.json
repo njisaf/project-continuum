@@ -1,0 +1,94 @@
+{
+    "_id": "VTJ8D23sOIfApEt3",
+    "img": "icons/magic/control/debuff-energy-hold-yellow.webp",
+    "name": "Effect: Debilitating Bomb",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.feats-srd.Item.Debilitating Bomb]</p>\n<p>You are dazzled, deafened, off-guard, or take a -5 foot status penalty to Speeds.</p>"
+        },
+        "duration": {
+            "expiry": "turn-end",
+            "sustained": false,
+            "unit": "rounds",
+            "value": 1
+        },
+        "level": {
+            "value": 6
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.condition.dazzled.name",
+                        "value": "dazzled"
+                    },
+                    {
+                        "label": "AVANT.condition.deafened.name",
+                        "value": "deafened"
+                    },
+                    {
+                        "label": "AVANT.condition.off-guard.name",
+                        "value": "off-guard"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.Alchemist.DebilitatingBomb.SpeedPenalty.Label",
+                        "value": "speed-penalty"
+                    }
+                ],
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Effect",
+                "rollOption": "debilitating-bomb"
+            },
+            {
+                "key": "FlatModifier",
+                "predicate": [
+                    "debilitating-bomb:speed-penalty"
+                ],
+                "selector": "speed",
+                "type": "status",
+                "value": -5
+            },
+            {
+                "inMemoryOnly": true,
+                "key": "GrantItem",
+                "predicate": [
+                    "debilitating-bomb:off-guard"
+                ],
+                "uuid": "Compendium.avant.conditionitems.Item.Off-Guard"
+            },
+            {
+                "inMemoryOnly": true,
+                "key": "GrantItem",
+                "predicate": [
+                    "debilitating-bomb:deafened"
+                ],
+                "uuid": "Compendium.avant.conditionitems.Item.Deafened"
+            },
+            {
+                "inMemoryOnly": true,
+                "key": "GrantItem",
+                "predicate": [
+                    "debilitating-bomb:dazzled"
+                ],
+                "uuid": "Compendium.avant.conditionitems.Item.Dazzled"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

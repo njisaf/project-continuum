@@ -1,0 +1,257 @@
+{
+    "_id": "XjoKCfvaSVaRHIV1",
+    "folder": "9ne8Lw1ZlWEYYeYk",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Elemental Evolution",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "class",
+        "description": {
+            "value": "<p>The elemental power within you is more mutable and versatile than most. Choose a second damage type for your element. Whenever you Rage, you can choose that type instead of the damage type you would normally gain. The new damage type can be the one you did not choose when you selected the element initially if you had multiple options available for your element, or one of the following types:</p>\n<p><strong>air</strong> cold</p>\n<p><strong>earth</strong> poison</p>\n<p><strong>fire</strong> cold</p>\n<p><strong>metal</strong> electricity</p>\n<p><strong>water</strong> acid</p>\n<p><strong>wood</strong> poison.</p>"
+        },
+        "level": {
+            "value": 2
+        },
+        "prerequisites": {
+            "value": [
+                {
+                    "value": "elemental instinct"
+                }
+            ]
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": true,
+            "title": "Pathfinder Rage of Elements"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "predicate": [
+                            "elemental-instinct:water"
+                        ],
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:earth",
+                                    "elemental-instinct:water",
+                                    "elemental-instinct:wood"
+                                ]
+                            },
+                            {
+                                "not": "elemental-instinct:damage:bludgeoning"
+                            }
+                        ],
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:water",
+                                    "elemental-instinct:air",
+                                    "elemental-instinct:fire"
+                                ]
+                            },
+                            {
+                                "not": "elemental-instinct:damage:cold"
+                            }
+                        ],
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:air",
+                                    "elemental-instinct:metal"
+                                ]
+                            },
+                            {
+                                "not": "elemental-instinct:damage:electricity"
+                            }
+                        ],
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:earth",
+                                    "elemental-instinct:metal",
+                                    "elemental-instinct:wood"
+                                ]
+                            },
+                            {
+                                "not": "elemental-instinct:damage:piercing"
+                            }
+                        ],
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitPoison",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:wood",
+                                    "elemental-instinct:earth"
+                                ]
+                            }
+                        ],
+                        "value": "poison"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:air",
+                                    "elemental-instinct:metal"
+                                ]
+                            },
+                            {
+                                "not": "elemental-instinct:damage:slashing"
+                            }
+                        ],
+                        "value": "slashing"
+                    }
+                ],
+                "flag": "damage",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DamageType",
+                "rollOption": "elemental-instinct:evolution"
+            },
+            {
+                "alwaysActive": true,
+                "key": "RollOption",
+                "label": "AVANT.SpecificRule.Barbarian.Elemental.ElementalEvolutionLabel",
+                "option": "evolution-damage",
+                "suboptions": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "predicate": [
+                            "elemental-instinct:evolution:acid"
+                        ],
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:damage:bludgeoning",
+                                    "elemental-instinct:evolution:bludgeoning"
+                                ]
+                            }
+                        ],
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:damage:cold",
+                                    "elemental-instinct:evolution:cold"
+                                ]
+                            }
+                        ],
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:damage:electricity",
+                                    "elemental-instinct:evolution:electricity"
+                                ]
+                            }
+                        ],
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "predicate": [
+                            "elemental-instinct:damage:fire"
+                        ],
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:damage:piercing",
+                                    "elemental-instinct:evolution:piercing"
+                                ]
+                            }
+                        ],
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitPoison",
+                        "predicate": [
+                            "elemental-instinct:evolution:poison"
+                        ],
+                        "value": "poison"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "elemental-instinct:damage:slashing",
+                                    "elemental-instinct:evolution:slashing"
+                                ]
+                            }
+                        ],
+                        "value": "slashing"
+                    }
+                ],
+                "toggleable": true,
+                "value": true
+            },
+            {
+                "damageType": "{item|flags.avant.rulesSelections.evolutionDamage}",
+                "key": "AdjustModifier",
+                "mode": "upgrade",
+                "predicate": [
+                    {
+                        "or": [
+                            "class:barbarian",
+                            "feat:instinct-ability"
+                        ]
+                    }
+                ],
+                "priority": 99,
+                "selectors": [
+                    "strike-damage"
+                ],
+                "slug": "rage",
+                "value": 2
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "barbarian"
+            ]
+        }
+    },
+    "type": "feat"
+}

@@ -123,11 +123,11 @@
     "_sheetTab": "details",
     "exportSource": {
       "world": "testworld",
-      "system": "pf2e",
+      "system": "avant",
       "coreVersion": "0.5.5",
       "systemVersion": "0.554.0"
     }
   },
-  "img": "systems/pf2e/icons/equipment/shields/steel-shield.jpg",
+  "img": "systems/avant/icons/equipment/shields/steel-shield.jpg",
   "_id": "JFmHWMrBjHQTJ5Vs"
 }

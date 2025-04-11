@@ -1,4 +1,4 @@
-import { NPCPF2e } from "@actor";
+import { NPCAvant } from "@actor";
 import { CreatureTrait } from "@actor/creature/types.ts";
 import { SkillSlug } from "@actor/types.ts";
 import { Rarity } from "@module/data.ts";
@@ -56,7 +56,7 @@ function toKnowledgeDC(dc: number, rarity: Rarity, loreAdjustment: NegativeDCAdj
     };
 }
 
-function creatureIdentificationDCs(creature: NPCPF2e, { pwol = false }: DCOptions = {}): CreatureIdentificationData {
+function creatureIdentificationDCs(creature: NPCAvant, { pwol = false }: DCOptions = {}): CreatureIdentificationData {
     const { level, rarity } = creature;
     const dc = calculateDC(level, { pwol });
 

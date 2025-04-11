@@ -1,11 +1,11 @@
-import type { ActorSourcePF2e } from "@actor/data/index.ts";
-import type { ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ActorSourceAvant } from "@actor/data/index.ts";
+import type { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import type { MigrationRecord } from "@module/data.ts";
 import type { MigrationBase } from "@module/migration/base.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene";
+import type { SceneAvant, TokenDocumentAvant } from "@scene";
 
-interface CollectionDiff<T extends foundry.documents.ActiveEffectSource | ItemSourcePF2e> {
+interface CollectionDiff<T extends foundry.documents.ActiveEffectSource | ItemSourceAvant> {
     inserted: T[];
     deleted: string[];
     updated: T[];
@@ -37,14 +37,14 @@ export class MigrationRunnerBase {
         return currentVersion < (this.constructor as typeof MigrationRunnerBase).LATEST_SCHEMA_VERSION;
     }
 
-    diffCollection(orig: ItemSourcePF2e[], updated: ItemSourcePF2e[]): CollectionDiff<ItemSourcePF2e> {
-        const diffs: CollectionDiff<ItemSourcePF2e> = {
+    diffCollection(orig: ItemSourceAvant[], updated: ItemSourceAvant[]): CollectionDiff<ItemSourceAvant> {
+        const diffs: CollectionDiff<ItemSourceAvant> = {
             inserted: [],
             deleted: [],
             updated: [],
         };
 
-        const origSources: Map<string, ItemSourcePF2e> = new Map();
+        const origSources: Map<string, ItemSourceAvant> = new Map();
         for (const source of orig) {
             origSources.set(source._id!, source);
         }
@@ -71,7 +71,7 @@ export class MigrationRunnerBase {
         return diffs;
     }
 
-    async getUpdatedActor(actor: ActorSourcePF2e, migrations: MigrationBase[]): Promise<ActorSourcePF2e> {
+    async getUpdatedActor(actor: ActorSourceAvant, migrations: MigrationBase[]): Promise<ActorSourceAvant> {
         const currentActor = fu.deepClone(actor);
 
         for (const migration of migrations) {
@@ -119,7 +119,7 @@ export class MigrationRunnerBase {
         return currentActor;
     }
 
-    async getUpdatedItem(item: ItemSourcePF2e, migrations: MigrationBase[]): Promise<ItemSourcePF2e> {
+    async getUpdatedItem(item: ItemSourceAvant, migrations: MigrationBase[]): Promise<ItemSourceAvant> {
         const current = fu.deepClone(item);
 
         for (const migration of migrations) {
@@ -204,7 +204,7 @@ export class MigrationRunnerBase {
     }
 
     async getUpdatedToken(
-        token: TokenDocumentPF2e<ScenePF2e>,
+        token: TokenDocumentAvant<SceneAvant>,
         migrations: MigrationBase[],
     ): Promise<foundry.documents.TokenSource> {
         const current = token.toObject();

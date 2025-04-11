@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.CommandAnAnimal";
+const PREFIX = "AVANT.Actions.CommandAnAnimal";
 
 function commandAnAnimal(options: SkillActionOptions): void {
     const slug = options?.skill ?? "nature";

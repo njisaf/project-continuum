@@ -1,19 +1,19 @@
-import { ActorPF2e } from "@actor";
-import type { PrototypeTokenPF2e } from "@actor/data/base.ts";
+import { ActorAvant } from "@actor";
+import type { PrototypeTokenAvant } from "@actor/data/base.ts";
 import { SIZE_LINKABLE_ACTOR_TYPES } from "@actor/values.ts";
-import type { TokenPF2e } from "@module/canvas/index.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
-import type { CombatantPF2e, EncounterPF2e } from "@module/encounter/index.ts";
-import { DifficultTerrainGrade, EnvironmentFeatureRegionBehavior, RegionDocumentPF2e } from "@scene";
+import type { TokenAvant } from "@module/canvas/index.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
+import type { CombatantAvant, EncounterAvant } from "@module/encounter/index.ts";
+import { DifficultTerrainGrade, EnvironmentFeatureRegionBehavior, RegionDocumentAvant } from "@scene";
 import { computeSightAndDetectionForRBV, isDefaultTokenImage } from "@scene/helpers.ts";
 import { objectHasKey, sluggify } from "@util";
 import * as R from "remeda";
-import type { ScenePF2e } from "../document.ts";
+import type { SceneAvant } from "../document.ts";
 import { TokenAura } from "./aura/index.ts";
-import { TokenFlagsPF2e } from "./data.ts";
-import type { TokenConfigPF2e } from "./sheet.ts";
+import { TokenFlagsAvant } from "./data.ts";
+import type { TokenConfigAvant } from "./sheet.ts";
 
-class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> extends TokenDocument<TParent> {
+class TokenDocumentAvant<TParent extends SceneAvant | null = SceneAvant | null> extends TokenDocument<TParent> {
     /** Has this document completed `DataModel` initialization? */
     declare initialized: boolean;
 
@@ -57,12 +57,12 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
 
     /** Is this token's dimensions linked to its actor's size category? */
     get linkToActorSize(): boolean {
-        return this.flags.pf2e.linkToActorSize;
+        return this.flags.avant.linkToActorSize;
     }
 
     /** Is this token's scale locked at 1 or (for small creatures) 0.8? */
     get autoscale(): boolean {
-        return this.flags.pf2e.autoscale;
+        return this.flags.avant.autoscale;
     }
 
     get playersCanSeeName(): boolean {
@@ -112,7 +112,7 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
         return regions
             .map((r) =>
                 r.behaviors.filter(
-                    (b): b is EnvironmentFeatureRegionBehavior<RegionDocumentPF2e<TParent>> =>
+                    (b): b is EnvironmentFeatureRegionBehavior<RegionDocumentAvant<TParent>> =>
                         !b.disabled && b.type === "environmentFeature" && b.system.terrain.difficult > 0,
                 ),
             )
@@ -129,11 +129,11 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
         if (statusId === "dead") return !!this.actor?.statuses.has("dead");
 
         const actor = this.actor;
-        if (!actor || !game.pf2e.settings.rbv) {
+        if (!actor || !game.avant.settings.rbv) {
             return false;
         }
 
-        const hasCondition = objectHasKey(CONFIG.PF2E.conditionTypes, statusId) && actor.hasCondition(statusId);
+        const hasCondition = objectHasKey(CONFIG.AVANT.conditionTypes, statusId) && actor.hasCondition(statusId);
         const hasEffect = () => actor.itemTypes.effect.some((e) => (e.slug ?? sluggify(e.name)) === statusId);
 
         return hasCondition || hasEffect();
@@ -181,7 +181,7 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
         attributes ??= this.getTrackedAttributes();
         // Add stamina here because TokenDocument._getTrackedAttributesFromObject returns the first encountered
         // { value, max } property and sp is nested within the hp property
-        if (game.pf2e.settings.variants.stamina) {
+        if (game.avant.settings.variants.stamina) {
             attributes.bar.push(["attributes", "hp", "sp"]);
         }
         return super.getTrackedAttributeChoices(attributes);
@@ -194,7 +194,7 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
 
         const isStaminaOrResolve =
             ["attributes.hp.sp", "resources.resolve"].includes(attribute.attribute) &&
-            game.pf2e.settings.variants.stamina;
+            game.avant.settings.variants.stamina;
         const isSpecialResource = /^resources\.([\w-]+)/.test(attribute.attribute);
         const isShieldHP = attribute.attribute === "attributes.shield.hp" && !!this.actor?.attributes.shield?.itemId;
         if (isStaminaOrResolve || isSpecialResource || isShieldHP) {
@@ -226,23 +226,23 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
     override prepareBaseData(): void {
         super.prepareBaseData();
 
-        this.flags = fu.mergeObject(this.flags, { pf2e: {} });
+        this.flags = fu.mergeObject(this.flags, { avant: {} });
         const actor = this.actor;
         if (!actor) return;
 
-        TokenDocumentPF2e.assignDefaultImage(this);
+        TokenDocumentAvant.assignDefaultImage(this);
 
         // Dimensions and scale
         const linkDefault = SIZE_LINKABLE_ACTOR_TYPES.has(actor.type);
-        const linkToActorSize = this.flags.pf2e?.linkToActorSize ?? linkDefault;
+        const linkToActorSize = this.flags.avant?.linkToActorSize ?? linkDefault;
 
-        const autoscaleDefault = game.pf2e.settings.tokens.autoscale;
+        const autoscaleDefault = game.avant.settings.tokens.autoscale;
         // Autoscaling is a secondary feature of linking to actor size
-        const autoscale = linkToActorSize ? (this.flags.pf2e.autoscale ?? autoscaleDefault) : false;
-        this.flags.pf2e = fu.mergeObject(this.flags.pf2e ?? {}, { linkToActorSize, autoscale });
+        const autoscale = linkToActorSize ? (this.flags.avant.autoscale ?? autoscaleDefault) : false;
+        this.flags.avant = fu.mergeObject(this.flags.avant ?? {}, { linkToActorSize, autoscale });
 
         // Token dimensions from actor size
-        TokenDocumentPF2e.prepareSize(this);
+        TokenDocumentAvant.prepareSize(this);
 
         // Merge token overrides from REs into this document
         const tokenOverrides = actor.synthetics.tokenOverrides;
@@ -254,7 +254,7 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
             if ("scaleX" in tokenOverrides.texture) {
                 this.texture.scaleX = tokenOverrides.texture.scaleX;
                 this.texture.scaleY = tokenOverrides.texture.scaleY;
-                this.flags.pf2e.autoscale = false;
+                this.flags.avant.autoscale = false;
             }
             this.texture.tint = tokenOverrides.texture.tint ?? this.texture.tint;
         }
@@ -326,18 +326,18 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
     }
 
     /** Synchronize the token image with the actor image if the token does not currently have an image */
-    static assignDefaultImage(token: TokenDocumentPF2e | PrototypeTokenPF2e<ActorPF2e>): void {
+    static assignDefaultImage(token: TokenDocumentAvant | PrototypeTokenAvant<ActorAvant>): void {
         const actor = token.actor;
         if (!actor) return;
 
         // Always override token images if in Nath mode
-        if (game.pf2e.settings.tokens.nathMode && isDefaultTokenImage(token)) {
+        if (game.avant.settings.tokens.nathMode && isDefaultTokenImage(token)) {
             token.texture.src = ((): ImageFilePath | VideoFilePath => {
                 switch (actor.alliance) {
                     case "party":
-                        return "systems/pf2e/icons/default-icons/alternatives/nath/ally.webp";
+                        return "systems/avant/icons/default-icons/alternatives/nath/ally.webp";
                     case "opposition":
-                        return "systems/pf2e/icons/default-icons/alternatives/nath/enemy.webp";
+                        return "systems/avant/icons/default-icons/alternatives/nath/enemy.webp";
                     default:
                         return token.texture.src ?? CONST.DEFAULT_TOKEN;
                 }
@@ -348,9 +348,9 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
     }
 
     /** Set a TokenData instance's dimensions from actor data. Static so actors can use for their prototypes */
-    static prepareSize(token: TokenDocumentPF2e | PrototypeTokenPF2e<ActorPF2e>): void {
+    static prepareSize(token: TokenDocumentAvant | PrototypeTokenAvant<ActorAvant>): void {
         const actor = token.actor;
-        if (!(actor && token.flags.pf2e.linkToActorSize)) return;
+        if (!(actor && token.flags.avant.linkToActorSize)) return;
 
         // If not overridden by an actor override, set according to creature size (skipping gargantuan)
         const size =
@@ -371,7 +371,7 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
             token.width = size;
             token.height = size;
 
-            if (game.pf2e.settings.tokens.autoscale && token.flags.pf2e.autoscale !== false) {
+            if (game.avant.settings.tokens.autoscale && token.flags.avant.autoscale !== false) {
                 const absoluteScale = actor.size === "sm" ? 0.8 : 1;
                 const mirrorX = token.texture.scaleX < 0 ? -1 : 1;
                 token.texture.scaleX = mirrorX * absoluteScale;
@@ -390,7 +390,7 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
         sendMessage?: boolean;
     }): Promise<void> {
         if (!game.combat) {
-            ui.notifications.error("PF2E.Encounter.NoActiveEncounter");
+            ui.notifications.error("AVANT.Encounter.NoActiveEncounter");
             return;
         }
 
@@ -409,13 +409,13 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
         await this.update({ turn: game.combat.turns.findIndex((c) => c.id === currentId) });
 
         if (sendMessage) {
-            await ChatMessagePF2e.createDocuments([
+            await ChatMessageAvant.createDocuments([
                 {
                     speaker: { scene: this.scene?.id, token: this.id },
                     whisper: this.actor?.hasPlayerOwner
                         ? []
                         : game.users.contents.flatMap((user) => (user.isGM ? user.id : [])),
-                    content: game.i18n.format("PF2E.InitiativeIsNow", { name: this.name, value: initiative }),
+                    content: game.i18n.format("AVANT.InitiativeIsNow", { name: this.name, value: initiative }),
                 },
             ]);
         }
@@ -483,7 +483,7 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
         userId: string,
     ): void {
         // Possibly re-render encounter tracker if token's `displayName` property has changed
-        const tokenSetsNameVisibility = game.pf2e.settings.tokens.nameVisibility;
+        const tokenSetsNameVisibility = game.avant.settings.tokens.nameVisibility;
         if ("displayName" in changed && tokenSetsNameVisibility && this.combatant) {
             ui.combat.render();
         }
@@ -514,19 +514,19 @@ class TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> ext
         } else {
             // Actor#_onDelete won't be called, so unregister effects in the effects tracker
             for (const effect of this.actor.itemTypes.effect) {
-                game.pf2e.effectTracker.unregister(effect);
+                game.avant.effectTracker.unregister(effect);
             }
         }
     }
 }
 
-interface TokenDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> extends TokenDocument<TParent> {
-    flags: TokenFlagsPF2e;
-    regions: Set<RegionDocumentPF2e<TParent>> | null;
-    get actor(): ActorPF2e<this | null> | null;
-    get combatant(): CombatantPF2e<EncounterPF2e, this> | null;
-    get object(): TokenPF2e<this> | null;
-    get sheet(): TokenConfigPF2e<this>;
+interface TokenDocumentAvant<TParent extends SceneAvant | null = SceneAvant | null> extends TokenDocument<TParent> {
+    flags: TokenFlagsAvant;
+    regions: Set<RegionDocumentAvant<TParent>> | null;
+    get actor(): ActorAvant<this | null> | null;
+    get combatant(): CombatantAvant<EncounterAvant, this> | null;
+    get object(): TokenAvant<this> | null;
+    get sheet(): TokenConfigAvant<this>;
 }
 
-export { TokenDocumentPF2e };
+export { TokenDocumentAvant };

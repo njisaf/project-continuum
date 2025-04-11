@@ -1,13 +1,13 @@
-import { EffectPF2e } from "@item";
-import type { UserPF2e } from "@module/user/document.ts";
-import type { TokenDocumentPF2e } from "@scene";
+import { EffectAvant } from "@item";
+import type { UserAvant } from "@module/user/document.ts";
+import type { TokenDocumentAvant } from "@scene";
 import * as R from "remeda";
-import type { CanvasPF2e, TokenLayerPF2e } from "../index.ts";
-import { RulerPF2e, measureDistanceCuboid, squareAtPoint } from "../index.ts";
+import type { CanvasAvant, TokenLayerAvant } from "../index.ts";
+import { RulerAvant, measureDistanceCuboid, squareAtPoint } from "../index.ts";
 import { AuraRenderers } from "./aura/index.ts";
 import { FlankingHighlightRenderer } from "./flanking-highlight/renderer.ts";
 
-class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends Token<TDocument> {
+class TokenAvant<TDocument extends TokenDocumentAvant = TokenDocumentAvant> extends Token<TDocument> {
     /** Visual representation and proximity-detection facilities for auras */
     readonly auras: AuraRenderers;
 
@@ -136,12 +136,12 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
         return bounds;
     }
 
-    isAdjacentTo(token: TokenPF2e): boolean {
+    isAdjacentTo(token: TokenAvant): boolean {
         return this.distanceTo(token) === 5;
     }
 
-    /** Publicly expose `Token#_canControl` for use in `TokenLayerPF2e`. */
-    canControl(user: UserPF2e, event: PIXI.FederatedPointerEvent): boolean {
+    /** Publicly expose `Token#_canControl` for use in `TokenLayerAvant`. */
+    canControl(user: UserAvant, event: PIXI.FederatedPointerEvent): boolean {
         return this._canControl(user, event);
     }
 
@@ -150,8 +150,8 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
      * @param flankee                  The potentially flanked token
      * @param context.reach           An optional reach distance specific to this measurement
      * @param context.ignoreFlankable Optionally ignore flankable (for flanking highlight) */
-    canFlank(flankee: TokenPF2e, context: { reach?: number; ignoreFlankable?: boolean } = {}): boolean {
-        const settingDisabled = !game.pf2e.settings.automation.flanking;
+    canFlank(flankee: TokenAvant, context: { reach?: number; ignoreFlankable?: boolean } = {}): boolean {
+        const settingDisabled = !game.avant.settings.automation.flanking;
         const oneIsGMHidden = this.document.hidden || flankee.document.hidden;
         if (settingDisabled || oneIsGMHidden || this === flankee) {
             return false;
@@ -181,7 +181,7 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
      * @param flankerB  Second of two potential flankers
      * @param flankee   Potentially flanked token
      */
-    protected onOppositeSides(flankerA: TokenPF2e, flankerB: TokenPF2e, flankee: TokenPF2e): boolean {
+    protected onOppositeSides(flankerA: TokenAvant, flankerB: TokenAvant, flankee: TokenAvant): boolean {
         const [centerA, centerB] = [flankerA.center, flankerB.center];
         const { bounds } = flankee;
 
@@ -199,7 +199,7 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
      * @param flankee                  The potentially flanked token
      * @param context.reach           An optional reach distance specific to this measurement
      * @param context.ignoreFlankable Optionally ignore flankable (for flanking position indicator) */
-    isFlanking(flankee: TokenPF2e, context: { reach?: number; ignoreFlankable?: boolean } = {}): boolean {
+    isFlanking(flankee: TokenAvant, context: { reach?: number; ignoreFlankable?: boolean } = {}): boolean {
         const thisActor = this.actor;
         if (!(thisActor && this.canFlank(flankee, context))) return false;
 
@@ -224,7 +224,7 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
             ) || flankingBuddies.some((b) => b.actor?.attributes.flanking.canGangUp.some((g) => g === true));
         if (gangingUp) return true;
 
-        // The Side By Side feat with tie-in to the PF2e Animal Companion Compendia module
+        // The Side By Side feat with tie-in to the Avant Animal Companion Compendia module
         const sideBySide =
             this.isAdjacentTo(flankee) &&
             flanking.canGangUp.includes("animal-companion") &&
@@ -256,7 +256,7 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
      * @param flankee                  The potentially flanked token
      * @param context.reach           An optional reach distance specific to this measurement
      * @param context.ignoreFlankable Optionally ignore flankable (for flanking position indicator) */
-    buddiesFlanking(flankee: TokenPF2e, context: { reach?: number; ignoreFlankable?: boolean } = {}): TokenPF2e[] {
+    buddiesFlanking(flankee: TokenAvant, context: { reach?: number; ignoreFlankable?: boolean } = {}): TokenAvant[] {
         if (!this.canFlank(flankee, context)) return [];
         const ignoreFlankable = !!context.ignoreFlankable;
         return canvas.tokens.placeables
@@ -277,7 +277,7 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
         this.flankingHighlight.draw();
     }
 
-    /** Overrides _drawBar(k) to also draw pf2e variants of normal resource bars (such as temp health) */
+    /** Overrides _drawBar(k) to also draw avant variants of normal resource bars (such as temp health) */
     protected override _drawBar(number: number, bar: PIXI.Graphics, data: TokenResourceData): void {
         if (!canvas.initialized) return;
 
@@ -379,10 +379,10 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
         if (!this.hasSight || !this.document.parent?.tokenVision) return false;
 
         // If GM vision is enabled, making nothing a vision source will allow the user to see everything
-        if (game.pf2e.settings.gmVision && game.user.isGM) return false;
+        if (game.avant.settings.gmVision && game.user.isGM) return false;
 
         const partyVisionEnabled =
-            game.pf2e.settings.metagame.partyVision && !!this.actor?.hasPlayerOwner && !game.user.isGM;
+            game.avant.settings.metagame.partyVision && !!this.actor?.hasPlayerOwner && !game.user.isGM;
         const controllingAsObserver = this.controlled && this.observer;
 
         return partyVisionEnabled || controllingAsObserver || (!this.controlled && super._isVisionSource());
@@ -412,10 +412,10 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
          */
         if (!game.user.isGM && typeof params !== "number") {
             const [_, document] = Object.entries(params)[0];
-            if (document instanceof EffectPF2e && document.system.unidentified) return;
+            if (document instanceof EffectAvant && document.system.unidentified) return;
         }
 
-        const scrollingTextArgs = ((): Parameters<CanvasPF2e["interface"]["createScrollingText"]> | null => {
+        const scrollingTextArgs = ((): Parameters<CanvasAvant["interface"]["createScrollingText"]> | null => {
             if (typeof params === "number") {
                 const quantity = params;
                 const maxHP = this.actor?.hitPoints?.max;
@@ -493,7 +493,7 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
         return measureDistanceCuboid(this.bounds, targetBounds, { reach, token: this, target });
     }
 
-    override async animate(updateData: Record<string, unknown>, options?: TokenAnimationOptionsPF2e): Promise<void> {
+    override async animate(updateData: Record<string, unknown>, options?: TokenAnimationOptionsAvant): Promise<void> {
         // Handle system "spin" animation option
         if (options?.spin) {
             let attributeAdded = false;
@@ -550,39 +550,39 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
     /* -------------------------------------------- */
 
     /** Players can view an actor's sheet if the actor is lootable. */
-    protected override _canView(user: UserPF2e, event: PIXI.FederatedPointerEvent): boolean {
+    protected override _canView(user: UserAvant, event: PIXI.FederatedPointerEvent): boolean {
         return super._canView(user, event) || !!this.actor?.isLootableBy(user);
     }
 
-    protected override _canDrag(user: UserPF2e, event?: TokenPointerEvent<this>): boolean {
+    protected override _canDrag(user: UserAvant, event?: TokenPointerEvent<this>): boolean {
         if (super._canDrag(user, event)) return true;
         if (!this.controlled || event?.ctrlKey || event?.metaKey) return false;
-        const setting = game.pf2e.settings.dragMeasurement;
+        const setting = game.avant.settings.dragMeasurement;
         return setting === "always" || (setting === "encounters" && !!game.combat?.active);
     }
 
     /** Prevent players from controlling an NPC when it's lootable */
-    protected override _canControl(user: UserPF2e, event?: PIXI.FederatedPointerEvent): boolean {
+    protected override _canControl(user: UserAvant, event?: PIXI.FederatedPointerEvent): boolean {
         if (!this.observer && this.actor?.isOfType("npc") && this.actor.isLootableBy(user)) return false;
         return super._canControl(user, event);
     }
 
     /** Refresh vision and the `EffectsPanel` */
     protected override _onControl(options: { releaseOthers?: boolean; pan?: boolean } = {}): void {
-        if (game.ready) game.pf2e.effectPanel.refresh();
+        if (game.ready) game.avant.effectPanel.refresh();
         return super._onControl(options);
     }
 
     /** Refresh vision and the `EffectsPanel` */
     protected override _onRelease(options?: Record<string, unknown>): void {
-        game.pf2e.effectPanel.refresh();
+        game.avant.effectPanel.refresh();
         return super._onRelease(options);
     }
 
     /** Initiate token drag measurement unless using the ruler tool. */
     protected override _onDragLeftStart(event: TokenPointerEvent<this>): void {
         event.interactionData.clones ??= [];
-        const hasModuleConflict = RulerPF2e.hasModuleConflict;
+        const hasModuleConflict = RulerAvant.hasModuleConflict;
         if (game.activeTool !== "ruler" || hasModuleConflict) {
             if (!hasModuleConflict) canvas.controls.ruler.startDragMeasurement(event);
             return super._onDragLeftStart(event);
@@ -650,8 +650,8 @@ class TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends
     }
 }
 
-interface TokenPF2e<TDocument extends TokenDocumentPF2e = TokenDocumentPF2e> extends Token<TDocument> {
-    get layer(): TokenLayerPF2e<this>;
+interface TokenAvant<TDocument extends TokenDocumentAvant = TokenDocumentAvant> extends Token<TDocument> {
+    get layer(): TokenLayerAvant<this>;
 }
 
 type NumericFloatyEffect = { name: string; value?: number | null };
@@ -661,17 +661,17 @@ type ShowFloatyEffectParams =
     | { update: NumericFloatyEffect }
     | { delete: NumericFloatyEffect };
 
-interface TokenAnimationOptionsPF2e extends TokenAnimationOptions {
+interface TokenAnimationOptionsAvant extends TokenAnimationOptions {
     spin?: boolean;
 }
 
 type TokenOrPoint =
-    | TokenPF2e
+    | TokenAvant
     | (Point & {
           actor?: never;
           document?: never;
           bounds?: never;
       });
 
-export { TokenPF2e };
-export type { ShowFloatyEffectParams, TokenAnimationOptionsPF2e };
+export { TokenAvant };
+export type { ShowFloatyEffectParams, TokenAnimationOptionsAvant };

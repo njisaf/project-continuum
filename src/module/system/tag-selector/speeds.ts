@@ -1,23 +1,23 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { MovementType } from "@actor/types.ts";
-import { ErrorPF2e, htmlQueryAll } from "@util";
+import { ErrorAvant, htmlQueryAll } from "@util";
 import * as R from "remeda";
 import { BaseTagSelector, type TagSelectorData } from "./base.ts";
 import type { SelectableTagField, TagSelectorOptions } from "./index.ts";
 
-class SpeedSelector<TActor extends ActorPF2e> extends BaseTagSelector<TActor> {
+class SpeedSelector<TActor extends ActorAvant> extends BaseTagSelector<TActor> {
     static override get defaultOptions(): TagSelectorOptions {
         return {
             ...super.defaultOptions,
             id: "speed-selector",
-            template: "systems/pf2e/templates/system/tag-selector/speeds.hbs",
-            title: "PF2E.Actor.Speed.Plural",
+            template: "systems/avant/templates/system/tag-selector/speeds.hbs",
+            title: "AVANT.Actor.Speed.Plural",
         };
     }
 
     protected objectProperty = "system.attributes.speed.otherSpeeds";
 
-    override choices = R.omit(CONFIG.PF2E.speedTypes, ["land"]);
+    override choices = R.omit(CONFIG.AVANT.speedTypes, ["land"]);
 
     protected get configTypes(): readonly SelectableTagField[] {
         return ["speedTypes"];
@@ -25,7 +25,7 @@ class SpeedSelector<TActor extends ActorPF2e> extends BaseTagSelector<TActor> {
 
     override async getData(options?: Partial<TagSelectorOptions>): Promise<SpeedSelectorData<TActor>> {
         if (!this.document.isOfType("creature")) {
-            throw ErrorPF2e("The Speed selector is usable only with creature-type actors");
+            throw ErrorAvant("The Speed selector is usable only with creature-type actors");
         }
 
         const speeds = this.document.system.attributes.speed.otherSpeeds;
@@ -74,7 +74,7 @@ class SpeedSelector<TActor extends ActorPF2e> extends BaseTagSelector<TActor> {
     }
 }
 
-interface SpeedSelectorData<TActor extends ActorPF2e> extends TagSelectorData<TActor> {
+interface SpeedSelectorData<TActor extends ActorAvant> extends TagSelectorData<TActor> {
     hasExceptions: boolean;
     choices: Record<Exclude<MovementType, "land">, ChoiceData>;
 }

@@ -1,8 +1,8 @@
 import { ActorDetailsSource } from "@actor/data/base.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { AttributeString } from "@actor/types.ts";
 import { ATTRIBUTE_ABBREVIATIONS } from "@actor/values.ts";
-import { ItemSourcePF2e, MeleeSource } from "@item/base/data/index.ts";
+import { ItemSourceAvant, MeleeSource } from "@item/base/data/index.ts";
 import { DeitySystemSource } from "@item/deity/data.ts";
 import { Sanctification } from "@item/deity/types.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
@@ -31,7 +31,7 @@ export class Migration883BanishAlignment extends MigrationBase {
         return rule;
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         const details: MaybeWithAlignment = source.system.details;
         if (isObject<{ value: unknown }>(details.alignment) && typeof details.alignment.value === "string") {
             const traits: { value: string[] } = source.system.traits ?? { value: [] };
@@ -96,7 +96,7 @@ export class Migration883BanishAlignment extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.rules = source.system.rules.flatMap((r) => this.#migrateRule(r));
 
         if (source.type === "deity") {

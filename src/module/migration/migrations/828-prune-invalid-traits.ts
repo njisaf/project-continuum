@@ -1,7 +1,7 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { AbilityTrait } from "@item/ability/types.ts";
 import { ArmorTrait } from "@item/armor/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { SpellTrait } from "@item/spell/index.ts";
 import {
     actionTraits,
@@ -23,7 +23,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration828PruneInvalidTraits extends MigrationBase {
     static override version = 0.828;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         const traits: { value: string[] } | undefined = source.system.traits;
         if (!traits) return;
 
@@ -44,7 +44,7 @@ export class Migration828PruneInvalidTraits extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const traits: { value?: string[] } | undefined = source.system.traits;
         if (!traits?.value || !Array.isArray(traits.value)) return;
         traits.value = traits.value.filter((t) => typeof t === "string");

@@ -1,6 +1,6 @@
 import { CharacterSystemSource } from "@actor/character/data.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString } from "@util";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -9,13 +9,13 @@ import { MigrationBase } from "../base.ts";
 export class Migration874MoveStaminaStuff extends MigrationBase {
     static override version = 0.874;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type !== "character") return;
 
         const variantEnabled =
             "game" in globalThis &&
-            game.settings.storage.get("world").find((s) => s.key === "pf2e.staminaVariant")?.value !== '"0"' &&
-            game.settings.get("pf2e", "staminaVariant");
+            game.settings.storage.get("world").find((s) => s.key === "avant.staminaVariant")?.value !== '"0"' &&
+            game.settings.get("avant", "staminaVariant");
         const systemSource: PCSystemSourceWithOldStaminaData = source.system;
 
         if (R.isPlainObject(systemSource.attributes.sp)) {
@@ -35,7 +35,7 @@ export class Migration874MoveStaminaStuff extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.rules = recursiveReplaceString(source.system.rules, (text) =>
             text
                 .replace(/^system\.attributes\.sp\.max$/, "system.attributes.hp.sp.max")
@@ -44,20 +44,20 @@ export class Migration874MoveStaminaStuff extends MigrationBase {
     }
 
     override async migrate(): Promise<void> {
-        const staminaVariant = game.settings.storage.get("world").find((s) => s.key === "pf2e.staminaVariant");
+        const staminaVariant = game.settings.storage.get("world").find((s) => s.key === "avant.staminaVariant");
         // Pre-V11, this setting was being stored as a string
         if (["1", '"1"'].includes(staminaVariant?._source.value ?? "")) {
-            await game.settings.set("pf2e", "staminaVariant", true);
+            await game.settings.set("avant", "staminaVariant", true);
         } else if (staminaVariant) {
-            await game.settings.set("pf2e", "staminaVariant", false);
+            await game.settings.set("avant", "staminaVariant", false);
         }
 
         // Aayyy, while we're at it:
-        const pwolVariant = game.settings.storage.get("world").find((s) => s.key === "pf2e.proficiencyVariant");
+        const pwolVariant = game.settings.storage.get("world").find((s) => s.key === "avant.proficiencyVariant");
         if (pwolVariant?._source.value === '"ProficiencyWithoutLevel"') {
-            await game.settings.set("pf2e", "proficiencyVariant", true);
+            await game.settings.set("avant", "proficiencyVariant", true);
         } else if (staminaVariant) {
-            await game.settings.set("pf2e", "proficiencyVariant", false);
+            await game.settings.set("avant", "proficiencyVariant", false);
         }
     }
 }

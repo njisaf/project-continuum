@@ -1,0 +1,85 @@
+{
+    "_id": "r4XX7yzeEOPK7l2a",
+    "img": "systems/avant/icons/spells/seal-fate.webp",
+    "name": "Spell Effect: Seal Fate",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Seal Fate]</p>\n<p>You gain weakness to the chosen damage type.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 4
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "value": "slashing"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    }
+                ],
+                "flag": "damageType",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DamageType"
+            },
+            {
+                "key": "Weakness",
+                "type": "{item|flags.avant.rulesSelections.damageType}",
+                "value": "floor(@item.level/2)"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

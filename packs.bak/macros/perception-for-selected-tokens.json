@@ -1,0 +1,12 @@
+{
+    "_id": "084MOWWSEVNwpHVG",
+    "author": "ru9MkwAaWXaeSZph",
+    "command": "game.avant.gm.perceptionForSelected(event);",
+    "img": "systems/avant/icons/spells/vision-of-weakness.webp",
+    "name": "Perception for Selected Tokens",
+    "ownership": {
+        "default": 0
+    },
+    "scope": "global",
+    "type": "script"
+}

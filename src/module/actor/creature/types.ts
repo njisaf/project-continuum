@@ -1,17 +1,17 @@
-import type { ActorPF2e, ActorUpdateOperation } from "@actor/base.ts";
+import type { ActorAvant, ActorUpdateOperation } from "@actor/base.ts";
 import type { CREATURE_ACTOR_TYPES } from "@actor/values.ts";
-import type { AbilityItemPF2e, MeleePF2e, WeaponPF2e } from "@item";
+import type { AbilityItemAvant, MeleeAvant, WeaponAvant } from "@item";
 import { LabeledValueAndMax } from "@module/data.ts";
-import type { TokenDocumentPF2e } from "@scene/index.ts";
+import type { TokenDocumentAvant } from "@scene/index.ts";
 import type { LANGUAGES_BY_RARITY, SENSE_TYPES } from "./values.ts";
 
-/** A `CreaturePF2e` subtype string */
+/** A `CreatureAvant` subtype string */
 type CreatureActorType = (typeof CREATURE_ACTOR_TYPES)[number];
 
-type CreatureTrait = keyof typeof CONFIG.PF2E.creatureTraits;
+type CreatureTrait = keyof typeof CONFIG.AVANT.creatureTraits;
 
 /** One of the major creature types given in the Pathfinder bestiaries */
-type CreatureType = keyof typeof CONFIG.PF2E.creatureTypes;
+type CreatureType = keyof typeof CONFIG.AVANT.creatureTypes;
 
 type Language =
     | "common"
@@ -19,7 +19,7 @@ type Language =
     | (typeof LANGUAGES_BY_RARITY.uncommon)[number]
     | (typeof LANGUAGES_BY_RARITY.rare)[number]
     | (typeof LANGUAGES_BY_RARITY.secret)[number];
-type Attitude = keyof typeof CONFIG.PF2E.attitude;
+type Attitude = keyof typeof CONFIG.AVANT.attitude;
 
 type ModeOfBeing = "living" | "undead" | "construct" | "object";
 
@@ -32,10 +32,10 @@ type SpecialVisionType = Extract<
 
 interface GetReachParameters {
     action?: "interact" | "attack";
-    weapon?: Maybe<AbilityItemPF2e<ActorPF2e> | WeaponPF2e<ActorPF2e> | MeleePF2e<ActorPF2e>>;
+    weapon?: Maybe<AbilityItemAvant<ActorAvant> | WeaponAvant<ActorAvant> | MeleeAvant<ActorAvant>>;
 }
 
-interface CreatureUpdateOperation<TParent extends TokenDocumentPF2e | null> extends ActorUpdateOperation<TParent> {
+interface CreatureUpdateOperation<TParent extends TokenDocumentAvant | null> extends ActorUpdateOperation<TParent> {
     allowHPOverage?: boolean;
 }
 

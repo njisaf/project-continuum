@@ -1,13 +1,13 @@
-import { UserSettingsPF2e } from "./document.ts";
+import { UserSettingsAvant } from "./document.ts";
 
-type UserSourcePF2e = Omit<foundry.documents.UserSource, "flags"> & {
-    flags: DeepPartial<UserFlagsPF2e>;
+type UserSourceAvant = Omit<foundry.documents.UserSource, "flags"> & {
+    flags: DeepPartial<UserFlagsAvant>;
 };
 
-type UserFlagsPF2e = DocumentFlags & {
-    pf2e: {
-        settings: UserSettingsPF2e;
+type UserFlagsAvant = DocumentFlags & {
+    avant: {
+        settings: UserSettingsAvant;
     };
 };
 
-export type { UserFlagsPF2e, UserSourcePF2e };
+export type { UserFlagsAvant, UserSourceAvant };

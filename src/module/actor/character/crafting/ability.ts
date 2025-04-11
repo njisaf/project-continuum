@@ -1,6 +1,6 @@
-import type { CharacterPF2e } from "@actor";
+import type { CharacterAvant } from "@actor";
 import { ResourceData } from "@actor/creature/index.ts";
-import { ItemPF2e, PhysicalItemPF2e } from "@item";
+import { ItemAvant, PhysicalItemAvant } from "@item";
 import { PhysicalItemSource } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { createBatchRuleElementUpdate } from "@module/rules/helpers.ts";
@@ -21,7 +21,7 @@ import type {
 
 class CraftingAbility implements CraftingAbilityData {
     /** This crafting ability's parent actor */
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
     declare slug: string;
 
     /** A label for this crafting entry to display on sheets */
@@ -43,7 +43,7 @@ class CraftingAbility implements CraftingAbilityData {
     /** A cache of all formulas that have been loaded from their compendiums */
     #preparedFormulas: PreparedFormula[] | null = null;
 
-    constructor(actor: CharacterPF2e) {
+    constructor(actor: CharacterAvant) {
         this.actor = actor;
     }
 
@@ -113,11 +113,11 @@ class CraftingAbility implements CraftingAbilityData {
     }
 
     /** Returns true if the item can be created by this ability, which requires it to pass predication and be of sufficient level */
-    canCraft(item: PhysicalItemPF2e, { warn = true } = {}): boolean {
+    canCraft(item: PhysicalItemAvant, { warn = true } = {}): boolean {
         const rollOptions = item.getRollOptions("item");
         if (!this.craftableItems.some((c) => c.predicate.test(rollOptions))) {
             if (warn) {
-                ui.notifications.warn(game.i18n.localize("PF2E.CraftingTab.Alerts.ItemMissingTraits"));
+                ui.notifications.warn(game.i18n.localize("AVANT.CraftingTab.Alerts.ItemMissingTraits"));
             }
             return false;
         }
@@ -125,7 +125,7 @@ class CraftingAbility implements CraftingAbilityData {
         if (item.level > this.maxItemLevel) {
             if (warn) {
                 ui.notifications.warn(
-                    game.i18n.format("PF2E.CraftingTab.Alerts.MaxItemLevel", { level: this.maxItemLevel }),
+                    game.i18n.format("AVANT.CraftingTab.Alerts.MaxItemLevel", { level: this.maxItemLevel }),
                 );
             }
             return false;
@@ -175,7 +175,7 @@ class CraftingAbility implements CraftingAbilityData {
         const prepared = await this.getPreparedCraftingFormulas();
         const consumed = prepared.reduce((sum, p) => sum + p.batches, 0);
         const itemUuid = data?.uuid ?? (typeof indexOrUuid === "string" ? indexOrUuid : null);
-        const item = itemUuid ? await fromUuid<ItemPF2e>(itemUuid) : null;
+        const item = itemUuid ? await fromUuid<ItemAvant>(itemUuid) : null;
         const batchSize =
             this.fieldDiscovery?.test(item?.getRollOptions("item") ?? []) || !item ? 1 : await this.#batchSizeFor(item);
         const individualPrep = !this.isDailyPrep; // Delayed prep (and eventually snares in general?) need to be one at a time
@@ -187,7 +187,7 @@ class CraftingAbility implements CraftingAbilityData {
         // Determine if we're maxed out, if so, exit with a warning
         const increasing = value === "increase" || !data || (typeof value === "number" && value > currentQuantity);
         if (!this.resource && consumed >= this.maxSlots && increasing) {
-            ui.notifications.warn(game.i18n.localize("PF2E.CraftingTab.Alerts.MaxSlots"));
+            ui.notifications.warn(game.i18n.localize("AVANT.CraftingTab.Alerts.MaxSlots"));
             return;
         }
 
@@ -260,7 +260,7 @@ class CraftingAbility implements CraftingAbilityData {
 
     async updateFormulas(
         formulas: PreparedFormulaData[],
-        operation?: Partial<DatabaseUpdateOperation<CharacterPF2e>> | undefined,
+        operation?: Partial<DatabaseUpdateOperation<CharacterAvant>> | undefined,
     ): Promise<void> {
         this.preparedFormulaData = formulas;
         this.#preparedFormulas = null;
@@ -268,18 +268,18 @@ class CraftingAbility implements CraftingAbilityData {
     }
 
     async craft(
-        itemOrUUIDOrIndex: PhysicalItemPF2e | ItemUUID | number,
+        itemOrUUIDOrIndex: PhysicalItemAvant | ItemUUID | number,
         { consume = true, destination }: CraftParameters = {},
-    ): Promise<PhysicalItemPF2e | null> {
+    ): Promise<PhysicalItemAvant | null> {
         // Resolve item and possible index from the given parameter. If an index is given, its a prepared formula
         const preparedFormulas = await this.getPreparedCraftingFormulas();
-        const [item, index] = await (async (): Promise<[PhysicalItemPF2e | null, number]> => {
+        const [item, index] = await (async (): Promise<[PhysicalItemAvant | null, number]> => {
             if (typeof itemOrUUIDOrIndex === "number") {
                 return [preparedFormulas[itemOrUUIDOrIndex].item, itemOrUUIDOrIndex];
             }
 
             const item = typeof itemOrUUIDOrIndex === "string" ? await fromUuid(itemOrUUIDOrIndex) : itemOrUUIDOrIndex;
-            if (!(item instanceof PhysicalItemPF2e)) return [null, -1];
+            if (!(item instanceof PhysicalItemAvant)) return [null, -1];
 
             if (this.isPrepared) {
                 // determine what index this item could possibly be. Prioritize not expended
@@ -296,7 +296,7 @@ class CraftingAbility implements CraftingAbilityData {
         // Set the slot to expended if this is a prepared entry
         if (this.isPrepared && consume) {
             if (!this.preparedFormulaData[index] || this.preparedFormulaData[index].expended) {
-                ui.notifications.warn("PF2E.CraftingTab.Alerts.FormulaExpended", { localize: true });
+                ui.notifications.warn("AVANT.CraftingTab.Alerts.FormulaExpended", { localize: true });
                 return null;
             }
             await this.toggleFormulaExpended(index);
@@ -311,7 +311,7 @@ class CraftingAbility implements CraftingAbilityData {
             const resource = this.actor.getResource(this.resource ?? "");
             const value = resource?.value ?? 0;
             if (!value) {
-                ui.notifications.warn("PF2E.Actor.Character.Crafting.MissingResource", { localize: true });
+                ui.notifications.warn("AVANT.Actor.Character.Crafting.MissingResource", { localize: true });
                 return null;
             } else {
                 await this.actor.updateResource(this.resource, value - 1);
@@ -343,7 +343,7 @@ class CraftingAbility implements CraftingAbilityData {
             return stackable;
         } else {
             const created = await this.actor.createEmbeddedDocuments("Item", [itemSource]);
-            return (created[0] ?? null) as PhysicalItemPF2e<CharacterPF2e> | null;
+            return (created[0] ?? null) as PhysicalItemAvant<CharacterAvant> | null;
         }
     }
 
@@ -404,10 +404,10 @@ class CraftingAbility implements CraftingAbilityData {
     }
 
     /** Helper to return the batch size for a formula or item. Once signature item is gone, we can make it take only physical items */
-    async #batchSizeFor(data: CraftingFormula | PreparedFormulaData | ItemPF2e): Promise<number> {
+    async #batchSizeFor(data: CraftingFormula | PreparedFormulaData | ItemAvant): Promise<number> {
         const isSignatureItem = "isSignatureItem" in data && !!data.isSignatureItem;
         const item =
-            data instanceof ItemPF2e
+            data instanceof ItemAvant
                 ? data
                 : "item" in data
                   ? data.item
@@ -423,7 +423,7 @@ class CraftingAbility implements CraftingAbilityData {
         return matching?.batchSize ?? this.batchSize;
     }
 
-    async #updateRuleElement(operation?: Partial<DatabaseUpdateOperation<CharacterPF2e>> | undefined): Promise<void> {
+    async #updateRuleElement(operation?: Partial<DatabaseUpdateOperation<CharacterAvant>> | undefined): Promise<void> {
         const rules = this.actor.rules.filter(
             (r: CraftingAbilityRuleSource): r is CraftingAbilityRuleData =>
                 r.key === "CraftingAbility" && r.slug === this.slug,

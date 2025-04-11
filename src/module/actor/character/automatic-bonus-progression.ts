@@ -1,6 +1,6 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
-import { ModifierPF2e } from "@actor/modifiers.ts";
-import type { ArmorPF2e, WeaponPF2e } from "@item";
+import type { ActorAvant, CharacterAvant } from "@actor";
+import { ModifierAvant } from "@actor/modifiers.ts";
+import type { ArmorAvant, WeaponAvant } from "@item";
 import { ZeroToThree } from "@module/data.ts";
 import type { FlatModifierRuleElement } from "@module/rules/rule-element/flat-modifier.ts";
 import { PotencySynthetic } from "@module/rules/synthetics.ts";
@@ -8,10 +8,10 @@ import { Predicate } from "@system/predication.ts";
 
 class AutomaticBonusProgression {
     /** Whether the ABP variant is enabled and also not selectively disabled for a particular actor */
-    static isEnabled(actor: ActorPF2e | null): boolean {
-        if (actor && !actor.flags?.pf2e) return false;
-        const settingEnabled = game.pf2e.settings.variants.abp !== "noABP";
-        const abpDisabledForActor = !!actor?.flags.pf2e.disableABP;
+    static isEnabled(actor: ActorAvant | null): boolean {
+        if (actor && !actor.flags?.avant) return false;
+        const settingEnabled = game.avant.settings.variants.abp !== "noABP";
+        const abpDisabledForActor = !!actor?.flags.avant.disableABP;
 
         return settingEnabled && !abpDisabledForActor;
     }
@@ -25,7 +25,7 @@ class AutomaticBonusProgression {
      * @param level The name of this collection of statistic modifiers.
      * @param synthetics All relevant modifiers for this statistic.
      */
-    static concatModifiers(actor: CharacterPF2e): void {
+    static concatModifiers(actor: CharacterAvant): void {
         if (!this.isEnabled(actor)) return;
 
         const { level, synthetics } = actor;
@@ -33,15 +33,15 @@ class AutomaticBonusProgression {
         const ac = values.ac;
         const perception = values.perception;
         const save = values.save;
-        const setting = game.pf2e.settings.variants.abp;
+        const setting = game.avant.settings.variants.abp;
 
         if (save > 0) {
             const modifiers = (synthetics.modifiers["saving-throw"] ??= []);
             modifiers.push(
                 () =>
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "save-potency",
-                        label: "PF2E.AutomaticBonusProgression.savePotency",
+                        label: "AVANT.AutomaticBonusProgression.savePotency",
                         modifier: save,
                         type: "potency",
                     }),
@@ -52,9 +52,9 @@ class AutomaticBonusProgression {
             const modifiers = (synthetics.modifiers["ac"] ??= []);
             modifiers.push(
                 () =>
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "defense-potency",
-                        label: "PF2E.AutomaticBonusProgression.defensePotency",
+                        label: "AVANT.AutomaticBonusProgression.defensePotency",
                         modifier: ac,
                         type: "potency",
                     }),
@@ -65,9 +65,9 @@ class AutomaticBonusProgression {
             const modifiers = (synthetics.modifiers["perception"] ??= []);
             modifiers.push(
                 () =>
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "perception-potency",
-                        label: "PF2E.AutomaticBonusProgression.perceptionPotency",
+                        label: "AVANT.AutomaticBonusProgression.perceptionPotency",
                         modifier: perception,
                         type: "potency",
                     }),
@@ -81,9 +81,9 @@ class AutomaticBonusProgression {
                 const modifiers = (synthetics.modifiers["strike-attack-roll"] ??= []);
                 modifiers.push(
                     () =>
-                        new ModifierPF2e({
+                        new ModifierAvant({
                             slug: "attack-potency",
-                            label: "PF2E.AutomaticBonusProgression.attackPotency",
+                            label: "AVANT.AutomaticBonusProgression.attackPotency",
                             modifier: attack,
                             type: "potency",
                         }),
@@ -97,7 +97,7 @@ class AutomaticBonusProgression {
 
             if (attack > 0) {
                 const potency: PotencySynthetic = {
-                    label: game.i18n.localize("PF2E.AutomaticBonusProgression.attackPotency"),
+                    label: game.i18n.localize("AVANT.AutomaticBonusProgression.attackPotency"),
                     type: "potency",
                     bonus: attack,
                     predicate: new Predicate(),
@@ -109,7 +109,7 @@ class AutomaticBonusProgression {
     }
 
     /** Remove stored runes from specific magic weapons or otherwise set prior to enabling ABP */
-    static cleanupRunes(item: ArmorPF2e | WeaponPF2e): void {
+    static cleanupRunes(item: ArmorAvant | WeaponAvant): void {
         if (!this.isEnabled(item.actor)) return;
 
         item.system.runes.potency = 0;
@@ -119,7 +119,7 @@ class AutomaticBonusProgression {
             item.system.runes.resilient = 0;
         }
 
-        if (game.pf2e.settings.variants.abp === "ABPRulesAsWritten") {
+        if (game.avant.settings.variants.abp === "ABPRulesAsWritten") {
             item.system.runes.property = [];
         }
     }

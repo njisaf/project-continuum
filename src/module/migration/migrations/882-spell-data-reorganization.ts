@@ -1,7 +1,7 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { SaveType } from "@actor/types.ts";
 import { SAVE_TYPES } from "@actor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { SpellSystemSource } from "@item/spell/data.ts";
 import { MagicTradition, SpellTrait } from "@item/spell/types.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
@@ -51,7 +51,7 @@ export class Migration882SpellDataReorganization extends MigrationBase {
         return rule;
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         const traits: { value: string[] } = source.system.traits ?? { value: [] };
         if (Array.isArray(traits.value)) {
             traits.value = R.unique(traits.value.filter((t) => !this.#SCHOOL_TRAITS.has(t)))
@@ -72,8 +72,8 @@ export class Migration882SpellDataReorganization extends MigrationBase {
     }
 
     override async updateItem(
-        source: DeepPartial<ItemSourcePF2e>,
-        actorSource?: ActorSourcePF2e,
+        source: DeepPartial<ItemSourceAvant>,
+        actorSource?: ActorSourceAvant,
         /** Whether this is the top level of the spell item rather than internal partial data */
         { topLevel = true } = {},
     ): Promise<void> {

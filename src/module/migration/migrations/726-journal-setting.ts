@@ -16,11 +16,11 @@ export class Migration726JournalSetting extends MigrationBase {
             return;
         }
 
-        // Get theme if its a registered setting. If it doesn't exist, keep the default (PF2E sheet)
-        const theme = game.settings.storage.get("world").getItem("pf2e.journalEntryTheme");
+        // Get theme if its a registered setting. If it doesn't exist, keep the default (AVANT sheet)
+        const theme = game.settings.storage.get("world").getItem("avant.journalEntryTheme");
         if (!theme) return;
 
-        const base = theme === "pf2eTheme" ? "pf2e.JournalSheetStyledPF2e" : "pf2e.JournalSheetPF2e";
+        const base = theme === "avantTheme" ? "avant.JournalSheetStyledAvant" : "avant.JournalSheetAvant";
         DocumentSheetConfig.updateDefaultSheets({ JournalEntry: { base } });
     }
 }

@@ -1,6 +1,6 @@
-import type { CharacterPF2e } from "@actor";
-import { CoinsPF2e } from "@item/physical/helpers.ts";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import type { CharacterAvant } from "@actor";
+import { CoinsAvant } from "@item/physical/helpers.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { OneToFour } from "@module/data.ts";
 import { calculateDC } from "@module/dc.ts";
 import { DEGREE_OF_SUCCESS_STRINGS, DegreeOfSuccessIndex, RollBrief } from "@system/degree-of-success.ts";
@@ -13,16 +13,16 @@ function escapeHtml(text: string): string {
     return p.innerHTML;
 }
 
-function isExperiencedProfessional(actor: CharacterPF2e) {
+function isExperiencedProfessional(actor: CharacterAvant) {
     return actor.itemTypes.feat.some((i) => i.slug === "experienced-professional");
 }
 
 function degreeOfSuccessLabel(degreeIndex: DegreeOfSuccessIndex): string {
     const degreeSlug = DEGREE_OF_SUCCESS_STRINGS[degreeIndex];
-    return game.i18n.localize(`PF2E.Check.Result.Degree.Check.${degreeSlug}`);
+    return game.i18n.localize(`AVANT.Check.Result.Degree.Check.${degreeSlug}`);
 }
 
-function coinsToString(coins: CoinsPF2e, degreeOfSuccess: DegreeOfSuccessIndex): string {
+function coinsToString(coins: CoinsAvant, degreeOfSuccess: DegreeOfSuccessIndex): string {
     if (degreeOfSuccess === 0) {
         return "none";
     } else {
@@ -42,9 +42,9 @@ function chatTemplate(skillName: string, earnIncomeResult: EarnIncomeResult): st
     const dc = earnIncomeResult.dc;
     const roll = earnIncomeResult.roll;
     return `
-    <div class="pf2e chat-card">
+    <div class="avant chat-card">
         <header class="card-header flexrow">
-            <img src="systems/pf2e/icons/equipment/treasure/currency/gold-pieces.webp" title="Income" width="36" height="36">
+            <img src="systems/avant/icons/equipment/treasure/currency/gold-pieces.webp" title="Income" width="36" height="36">
             <h3>Earn Income Level ${level}</h3>
         </header>
         <div class="card-content">
@@ -57,9 +57,9 @@ function chatTemplate(skillName: string, earnIncomeResult: EarnIncomeResult): st
     `;
 }
 
-function postToChat(skillName: string, earnIncomeResult: EarnIncomeResult): Promise<ChatMessagePF2e | undefined> {
+function postToChat(skillName: string, earnIncomeResult: EarnIncomeResult): Promise<ChatMessageAvant | undefined> {
     const content = chatTemplate(skillName, earnIncomeResult);
-    return ChatMessagePF2e.create({
+    return ChatMessageAvant.create({
         author: game.user.id,
         content,
         speaker: ChatMessage.getSpeaker(),
@@ -77,7 +77,7 @@ function calculateIncome({ actor, skill, rollBrief, level, days, dc }: Calculate
 }
 
 interface CalculateIncomeParams {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
     skill: Statistic;
     rollBrief: RollBrief;
     level: number;
@@ -86,12 +86,12 @@ interface CalculateIncomeParams {
 }
 
 function runEarnIncome({ actor, event, skill, level, days }: RunEarnIncomeParams): void {
-    const dc = calculateDC(level, { pwol: game.pf2e.settings.variants.pwol.enabled });
+    const dc = calculateDC(level, { pwol: game.avant.settings.variants.pwol.enabled });
     const options = new Set(actor.getRollOptions(["all", "skill-check", skill.slug]));
     options.add("action:earn-income");
 
-    game.pf2e.Check.roll(
-        new game.pf2e.CheckModifier(`Earn Income: ${skill.label}`, skill, []),
+    game.avant.Check.roll(
+        new game.avant.CheckModifier(`Earn Income: ${skill.label}`, skill, []),
         { actor, type: "skill-check", dc: { value: dc }, options },
         event,
         (roll): void => {
@@ -103,7 +103,7 @@ function runEarnIncome({ actor, event, skill, level, days }: RunEarnIncomeParams
 }
 
 interface RunEarnIncomeParams {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
     event: JQuery.TriggeredEvent | undefined;
     skill: Statistic;
     level: number;

@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.Perform";
+const PREFIX = "AVANT.Actions.Perform";
 
 const PERFORM_VARIANT_TRAITS = {
     acting: ["auditory", "linguistic", "visual"],
@@ -52,7 +52,7 @@ function perform(options: { variant: PerformVariant } & SkillActionOptions): voi
 const action = new SingleCheckAction({
     cost: 1,
     description: `${PREFIX}.Description`,
-    img: "systems/pf2e/icons/conditions/dazzled.webp",
+    img: "systems/avant/icons/conditions/dazzled.webp",
     name: `${PREFIX}.Title`,
     notes: [
         { outcome: ["criticalSuccess"], text: `${PREFIX}.Notes.criticalSuccess` },

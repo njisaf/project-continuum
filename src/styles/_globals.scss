@@ -57,16 +57,16 @@ hr.vr {
 }
 
 // ensure higher specificity than the sheet styles
-.pf2e.sheet form span.pf2-icon,
-.pf2e.sheet form span[data-pf2-action],
-.pf2e.sheet form span[data-pf2-action] *,
-.pf2e.sheet form span[data-pf2-check],
-.pf2e.sheet form span[data-pf2-check] *,
+.avant.sheet form span.pf2-icon,
+.avant.sheet form span[data-pf2-action],
+.avant.sheet form span[data-pf2-action] *,
+.avant.sheet form span[data-pf2-check],
+.avant.sheet form span[data-pf2-check] *,
 .pf2-icon {
     display: inline;
 }
 
-.pf2e.sheet form span.pf2-icon,
+.avant.sheet form span.pf2-icon,
 .pf2-icon {
     font-family: "Pathfinder2eActions", sans-serif;
 }
@@ -95,7 +95,7 @@ p.compact-text {
 /* Styled table                              */
 /* ----------------------------------------- */
 
-table.pf2e,
+table.avant,
 table.pf2-table {
     border-collapse: collapse;
     color: var(--text-dark);
@@ -428,7 +428,7 @@ a[href]:hover {
         margin-top: unset;
     }
 
-    li[data-action="pf2e"] {
+    li[data-action="avant"] {
         li {
             height: 1.9rem;
             margin-bottom: var(--space-2);
@@ -453,8 +453,8 @@ a[href]:hover {
 }
 
 // System theme Foundry tooltips
-#tooltip.pf2e,
-aside.locked-tooltip.pf2e {
+#tooltip.avant,
+aside.locked-tooltip.avant {
     @include corner-boxes;
     background: rgba(black, 0.9);
     font-size: var(--font-size-14);

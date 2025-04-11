@@ -67,7 +67,7 @@ abstract class IWR<TType extends IWRType> {
         const value = withValue ? (this.value ?? "") : "";
 
         return game.i18n
-            .format(`PF2E.Damage.IWR.CompositeLabel.${key}`, {
+            .format(`AVANT.Damage.IWR.CompositeLabel.${key}`, {
                 type,
                 value,
                 exceptions,
@@ -199,7 +199,7 @@ abstract class IWR<TType extends IWRType> {
             case "unholy":
                 return [{ or: ["origin:action:trait:unholy", "item:trait:unholy"] }];
             default: {
-                if (iwrType in CONFIG.PF2E.damageTypes) {
+                if (iwrType in CONFIG.AVANT.damageTypes) {
                     return [`damage:type:${iwrType}`];
                 }
 
@@ -207,7 +207,7 @@ abstract class IWR<TType extends IWRType> {
                     return ["item:type:condition", `item:slug:${iwrType}`];
                 }
 
-                if (objectHasKey(CONFIG.PF2E.materialDamageEffects, iwrType)) {
+                if (objectHasKey(CONFIG.AVANT.materialDamageEffects, iwrType)) {
                     switch (iwrType) {
                         case "adamantine":
                             return this instanceof Resistance
@@ -280,7 +280,7 @@ type IWRConstructorData<TType extends IWRType> = {
 type IWRDisplayData<TType extends IWRType> = Pick<IWR<TType>, "type" | "exceptions" | "source" | "label">;
 
 class Immunity extends IWR<ImmunityType> implements ImmunitySource {
-    protected readonly typeLabels = CONFIG.PF2E.immunityTypes;
+    protected readonly typeLabels = CONFIG.AVANT.immunityTypes;
 
     declare value?: never;
 
@@ -295,7 +295,7 @@ interface IWRSource<TType extends IWRType = IWRType> {
 type ImmunitySource = IWRSource<ImmunityType>;
 
 class Weakness extends IWR<WeaknessType> implements WeaknessSource {
-    protected readonly typeLabels = CONFIG.PF2E.weaknessTypes;
+    protected readonly typeLabels = CONFIG.AVANT.weaknessTypes;
 
     declare readonly doubleVs?: never;
 
@@ -321,7 +321,7 @@ interface WeaknessSource extends IWRSource<WeaknessType> {
 }
 
 class Resistance extends IWR<ResistanceType> implements ResistanceSource {
-    protected readonly typeLabels = CONFIG.PF2E.resistanceTypes;
+    protected readonly typeLabels = CONFIG.AVANT.resistanceTypes;
 
     override value: number;
 

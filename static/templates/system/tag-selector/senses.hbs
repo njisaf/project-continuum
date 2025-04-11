@@ -1,10 +1,10 @@
 <form autocomplete="off">
-    <table class="pf2e" data-tooltip-class="pf2e">
+    <table class="avant" data-tooltip-class="avant">
         <thead>
             <tr>
-                <th>{{localize "PF2E.Actor.Creature.Sense.Label"}}</th>
-                <th>{{localize "PF2E.Actor.Creature.Sense.Acuity.Label"}}</th>
-                <th>{{localize "PF2E.Actor.Creature.Sense.RangeLabel"}}</th>
+                <th>{{localize "AVANT.Actor.Creature.Sense.Label"}}</th>
+                <th>{{localize "AVANT.Actor.Creature.Sense.Acuity.Label"}}</th>
+                <th>{{localize "AVANT.Actor.Creature.Sense.RangeLabel"}}</th>
             </tr>
         </thead>
         <tbody>
@@ -18,15 +18,15 @@
                             {{checked vision.value}}
                             {{disabled (not vision.editable)}}
                         />
-                        <label for="{{@root.options.id}}-vision">{{localize "PF2E.Actor.Creature.Sense.Type.Vision"}}</label>
+                        <label for="{{@root.options.id}}-vision">{{localize "AVANT.Actor.Creature.Sense.Type.Vision"}}</label>
                         {{#if vision.source}}<i class="fa-solid fa-circle-info" data-tooltip="{{vision.source}}"></i>{{/if}}
                     </div>
                 </td>
                 <td class="acuity">
                     <select disabled>
-                        <option value="precise">{{localize "PF2E.Actor.Creature.Sense.Acuity.Precise"}}</option>
-                        <option value="precise">{{localize "PF2E.Actor.Creature.Sense.Acuity.Imprecise"}}</option>
-                        <option value="precise">{{localize "PF2E.Actor.Creature.Sense.Acuity.Vague"}}</option>
+                        <option value="precise">{{localize "AVANT.Actor.Creature.Sense.Acuity.Precise"}}</option>
+                        <option value="precise">{{localize "AVANT.Actor.Creature.Sense.Acuity.Imprecise"}}</option>
+                        <option value="precise">{{localize "AVANT.Actor.Creature.Sense.Acuity.Vague"}}</option>
                     </select>
                 </td>
                 <td class="range">

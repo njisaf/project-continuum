@@ -1,4 +1,4 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -21,7 +21,7 @@ export class Migration837MoveHazardBookSources extends MigrationBase {
     }
 }
 
-type MaybeWithMisplacedSource = ActorSourcePF2e & {
+type MaybeWithMisplacedSource = ActorSourceAvant & {
     system: {
         source?: unknown;
         "-=source"?: null;

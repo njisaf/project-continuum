@@ -1,5 +1,5 @@
-import { FeatPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { FeatAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Add AE-likes forming a UUID choice set for Wild Shape effect  */
@@ -16,14 +16,14 @@ export class Migration794AddWildShapeChoices extends MigrationBase {
             "p0jZhb8PSswUsZaz", // Dragon Shape
             "Le30algCdKIsxmeK", // Ferocious Shape
             "54JzsYCx3uoj7Wlz", // Monstrosity Shape
-        ].map((id) => `Compendium.pf2e.feats-srd.${id}`),
+        ].map((id) => `Compendium.avant.feats-srd.${id}`),
     );
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const sourceId = source._stats.compendiumSource;
         if (source.type === "feat" && sourceId && this.#shapeFeats.has(sourceId)) {
             const fromPack = await fromUuid(sourceId);
-            if (fromPack instanceof FeatPF2e) {
+            if (fromPack instanceof FeatAvant) {
                 source.system.rules = fromPack.toObject().system.rules;
             }
         }

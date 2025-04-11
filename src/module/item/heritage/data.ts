@@ -1,16 +1,16 @@
 import type { CreatureTrait } from "@actor/creature/index.ts";
 import { ItemSystemModel, ItemSystemSchema } from "@item/base/data/model.ts";
-import type { BaseItemSourcePF2e, ItemSystemSource } from "@item/base/data/system.ts";
+import type { BaseItemSourceAvant, ItemSystemSource } from "@item/base/data/system.ts";
 import { RarityField } from "@module/model.ts";
 import { LaxArrayField, SlugField } from "@system/schema-data-fields.ts";
-import type { HeritagePF2e } from "./document.ts";
+import type { HeritageAvant } from "./document.ts";
 import fields = foundry.data.fields;
 
-type HeritageSource = BaseItemSourcePF2e<"heritage", HeritageSystemSource>;
+type HeritageSource = BaseItemSourceAvant<"heritage", HeritageSystemSource>;
 
-class HeritageSystemData extends ItemSystemModel<HeritagePF2e, HeritageSystemSchema> {
+class HeritageSystemData extends ItemSystemModel<HeritageAvant, HeritageSystemSchema> {
     static override defineSchema(): HeritageSystemSchema {
-        const creatureTraits: Record<CreatureTrait, string> = CONFIG.PF2E.creatureTraits;
+        const creatureTraits: Record<CreatureTrait, string> = CONFIG.AVANT.creatureTraits;
 
         return {
             ...super.defineSchema(),
@@ -41,7 +41,7 @@ class HeritageSystemData extends ItemSystemModel<HeritagePF2e, HeritageSystemSch
 }
 
 interface HeritageSystemData
-    extends ItemSystemModel<HeritagePF2e, HeritageSystemSchema>,
+    extends ItemSystemModel<HeritageAvant, HeritageSystemSchema>,
         Omit<ModelPropsFromSchema<HeritageSystemSchema>, "description"> {
     level?: never;
 }

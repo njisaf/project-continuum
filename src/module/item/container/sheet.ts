@@ -1,4 +1,4 @@
-import { PhysicalItemSheetPF2e } from "@item/physical/index.ts";
-import type { ContainerPF2e } from "./document.ts";
+import { PhysicalItemSheetAvant } from "@item/physical/index.ts";
+import type { ContainerAvant } from "./document.ts";
 
-export class ContainerSheetPF2e extends PhysicalItemSheetPF2e<ContainerPF2e> {}
+export class ContainerSheetAvant extends PhysicalItemSheetAvant<ContainerAvant> {}

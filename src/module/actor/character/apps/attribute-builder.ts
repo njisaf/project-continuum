@@ -1,21 +1,21 @@
-import type { CharacterPF2e } from "@actor";
+import type { CharacterAvant } from "@actor";
 import type { AttributeString } from "@actor/types.ts";
 import { ATTRIBUTE_ABBREVIATIONS } from "@actor/values.ts";
-import type { AncestryPF2e, BackgroundPF2e, ClassPF2e } from "@item";
+import type { AncestryAvant, BackgroundAvant, ClassAvant } from "@item";
 import { maintainFocusInRender } from "@module/sheet/helpers.ts";
-import { ErrorPF2e, htmlClosest, htmlQuery, htmlQueryAll, setHasElement, signedInteger, tupleHasValue } from "@util";
+import { ErrorAvant, htmlClosest, htmlQuery, htmlQueryAll, setHasElement, signedInteger, tupleHasValue } from "@util";
 import { createTooltipster } from "@util/destroyables.ts";
 import * as R from "remeda";
 
 class AttributeBuilder extends Application {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
 
     #abpEnabled: boolean;
 
-    constructor(actor: CharacterPF2e) {
+    constructor(actor: CharacterAvant) {
         super();
         this.actor = actor;
-        this.#abpEnabled = game.pf2e.variantRules.AutomaticBonusProgression.isEnabled(actor);
+        this.#abpEnabled = game.avant.variantRules.AutomaticBonusProgression.isEnabled(actor);
         actor.apps[this.appId] = this;
     }
 
@@ -23,8 +23,8 @@ class AttributeBuilder extends Application {
         return {
             ...super.defaultOptions,
             classes: ["attribute-builder"],
-            title: game.i18n.localize("PF2E.Actor.Character.Attribute.Boosts"),
-            template: "systems/pf2e/templates/actors/character/attribute-builder.hbs",
+            title: game.i18n.localize("AVANT.Actor.Character.Attribute.Boosts"),
+            template: "systems/avant/templates/actors/character/attribute-builder.hbs",
             width: "auto",
             height: "auto",
         };
@@ -41,7 +41,7 @@ class AttributeBuilder extends Application {
         return {
             ...(await super.getData(options)),
             actor,
-            attributes: CONFIG.PF2E.abilities,
+            attributes: CONFIG.AVANT.abilities,
             manual: build.manual,
             ancestry: actor.ancestry,
             background: actor.background,
@@ -51,7 +51,7 @@ class AttributeBuilder extends Application {
                 const mod = build.manual ? (actor._source.system.abilities?.[attribute].mod ?? 0) : value.base;
                 return {
                     mod: Number(mod.toFixed(1)).signedString(),
-                    label: CONFIG.PF2E.abilities[attribute],
+                    label: CONFIG.AVANT.abilities[attribute],
                 };
             }),
             manualKeyAttribute: actor.keyAttribute,
@@ -198,8 +198,8 @@ class AttributeBuilder extends Application {
             ) {
                 // in the very common case where background boosts are a choice of 2, and a free
                 // give it a helpful tooltip
-                const choices = Object.values(boosts)[0].value.map((b) => game.i18n.localize(CONFIG.PF2E.abilities[b]));
-                return game.i18n.format("PF2E.Actor.Character.AttributeBuilder.BackgroundBoostDescription", {
+                const choices = Object.values(boosts)[0].value.map((b) => game.i18n.localize(CONFIG.AVANT.abilities[b]));
+                return game.i18n.format("AVANT.Actor.Character.AttributeBuilder.BackgroundBoostDescription", {
                     a: choices[0],
                     b: choices[1],
                 });
@@ -213,7 +213,7 @@ class AttributeBuilder extends Application {
 
     #calculateLeveledBoosts(): LevelBoostData[] {
         const build = this.actor.system.build.attributes;
-        const isGradual = game.settings.get("pf2e", "gradualBoostsVariant");
+        const isGradual = game.settings.get("avant", "gradualBoostsVariant");
 
         const boostIsPartial = (attribute: AttributeString, level: number, isApex: boolean): boolean => {
             if (level < 5 || build.manual || isApex) {
@@ -264,9 +264,9 @@ class AttributeBuilder extends Application {
     ): string[] {
         return Object.values(boostData).flatMap((boosts) => {
             if (boosts.value.length === 6) {
-                return game.i18n.localize("PF2E.AbilityFree");
+                return game.i18n.localize("AVANT.AbilityFree");
             } else if (boosts.value.length > 0) {
-                return boosts.value.map((b) => game.i18n.localize(CONFIG.PF2E.abilities[b])).join(" or ");
+                return boosts.value.map((b) => game.i18n.localize(CONFIG.AVANT.abilities[b])).join(" or ");
             } else {
                 return [];
             }
@@ -321,7 +321,7 @@ class AttributeBuilder extends Application {
                     input.value = signedInteger(newValue);
 
                     const propertyPath = input.dataset.property;
-                    if (!propertyPath) throw ErrorPF2e("Empty property path");
+                    if (!propertyPath) throw ErrorAvant("Empty property path");
                     actor.update({ [propertyPath]: newValue });
                 }
             });
@@ -456,7 +456,7 @@ class AttributeBuilder extends Application {
             button.addEventListener("click", () => {
                 const attribute = button.dataset.attribute;
                 if (!setHasElement(ATTRIBUTE_ABBREVIATIONS, attribute)) {
-                    throw ErrorPF2e(`Unrecognized attribute abbreviation: ${attribute}`);
+                    throw ErrorAvant(`Unrecognized attribute abbreviation: ${attribute}`);
                 }
 
                 if (actor.system.build.attributes.manual) {
@@ -491,7 +491,7 @@ class AttributeBuilder extends Application {
             button.addEventListener("click", () => {
                 const attribute = button.dataset.attribute;
                 if (!setHasElement(ATTRIBUTE_ABBREVIATIONS, attribute)) {
-                    throw ErrorPF2e(`Unrecognized attribute abbreviation: ${attribute}`);
+                    throw ErrorAvant(`Unrecognized attribute abbreviation: ${attribute}`);
                 }
 
                 const current = this.actor.system.build.attributes.apex;
@@ -528,13 +528,13 @@ class AttributeBuilder extends Application {
 }
 
 interface AttributeBuilderSheetData {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
     attributeModifiers: Record<AttributeString, { label: string; mod: string }>;
     manualKeyAttribute: AttributeString;
     attributes: Record<AttributeString, string>;
-    ancestry: AncestryPF2e<CharacterPF2e> | null;
-    background: BackgroundPF2e<CharacterPF2e> | null;
-    class: ClassPF2e<CharacterPF2e> | null;
+    ancestry: AncestryAvant<CharacterAvant> | null;
+    background: BackgroundAvant<CharacterAvant> | null;
+    class: ClassAvant<CharacterAvant> | null;
     manual: boolean;
     ancestryBoosts: AncestryBoosts | null;
     voluntaryFlaws: VoluntaryFlaws | null;

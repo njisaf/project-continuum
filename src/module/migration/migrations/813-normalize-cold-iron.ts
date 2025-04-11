@@ -1,4 +1,4 @@
-import { ItemSourcePF2e, WeaponSource } from "@item/base/data/index.ts";
+import { ItemSourceAvant, WeaponSource } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -108,7 +108,7 @@ interface ArrayChoiceSet {
     selection?: unknown;
 }
 
-type MaybeWithOldMaterialData = ItemSourcePF2e & {
+type MaybeWithOldMaterialData = ItemSourceAvant & {
     system: {
         preciousMaterial?: { value?: unknown };
         preciousMaterialGrade?: { value?: unknown };

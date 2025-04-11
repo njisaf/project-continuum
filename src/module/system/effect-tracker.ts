@@ -1,15 +1,15 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { resetActors } from "@actor/helpers.ts";
-import type { EffectPF2e } from "@item";
-import type { EncounterPF2e } from "@module/encounter/index.ts";
+import type { EffectAvant } from "@item";
+import type { EncounterAvant } from "@module/encounter/index.ts";
 
 export class EffectTracker {
-    effects: EffectPF2e<ActorPF2e>[] = [];
+    effects: EffectAvant<ActorAvant>[] = [];
 
     /** A separate collection of aura effects, including ones with unlimited duration */
-    auraEffects: Collection<EffectPF2e<ActorPF2e>> = new Collection();
+    auraEffects: Collection<EffectAvant<ActorAvant>> = new Collection();
 
-    #insert(effect: EffectPF2e<ActorPF2e>, duration: { expired: boolean; remaining: number }): void {
+    #insert(effect: EffectAvant<ActorAvant>, duration: { expired: boolean; remaining: number }): void {
         if (this.effects.length === 0) {
             this.effects.push(effect);
         } else {
@@ -39,7 +39,7 @@ export class EffectTracker {
         }
     }
 
-    register(effect: EffectPF2e<ActorPF2e>): void {
+    register(effect: EffectAvant<ActorAvant>): void {
         if (effect.fromAura && (canvas.ready || !effect.actor.isToken) && effect.id) {
             this.auraEffects.set(effect.uuid, effect);
         }
@@ -73,7 +73,7 @@ export class EffectTracker {
         }
     }
 
-    unregister(toRemove: EffectPF2e<ActorPF2e>): void {
+    unregister(toRemove: EffectAvant<ActorAvant>): void {
         this.effects = this.effects.filter((e) => e !== toRemove);
         this.auraEffects.delete(toRemove.uuid);
     }
@@ -89,21 +89,21 @@ export class EffectTracker {
             for (const actor of actors) {
                 actor.reset();
             }
-            game.pf2e.effectPanel.refresh();
+            game.avant.effectPanel.refresh();
         }
 
         const actorsToUpdate = new Set(this.effects.filter((e) => e.isExpired).map((e) => e.actor));
 
-        if (game.settings.get("pf2e", "automation.removeExpiredEffects")) {
+        if (game.settings.get("avant", "automation.removeExpiredEffects")) {
             for (const actor of actorsToUpdate) {
                 await this.#removeExpired(actor);
             }
-        } else if (game.settings.get("pf2e", "automation.effectExpiration")) {
+        } else if (game.settings.get("avant", "automation.effectExpiration")) {
             resetActors(actorsToUpdate);
         }
     }
 
-    async #removeExpired(actor: ActorPF2e): Promise<void> {
+    async #removeExpired(actor: ActorAvant): Promise<void> {
         if (actor.primaryUpdater === game.user) {
             await actor.deleteEmbeddedDocuments(
                 "Item",
@@ -113,9 +113,9 @@ export class EffectTracker {
     }
 
     /** Expire or remove on-encounter-end effects */
-    async onEncounterEnd(encounter: EncounterPF2e): Promise<void> {
-        const autoRemoveExpired = game.settings.get("pf2e", "automation.removeExpiredEffects");
-        const autoExpireEffects = !autoRemoveExpired && game.settings.get("pf2e", "automation.effectExpiration");
+    async onEncounterEnd(encounter: EncounterAvant): Promise<void> {
+        const autoRemoveExpired = game.settings.get("avant", "automation.removeExpiredEffects");
+        const autoExpireEffects = !autoRemoveExpired && game.settings.get("avant", "automation.effectExpiration");
         if (!(autoExpireEffects || autoRemoveExpired)) return;
 
         const actors = encounter.combatants.contents

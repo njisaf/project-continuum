@@ -1,7 +1,7 @@
 import { htmlClosest, htmlQuery } from "@util";
 import * as R from "remeda";
 
-abstract class SettingsMenuPF2e extends FormApplication {
+abstract class SettingsMenuAvant extends FormApplication {
     static readonly namespace: string;
 
     protected cache: Record<string, unknown> & { clear(): void } = (() => {
@@ -22,9 +22,9 @@ abstract class SettingsMenuPF2e extends FormApplication {
 
         return {
             ...options,
-            title: `PF2E.SETTINGS.${this.namespace.titleCase()}.Name`,
+            title: `AVANT.SETTINGS.${this.namespace.titleCase()}.Name`,
             id: `${this.namespace}-settings`,
-            template: `systems/pf2e/templates/system/settings/menu.hbs`,
+            template: `systems/avant/templates/system/settings/menu.hbs`,
             width: 550,
             height: "auto",
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: "form" }],
@@ -44,7 +44,7 @@ abstract class SettingsMenuPF2e extends FormApplication {
         const settings = this.settings;
         for (const key of this.SETTINGS) {
             const setting = settings[key];
-            game.settings.register("pf2e", `${setting.prefix ?? ""}${key}`, {
+            game.settings.register("avant", `${setting.prefix ?? ""}${key}`, {
                 ...R.omit(setting, ["prefix"]),
                 scope: "world",
                 config: false,
@@ -57,19 +57,19 @@ abstract class SettingsMenuPF2e extends FormApplication {
     }
 
     override async getData(): Promise<MenuTemplateData> {
-        const settings = (this.constructor as typeof SettingsMenuPF2e).settings;
+        const settings = (this.constructor as typeof SettingsMenuAvant).settings;
         const templateData = settingsToSheetData(settings, this.cache);
 
         // Ensure cache values are initialized
         for (const [key, value] of Object.entries(settings)) {
             if (!(key in this.cache)) {
-                this.cache[key] = game.settings.get("pf2e", `${value.prefix ?? ""}${key}`);
+                this.cache[key] = game.settings.get("avant", `${value.prefix ?? ""}${key}`);
             }
         }
 
         return fu.mergeObject(await super.getData(), {
             settings: templateData,
-            instructions: `PF2E.SETTINGS.${this.namespace.titleCase()}.Hint`,
+            instructions: `AVANT.SETTINGS.${this.namespace.titleCase()}.Hint`,
         });
     }
 
@@ -105,7 +105,7 @@ abstract class SettingsMenuPF2e extends FormApplication {
             const value = data[key];
             this.cache[key] = value;
             if (event.type === "submit") {
-                await game.settings.set("pf2e", settingKey, value);
+                await game.settings.set("avant", settingKey, value);
             }
         }
 
@@ -124,14 +124,14 @@ abstract class SettingsMenuPF2e extends FormApplication {
         for (const key of this.constructor.SETTINGS) {
             const setting = this.constructor.settings[key];
             const settingKey = `${setting.prefix ?? ""}${key}`;
-            const value = game.settings.get("pf2e", settingKey);
+            const value = game.settings.get("avant", settingKey);
             this.cache[key] = value instanceof foundry.abstract.DataModel ? value.clone() : value;
         }
     }
 }
 
-interface SettingsMenuPF2e extends FormApplication {
-    constructor: typeof SettingsMenuPF2e;
+interface SettingsMenuAvant extends FormApplication {
+    constructor: typeof SettingsMenuAvant;
     options: SettingsMenuOptions;
 }
 
@@ -161,7 +161,7 @@ function settingsToSheetData(
 ): Record<string, SettingsTemplateData> {
     return Object.entries(settings).reduce((result: Record<string, SettingsTemplateData>, [key, setting]) => {
         const lookupKey = `${setting.prefix ?? ""}${key}`;
-        const value = key in cache ? cache[key] : game.settings.get("pf2e", lookupKey);
+        const value = key in cache ? cache[key] : game.settings.get("avant", lookupKey);
         result[key] = {
             ...setting,
             key,
@@ -174,5 +174,5 @@ function settingsToSheetData(
     }, {});
 }
 
-export { SettingsMenuPF2e, settingsToSheetData };
+export { SettingsMenuAvant, settingsToSheetData };
 export type { MenuTemplateData, PartialSettingsData, SettingsMenuOptions, SettingsTemplateData };

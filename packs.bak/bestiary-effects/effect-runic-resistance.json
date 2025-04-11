@@ -1,0 +1,109 @@
+{
+    "_id": "P4bNtDVyknQwjTPo",
+    "img": "icons/magic/symbols/rune-sigil-black-pink.webp",
+    "name": "Effect: Runic Resistance",
+    "system": {
+        "description": {
+            "value": "<p>The creature gains resistance 5 to one damage type.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "minutes",
+            "value": 1
+        },
+        "level": {
+            "value": 3
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Bestiary 3"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "value": "slashing"
+                    },
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    },
+                    {
+                        "label": "AVANT.TraitVitality",
+                        "value": "vitality"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    },
+                    {
+                        "label": "AVANT.TraitForce",
+                        "value": "force"
+                    },
+                    {
+                        "label": "AVANT.TraitSpirit",
+                        "value": "spirit"
+                    },
+                    {
+                        "label": "AVANT.TraitMental",
+                        "value": "mental"
+                    },
+                    {
+                        "label": "AVANT.TraitPoison",
+                        "value": "poison"
+                    },
+                    {
+                        "label": "AVANT.TraitBleed",
+                        "value": "bleed"
+                    }
+                ],
+                "flag": "runicResistance",
+                "key": "ChoiceSet"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.runicResistance}",
+                "value": 5
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

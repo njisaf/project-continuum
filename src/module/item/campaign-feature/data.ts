@@ -1,23 +1,23 @@
 import { FrequencyField } from "@item/ability/data.ts";
 import { ItemSystemModel, ItemSystemSchema } from "@item/base/data/model.ts";
-import { ActionType, BaseItemSourcePF2e, ItemSystemSource } from "@item/base/data/system.ts";
+import { ActionType, BaseItemSourceAvant, ItemSystemSource } from "@item/base/data/system.ts";
 import { OneToThree } from "@module/data.ts";
 import { LaxArrayField, SlugField } from "@system/schema-data-fields.ts";
-import { CampaignFeaturePF2e } from "./document.ts";
+import { CampaignFeatureAvant } from "./document.ts";
 import { KingmakerCategory, KingmakerTrait } from "./types.ts";
 import { KINGMAKER_CATEGORY_TYPES } from "./values.ts";
 import fields = foundry.data.fields;
 
-type CampaignFeatureSource = BaseItemSourcePF2e<"campaignFeature", CampaignFeatureSystemSource>;
+type CampaignFeatureSource = BaseItemSourceAvant<"campaignFeature", CampaignFeatureSystemSource>;
 
 interface PrerequisiteTagData {
     value: string;
 }
 
-class CampaignFeatureSystemData extends ItemSystemModel<CampaignFeaturePF2e, CampaignFeatureSystemSchema> {
+class CampaignFeatureSystemData extends ItemSystemModel<CampaignFeatureAvant, CampaignFeatureSystemSchema> {
     static override defineSchema(): CampaignFeatureSystemSchema {
-        const actionTypes: Record<ActionType, string> = CONFIG.PF2E.actionTypes;
-        const kingmakerTraits: Record<KingmakerTrait, string> = CONFIG.PF2E.kingmakerTraits;
+        const actionTypes: Record<ActionType, string> = CONFIG.AVANT.actionTypes;
+        const kingmakerTraits: Record<KingmakerTrait, string> = CONFIG.AVANT.kingmakerTraits;
 
         return {
             ...super.defineSchema(),
@@ -88,7 +88,7 @@ class CampaignFeatureSystemData extends ItemSystemModel<CampaignFeaturePF2e, Cam
 }
 
 interface CampaignFeatureSystemData
-    extends ItemSystemModel<CampaignFeaturePF2e, CampaignFeatureSystemSchema>,
+    extends ItemSystemModel<CampaignFeatureAvant, CampaignFeatureSystemSchema>,
         Omit<ModelPropsFromSchema<CampaignFeatureSystemSchema>, "description"> {}
 
 type CampaignFeatureSystemSchema = Omit<ItemSystemSchema, "traits"> & {

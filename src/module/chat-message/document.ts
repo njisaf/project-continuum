@@ -1,26 +1,26 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { StrikeData } from "@actor/data/base.ts";
-import { ItemPF2e, ItemProxyPF2e } from "@item";
-import type { UserPF2e } from "@module/user/index.ts";
+import { ItemAvant, ItemProxyAvant } from "@item";
+import type { UserAvant } from "@module/user/index.ts";
 import { isDefaultTokenImage } from "@scene/helpers.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene/index.ts";
-import { UserVisibilityPF2e } from "@scripts/ui/user-visibility.ts";
+import type { SceneAvant, TokenDocumentAvant } from "@scene/index.ts";
+import { UserVisibilityAvant } from "@scripts/ui/user-visibility.ts";
 import { CheckRoll } from "@system/check/roll.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
-import { TextEditorPF2e } from "@system/text-editor.ts";
+import { TextEditorAvant } from "@system/text-editor.ts";
 import { createHTMLElement, htmlQuery, htmlQueryAll, parseHTML } from "@util";
 import { CriticalHitAndFumbleCards } from "./crit-fumble-cards.ts";
-import { ChatMessageFlagsPF2e, ChatMessageSourcePF2e } from "./data.ts";
+import { ChatMessageFlagsAvant, ChatMessageSourceAvant } from "./data.ts";
 import * as Listeners from "./listeners/index.ts";
 import { RollInspector } from "./roll-inspector.ts";
 
-class ChatMessagePF2e extends ChatMessage {
+class ChatMessageAvant extends ChatMessage {
     /** Set some flags/flag scopes early. */
     protected override _initializeSource(data: object, options?: DataModelConstructionOptions<null>): this["_source"] {
         const source = super._initializeSource(data, options);
         source.flags = fu.mergeObject(source.flags, {
             core: { canPopout: source.flags.core?.canPopout ?? true },
-            pf2e: {},
+            avant: {},
         });
 
         return source;
@@ -36,7 +36,7 @@ class ChatMessagePF2e extends ChatMessage {
             return false;
         }
 
-        if (this.flags.pf2e.context?.type === "damage-roll") {
+        if (this.flags.avant.context?.type === "damage-roll") {
             return true;
         }
 
@@ -46,13 +46,13 @@ class ChatMessagePF2e extends ChatMessage {
     }
 
     /** Get the actor associated with this chat message */
-    get actor(): ActorPF2e | null {
-        return ChatMessagePF2e.getSpeakerActor(this.speaker);
+    get actor(): ActorAvant | null {
+        return ChatMessageAvant.getSpeakerActor(this.speaker);
     }
 
     /** If this is a check or damage roll, it will have target information */
-    get target(): { actor: ActorPF2e; token: TokenDocumentPF2e<ScenePF2e> } | null {
-        const context = this.flags.pf2e.context;
+    get target(): { actor: ActorAvant; token: TokenDocumentAvant<SceneAvant> } | null {
+        const context = this.flags.avant.context;
         if (!context) return null;
         const targetUUID = "target" in context ? context.target?.token : null;
         if (!targetUUID) return null;
@@ -67,7 +67,7 @@ class ChatMessagePF2e extends ChatMessage {
 
     /** If the message came from dynamic inline content in a journal entry, the entry's ID may be used to retrieve it */
     get journalEntry(): JournalEntry | null {
-        const uuid = this.flags.pf2e.journalEntry;
+        const uuid = this.flags.avant.journalEntry;
         if (!uuid) return null;
 
         const entryId = /^JournalEntry.([A-Za-z0-9]{16})$/.exec(uuid)?.at(1);
@@ -81,7 +81,7 @@ class ChatMessagePF2e extends ChatMessage {
 
     /** Does the message include a rerolled check? */
     get isReroll(): boolean {
-        const context = this.flags.pf2e.context;
+        const context = this.flags.avant.context;
         return !!context && "isReroll" in context && !!context.isReroll;
     }
 
@@ -97,10 +97,10 @@ class ChatMessagePF2e extends ChatMessage {
     }
 
     /** Get the owned item associated with this chat message */
-    get item(): ItemPF2e<ActorPF2e> | null {
+    get item(): ItemAvant<ActorAvant> | null {
         const actor = this.actor;
-        if (this.flags.pf2e.context?.type === "self-effect") {
-            const item = actor?.items.get(this.flags.pf2e.context.item);
+        if (this.flags.avant.context?.type === "self-effect") {
+            const item = actor?.items.get(this.flags.avant.context.item);
             return item ?? null;
         }
 
@@ -109,19 +109,19 @@ class ChatMessagePF2e extends ChatMessage {
         if (strike?.item) return strike.item;
 
         const item = (() => {
-            const embeddedSpell = this.flags.pf2e.casting?.embeddedSpell;
-            if (actor && embeddedSpell) return new ItemProxyPF2e(embeddedSpell, { parent: actor });
+            const embeddedSpell = this.flags.avant.casting?.embeddedSpell;
+            if (actor && embeddedSpell) return new ItemProxyAvant(embeddedSpell, { parent: actor });
 
-            const origin = this.flags.pf2e?.origin ?? null;
+            const origin = this.flags.avant?.origin ?? null;
             const item = origin?.uuid && !origin.uuid.startsWith("Compendium.") ? fromUuidSync(origin.uuid) : null;
-            return item instanceof ItemPF2e ? item : null;
+            return item instanceof ItemAvant ? item : null;
         })();
         if (!item) return null;
 
         if (item?.isOfType("spell")) {
-            const entryId = this.flags.pf2e?.casting?.id ?? null;
-            const overlayIds = this.flags.pf2e.origin?.variant?.overlays;
-            const castRank = this.flags.pf2e.origin?.castRank ?? item.rank;
+            const entryId = this.flags.avant?.casting?.id ?? null;
+            const overlayIds = this.flags.avant.origin?.variant?.overlays;
+            const castRank = this.flags.avant.origin?.castRank ?? item.rank;
             const modifiedSpell = item.loadVariant({ overlayIds, castRank, entryId });
             return modifiedSpell ?? item;
         }
@@ -155,12 +155,12 @@ class ChatMessagePF2e extends ChatMessage {
     }
 
     async showDetails(): Promise<void> {
-        if (!this.flags.pf2e.context) return;
+        if (!this.flags.avant.context) return;
         new RollInspector(this).render(true);
     }
 
     /** Get the token of the speaker if possible */
-    get token(): TokenDocumentPF2e<ScenePF2e> | null {
+    get token(): TokenDocumentAvant<SceneAvant> | null {
         if (!game.scenes) return null; // In case we're in the middle of game setup
         const sceneId = this.speaker.scene ?? "";
         const tokenId = this.speaker.token ?? "";
@@ -182,7 +182,7 @@ class ChatMessagePF2e extends ChatMessage {
         // Enrich flavor, which is skipped by upstream
         if (this.isContentVisible) {
             const rollData = this.getRollData();
-            this.flavor = await TextEditorPF2e.enrichHTML(this.flavor, {
+            this.flavor = await TextEditorAvant.enrichHTML(this.flavor, {
                 async: true,
                 rollData,
                 processVisibility: false,
@@ -240,7 +240,7 @@ class ChatMessagePF2e extends ChatMessage {
             }
         }
 
-        if (!this.flags.pf2e.suppressDamageButtons && this.isDamageRoll) {
+        if (!this.flags.avant.suppressDamageButtons && this.isDamageRoll) {
             // Mark each button group with the index in the message's `rolls` array
             htmlQueryAll(html, ".damage-application").forEach((buttons, index) => {
                 buttons.dataset.rollIndex = index.toString();
@@ -261,7 +261,7 @@ class ChatMessagePF2e extends ChatMessage {
             const damageType = roll.instances.find((i) => i.persistent)?.type;
             const condition = damageType ? this.actor?.getCondition(`persistent-damage-${damageType}`) : null;
             if (condition) {
-                const template = "systems/pf2e/templates/chat/persistent-damage-recovery.hbs";
+                const template = "systems/avant/templates/chat/persistent-damage-recovery.hbs";
                 const section = parseHTML(await renderTemplate(template));
                 html.querySelector(".message-content")?.append(section);
                 html.dataset.actorIsTarget = "true";
@@ -276,8 +276,8 @@ class ChatMessagePF2e extends ChatMessage {
 
                 const condition = actor.getCondition(`persistent-damage-${damageType}`);
                 if (!condition?.system.persistent) {
-                    const damageTypeLocalized = game.i18n.localize(CONFIG.PF2E.damageTypes[damageType] ?? damageType);
-                    const message = game.i18n.format("PF2E.Item.Condition.PersistentDamage.Error.DoesNotExist", {
+                    const damageTypeLocalized = game.i18n.localize(CONFIG.AVANT.damageTypes[damageType] ?? damageType);
+                    const message = game.i18n.format("AVANT.Item.Condition.PersistentDamage.Error.DoesNotExist", {
                         damageType: damageTypeLocalized,
                     });
                     ui.notifications.warn(message);
@@ -289,7 +289,7 @@ class ChatMessagePF2e extends ChatMessage {
         }
 
         // Remove revert damage button based on user permissions
-        const appliedDamageFlag = this.flags.pf2e.appliedDamage;
+        const appliedDamageFlag = this.flags.avant.appliedDamage;
         if (!appliedDamageFlag?.isReverted) {
             if (!this.actor?.isOwner) {
                 htmlQuery(html, "button[data-action=revert-damage]")?.remove();
@@ -299,9 +299,9 @@ class ChatMessagePF2e extends ChatMessage {
         html.addEventListener("mouseenter", (event) => this.#onHoverIn(event));
         html.addEventListener("mouseleave", (event) => this.#onHoverOut(event));
 
-        UserVisibilityPF2e.processMessageSender(this, html);
+        UserVisibilityAvant.processMessageSender(this, html);
         if ((!actor || this.isRoll) && this.content) {
-            UserVisibilityPF2e.process(html, { document: actor ?? this, message: this });
+            UserVisibilityAvant.process(html, { document: actor ?? this, message: this });
         }
 
         return $(html);
@@ -321,11 +321,11 @@ class ChatMessagePF2e extends ChatMessage {
         if (canvas.ready) this.token?.object?.emitHoverOut(nativeEvent);
     }
 
-    protected override _onCreate(data: this["_source"], operation: MessageCreateOperationPF2e, userId: string): void {
+    protected override _onCreate(data: this["_source"], operation: MessageCreateOperationAvant, userId: string): void {
         super._onCreate(data, operation, userId);
 
         // Handle critical hit and fumble card drawing
-        if (this.isRoll && game.pf2e.settings.critFumble.cards) {
+        if (this.isRoll && game.avant.settings.critFumble.cards) {
             CriticalHitAndFumbleCards.handleDraw(this);
         }
 
@@ -334,25 +334,25 @@ class ChatMessagePF2e extends ChatMessage {
     }
 }
 
-interface ChatMessagePF2e extends ChatMessage {
-    author: UserPF2e | null;
-    flags: ChatMessageFlagsPF2e;
-    readonly _source: ChatMessageSourcePF2e;
+interface ChatMessageAvant extends ChatMessage {
+    author: UserAvant | null;
+    flags: ChatMessageFlagsAvant;
+    readonly _source: ChatMessageSourceAvant;
 }
 
-declare namespace ChatMessagePF2e {
+declare namespace ChatMessageAvant {
     function createDocuments<TDocument extends foundry.abstract.Document>(
         this: ConstructorOf<TDocument>,
         data?: (TDocument | PreCreate<TDocument["_source"]>)[],
-        operation?: Partial<MessageCreateOperationPF2e>,
+        operation?: Partial<MessageCreateOperationAvant>,
     ): Promise<TDocument[]>;
 
-    function getSpeakerActor(speaker: foundry.documents.ChatSpeakerData): ActorPF2e | null;
+    function getSpeakerActor(speaker: foundry.documents.ChatSpeakerData): ActorAvant | null;
 }
 
-interface MessageCreateOperationPF2e extends ChatMessageCreateOperation {
+interface MessageCreateOperationAvant extends ChatMessageCreateOperation {
     /** Whether this is a Rest for the Night message */
     restForTheNight?: boolean;
 }
 
-export { ChatMessagePF2e };
+export { ChatMessageAvant };

@@ -1,14 +1,14 @@
-import { DamageDiceOverride, DamageDicePF2e, DeferredDamageDiceOptions } from "@actor/modifiers.ts";
+import { DamageDiceOverride, DamageDiceAvant, DeferredDamageDiceOptions } from "@actor/modifiers.ts";
 import { DamageDieSize } from "@system/damage/types.ts";
 import { DAMAGE_DIE_SIZES } from "@system/damage/values.ts";
 import { SlugField } from "@system/schema-data-fields.ts";
 import { isObject, objectHasKey, sluggify, tupleHasValue } from "@util";
 import { extractDamageAlterations } from "../helpers.ts";
-import { RuleElementOptions, RuleElementPF2e } from "./base.ts";
+import { RuleElementOptions, RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema, RuleElementSource } from "./data.ts";
 import fields = foundry.data.fields;
 
-class DamageDiceRuleElement extends RuleElementPF2e<DamageDiceRuleSchema> {
+class DamageDiceRuleElement extends RuleElementAvant<DamageDiceRuleSchema> {
     constructor(data: DamageDiceSource, options: RuleElementOptions) {
         super(data, options);
         if (this.invalid) return;
@@ -63,7 +63,7 @@ class DamageDiceRuleElement extends RuleElementPF2e<DamageDiceRuleSchema> {
             if (selector === "null") continue;
             const { actor, parent } = this;
 
-            const deferredDice = (options: DeferredDamageDiceOptions): DamageDicePF2e | null => {
+            const deferredDice = (options: DeferredDamageDiceOptions): DamageDiceAvant | null => {
                 const label = this.getReducedLabel();
 
                 // If this rule element's predicate would have passed without all fields being resolvable, send out a
@@ -87,7 +87,7 @@ class DamageDiceRuleElement extends RuleElementPF2e<DamageDiceRuleSchema> {
                 }
 
                 const damageType = this.resolveInjectedProperties(this.damageType, resolveOptions);
-                if (damageType !== null && !objectHasKey(CONFIG.PF2E.damageTypes, damageType)) {
+                if (damageType !== null && !objectHasKey(CONFIG.AVANT.damageTypes, damageType)) {
                     if (testPassed) this.failValidation(`Unrecognized damage type: ${damageType}`);
                     return null;
                 }
@@ -95,7 +95,7 @@ class DamageDiceRuleElement extends RuleElementPF2e<DamageDiceRuleSchema> {
                 if (this.override) {
                     const override = this.override;
                     override.damageType &&= this.resolveInjectedProperties(override.damageType, resolveOptions);
-                    if ("damageType" in override && !objectHasKey(CONFIG.PF2E.damageTypes, override.damageType)) {
+                    if ("damageType" in override && !objectHasKey(CONFIG.AVANT.damageTypes, override.damageType)) {
                         if (testPassed) this.failValidation("Unrecognized damage type in override");
                         return null;
                     }
@@ -128,7 +128,7 @@ class DamageDiceRuleElement extends RuleElementPF2e<DamageDiceRuleSchema> {
                 const alterationsRecord = actor.synthetics.damageAlterations;
                 const alterations = extractDamageAlterations(alterationsRecord, options.selectors, slug);
 
-                return new DamageDicePF2e({
+                return new DamageDiceAvant({
                     selector,
                     slug,
                     label,
@@ -200,7 +200,7 @@ interface DamageDiceSource extends RuleElementSource {
 }
 
 interface DamageDiceRuleElement
-    extends RuleElementPF2e<DamageDiceRuleSchema>,
+    extends RuleElementAvant<DamageDiceRuleSchema>,
         ModelPropsFromRESchema<DamageDiceRuleSchema> {}
 
 type DamageDiceRuleSchema = RuleElementSchema & {

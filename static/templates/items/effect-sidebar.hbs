@@ -1,17 +1,17 @@
 <div class="inventory-details" spellcheck="false">
     <div class="form-group duration">
-        <label for="{{item.uuid}}-duration">{{localize "PF2E.Time.Duration"}}</label>
-        {{> systems/pf2e/templates/items/partials/duration.hbs base="system.duration" duration=data.duration units=timeUnits}}
+        <label for="{{item.uuid}}-duration">{{localize "AVANT.Time.Duration"}}</label>
+        {{> systems/avant/templates/items/partials/duration.hbs base="system.duration" duration=data.duration units=timeUnits}}
     </div>
     <div class="form-group">
-        <label for="{{item.uuid}}-sustained">{{localize "PF2E.Item.Spell.Sustained.Label"}}</label>
+        <label for="{{item.uuid}}-sustained">{{localize "AVANT.Item.Spell.Sustained.Label"}}</label>
         <div class="form-fields">
             <input id="{{item.uuid}}-sustained" type="checkbox" name="system.duration.sustained" {{checked data.duration.sustained}} />
         </div>
     </div>
     {{#unless (or (eq data.duration.unit "unlimited") (eq data.duration.unit "encounter"))}}
         <div class="form-group">
-            <label for="{{item.uuid}}-duration-expiry">{{localize "PF2E.Item.Effect.Expiry.ExpiresOn"}}</label>
+            <label for="{{item.uuid}}-duration-expiry">{{localize "AVANT.Item.Effect.Expiry.ExpiresOn"}}</label>
             <div class="form-fields">
                 <select id="{{item.uuid}}-duration-expiry" name="system.duration.expiry">
                     {{selectOptions expiryOptions selected=data.duration.expiry localize=true}}
@@ -20,14 +20,14 @@
         </div>
     {{/unless}}
     <div class="form-group">
-        <label for="{{item.uuid}}-show-token-icon">{{localize "PF2E.Item.Effect.ShowTokenIcon"}}</label>
+        <label for="{{item.uuid}}-show-token-icon">{{localize "AVANT.Item.Effect.ShowTokenIcon"}}</label>
         <div class="form-fields">
             <input id="{{item.uuid}}-show-token-icon" type="checkbox" name="system.tokenIcon.show" {{checked data.tokenIcon.show}} />
         </div>
     </div>
     {{#if user.isGM}}
         <div class="form-group">
-            <label for="{{item.uuid}}-unidentified">{{localize "PF2E.Item.Effect.Unidentified"}}</label>
+            <label for="{{item.uuid}}-unidentified">{{localize "AVANT.Item.Effect.Unidentified"}}</label>
             <div class="form-fields">
                 <input id="{{item.uuid}}-unidentified" type="checkbox" name="system.unidentified" {{checked data.unidentified}} />
             </div>
@@ -35,7 +35,7 @@
     {{/if}}
     {{#if data.badge.labels}}
         <div class="form-group">
-            <label for="{{item.uuid}}-loop">{{localize "PF2E.Item.Effect.Looping"}}</label>
+            <label for="{{item.uuid}}-loop">{{localize "AVANT.Item.Effect.Looping"}}</label>
             <div class="form-fields">
                 <input id="{{item.uuid}}-loop" type="checkbox" name="system.badge.loop" {{checked data.badge.loop}} />
             </div>
@@ -57,10 +57,10 @@
             </div>
 
             <div class="form-group">
-                <label for="{{item.uuid}}-badge-reevaluate">{{localize "PF2E.Item.Effect.Badge.ReevaluateFormula.Label"}}</label>
+                <label for="{{item.uuid}}-badge-reevaluate">{{localize "AVANT.Item.Effect.Badge.ReevaluateFormula.Label"}}</label>
                 <div class="form-fields">
                     <select id="{{item.uuid}}-badge-reevaluate" name="system.badge.reevaluate">
-                        {{selectOptions reevaluateOptions selected=data.badge.reevaluate blank="PF2E.Item.Effect.Badge.ReevaluateFormula.Never" localize=true}}
+                        {{selectOptions reevaluateOptions selected=data.badge.reevaluate blank="AVANT.Item.Effect.Badge.ReevaluateFormula.Never" localize=true}}
                     </select>
                 </div>
             </div>
@@ -80,7 +80,7 @@
 
         {{#if data.badge.labels}}
             <h4 class="badge-label-header">
-                {{localize "PF2E.Item.Effect.Badge.Labels.Label" type=badgeType}}
+                {{localize "AVANT.Item.Effect.Badge.Labels.Label" type=badgeType}}
                 <a class="add-badge" data-action="badge-add-label"><i class="fa-solid fa-fw fa-plus"></i></a>
             </h4>
             {{#each data.badge.labels as |label idx|}}
@@ -98,7 +98,7 @@
                             <span class="badge-value">{{add idx 1}}</span>
                         </label>
                     {{/unless}}
-                    <input type="text" name="system.badge.labels.{{idx}}" value="{{label}}" placeholder="{{localize "PF2E.Item.Effect.Badge.Labels.Placeholder"}}" />
+                    <input type="text" name="system.badge.labels.{{idx}}" value="{{label}}" placeholder="{{localize "AVANT.Item.Effect.Badge.Labels.Placeholder"}}" />
                     {{#if @root.options.editable}}
                         <div class="item-controls">
                             <a data-action="badge-delete-label" data-idx="{{idx}}"><i class="fa-solid fa-fw fa-times"></i></a>
@@ -108,7 +108,7 @@
             {{/each}}
         {{else}}
             <div class="form-group">
-                <label>{{localize "PF2E.Item.Effect.Badge.Range"}}</label>
+                <label>{{localize "AVANT.Item.Effect.Badge.Range"}}</label>
                 <div class="form-fields">
                     <input type="number" name="system.badge.min" value="{{document._source.system.badge.min}}" placeholder="1"/>
                     -
@@ -116,17 +116,17 @@
                 </div>
             </div>
             <button type="button" data-action="badge-add-label">
-                <i class="fa-solid fa-fw fa-plus"></i> {{localize "PF2E.Item.Effect.Badge.Labels.Add"}}
+                <i class="fa-solid fa-fw fa-plus"></i> {{localize "AVANT.Item.Effect.Badge.Labels.Add"}}
             </button>
         {{/if}}
     {{else}}
         <div class="add-badge">
             <select class="badge-type">
-                <option value="counter">{{localize "PF2E.Item.Effect.Badge.Type.counter"}}</option>
-                <option value="formula">{{localize "PF2E.Item.Effect.Badge.Type.formula"}}</option>
+                <option value="counter">{{localize "AVANT.Item.Effect.Badge.Type.counter"}}</option>
+                <option value="formula">{{localize "AVANT.Item.Effect.Badge.Type.formula"}}</option>
             </select>
             <button type="button" data-action="badge-add">
-                <i class="fa-solid fa-fw fa-plus"></i> {{localize "PF2E.Item.Effect.Badge.Add"}}
+                <i class="fa-solid fa-fw fa-plus"></i> {{localize "AVANT.Item.Effect.Badge.Add"}}
             </button>
         </div>
     {{/if}}

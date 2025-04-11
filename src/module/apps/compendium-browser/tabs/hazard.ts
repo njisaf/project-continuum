@@ -6,7 +6,7 @@ import { CompendiumBrowserIndexData, HazardFilters } from "./data.ts";
 
 export class CompendiumBrowserHazardTab extends CompendiumBrowserTab {
     tabName: ContentTabName = "hazard";
-    tabLabel = "PF2E.Actor.Hazard.Plural";
+    tabLabel = "AVANT.Actor.Hazard.Plural";
     declare filterData: HazardFilters;
 
     /* MiniSearch */
@@ -27,7 +27,7 @@ export class CompendiumBrowserHazardTab extends CompendiumBrowserTab {
     }
 
     protected override async loadData(): Promise<void> {
-        console.debug("PF2e System | Compendium Browser | Started loading Hazard actors");
+        console.debug("Avant System | Compendium Browser | Started loading Hazard actors");
 
         const hazardActors: CompendiumBrowserIndexData[] = [];
         const publications = new Set<string>();
@@ -38,7 +38,7 @@ export class CompendiumBrowserHazardTab extends CompendiumBrowserTab {
             this.browser.loadedPacks("hazard"),
             indexFields,
         )) {
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
             for (const actorData of index.filter((d) => d.type === "hazard")) {
                 if (!this.hasAllIndexFields(actorData, this.index)) {
                     console.warn(
@@ -66,7 +66,7 @@ export class CompendiumBrowserHazardTab extends CompendiumBrowserTab {
                     source: sourceSlug,
                 });
             }
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - Loaded`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - Loaded`);
         }
 
         // Set indexData
@@ -75,16 +75,16 @@ export class CompendiumBrowserHazardTab extends CompendiumBrowserTab {
         // Filters
         this.filterData.checkboxes.complexity.options = this.generateCheckboxOptions(
             {
-                simple: "PF2E.Actor.Hazard.Simple",
-                complex: "PF2E.TraitComplex",
+                simple: "AVANT.Actor.Hazard.Simple",
+                complex: "AVANT.TraitComplex",
             },
             false,
         );
-        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.PF2E.hazardTraits);
-        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.PF2E.rarityTraits, false);
+        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.AVANT.hazardTraits);
+        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.AVANT.rarityTraits, false);
         this.filterData.source.options = this.generateSourceCheckboxOptions(publications);
 
-        console.debug("PF2e System | Compendium Browser | Finished loading Hazard actors");
+        console.debug("Avant System | Compendium Browser | Finished loading Hazard actors");
     }
 
     protected override filterIndexData(entry: CompendiumBrowserIndexData): boolean {
@@ -114,20 +114,20 @@ export class CompendiumBrowserHazardTab extends CompendiumBrowserTab {
             checkboxes: {
                 complexity: {
                     isExpanded: true,
-                    label: "PF2E.CompendiumBrowser.Filter.Complexity",
+                    label: "AVANT.CompendiumBrowser.Filter.Complexity",
                     options: {},
                     selected: [],
                 },
                 rarity: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.Rarities",
+                    label: "AVANT.CompendiumBrowser.Filter.Rarities",
                     options: {},
                     selected: [],
                 },
             },
             source: {
                 isExpanded: false,
-                label: "PF2E.CompendiumBrowser.Filter.Source",
+                label: "AVANT.CompendiumBrowser.Filter.Source",
                 options: {},
                 selected: [],
             },
@@ -141,7 +141,7 @@ export class CompendiumBrowserHazardTab extends CompendiumBrowserTab {
                 direction: "asc",
                 options: {
                     name: { label: "Name", type: "alpha" },
-                    level: { label: "PF2E.LevelLabel", type: "numeric" },
+                    level: { label: "AVANT.LevelLabel", type: "numeric" },
                 },
                 type: "numeric",
             },

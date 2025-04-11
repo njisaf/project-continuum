@@ -1,4 +1,4 @@
-import type { CharacterPF2e } from "@actor/character/document.ts";
+import type { CharacterAvant } from "@actor/character/document.ts";
 import * as R from "remeda";
 import {
     DetectionMode,
@@ -62,7 +62,7 @@ overlandSpeed.applyStackRules();
 console.log(overlandSpeed.totalModifier);
 
 {
-  "key": "PF2E.RuleElement.FlatModifier",
+  "key": "AVANT.RuleElement.FlatModifier",
   "selector": "speed",
   "label": "Travel Speed Feat",
   "value": "10",
@@ -104,7 +104,7 @@ interface SheetData extends TravelFormData {
 }
 
 interface TravelSpeedSheetOptions extends FormApplicationOptions {
-    actors: CharacterPF2e[];
+    actors: CharacterAvant[];
 }
 
 class TravelSpeedSheet extends FormApplication<object, TravelSpeedSheetOptions> {
@@ -114,8 +114,8 @@ class TravelSpeedSheet extends FormApplication<object, TravelSpeedSheetOptions> 
         const options = super.defaultOptions;
         options.id = "travel-duration";
         options.classes = ["travel-duration"];
-        options.title = game.i18n.localize("PF2E.TravelSpeed.Title");
-        options.template = "systems/pf2e/templates/gm/travel/travel-speed-sheet.hbs";
+        options.title = game.i18n.localize("AVANT.TravelSpeed.Title");
+        options.template = "systems/avant/templates/gm/travel/travel-speed-sheet.hbs";
         options.width = "auto";
         options.submitOnChange = true;
         options.closeOnSubmit = false;
@@ -129,7 +129,7 @@ class TravelSpeedSheet extends FormApplication<object, TravelSpeedSheetOptions> 
         this.render(true);
     }
 
-    private actorFormToSheetData(actor: CharacterPF2e, data: FormActorData): SheetActorData {
+    private actorFormToSheetData(actor: CharacterAvant, data: FormActorData): SheetActorData {
         return {
             requiresDetectionMode: data.explorationActivity === "Search" || data.explorationActivity === "DetectMagic",
             detectionMode: data.detectionMode,
@@ -147,7 +147,7 @@ class TravelSpeedSheet extends FormApplication<object, TravelSpeedSheetOptions> 
         };
     }
 
-    private getInitialActorData(actor: CharacterPF2e): SheetActorData {
+    private getInitialActorData(actor: CharacterAvant): SheetActorData {
         return this.actorFormToSheetData(actor, {
             detectionMode: "before",
             explorationActivity: "Search",
@@ -155,7 +155,7 @@ class TravelSpeedSheet extends FormApplication<object, TravelSpeedSheetOptions> 
         });
     }
 
-    private formToSheetData(actors: CharacterPF2e[], data: TravelFormData): SheetData {
+    private formToSheetData(actors: CharacterAvant[], data: TravelFormData): SheetData {
         const journey: Trip[] = [
             {
                 terrainSlowdown: {
@@ -193,7 +193,7 @@ class TravelSpeedSheet extends FormApplication<object, TravelSpeedSheetOptions> 
         };
     }
 
-    private getInitialFormData(actors: CharacterPF2e[]): SheetData {
+    private getInitialFormData(actors: CharacterAvant[]): SheetData {
         return this.formToSheetData(actors, {
             actors: actors.map((actor) => this.getInitialActorData(actor)),
             terrain: "normal",
@@ -219,31 +219,31 @@ class TravelSpeedSheet extends FormApplication<object, TravelSpeedSheetOptions> 
         return {
             ...sheetData,
             detectionModeOptions: [
-                { value: "none", label: "PF2E.TravelSpeed.None" },
-                { value: "everything", label: "PF2E.TravelSpeed.DetectEverything" },
-                { value: "before", label: "PF2E.TravelSpeed.DetectBeforeRunningIntoIt" },
+                { value: "none", label: "AVANT.TravelSpeed.None" },
+                { value: "everything", label: "AVANT.TravelSpeed.DetectEverything" },
+                { value: "before", label: "AVANT.TravelSpeed.DetectBeforeRunningIntoIt" },
             ],
             explorationActivityOptions: [
-                { value: "AvoidNotice", label: "PF2E.TravelSpeed.ExplorationActivities.AvoidNotice" },
-                { value: "CoverTracks", label: "PF2E.TravelSpeed.ExplorationActivities.CoverTracks" },
-                { value: "Defend", label: "PF2E.TravelSpeed.ExplorationActivities.Defend" },
-                { value: "DetectMagic", label: "PF2E.TravelSpeed.ExplorationActivities.DetectMagic" },
-                { value: "Investigate", label: "PF2E.TravelSpeed.ExplorationActivities.Investigate" },
-                { value: "RepeatASpell", label: "PF2E.TravelSpeed.ExplorationActivities.RepeatASpell" },
-                { value: "Scout", label: "PF2E.TravelSpeed.ExplorationActivities.Scout" },
-                { value: "Search", label: "PF2E.TravelSpeed.ExplorationActivities.Search" },
-                { value: "Track", label: "PF2E.TravelSpeed.ExplorationActivities.Track" },
-                { value: "None", label: "PF2E.TravelSpeed.ExplorationActivities.None" },
-                { value: "HalfSpeed", label: "PF2E.TravelSpeed.ExplorationActivities.HalfSpeed" },
+                { value: "AvoidNotice", label: "AVANT.TravelSpeed.ExplorationActivities.AvoidNotice" },
+                { value: "CoverTracks", label: "AVANT.TravelSpeed.ExplorationActivities.CoverTracks" },
+                { value: "Defend", label: "AVANT.TravelSpeed.ExplorationActivities.Defend" },
+                { value: "DetectMagic", label: "AVANT.TravelSpeed.ExplorationActivities.DetectMagic" },
+                { value: "Investigate", label: "AVANT.TravelSpeed.ExplorationActivities.Investigate" },
+                { value: "RepeatASpell", label: "AVANT.TravelSpeed.ExplorationActivities.RepeatASpell" },
+                { value: "Scout", label: "AVANT.TravelSpeed.ExplorationActivities.Scout" },
+                { value: "Search", label: "AVANT.TravelSpeed.ExplorationActivities.Search" },
+                { value: "Track", label: "AVANT.TravelSpeed.ExplorationActivities.Track" },
+                { value: "None", label: "AVANT.TravelSpeed.ExplorationActivities.None" },
+                { value: "HalfSpeed", label: "AVANT.TravelSpeed.ExplorationActivities.HalfSpeed" },
             ],
             distanceUnitOptions: [
-                { value: "miles", label: "PF2E.TravelSpeed.Miles" },
-                { value: "feet", label: "PF2E.TravelSpeed.Feet" },
+                { value: "miles", label: "AVANT.TravelSpeed.Miles" },
+                { value: "feet", label: "AVANT.TravelSpeed.Feet" },
             ],
             terrainOptions: [
-                { value: "normal", label: "PF2E.TravelSpeed.NormalTerrain" },
-                { value: "difficult", label: "PF2E.TravelSpeed.DifficultTerrain" },
-                { value: "greaterDifficult", label: "PF2E.TravelSpeed.GreaterDifficultTerrain" },
+                { value: "normal", label: "AVANT.TravelSpeed.NormalTerrain" },
+                { value: "difficult", label: "AVANT.TravelSpeed.DifficultTerrain" },
+                { value: "greaterDifficult", label: "AVANT.TravelSpeed.GreaterDifficultTerrain" },
             ],
             oneToFour: R.range(1, 5).map((n) => ({ value: n.toString(), label: n.toString() })),
         };
@@ -302,7 +302,7 @@ function parseExplorationActivity(activity: ExplorationActivitiesData): Explorat
  * @param actors
  * @return possible minutes spent hustling
  */
-function getHustleMinutes(actors: CharacterPF2e[]): number {
+function getHustleMinutes(actors: CharacterAvant[]): number {
     return Math.min(
         ...actors.map((actor) => {
             return Math.max(1, actor.system.abilities.con.mod) * 10;
@@ -310,11 +310,11 @@ function getHustleMinutes(actors: CharacterPF2e[]): number {
     );
 }
 
-function hasFeat(actor: CharacterPF2e, slug: string): boolean {
+function hasFeat(actor: CharacterAvant, slug: string): boolean {
     return actor.itemTypes.feat.some((feat) => feat.slug === slug);
 }
 
-function parseExplorationOptions(actor: CharacterPF2e): ExplorationOptions {
+function parseExplorationOptions(actor: CharacterAvant): ExplorationOptions {
     // FIXME: instead of matching the name these should probably be rule toggles at some point
     return {
         practicedDefender: hasFeat(actor, "practiced-defender"),
@@ -335,6 +335,6 @@ function toArray<T>(data: Record<number, T>): T[] {
         .map(([_, a]) => a);
 }
 
-export function launchTravelSheet(actors: CharacterPF2e[]): void {
+export function launchTravelSheet(actors: CharacterAvant[]): void {
     new TravelSpeedSheet({}, { actors }).render(true);
 }

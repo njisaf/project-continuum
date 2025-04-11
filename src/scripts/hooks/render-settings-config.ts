@@ -16,12 +16,12 @@ export const RenderSettingsConfig = {
                 const controlElement = htmlQuery<HTMLInputElement | HTMLSelectElement>(element, "select, input");
                 if (controlElement) {
                     controlElement.disabled = true;
-                    controlElement.dataset.tooltip = "PF2E.SETTINGS.Core.ManagedBySystem";
+                    controlElement.dataset.tooltip = "AVANT.SETTINGS.Core.ManagedBySystem";
                 }
 
                 const label = htmlQuery(element, "label");
                 const lock = createHTMLElement("i", { classes: ["fa-solid", "fa-lock", "fa-fw"] });
-                lock.dataset.tooltip = "PF2E.SETTINGS.Core.ManagedBySystem";
+                lock.dataset.tooltip = "AVANT.SETTINGS.Core.ManagedBySystem";
                 label?.append(" ", lock);
             }
         });

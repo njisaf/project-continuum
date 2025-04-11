@@ -1,0 +1,203 @@
+{
+    "_id": "iecFmUwSrytQNwoE",
+    "img": "icons/equipment/waist/belt-buckle-spiral-blue.webp",
+    "name": "Skybearer's Belt",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "classfeature",
+        "description": {
+            "value": "<p><strong>Usage</strong> worn belt</p><hr /><p>This girdle wraps around your waist, magnifying your strength to the point you feel you could carry the sky itself.</p>\n<p><strong>Immanence</strong> Strength flows forth. You can attempt to @UUID[Compendium.avant.actionsavant.Item.Disarm], @UUID[Compendium.avant.actionsavant.Item.Grapple], @UUID[Compendium.avant.actionsavant.Item.Shove], or @UUID[Compendium.avant.actionsavant.Item.Trip] creatures up to two sizes larger than you, and you gain a +1 circumstance bonus to checks for these actions and to your saving throws to resist these actions.</p>\n<p><strong>Transcendence—</strong>@UUID[Compendium.avant.actionsavant.Item.Bear Allies' Burdens] <span class=\"action-glyph\">1</span> (transcendence)</p>\n<p>@Embed[Compendium.avant.actionsavant.Item.ukt9Dr4qmj9pUQII inline]</p>"
+        },
+        "level": {
+            "value": 1
+        },
+        "prerequisites": {
+            "value": []
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder War of Immortals"
+        },
+        "rules": [
+            {
+                "key": "RollOption",
+                "label": "AVANT.SpecificRule.Exemplar.DivineSpark.Label",
+                "mergeable": true,
+                "option": "divine-spark",
+                "suboptions": [
+                    {
+                        "label": "{item|name}",
+                        "value": "skybearers-belt"
+                    }
+                ],
+                "toggleable": true
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "add",
+                "path": "flags.avant.exemplar.ikons",
+                "value": {
+                    "label": "AVANT.SpecificRule.Exemplar.Ikon.SkybearersBelt.Label",
+                    "predicate": [
+                        "parent:tag:worn-ikon-feat"
+                    ],
+                    "value": "skybearers-belt"
+                }
+            },
+            {
+                "key": "GrantItem",
+                "uuid": "Compendium.avant.actionsavant.Item.Bear Allies' Burdens"
+            },
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.SpecificRule.Exemplar.Ikon.Physical.Grant",
+                        "value": "granted"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.Exemplar.Ikon.Physical.Existing",
+                        "value": "existing"
+                    }
+                ],
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Exemplar.Ikon.Physical.Prompt",
+                "rollOption": "skybearers-belt-origin"
+            },
+            {
+                "alterations": [
+                    {
+                        "mode": "add",
+                        "property": "other-tags",
+                        "value": "physical-ikon"
+                    },
+                    {
+                        "mode": "add",
+                        "property": "other-tags",
+                        "value": "physical-ikon:skybearers-belt"
+                    }
+                ],
+                "key": "GrantItem",
+                "predicate": [
+                    "skybearers-belt-origin:granted"
+                ],
+                "uuid": "Compendium.avant.equipment-srd.Item.Skybearer's Belt"
+            },
+            {
+                "adjustName": false,
+                "choices": {
+                    "ownedItems": true,
+                    "types": [
+                        "equipment"
+                    ]
+                },
+                "flag": "existingIkon",
+                "key": "ChoiceSet",
+                "predicate": [
+                    "skybearers-belt-origin:existing"
+                ]
+            },
+            {
+                "itemId": "{item|flags.avant.rulesSelections.existingIkon}",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "property": "other-tags",
+                "value": "physical-ikon"
+            },
+            {
+                "itemId": "{item|flags.avant.rulesSelections.existingIkon}",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "property": "other-tags",
+                "value": "physical-ikon:skybearers-belt"
+            },
+            {
+                "itemType": "equipment",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "predicate": [
+                    "item:tag:physical-ikon:skybearers-belt",
+                    "skybearers-belt-origin:existing",
+                    {
+                        "not": "item:slug:skybearers-belt"
+                    }
+                ],
+                "property": "description",
+                "value": [
+                    {
+                        "text": "@Embed[Compendium.avant.classfeatures.Item.iecFmUwSrytQNwoE inline]"
+                    }
+                ]
+            },
+            {
+                "key": "FlatModifier",
+                "predicate": [
+                    "divine-spark:skybearers-belt",
+                    {
+                        "or": [
+                            "action:disarm",
+                            "action:grapple",
+                            "action:shove",
+                            "action:trip"
+                        ]
+                    }
+                ],
+                "selector": [
+                    "athletics",
+                    "reflex-dc",
+                    "fortitude-dc"
+                ],
+                "type": "circumstance",
+                "value": 1
+            },
+            {
+                "itemType": "action",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "predicate": [
+                    "item:trait:transcendence",
+                    {
+                        "or": [
+                            "item:granter:tag:chosen-ikon:skybearers-belt",
+                            "item:slug:bear-allies-burdens"
+                        ]
+                    },
+                    {
+                        "not": "divine-spark:skybearers-belt"
+                    }
+                ],
+                "priority": 121,
+                "property": "description",
+                "value": [
+                    {
+                        "text": "AVANT.SpecificRule.Exemplar.DivineSpark.SparkTranscendence.Reminder"
+                    }
+                ]
+            },
+            {
+                "itemId": "{item|flags.avant.rulesSelections.existingIkon}",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "property": "traits",
+                "value": "divine"
+            }
+        ],
+        "traits": {
+            "otherTags": [
+                "exemplar-ikon",
+                "exemplar-worn-ikon"
+            ],
+            "rarity": "common",
+            "value": [
+                "ikon"
+            ]
+        }
+    },
+    "type": "feat"
+}

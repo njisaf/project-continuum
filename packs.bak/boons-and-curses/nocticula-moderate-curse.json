@@ -1,0 +1,119 @@
+{
+    "_id": "6Cpm04jBSzSwe2oC",
+    "img": "systems/avant/icons/deities/nocticula.webp",
+    "name": "Nocticula - Moderate Curse",
+    "system": {
+        "description": {
+            "value": "<p>You are plagued with doubt in your own skills. You are always untrained with Crafting, Performance, and one other skill (determined by the GM, but themed to the event that brought on your curse), regardless of any effect that would improve your proficiency. You can't retrain those skills.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 0
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Gods & Magic"
+        },
+        "rules": [
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "system.skills.crafting.rank",
+                "value": "0"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "system.skills.performance.rank",
+                "value": "0"
+            },
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Skill.Acrobatics",
+                        "value": "acrobatics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Arcana",
+                        "value": "arcana"
+                    },
+                    {
+                        "label": "AVANT.Skill.Athletics",
+                        "value": "athletics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Deception",
+                        "value": "deception"
+                    },
+                    {
+                        "label": "AVANT.Skill.Diplomacy",
+                        "value": "diplomacy"
+                    },
+                    {
+                        "label": "AVANT.Skill.Intimidation",
+                        "value": "intimidation"
+                    },
+                    {
+                        "label": "AVANT.Skill.Medicine",
+                        "value": "medicine"
+                    },
+                    {
+                        "label": "AVANT.Skill.Nature",
+                        "value": "nature"
+                    },
+                    {
+                        "label": "AVANT.Skill.Occultism",
+                        "value": "occultism"
+                    },
+                    {
+                        "label": "AVANT.Skill.Religion",
+                        "value": "religion"
+                    },
+                    {
+                        "label": "AVANT.Skill.Society",
+                        "value": "society"
+                    },
+                    {
+                        "label": "AVANT.Skill.Stealth",
+                        "value": "stealth"
+                    },
+                    {
+                        "label": "AVANT.Skill.Survival",
+                        "value": "survival"
+                    },
+                    {
+                        "label": "AVANT.Skill.Thievery",
+                        "value": "thievery"
+                    }
+                ],
+                "flag": "nocticulaSkill",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Skill"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "system.skills.{item|flags.avant.rulesSelections.nocticulaSkill}.rank",
+                "value": 0
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": false
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

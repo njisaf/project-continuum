@@ -1,10 +1,10 @@
-import { DropCanvasItemDataPF2e } from "@module/canvas/drop-canvas-data.ts";
+import { DropCanvasItemDataAvant } from "@module/canvas/drop-canvas-data.ts";
 import { resolveActorAndItemFromHTML } from "@scripts/helpers.ts";
 import { CheckRoll } from "@system/check/index.ts";
 import { htmlClosest } from "@util";
 
 /**
- * Extends all drag and drop events on entity links to contain PF2e specific information
+ * Extends all drag and drop events on entity links to contain Avant specific information
  * such as condition value and spell level.
  */
 export function extendDragData(): void {
@@ -25,7 +25,7 @@ export function extendDragData(): void {
 
         if (targetElement.classList.contains("content-link")) {
             // If this is a content link for an item, we need to extend existing data
-            const data: DropCanvasItemDataPF2e = JSON.parse(dataTransfer.getData("text/plain"));
+            const data: DropCanvasItemDataAvant = JSON.parse(dataTransfer.getData("text/plain"));
             if (data.type !== "Item") return;
 
             // Add value field to TextEditor#_onDragEntityLink data. This is mainly used for conditions.
@@ -39,7 +39,7 @@ export function extendDragData(): void {
 
             // Detect spell rank of containing element, if available
             const containerElement = htmlClosest(targetElement, "[data-cast-rank]");
-            const castRank = Number(containerElement?.dataset.castRank) || message?.flags.pf2e.origin?.castRank || 0;
+            const castRank = Number(containerElement?.dataset.castRank) || message?.flags.avant.origin?.castRank || 0;
             if (castRank > 0) data.level = castRank;
 
             if (actor) {
@@ -62,7 +62,7 @@ export function extendDragData(): void {
                         token: token?.uuid ?? null,
                         item: originItem?.uuid ?? null,
                         spellcasting,
-                        rollOptions: message?.flags.pf2e.origin?.rollOptions ?? [],
+                        rollOptions: message?.flags.avant.origin?.rollOptions ?? [],
                     },
                     target: target ? { actor: target.actor.uuid, token: target.token.uuid } : null,
                     roll: roll

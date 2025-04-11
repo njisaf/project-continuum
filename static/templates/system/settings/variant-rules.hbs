@@ -1,7 +1,7 @@
 <form class="flexcol" autocomplete="off">
-    {{> systems/pf2e/templates/system/settings/basic-setting.hbs setting=gradualBoostsVariant}}
-    {{> systems/pf2e/templates/system/settings/basic-setting.hbs setting=staminaVariant}}
-    {{> systems/pf2e/templates/system/settings/basic-setting.hbs setting=freeArchetypeVariant}}
+    {{> systems/avant/templates/system/settings/basic-setting.hbs setting=gradualBoostsVariant}}
+    {{> systems/avant/templates/system/settings/basic-setting.hbs setting=staminaVariant}}
+    {{> systems/avant/templates/system/settings/basic-setting.hbs setting=freeArchetypeVariant}}
 
     <div class="form-group abp">
         <label>{{localize automaticBonusVariant.name}}</label>
@@ -17,19 +17,19 @@
         <p class="hint">{{localize automaticBonusVariant.hint}}</p>
     </div>
 
-    {{> systems/pf2e/templates/system/settings/basic-setting.hbs setting=mythic}}
+    {{> systems/avant/templates/system/settings/basic-setting.hbs setting=mythic}}
 
     <div class="form-group">
         <label>{{localize proficiencyVariant.name}}</label>
         <div class="form-fields">
             <input type="checkbox" name="proficiencyVariant" {{checked proficiencyVariant.value}} />
         </div>
-        <p class="hint">{{localize "PF2E.SETTINGS.Variant.Proficiency.Hint"}}</p>
+        <p class="hint">{{localize "AVANT.SETTINGS.Variant.Proficiency.Hint"}}</p>
     </div>
 
     <div class="proficiency-modifiers">
         <div class="modifier">
-            <label>{{localize "PF2E.ProficiencyLevel0"}}</label>
+            <label>{{localize "AVANT.ProficiencyLevel0"}}</label>
             <div class="form-fields">
                 <input
                     type="number"
@@ -39,25 +39,25 @@
             </div>
         </div>
         <div class="modifier">
-            <label>{{localize "PF2E.ProficiencyLevel1"}}</label>
+            <label>{{localize "AVANT.ProficiencyLevel1"}}</label>
             <div class="form-fields">
                 <input type="number" name="proficiencyTrainedModifier" value="{{proficiencyTrainedModifier.value}}" />
             </div>
         </div>
         <div class="modifier">
-            <label>{{localize "PF2E.ProficiencyLevel2"}}</label>
+            <label>{{localize "AVANT.ProficiencyLevel2"}}</label>
             <div class="form-fields">
                 <input type="number" name="proficiencyExpertModifier" value="{{proficiencyExpertModifier.value}}" />
             </div>
         </div>
         <div class="modifier">
-            <label>{{localize "PF2E.ProficiencyLevel3"}}</label>
+            <label>{{localize "AVANT.ProficiencyLevel3"}}</label>
             <div class="form-fields">
                 <input type="number" name="proficiencyMasterModifier" value="{{proficiencyMasterModifier.value}}" />
             </div>
         </div>
         <div class="modifier">
-            <label>{{localize "PF2E.ProficiencyLevel4"}}</label>
+            <label>{{localize "AVANT.ProficiencyLevel4"}}</label>
             <div class="form-fields">
                 <input
                     type="number"
@@ -66,7 +66,7 @@
                 />
             </div>
         </div>
-        <p class="hint">{{localize "PF2E.SETTINGS.Variant.Proficiency.ModifiersHint"}}</p>
+        <p class="hint">{{localize "AVANT.SETTINGS.Variant.Proficiency.ModifiersHint"}}</p>
     </div>
 
     <hr />
@@ -78,7 +78,7 @@
         </button>
         <button type="reset">
             <i class="fa-solid fa-arrow-rotate-left"></i>
-            {{localize "PF2E.SETTINGS.ResetChanges"}}
+            {{localize "AVANT.SETTINGS.ResetChanges"}}
         </button>
     </footer>
 </form>

@@ -1,12 +1,12 @@
-import type { AbilityItemPF2e, FeatPF2e, SpellPF2e } from "@item";
-import { ItemPF2e } from "@item";
+import type { AbilityItemAvant, FeatAvant, SpellAvant } from "@item";
+import { ItemAvant } from "@item";
 import { ActionCost, FrequencySource } from "@item/base/data/system.ts";
-import type { FeatSheetPF2e } from "@item/feat/sheet.ts";
+import type { FeatSheetAvant } from "@item/feat/sheet.ts";
 import { RangeData } from "@item/types.ts";
 import { htmlQuery, isImageFilePath } from "@util";
 import * as R from "remeda";
 import type { AbilitySystemData, SelfEffectReference } from "./data.ts";
-import type { AbilitySheetPF2e } from "./sheet.ts";
+import type { AbilitySheetAvant } from "./sheet.ts";
 
 interface SourceWithActionData {
     system: {
@@ -34,7 +34,7 @@ function normalizeActionChangeData(document: SourceWithActionData, changed: Deep
 }
 
 /** Adds sheet listeners for modifying frequency */
-function activateActionSheetListeners(item: ItemPF2e & SourceWithFrequencyData, html: HTMLElement): void {
+function activateActionSheetListeners(item: ItemAvant & SourceWithFrequencyData, html: HTMLElement): void {
     htmlQuery(html, "a[data-action=frequency-add]")?.addEventListener("click", () => {
         const frequency: Partial<FrequencySource> = { max: 1, per: "day" };
         item.update({ system: { frequency } });
@@ -88,7 +88,7 @@ interface SelfEffectSheetReference extends SelfEffectReference {
 }
 
 /** Save data from an effect item dropped on an ability or feat sheet. Returns true if handled */
-async function handleSelfEffectDrop(sheet: AbilitySheetPF2e | FeatSheetPF2e, item: ItemPF2e): Promise<boolean> {
+async function handleSelfEffectDrop(sheet: AbilitySheetAvant | FeatSheetAvant, item: ItemAvant): Promise<boolean> {
     if (!sheet.isEditable || sheet.item.system.actionType.value === "passive") {
         return false;
     }
@@ -100,14 +100,14 @@ async function handleSelfEffectDrop(sheet: AbilitySheetPF2e | FeatSheetPF2e, ite
 function createActionRangeLabel(range: Maybe<RangeData>): string | null {
     if (!range?.max) return null;
     const [key, value] = range.increment
-        ? ["PF2E.Action.Range.IncrementN", range.increment]
-        : ["PF2E.Action.Range.MaxN", range.max];
+        ? ["AVANT.Action.Range.IncrementN", range.increment]
+        : ["AVANT.Action.Range.MaxN", range.max];
 
     return game.i18n.format(key, { n: value });
 }
 
 /**  Add the holy/unholy trait to sanctified actions and spells if the owning actor is also holy/unholy */
-function processSanctification(item: AbilityItemPF2e | FeatPF2e | SpellPF2e): void {
+function processSanctification(item: AbilityItemAvant | FeatAvant | SpellAvant): void {
     const itemTraits: { value: string[] } = item.system.traits;
     if (!itemTraits.value.includes("sanctified")) return;
 

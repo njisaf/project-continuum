@@ -1,4 +1,4 @@
-import type { DamageDicePF2e, ModifierPF2e } from "@actor/modifiers.ts";
+import type { DamageDiceAvant, ModifierAvant } from "@actor/modifiers.ts";
 import type { RollOrigin, RollTarget } from "@actor/roll-context/types.ts";
 import type { ImmunityType, ResistanceType } from "@actor/types.ts";
 import type { ZeroToTwo } from "@module/data.ts";
@@ -8,12 +8,12 @@ import type { DamageRoll } from "./roll.ts";
 import type { DAMAGE_CATEGORIES_UNIQUE, DAMAGE_DICE_FACES, DAMAGE_DIE_SIZES, DAMAGE_TYPES } from "./values.ts";
 
 type DamageCategoryUnique = (typeof DAMAGE_CATEGORIES_UNIQUE)[number];
-type DamageCategory = keyof typeof CONFIG.PF2E.damageCategories;
+type DamageCategory = keyof typeof CONFIG.AVANT.damageCategories;
 type DamageDiceFaces = (typeof DAMAGE_DICE_FACES)[number];
 type DamageDieSize = (typeof DAMAGE_DIE_SIZES)[number];
 type DamageType = SetElement<typeof DAMAGE_TYPES>;
 type DamageKind = "damage" | "healing";
-type MaterialDamageEffect = keyof typeof CONFIG.PF2E.materialDamageEffects;
+type MaterialDamageEffect = keyof typeof CONFIG.AVANT.materialDamageEffects;
 
 /**
  * `null`: double on crit (includes most damage)
@@ -58,8 +58,8 @@ interface DamageDamageContext extends BaseRollContext {
 
 interface DamageFormulaData {
     base: BaseDamageData[];
-    dice: DamageDicePF2e[];
-    modifiers: ModifierPF2e[];
+    dice: DamageDiceAvant[];
+    modifiers: ModifierAvant[];
     /** Maximum number of die increases. Weapons should be set to 1 */
     maxIncreases?: number;
     bypass?: DamageIRBypassData;
@@ -133,7 +133,7 @@ interface WeaponBaseDamageData extends BaseDamageData {
 interface BaseDamageTemplate {
     name: string;
     materials: MaterialDamageEffect[];
-    modifiers?: (ModifierPF2e | DamageDicePF2e)[];
+    modifiers?: (ModifierAvant | DamageDiceAvant)[];
 }
 
 interface WeaponDamageTemplate extends BaseDamageTemplate {

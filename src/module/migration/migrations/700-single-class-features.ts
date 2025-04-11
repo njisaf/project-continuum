@@ -1,5 +1,5 @@
 import { ABCFeatureEntryData } from "@item/abc/data.ts";
-import { ClassSource, FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ClassSource, FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { sluggify } from "@util";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -96,7 +96,7 @@ export class Migration700SingleClassFeatures extends MigrationBase {
         }
     }
 
-    #isClassFeature(source: ItemSourcePF2e): source is FeatSource & { system: { featType: "classfeature" } } {
+    #isClassFeature(source: ItemSourceAvant): source is FeatSource & { system: { featType: "classfeature" } } {
         return (
             source.type === "feat" &&
             "featType" in source.system &&
@@ -105,7 +105,7 @@ export class Migration700SingleClassFeatures extends MigrationBase {
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "class") {
             this.#migrateClass(source);
         } else if (source.type === "feat") {

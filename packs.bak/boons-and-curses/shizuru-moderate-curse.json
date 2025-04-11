@@ -1,0 +1,42 @@
+{
+    "_id": "BKZRjVVt7hkvEpk3",
+    "img": "systems/avant/icons/deities/shizuru.webp",
+    "name": "Shizuru - Moderate Curse",
+    "system": {
+        "description": {
+            "value": "<p>Shizuru decrees that her light is no longer your ally. You gain @UUID[Compendium.avant.bestiary-ability-glossary-srd.Item.Light Blindness].</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 0
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Gods & Magic"
+        },
+        "rules": [
+            {
+                "key": "GrantItem",
+                "uuid": "Compendium.avant.bestiary-ability-glossary-srd.Item.Light Blindness"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": false
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

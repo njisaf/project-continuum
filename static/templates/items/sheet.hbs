@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off" data-tooltip-class="pf2e">
+<form class="{{cssClass}}" autocomplete="off" data-tooltip-class="avant">
     {{!-- ITEM SHEET HEADER --}}
     <header class="sheet-header">
         {{!-- Source image in case of change during data preparation --}}
@@ -9,9 +9,9 @@
                 name="name"
                 type="text"
                 value="{{item._source.name}}"
-                placeholder="{{localize "PF2E.ItemNamePlaceholder"}}"
+                placeholder="{{localize "AVANT.ItemNamePlaceholder"}}"
                 spellcheck="false"
-                aria-label="{{localize "PF2E.ItemNamePlaceholder"}}"
+                aria-label="{{localize "AVANT.ItemNamePlaceholder"}}"
             />
 
             {{#if item.actionCost~}}
@@ -31,7 +31,7 @@
                         required="true"
                         min="0"
                         value="{{data.level.value}}"
-                        aria-label="{{localize "PF2E.LevelLabel"}}"
+                        aria-label="{{localize "AVANT.LevelLabel"}}"
                     />
                 </span>
             {{/if}}
@@ -44,7 +44,7 @@
             </template>
             {{#if showTraits}}
                 <tagify-tags class="paizo-style tags" name="system.traits.value" value="{{json traitTagifyData}}"
-                    {{#if (eq data.traits.value.length 0)}}placeholder="{{localize "PF2E.Traits"}}"{{/if}} />
+                    {{#if (eq data.traits.value.length 0)}}placeholder="{{localize "AVANT.Traits"}}"{{/if}} />
             {{else if rarity}}
                 <div class="paizo-style tags"></div>
             {{/if}}
@@ -58,12 +58,12 @@
 
         <div class="tabs" data-tab-container="primary">
             <a class="list-row" data-tab="description">{{localize "Description"}}</a>
-            <a class="list-row" data-tab="details">{{localize "PF2E.Details"}}</a>
+            <a class="list-row" data-tab="details">{{localize "AVANT.Details"}}</a>
             {{#if (and isPhysical user.isGM (not item.parentItem))}}
-                <a class="list-row" data-tab="mystification">{{localize "PF2E.ItemMystification"}}</a>
+                <a class="list-row" data-tab="mystification">{{localize "AVANT.ItemMystification"}}</a>
             {{/if}}
             {{#if (and enabledRulesUI (not isVariant))}}
-                <a class="list-row" data-tab="rules">{{localize "PF2E.Item.Rules.Tab"}}</a>
+                <a class="list-row" data-tab="rules">{{localize "AVANT.Item.Rules.Tab"}}</a>
             {{/if}}
         </div>
     </nav>
@@ -106,23 +106,23 @@
                 {{> (lookup . "detailsTemplate")}}
 
                 <fieldset class="publication">
-                    <legend>{{localize "PF2E.Publication.Label"}}</legend>
+                    <legend>{{localize "AVANT.Publication.Label"}}</legend>
                     <div class="data">
-                        {{> "systems/pf2e/templates/partials/publication-data.hbs" path="system.publication" data=data.publication}}
+                        {{> "systems/avant/templates/partials/publication-data.hbs" path="system.publication" data=data.publication}}
                     </div>
                 </fieldset>
             </section>
 
             {{#if (and isPhysical user.isGM)}}
                 <!-- Mystification Details -->
-                {{> "systems/pf2e/templates/items/mystify-panel.hbs"}}
+                {{> "systems/avant/templates/items/mystify-panel.hbs"}}
             {{/if}}
 
             <!-- Rules Elements -->
             {{#if (not isVariant)}}
                 <section class="tab rules" data-tab="rules" data-tooltip-direction="UP">
                     {{!-- Use ~ so that text areas don't add further indentation --}}
-                    {{~> systems/pf2e/templates/items/rules-panel.hbs item=item}}
+                    {{~> systems/avant/templates/items/rules-panel.hbs item=item}}
                 </section>
             {{/if}}
         </div>

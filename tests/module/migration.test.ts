@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { ActorSourcePF2e, CharacterSource } from "@actor/data/index.ts";
-import { ArmorSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant, CharacterSource } from "@actor/data/index.ts";
+import { ArmorSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { MigrationBase } from "@module/migration/base.ts";
 import { MigrationRunner } from "@module/migration/runner/index.ts";
@@ -102,7 +102,7 @@ describe("test migration runner", () => {
 
     class ChangeNameMigration extends MigrationBase {
         static version = 12;
-        async updateActor(actor: ActorSourcePF2e) {
+        async updateActor(actor: ActorSourceAvant) {
             actor.name = "updated";
         }
     }
@@ -116,7 +116,7 @@ describe("test migration runner", () => {
 
     class UpdateItemName extends MigrationBase {
         static version = 13;
-        async updateItem(source: ItemSourcePF2e): Promise<void> {
+        async updateItem(source: ItemSourceAvant): Promise<void> {
             source.name = "updated";
         }
     }
@@ -232,7 +232,7 @@ describe("test migration runner", () => {
 
         class UpdateItemNameWithProp extends MigrationBase {
             static version = 14;
-            async updateItem(item: ItemSourcePF2e) {
+            async updateItem(item: ItemSourceAvant) {
                 item.name = `${item.system.prop}`;
             }
         }

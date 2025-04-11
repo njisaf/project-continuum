@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -11,19 +11,19 @@ export class Migration795CleanupFlatFootedToggle extends MigrationBase {
         return {
             key: "RollOption",
             domain: "all",
-            label: "PF2E.SpecificRule.TOTMToggle.FlatFooted",
+            label: "AVANT.SpecificRule.TOTMToggle.FlatFooted",
             option: "target:condition:flat-footed",
             toggleable: "totm",
         };
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
-        if (source.flags.pf2e?.rollOptions) {
-            source.flags.pf2e["-=rollOptions"] = null;
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
+        if (source.flags.avant?.rollOptions) {
+            source.flags.avant["-=rollOptions"] = null;
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "feat" || (source.type === "action" && source.system.slug === "sneak-attack")) {
             switch (source.system.slug) {
                 case "sneak-attack":

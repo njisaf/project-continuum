@@ -1,12 +1,12 @@
-import { ActorPF2e } from "@actor";
-import { ItemPF2e, SpellPF2e, SpellcastingEntryPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import { ItemAvant, SpellAvant, SpellcastingEntryAvant } from "@item";
 import { OneToTen, ValueAndMax, ZeroToTen } from "@module/data.ts";
-import { ErrorPF2e, groupBy, localizer, ordinalString } from "@util";
+import { ErrorAvant, groupBy, localizer, ordinalString } from "@util";
 import * as R from "remeda";
 import { spellSlotGroupIdToNumber } from "./helpers.ts";
 import { BaseSpellcastingEntry, SpellPrepEntry, SpellcastingSlotGroup } from "./types.ts";
 
-class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TActor>> {
+class SpellCollection<TActor extends ActorAvant> extends Collection<SpellAvant<TActor>> {
     readonly entry: BaseSpellcastingEntry<TActor>;
 
     readonly actor: TActor;
@@ -14,7 +14,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
     readonly name: string;
 
     constructor(entry: BaseSpellcastingEntry<TActor>, name = entry.name) {
-        if (!entry.actor) throw ErrorPF2e("a spell collection must have an associated actor");
+        if (!entry.actor) throw ErrorAvant("a spell collection must have an associated actor");
         super();
 
         this.entry = entry;
@@ -34,9 +34,9 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
 
     #assertEntryIsDocument(
         entry: BaseSpellcastingEntry<TActor | null>,
-    ): asserts entry is SpellcastingEntryPF2e<TActor> {
-        if (!(entry instanceof ItemPF2e)) {
-            throw ErrorPF2e("`this#entry` is not a `SpellcastingEntryPF2e`");
+    ): asserts entry is SpellcastingEntryAvant<TActor> {
+        if (!(entry instanceof ItemAvant)) {
+            throw ErrorAvant("`this#entry` is not a `SpellcastingEntryAvant`");
         }
     }
 
@@ -45,12 +45,12 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
      * or creating a new spell if its not. If given a rank, it will heighten to that rank if it can be.
      */
     async addSpell(
-        spell: SpellPF2e,
+        spell: SpellAvant,
         options?: { groupId?: Maybe<SpellSlotGroupId> },
-    ): Promise<SpellPF2e<TActor> | null> {
+    ): Promise<SpellAvant<TActor> | null> {
         const actor = this.actor;
         if (!actor.isOfType("creature")) {
-            throw ErrorPF2e("Spellcasting entries can only exist on creatures");
+            throw ErrorAvant("Spellcasting entries can only exist on creatures");
         }
 
         const isStandardSpell = !(spell.isCantrip || spell.isFocusSpell || spell.isRitual);
@@ -86,12 +86,12 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
             return spell.update({
                 "system.location.value": this.id,
                 ...heightenedUpdate,
-            }) as Promise<SpellPF2e<TActor> | null>;
+            }) as Promise<SpellAvant<TActor> | null>;
         } else {
             const source = spell.clone({ sort: 0, "system.location.value": this.id, ...heightenedUpdate }).toObject();
             const created = (await actor.createEmbeddedDocuments("Item", [source])).shift();
 
-            return created instanceof SpellPF2e ? created : null;
+            return created instanceof SpellAvant ? created : null;
         }
     }
 
@@ -114,7 +114,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
     }
 
     /** Save the prepared spell slot data to the spellcasting entry  */
-    async prepareSpell(spell: SpellPF2e, groupId: SpellSlotGroupId, slotIndex: number): Promise<this | null> {
+    async prepareSpell(spell: SpellAvant, groupId: SpellSlotGroupId, slotIndex: number): Promise<this | null> {
         this.#assertEntryIsDocument(this.entry);
 
         if ((groupId === "cantrips") !== spell.isCantrip) {
@@ -127,7 +127,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
 
         if (CONFIG.debug.hooks) {
             console.debug(
-                `PF2e System | Updating location for spell ${spell.name} to match spellcasting entry ${this.id}`,
+                `Avant System | Updating location for spell ${spell.name} to match spellcasting entry ${this.id}`,
             );
         }
 
@@ -147,7 +147,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
         const groupNumber = spellSlotGroupIdToNumber(groupId);
         if (CONFIG.debug.hooks === true) {
             console.debug(
-                `PF2e System | Updating spellcasting entry ${this.id} to remove spellslot ${slotIndex} for spell rank ${groupNumber}`,
+                `Avant System | Updating spellcasting entry ${this.id} to remove spellslot ${slotIndex} for spell rank ${groupNumber}`,
             );
         }
 
@@ -175,10 +175,10 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
     async getSpellData({ prepList = false } = {}): Promise<SpellCollectionData> {
         const actor = this.actor;
         if (!actor.isOfType("character", "npc")) {
-            throw ErrorPF2e("Spellcasting entries can only exist on characters and npcs");
+            throw ErrorAvant("Spellcasting entries can only exist on characters and npcs");
         }
 
-        if (!(this.entry instanceof SpellcastingEntryPF2e)) {
+        if (!(this.entry instanceof SpellcastingEntryAvant)) {
             return this.#getEphemeralData();
         }
 
@@ -189,7 +189,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
         const isFlexible = this.entry.isFlexible;
         const maxCantripRank = Math.max(1, Math.ceil(actor.level / 2)) as OneToTen;
 
-        if (this.entry.isPrepared && this.entry instanceof SpellcastingEntryPF2e) {
+        if (this.entry.isPrepared && this.entry instanceof SpellcastingEntryAvant) {
             // Prepared Spells. Active spells are what's been prepped.
             for (let rank = 0 as ZeroToTen; rank <= this.highestRank; rank++) {
                 const group = this.entry.system.slots[`slot${rank}`];
@@ -208,8 +208,8 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
                     rank === 0 ? ["cantrips", maxCantripRank] : [rank, rank];
                 const label =
                     groupId === "cantrips"
-                        ? "PF2E.Actor.Creature.Spellcasting.Cantrips"
-                        : game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) });
+                        ? "AVANT.Actor.Creature.Spellcasting.Cantrips"
+                        : game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) });
                 const uses = {
                     value: rank > 0 && isFlexible ? group.value || 0 : undefined,
                     max: group.max,
@@ -227,7 +227,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
                 groups.push({
                     id: "cantrips",
                     maxRank: maxCantripRank,
-                    label: "PF2E.Actor.Creature.Spellcasting.Cantrips",
+                    label: "AVANT.Actor.Creature.Spellcasting.Cantrips",
                     active,
                 });
             }
@@ -237,7 +237,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
                 groups.push({
                     id: maxCantripRank,
                     maxRank: maxCantripRank,
-                    label: actor.type === "character" ? "PF2E.Focus.Spells" : "PF2E.Focus.Pool",
+                    label: actor.type === "character" ? "AVANT.Focus.Spells" : "AVANT.Focus.Pool",
                     uses: actor.system.resources.focus ?? { value: 0, max: 0 },
                     active,
                 });
@@ -270,8 +270,8 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
                         id: groupId,
                         label:
                             groupId === "cantrips"
-                                ? "PF2E.Actor.Creature.Spellcasting.Cantrips"
-                                : game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) }),
+                                ? "AVANT.Actor.Creature.Spellcasting.Cantrips"
+                                : game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) }),
                         maxRank,
                         uses,
                         active,
@@ -338,7 +338,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
             .map(
                 ([rank, spells]): SpellcastingSlotGroup => ({
                     id: Number(rank) as SpellSlotGroupId,
-                    label: game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(Number(rank)) }),
+                    label: game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(Number(rank)) }),
                     maxRank: 10,
                     active: spells.map((spell) => ({ spell, expended: spell.parentItem?.uses.value === 0 })),
                 }),
@@ -347,7 +347,7 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
         return { groups, prepList: null };
     }
 
-    protected getSpellPrepList(spells: SpellPF2e<TActor>[]): Record<ZeroToTen, SpellPrepEntry[]> {
+    protected getSpellPrepList(spells: SpellAvant<TActor>[]): Record<ZeroToTen, SpellPrepEntry[]> {
         const indices = Array.fromRange(11) as ZeroToTen[];
         const prepList: Record<ZeroToTen, SpellPrepEntry[]> = R.mapToObj(indices, (i) => [i, []]);
         if (this.entry.category !== "prepared") return prepList;
@@ -365,16 +365,16 @@ class SpellCollection<TActor extends ActorPF2e> extends Collection<SpellPF2e<TAc
     }
 
     #warnInvalidDrop(warning: DropWarningType, { spell, groupId }: WarnInvalidDropParams): void {
-        const localize = localizer("PF2E.Item.Spell.Warning");
+        const localize = localizer("AVANT.Item.Spell.Warning");
         if (warning === "invalid-rank" && typeof groupId === "number") {
-            const spellRank = game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(spell.baseRank) });
-            const targetRank = game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(groupId) });
+            const spellRank = game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(spell.baseRank) });
+            const targetRank = game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(groupId) });
             ui.notifications.warn(localize("InvalidRank", { spell: spell.name, spellRank, targetRank }));
         } else if (warning === "cantrip-mismatch") {
             const locKey = spell.isCantrip ? "CantripToRankedSlots" : "NonCantripToCantrips";
             ui.notifications.warn(localize(locKey, { spell: spell.name }));
         } else if (warning === "invalid-spell") {
-            const type = game.i18n.format("PF2E.TraitFocus");
+            const type = game.i18n.format("AVANT.TraitFocus");
             ui.notifications.warn(localize("WrongSpellType", { type }));
         }
     }
@@ -390,7 +390,7 @@ interface SpellCollectionData {
 
 type DropWarningType = "invalid-rank" | "cantrip-mismatch" | "invalid-spell";
 interface WarnInvalidDropParams {
-    spell: SpellPF2e;
+    spell: SpellAvant;
     groupId?: Maybe<SpellSlotGroupId>;
 }
 

@@ -1,0 +1,28 @@
+{
+    "_id": "v61oEQaDdcRpaZ9X",
+    "img": "systems/avant/icons/actions/Passive.webp",
+    "name": "Aura",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "defensive",
+        "description": {
+            "value": "<p>@Localize[AVANT.NPC.Abilities.Glossary.Aura]</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Monster Core"
+        },
+        "rules": [],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "action"
+}

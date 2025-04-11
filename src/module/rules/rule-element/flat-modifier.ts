@@ -1,4 +1,4 @@
-import { DeferredValueParams, MODIFIER_TYPES, ModifierPF2e, ModifierType } from "@actor/modifiers.ts";
+import { DeferredValueParams, MODIFIER_TYPES, ModifierAvant, ModifierType } from "@actor/modifiers.ts";
 import { AttributeString } from "@actor/types.ts";
 import { damageCategoriesUnique } from "@scripts/config/damage.ts";
 import { DamageCategoryUnique } from "@system/damage/types.ts";
@@ -10,7 +10,7 @@ import {
     StrictStringField,
 } from "@system/schema-data-fields.ts";
 import { objectHasKey, sluggify } from "@util";
-import { RuleElementOptions, RuleElementPF2e } from "./base.ts";
+import { RuleElementOptions, RuleElementAvant } from "./base.ts";
 import {
     ModelPropsFromRESchema,
     ResolvableValueField,
@@ -24,7 +24,7 @@ import fields = foundry.data.fields;
  * Apply a constant modifier (or penalty/bonus) to a statistic or usage thereof
  * @category RuleElement
  */
-class FlatModifierRuleElement extends RuleElementPF2e<FlatModifierSchema> {
+class FlatModifierRuleElement extends RuleElementAvant<FlatModifierSchema> {
     constructor(source: FlatModifierSource, options: RuleElementOptions) {
         super(source, options);
         if (this.invalid) return;
@@ -36,7 +36,7 @@ class FlatModifierRuleElement extends RuleElementPF2e<FlatModifierSchema> {
         if (this.type === "ability") {
             if (this.ability) {
                 this.slug = this.ability;
-                this.label = CONFIG.PF2E.abilities[this.ability];
+                this.label = CONFIG.AVANT.abilities[this.ability];
                 // As a resolvable since ability modifiers aren't yet set for PCs
                 this.value = `@actor.abilities.${source.ability}.mod`;
             }
@@ -81,7 +81,7 @@ class FlatModifierRuleElement extends RuleElementPF2e<FlatModifierSchema> {
                 choices: Array.from(MODIFIER_TYPES),
                 initial: "untyped",
             }),
-            ability: new fields.StringField({ required: false, choices: CONFIG.PF2E.abilities, initial: undefined }),
+            ability: new fields.StringField({ required: false, choices: CONFIG.AVANT.abilities, initial: undefined }),
             min: new fields.NumberField({ required: false, nullable: false, initial: undefined }),
             max: new fields.NumberField({ required: false, nullable: false, initial: undefined }),
             force: new fields.BooleanField(),
@@ -135,13 +135,13 @@ class FlatModifierRuleElement extends RuleElementPF2e<FlatModifierSchema> {
         for (const selector of selectors) {
             if (selector === "null") continue;
 
-            const construct = (options: DeferredValueParams = {}): ModifierPF2e | null => {
+            const construct = (options: DeferredValueParams = {}): ModifierAvant | null => {
                 const resolvedValue = Number(this.resolveValue(this.value, 0, options)) || 0;
                 if (this.ignored) return null;
 
                 const finalValue = Math.clamp(resolvedValue, this.min ?? resolvedValue, this.max ?? resolvedValue);
 
-                if (game.pf2e.variantRules.AutomaticBonusProgression.suppressRuleElement(this, finalValue)) {
+                if (game.avant.variantRules.AutomaticBonusProgression.suppressRuleElement(this, finalValue)) {
                     return null;
                 }
 
@@ -149,7 +149,7 @@ class FlatModifierRuleElement extends RuleElementPF2e<FlatModifierSchema> {
                 const damageType = this.damageType
                     ? this.resolveInjectedProperties(this.damageType, { warn: false }) || null
                     : null;
-                if (damageType !== null && !objectHasKey(CONFIG.PF2E.damageTypes, damageType)) {
+                if (damageType !== null && !objectHasKey(CONFIG.AVANT.damageTypes, damageType)) {
                     // If this rule element's predicate would have passed without there being a resolvable damage type,
                     // send out a warning.
                     if (this.test(options.test ?? [])) {
@@ -158,7 +158,7 @@ class FlatModifierRuleElement extends RuleElementPF2e<FlatModifierSchema> {
                     return null;
                 }
 
-                const modifier = new ModifierPF2e({
+                const modifier = new ModifierAvant({
                     slug,
                     label,
                     modifier: finalValue,
@@ -185,7 +185,7 @@ class FlatModifierRuleElement extends RuleElementPF2e<FlatModifierSchema> {
     }
 
     /** Remove this rule element's parent item after a roll */
-    override async afterRoll({ check, rollOptions }: RuleElementPF2e.AfterRollParams): Promise<void> {
+    override async afterRoll({ check, rollOptions }: RuleElementAvant.AfterRollParams): Promise<void> {
         if (this.ignored || !this.removeAfterRoll || !this.item.isOfType("effect")) {
             return;
         }
@@ -199,7 +199,7 @@ class FlatModifierRuleElement extends RuleElementPF2e<FlatModifierSchema> {
 }
 
 interface FlatModifierRuleElement
-    extends RuleElementPF2e<FlatModifierSchema>,
+    extends RuleElementAvant<FlatModifierSchema>,
         ModelPropsFromRESchema<FlatModifierSchema> {
     value: RuleValue;
 }

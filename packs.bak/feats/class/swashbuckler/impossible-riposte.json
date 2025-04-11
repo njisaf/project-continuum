@@ -1,0 +1,138 @@
+{
+    "_id": "HquaVwjOLSPzcJgB",
+    "folder": "FeFdzLYF77XL0hAC",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Impossible Riposte",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "class",
+        "description": {
+            "value": "<p>Your ripostes can deflect attacks back at their source. You can use @UUID[Compendium.avant.classfeatures.Item.Opportune Riposte] with a trigger of \"A foe outside of your reach critically fails an attack roll against you\" in addition to its usual trigger.</p>\n<p>When you use Opportune Riposte with this new trigger against a ranged attack, your Strike deflects some of the triggering effect back toward its source. Compare the result of your attack roll to the AC of the triggering foe.</p>\n<p>On a hit, you deal the normal amount of damage for your Strike, but the damage type changes to that of the triggering attack. For instance, if you used Opportune Riposte to deflect a @UUID[Compendium.avant.spells-srd.Item.Blazing Bolt], your Strike would deal fire damage instead of its normal damage type.</p>"
+        },
+        "level": {
+            "value": 14
+        },
+        "prerequisites": {
+            "value": [
+                {
+                    "value": "Opportune Riposte"
+                }
+            ]
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "disabledIf": [
+                    {
+                        "not": "opportune-riposte"
+                    }
+                ],
+                "disabledValue": false,
+                "key": "RollOption",
+                "option": "impossible-riposte",
+                "priority": 51,
+                "suboptions": [
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "value": "slashing"
+                    },
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    },
+                    {
+                        "label": "AVANT.TraitVitality",
+                        "value": "vitality"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    },
+                    {
+                        "label": "AVANT.TraitForce",
+                        "value": "force"
+                    },
+                    {
+                        "label": "AVANT.TraitSpirit",
+                        "value": "spirit"
+                    },
+                    {
+                        "label": "AVANT.TraitMental",
+                        "value": "mental"
+                    },
+                    {
+                        "label": "AVANT.TraitPoison",
+                        "value": "poison"
+                    },
+                    {
+                        "label": "AVANT.TraitBleed",
+                        "value": "bleed"
+                    }
+                ],
+                "toggleable": true
+            },
+            {
+                "itemType": "weapon",
+                "key": "ItemAlteration",
+                "mode": "override",
+                "predicate": [
+                    "impossible-riposte"
+                ],
+                "property": "damage-type",
+                "value": "{item|flags.avant.rulesSelections.impossibleRiposte}"
+            },
+            {
+                "key": "DamageAlteration",
+                "mode": "override",
+                "predicate": [
+                    "impossible-riposte"
+                ],
+                "property": "damage-type",
+                "selectors": [
+                    "strike-damage"
+                ],
+                "value": "{item|flags.avant.rulesSelections.impossibleRiposte}"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "swashbuckler"
+            ]
+        }
+    },
+    "type": "feat"
+}

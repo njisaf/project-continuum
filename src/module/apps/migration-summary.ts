@@ -9,8 +9,8 @@ export class MigrationSummary extends Application<MigrationSummaryOptions> {
         super(options);
         this.options.troubleshoot ??= false;
         this.options.title = options.troubleshoot
-            ? game.i18n.localize("PF2E.Migrations.Summary.Troubleshoot.Title")
-            : game.i18n.localize("PF2E.Migrations.Summary.Title");
+            ? game.i18n.localize("AVANT.Migrations.Summary.Troubleshoot.Title")
+            : game.i18n.localize("AVANT.Migrations.Summary.Title");
 
         const existing = Object.values(ui.windows).find(
             (app): app is MigrationSummary => app instanceof MigrationSummary,
@@ -27,7 +27,7 @@ export class MigrationSummary extends Application<MigrationSummaryOptions> {
             id: "migration-summary",
             width: 400,
             height: "auto",
-            template: "systems/pf2e/templates/system/migration-summary.hbs",
+            template: "systems/avant/templates/system/migration-summary.hbs",
         };
     }
 
@@ -45,7 +45,7 @@ export class MigrationSummary extends Application<MigrationSummaryOptions> {
             this.options.troubleshoot || actors.successful < actors.total || items.successful < items.total;
 
         const helpResourcesText = await TextEditor.enrichHTML(
-            game.i18n.localize("PF2E.Migrations.Summary.HelpResources"),
+            game.i18n.localize("AVANT.Migrations.Summary.HelpResources"),
         );
 
         return {
@@ -89,7 +89,7 @@ export class MigrationSummary extends Application<MigrationSummaryOptions> {
                 this.#isRemigrating = true;
                 this.options.troubleshoot = false;
                 remigrateButton.disabled = true;
-                await game.pf2e.system.remigrate({ from: lowestSchemaVersion });
+                await game.avant.system.remigrate({ from: lowestSchemaVersion });
                 this.options.troubleshoot = false;
                 this.render(false);
             } catch {

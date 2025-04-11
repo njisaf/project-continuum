@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString } from "@util";
 import { MigrationBase } from "../base.ts";
 
@@ -21,13 +21,13 @@ export class Migration902DuskwoodDawnsilver extends MigrationBase {
         );
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         source.system = this.#replaceStrings(source.system);
-        source.flags.pf2e &&= this.#replaceStrings(source.flags.pf2e);
+        source.flags.avant &&= this.#replaceStrings(source.flags.avant);
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system = this.#replaceStrings(source.system);
-        source.flags.pf2e &&= this.#replaceStrings(source.flags.pf2e);
+        source.flags.avant &&= this.#replaceStrings(source.flags.avant);
     }
 }

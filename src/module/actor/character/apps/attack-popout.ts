@@ -1,11 +1,11 @@
 import type { EffectTrait } from "@item/abstract-effect/types.ts";
-import { ErrorPF2e, htmlClosest, htmlQuery } from "@util";
+import { ErrorAvant, htmlClosest, htmlQuery } from "@util";
 import type { CharacterStrike } from "../data.ts";
-import type { CharacterPF2e } from "../document.ts";
+import type { CharacterAvant } from "../document.ts";
 import type { ElementalBlastConfig } from "../elemental-blast.ts";
-import { CharacterSheetPF2e, type CharacterSheetData } from "../sheet.ts";
+import { CharacterSheetAvant, type CharacterSheetData } from "../sheet.ts";
 
-class AttackPopout<TActor extends CharacterPF2e> extends CharacterSheetPF2e<TActor> {
+class AttackPopout<TActor extends CharacterAvant> extends CharacterSheetAvant<TActor> {
     type: "strike" | "blast" = "strike";
     #strikeItemId = "";
     #strikeSlug = "";
@@ -14,7 +14,7 @@ class AttackPopout<TActor extends CharacterPF2e> extends CharacterSheetPF2e<TAct
     #blasts: ElementalBlastConfig[] = [];
 
     override get template(): string {
-        return "systems/pf2e/templates/actors/character/attack-popout.hbs";
+        return "systems/avant/templates/actors/character/attack-popout.hbs";
     }
 
     override get id(): string {
@@ -48,20 +48,20 @@ class AttackPopout<TActor extends CharacterPF2e> extends CharacterSheetPF2e<TAct
         super(object, options);
 
         if (!options.type) {
-            throw ErrorPF2e('AttackPopout is missing mandatory "type" option.');
+            throw ErrorAvant('AttackPopout is missing mandatory "type" option.');
         }
 
         if (options.type === "blast") {
             if (!options.elementTrait) {
-                throw ErrorPF2e('AttackPopout of type "blast" is missing mandatory "elementalTrait" option.');
+                throw ErrorAvant('AttackPopout of type "blast" is missing mandatory "elementalTrait" option.');
             }
             this.#elementTrait = options.elementTrait;
         } else {
             if (!options.strikeSlug) {
-                throw ErrorPF2e('AttackPopout of type "strike" is missing mandatory "strikeSlug" option.');
+                throw ErrorAvant('AttackPopout of type "strike" is missing mandatory "strikeSlug" option.');
             }
             if (!options.strikeItemId) {
-                throw ErrorPF2e('AttackPopout of type "strike" is missing mandatory "strikeItemId" option.');
+                throw ErrorAvant('AttackPopout of type "strike" is missing mandatory "strikeItemId" option.');
             }
             this.#strikeSlug = options.strikeSlug;
             this.#strikeItemId = options.strikeItemId;
@@ -130,7 +130,7 @@ interface BlastPopoutOptions extends BaseAttackPopoutOptions {
 
 type AttackPopoutOptions = StrikePopoutOptions | BlastPopoutOptions;
 
-interface AttackPopoutData<TActor extends CharacterPF2e> extends CharacterSheetData<TActor> {
+interface AttackPopoutData<TActor extends CharacterAvant> extends CharacterSheetData<TActor> {
     strike?: CharacterStrike;
     strikeIndex?: number;
     popoutType: AttackPopoutOptions["type"];

@@ -1,6 +1,6 @@
 import { renderCraftingInline } from "@actor/character/crafting/helpers.ts";
-import { PhysicalItemPF2e } from "@item";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import { PhysicalItemAvant } from "@item";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { calculateDC } from "@module/dc.ts";
 import { CheckDC } from "@system/degree-of-success.ts";
 import { ActionMacroHelpers } from "../helpers.ts";
@@ -13,11 +13,11 @@ export async function craft(options: CraftActionOptions): Promise<void> {
 
     // ensure item is a valid crafting target
     if (!item) {
-        console.warn("PF2e System | No item selected to craft: aborting");
+        console.warn("Avant System | No item selected to craft: aborting");
         return;
-    } else if (!(item instanceof PhysicalItemPF2e)) {
+    } else if (!(item instanceof PhysicalItemAvant)) {
         ui.notifications.warn(
-            game.i18n.format("PF2E.Actions.Craft.Warning.NotPhysicalItem", { item: item.name ?? "" }),
+            game.i18n.format("AVANT.Actions.Craft.Warning.NotPhysicalItem", { item: item.name ?? "" }),
         );
         return;
     }
@@ -28,7 +28,7 @@ export async function craft(options: CraftActionOptions): Promise<void> {
     const quantity = options.quantity ?? 1;
 
     // figure out DC from item
-    const pwol = game.pf2e.settings.variants.pwol.enabled;
+    const pwol = game.avant.settings.variants.pwol.enabled;
     const dc: CheckDC = options.difficultyClass ?? {
         value: calculateDC(item.level, { pwol }),
         visible: true,
@@ -43,21 +43,21 @@ export async function craft(options: CraftActionOptions): Promise<void> {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph,
-        title: "PF2E.Actions.Craft.Title",
+        title: "AVANT.Actions.Craft.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["downtime", "manipulate"],
         event: options.event,
         difficultyClass: dc,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Craft", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Craft", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Craft", "failure"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Craft", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Craft", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Craft", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Craft", "failure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Craft", "criticalFailure"),
         ],
         createMessage: false,
         callback: async (result) => {
             // react to check result, creating the item in the actor's inventory on a success
-            if (result.message instanceof ChatMessagePF2e) {
+            if (result.message instanceof ChatMessageAvant) {
                 const message = result.message;
                 const flavor = await (async () => {
                     if (["criticalSuccess", "success", "criticalFailure"].includes(result.outcome ?? "")) {
@@ -70,7 +70,7 @@ export async function craft(options: CraftActionOptions): Promise<void> {
                 }
                 ChatMessage.create(message.toObject());
             } else {
-                console.error("PF2E | Unable to amend chat message with craft result.", result.message);
+                console.error("AVANT | Unable to amend chat message with craft result.", result.message);
             }
             options.callback?.(result);
         },
@@ -82,7 +82,7 @@ export async function craft(options: CraftActionOptions): Promise<void> {
 
 interface CraftActionOptions extends SkillActionOptions {
     difficultyClass?: CheckDC;
-    item?: PhysicalItemPF2e;
+    item?: PhysicalItemAvant;
     quantity?: number;
     uuid?: string;
     free?: boolean;

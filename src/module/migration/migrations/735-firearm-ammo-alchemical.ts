@@ -1,4 +1,4 @@
-import { ConsumableSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ConsumableSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -17,7 +17,7 @@ export class Migration735FirearmAmmoAlchemical extends MigrationBase {
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "consumable" && this.#needsTrait(source)) {
             source.system.traits.value.unshift("alchemical");
         }

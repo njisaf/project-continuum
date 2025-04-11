@@ -10,14 +10,14 @@ class ModuleArt {
         const activeModules = [...game.modules.entries()].filter(([_key, m]) => m.active);
 
         for (const [moduleKey, foundryModule] of activeModules) {
-            const moduleArt = await this.#getArtMap(foundryModule.flags[moduleKey]?.["pf2e-art"]);
+            const moduleArt = await this.#getArtMap(foundryModule.flags[moduleKey]?.["avant-art"]);
             if (!moduleArt) continue;
 
             for (const [packName, art] of Object.entries(moduleArt)) {
-                const pack = game.packs.get(`pf2e.${packName}`);
+                const pack = game.packs.get(`avant.${packName}`);
                 if (!pack) {
                     console.warn(
-                        `PF2e System | Failed pack lookup from module art registration (${moduleKey}): ${packName}`,
+                        `Avant System | Failed pack lookup from module art registration (${moduleKey}): ${packName}`,
                     );
                     continue;
                 }
@@ -41,14 +41,14 @@ class ModuleArt {
                         if (typeof paths.token.scale === "number") {
                             actorArtPartial.prototypeToken.texture.scaleX = paths.token.scale;
                             actorArtPartial.prototypeToken.texture.scaleY = paths.token.scale;
-                            actorArtPartial.prototypeToken.flags = { pf2e: { autoscale: false } };
+                            actorArtPartial.prototypeToken.flags = { avant: { autoscale: false } };
                         }
                         if (typeof paths.token.randomImg === "boolean") {
                             actorArtPartial.prototypeToken.randomImg = paths.token.randomImg;
                         }
                     }
 
-                    this.map.set(`Compendium.pf2e.${packName}.Actor.${actorId}`, actorArtPartial);
+                    this.map.set(`Compendium.avant.${packName}.Actor.${actorId}`, actorArtPartial);
                 }
             }
         }
@@ -71,14 +71,14 @@ class ModuleArt {
             try {
                 const response = await fetch(art);
                 if (!response.ok) {
-                    console.warn(`PF2e System | Failed loading art mapping file at ${art}`);
+                    console.warn(`Avant System | Failed loading art mapping file at ${art}`);
                     return null;
                 }
                 const map = await response.json();
                 return this.#isModuleArt(map) ? map : null;
             } catch (error) {
                 if (error instanceof Error) {
-                    console.warn(`PF2e System | ${error.message}`);
+                    console.warn(`Avant System | ${error.message}`);
                 }
             }
         }
@@ -126,7 +126,7 @@ interface ActorArtPartial {
     img: ImageFilePath;
     prototypeToken: {
         flags?: {
-            pf2e: {
+            avant: {
                 autoscale: false;
             };
         };

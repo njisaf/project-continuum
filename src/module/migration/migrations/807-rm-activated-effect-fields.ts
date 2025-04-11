@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Remove properties from unused "activatedEffect" template defaults */
@@ -19,7 +19,7 @@ export class Migration807RMActivatedEffectFields extends MigrationBase {
 
 type ActivatedEffectKey = "activation" | "duration" | "range" | "target" | "uses";
 
-type ItemSourceWithDeletions = ItemSourcePF2e & {
+type ItemSourceWithDeletions = ItemSourceAvant & {
     system: {
         [K in ActivatedEffectKey | `-=${ActivatedEffectKey}`]?: unknown;
     };

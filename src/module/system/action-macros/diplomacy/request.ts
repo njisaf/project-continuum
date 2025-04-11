@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.Request";
+const PREFIX = "AVANT.Actions.Request";
 
 function request(options: SkillActionOptions): void {
     const slug = options?.skill ?? "diplomacy";
@@ -17,10 +17,10 @@ function request(options: SkillActionOptions): void {
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Request", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Request", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Request", "failure"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Request", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Request", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Request", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Request", "failure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Request", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);

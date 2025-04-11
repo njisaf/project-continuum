@@ -1,5 +1,5 @@
-import { PhysicalItemPF2e } from "@item";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import { PhysicalItemAvant } from "@item";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { calculateDC } from "@module/dc.ts";
 import { CheckDC } from "@system/degree-of-success.ts";
 import { ActionMacroHelpers } from "../helpers.ts";
@@ -11,9 +11,9 @@ async function repair(options: RepairActionOptions): Promise<void> {
     const item = options.item ?? (await (options.uuid ? fromUuid(options.uuid) : SelectItemDialog.getItem("repair")));
 
     // ensure specified item is a valid crafting target
-    if (!(item instanceof PhysicalItemPF2e)) {
+    if (!(item instanceof PhysicalItemAvant)) {
         ui.notifications.warn(
-            game.i18n.format("PF2E.Actions.Repair.Warning.NotPhysicalItem", { item: item?.name ?? "" }),
+            game.i18n.format("AVANT.Actions.Repair.Warning.NotPhysicalItem", { item: item?.name ?? "" }),
         );
         return;
     }
@@ -26,9 +26,9 @@ async function repair(options: RepairActionOptions): Promise<void> {
         options.difficultyClass ??
         (() => {
             if (item) {
-                const pwol = game.pf2e.settings.variants.pwol.enabled;
+                const pwol = game.avant.settings.variants.pwol.enabled;
                 return {
-                    label: game.i18n.format("PF2E.Actions.Repair.Labels.ItemLevelRepairDC", { level: item.level }),
+                    label: game.i18n.format("AVANT.Actions.Repair.Labels.ItemLevelRepairDC", { level: item.level }),
                     value: calculateDC(item.level, { pwol }),
                     visibility: "all",
                 };
@@ -44,11 +44,11 @@ async function repair(options: RepairActionOptions): Promise<void> {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph,
-        title: "PF2E.Actions.Repair.Title",
+        title: "AVANT.Actions.Repair.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         content: async (title) => {
             if (item) {
-                const templatePath = "systems/pf2e/templates/system/actions/repair/item-heading-partial.hbs";
+                const templatePath = "systems/avant/templates/system/actions/repair/item-heading-partial.hbs";
                 const templateData = { item };
                 const content = await renderTemplate(templatePath, templateData);
                 return title + content;
@@ -59,28 +59,28 @@ async function repair(options: RepairActionOptions): Promise<void> {
         event: options.event,
         difficultyClass: dc,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Repair", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Repair", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Repair", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Repair", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Repair", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Repair", "criticalFailure"),
         ],
         createMessage: false,
         callback: async (result) => {
             // react to check result by posting a chat message with appropriate follow-up options
             const { actor } = result;
-            if (item && result.message instanceof ChatMessagePF2e && actor.isOfType("creature")) {
+            if (item && result.message instanceof ChatMessageAvant && actor.isOfType("creature")) {
                 const messageSource = result.message.toObject();
                 const flavor = await (async () => {
                     const proficiencyRank = actor.skills.crafting.rank ?? 0;
                     if ("criticalSuccess" === result.outcome) {
-                        const label = "PF2E.Actions.Repair.Labels.RestoreItemHitPoints";
+                        const label = "AVANT.Actions.Repair.Labels.RestoreItemHitPoints";
                         const restored = String(10 + proficiencyRank * 10);
                         return renderRepairResult(item, "restore", label, restored);
                     } else if ("success" === result.outcome) {
-                        const label = "PF2E.Actions.Repair.Labels.RestoreItemHitPoints";
+                        const label = "AVANT.Actions.Repair.Labels.RestoreItemHitPoints";
                         const restored = String(5 + proficiencyRank * 5);
                         return renderRepairResult(item, "restore", label, restored);
                     } else if ("criticalFailure" === result.outcome) {
-                        const label = "PF2E.Actions.Repair.Labels.RollItemDamage";
+                        const label = "AVANT.Actions.Repair.Labels.RollItemDamage";
                         const damage = "2d6";
                         return renderRepairResult(item, "roll-damage", label, damage);
                     }
@@ -100,20 +100,20 @@ async function repair(options: RepairActionOptions): Promise<void> {
 
 async function onRepairChatCardEvent(
     event: MouseEvent,
-    message: ChatMessagePF2e | undefined,
+    message: ChatMessageAvant | undefined,
     card: HTMLElement,
 ): Promise<void> {
     const itemUuid = card.dataset.itemUuid;
     const item = await fromUuid(itemUuid ?? "");
     const button = event.currentTarget;
-    if (!(item instanceof PhysicalItemPF2e) || !(button instanceof HTMLElement)) {
+    if (!(item instanceof PhysicalItemAvant) || !(button instanceof HTMLElement)) {
         return;
     }
 
     const repair = button.dataset.repair;
     const speaker =
         message &&
-        ChatMessagePF2e.getSpeaker({
+        ChatMessageAvant.getSpeaker({
             actor: message.actor,
             alias: message.alias,
             token: message.token,
@@ -123,7 +123,7 @@ async function onRepairChatCardEvent(
         const beforeRepair = item.system.hp.value;
         const afterRepair = Math.min(item.system.hp.max, beforeRepair + value);
         await item.update({ "system.hp.value": afterRepair });
-        const content = game.i18n.format("PF2E.Actions.Repair.Chat.ItemRepaired", {
+        const content = game.i18n.format("AVANT.Actions.Repair.Chat.ItemRepaired", {
             itemName: item.name,
             repairedDamage: afterRepair - beforeRepair,
             afterRepairHitPoints: afterRepair,
@@ -132,7 +132,7 @@ async function onRepairChatCardEvent(
         await ChatMessage.create({ content, speaker });
     } else if (repair === "roll-damage") {
         const roll = await Roll.create("2d6").evaluate();
-        const templatePath = "systems/pf2e/templates/system/actions/repair/roll-damage-chat-message.hbs";
+        const templatePath = "systems/avant/templates/system/actions/repair/roll-damage-chat-message.hbs";
         const flavor = await renderTemplate(templatePath, {
             damage: {
                 dealt: Math.max(0, roll.total - item.system.hardness),
@@ -142,7 +142,7 @@ async function onRepairChatCardEvent(
         });
         await roll.toMessage({
             flags: {
-                pf2e: {
+                avant: {
                     suppressDamageButtons: true,
                 },
             },
@@ -156,7 +156,7 @@ async function onRepairChatCardEvent(
             const beforeDamage = item.system.hp.value;
             const afterDamage = Math.max(0, item.system.hp.value - damage);
             await item.update({ "system.hp.value": afterDamage });
-            const content = game.i18n.format("PF2E.Actions.Repair.Chat.ItemDamaged", {
+            const content = game.i18n.format("AVANT.Actions.Repair.Chat.ItemDamaged", {
                 itemName: item.name,
                 damageDealt: beforeDamage - afterDamage,
                 afterDamageHitPoints: afterDamage,
@@ -164,7 +164,7 @@ async function onRepairChatCardEvent(
             });
             await ChatMessage.create({ content, speaker });
         } else {
-            const templatePath = "systems/pf2e/templates/system/actions/repair/roll-damage-chat-message.hbs";
+            const templatePath = "systems/avant/templates/system/actions/repair/roll-damage-chat-message.hbs";
             const content = await renderTemplate(templatePath, {
                 damage: {
                     dealt: 0,
@@ -178,19 +178,19 @@ async function onRepairChatCardEvent(
 }
 
 async function renderRepairResult(
-    item: PhysicalItemPF2e,
+    item: PhysicalItemAvant,
     result: "restore" | "roll-damage",
     buttonLabel: string,
     value: string,
 ): Promise<string> {
-    const templatePath = "systems/pf2e/templates/system/actions/repair/repair-result-partial.hbs";
+    const templatePath = "systems/avant/templates/system/actions/repair/repair-result-partial.hbs";
     const label = game.i18n.format(buttonLabel, { value });
     return renderTemplate(templatePath, { item, label, result, value });
 }
 
 interface RepairActionOptions extends SkillActionOptions {
     difficultyClass?: CheckDC;
-    item?: PhysicalItemPF2e;
+    item?: PhysicalItemAvant;
     uuid?: string;
 }
 

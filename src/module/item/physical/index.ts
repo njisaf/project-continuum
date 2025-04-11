@@ -1,4 +1,4 @@
-export { PhysicalItemPF2e } from "./document.ts";
+export { PhysicalItemAvant } from "./document.ts";
 
 export * from "./bulk.ts";
 export * from "./data.ts";

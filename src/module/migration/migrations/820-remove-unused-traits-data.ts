@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Removed unused traits data structures from items that don't use them */
 export class Migration820RemoveUnusedTraitsData extends MigrationBase {
     static override version = 0.82;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const systemSource: MaybeWithTraits = source.system;
         if (!systemSource.traits) return;
 

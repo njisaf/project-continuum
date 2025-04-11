@@ -1,0 +1,44 @@
+{
+    "_id": "gMPnLWLlHoNU9Lqv",
+    "folder": "iEp34fbMcU8sgaR4",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Dragon Arcana",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "class",
+        "description": {
+            "value": "<p>You've discovered how to add the magic of dragons to your tradition.</p>\n<p>Add the draconic bloodline's granted spells to your spell list; you must still learn them or add them to your repertoire as normal. These spells are @UUID[Compendium.avant.spells-srd.Item.Shield], @UUID[Compendium.avant.spells-srd.Item.Sure Strike], @UUID[Compendium.avant.spells-srd.Item.Resist Energy], @UUID[Compendium.avant.spells-srd.Item.Haste], @UUID[Compendium.avant.spells-srd.Item.Spell Immunity], @UUID[Compendium.avant.spells-srd.Item.Chromatic Wall], @UUID[Compendium.avant.spells-srd.Item.Dragon Form], @UUID[Compendium.avant.spells-srd.Item.Mask of Terror], @UUID[Compendium.avant.spells-srd.Item.Prismatic Wall], and @UUID[Compendium.avant.spells-srd.Item.Overwhelming Presence].</p>"
+        },
+        "level": {
+            "value": 4
+        },
+        "prerequisites": {
+            "value": [
+                {
+                    "value": "ability to cast spells from spell slots"
+                },
+                {
+                    "value": "Dragon Disciple Dedication"
+                }
+            ]
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Advanced Player's Guide"
+        },
+        "rules": [],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "archetype"
+            ]
+        }
+    },
+    "type": "feat"
+}

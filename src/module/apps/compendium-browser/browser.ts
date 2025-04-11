@@ -3,7 +3,7 @@ import { ActionType, ItemType } from "@item/base/data/index.ts";
 import { PHYSICAL_ITEM_TYPES } from "@item/physical/values.ts";
 import { BaseSpellcastingEntry } from "@item/spellcasting-entry/index.ts";
 import { SvelteApplicationMixin } from "@module/sheet/mixin.svelte.ts";
-import { ErrorPF2e, setHasElement } from "@util";
+import { ErrorAvant, setHasElement } from "@util";
 import * as R from "remeda";
 import { untrack } from "svelte";
 import type {
@@ -64,37 +64,37 @@ class CompendiumBrowser extends SvelteApplicationMixin(foundry.applications.api.
                 {
                     action: "openSettings",
                     icon: "fa-solid fa-gears",
-                    label: "PF2E.CompendiumBrowser.Settings.OpenSettings",
+                    label: "AVANT.CompendiumBrowser.Settings.OpenSettings",
                 },
                 {
                     action: "addToRollTable",
                     icon: "fa-solid fa-list",
-                    label: "PF2E.CompendiumBrowser.RollTable.AddLabel",
+                    label: "AVANT.CompendiumBrowser.RollTable.AddLabel",
                 },
                 {
                     action: "createRollTable",
                     icon: "fa-solid fa-list",
-                    label: "PF2E.CompendiumBrowser.RollTable.CreateLabel",
+                    label: "AVANT.CompendiumBrowser.RollTable.CreateLabel",
                 },
             ],
             resizable: true,
-            title: "PF2E.CompendiumBrowser.Title",
+            title: "AVANT.CompendiumBrowser.Title",
         },
         actions: {
             addToRollTable: () => {
-                const browser = game.pf2e.compendiumBrowser;
+                const browser = game.avant.compendiumBrowser;
                 if (!browser.activeTab) return;
                 browser.toggleControls();
                 browser.activeTab.addToRollTable();
             },
             createRollTable: () => {
-                const browser = game.pf2e.compendiumBrowser;
+                const browser = game.avant.compendiumBrowser;
                 if (!browser.activeTab) return;
                 browser.toggleControls();
                 browser.activeTab.createRollTable();
             },
             openSettings: () => {
-                game.pf2e.compendiumBrowser.toggleControls();
+                game.avant.compendiumBrowser.toggleControls();
                 new CompendiumBrowserSettingsApp().render(true);
             },
         },
@@ -135,7 +135,7 @@ class CompendiumBrowser extends SvelteApplicationMixin(foundry.applications.api.
 
     #setVisibleTabs(visible?: ContentTabName[]): void {
         const isGM = game.user.isGM;
-        const showCampaign = game.settings.get("pf2e", "campaignType") !== "none";
+        const showCampaign = game.settings.get("avant", "campaignType") !== "none";
         for (const tab of this.tabsArray) {
             tab.visible = visible ? visible.includes(tab.tabName) : true;
 
@@ -155,17 +155,17 @@ class CompendiumBrowser extends SvelteApplicationMixin(foundry.applications.api.
 
     async openTab(tabName: TabName, options?: CompendiumBrowserOpenTabOptions): Promise<void> {
         if (!this.dataTabsList.includes(tabName)) {
-            throw ErrorPF2e(`Unknown tab "${tabName}"`);
+            throw ErrorAvant(`Unknown tab "${tabName}"`);
         }
 
         this.activeTab = this.tabs[tabName];
 
         if (this.activeTab.isGMOnly && !game.user.isGM) {
-            throw ErrorPF2e("Tried to open GM-only browser tab!");
+            throw ErrorAvant("Tried to open GM-only browser tab!");
         }
         if (options?.filter) {
             if (!this.activeTab.isInitialized) {
-                throw ErrorPF2e("Tried to pass filter data to an uninitialized tab!");
+                throw ErrorAvant("Tried to pass filter data to an uninitialized tab!");
             }
             this.activeTab.filterData = options.filter;
         }
@@ -179,7 +179,7 @@ class CompendiumBrowser extends SvelteApplicationMixin(foundry.applications.api.
             this.#setVisibleTabs([]);
         } else if (options?.showTabs) {
             if (!options.showTabs.every((t) => this.dataTabsList.includes(t))) {
-                throw ErrorPF2e(`Unknown tab name in "${options.showTabs}"`);
+                throw ErrorAvant(`Unknown tab name in "${options.showTabs}"`);
             }
             // Always include the active tab name
             if (!options.showTabs.includes(tabName)) {
@@ -294,7 +294,7 @@ class CompendiumBrowser extends SvelteApplicationMixin(foundry.applications.api.
             ...Array.from(PHYSICAL_ITEM_TYPES).map((t): [ItemType, "equipment"] => [t, "equipment"]),
         ]);
 
-        const userSettings = game.settings.get("pf2e", "compendiumBrowserPacks");
+        const userSettings = game.settings.get("avant", "compendiumBrowserPacks");
         for (const pack of game.packs) {
             const tabNames = R.unique(
                 R.unique(pack.index.map((entry) => entry.type))

@@ -1,7 +1,7 @@
 <div class="overlay" data-overlay-type="{{type}}" {{#if level}}data-level="{{level}}"{{/if}} {{#if id}}data-overlay-id="{{id}}"{{/if}}>
     {{#if (eq type "heighten")}}
         <h3 class="form-group">
-            <label>{{localize "PF2E.Item.Spell.Rank.Label"}}</label>
+            <label>{{localize "AVANT.Item.Spell.Rank.Label"}}</label>
             <div class="form-fields">
                 <select data-action="change-heighten-level">
                     {{selectOptions heightenLevels selected=level}}
@@ -13,7 +13,7 @@
         </h3>
     {{else}}
         <div class="form-group">
-            <label>{{localize "PF2E.Item.NameLabel"}}</label>
+            <label>{{localize "AVANT.Item.NameLabel"}}</label>
             <div class="form-fields">
                 <input type="text" name="{{base}}.name" value="{{overlay.name}}" />
                 <div class="item-controls">
@@ -39,7 +39,7 @@
                 class="paizo-style tags spell-traits"
                 name="{{dataPath}}.traits.value"
                 value="{{json traits}}"
-                {{#if (eq system.traits.value.length 0)}}placeholder="{{localize "PF2E.Traits"}}"{{/if}} />
+                {{#if (eq system.traits.value.length 0)}}placeholder="{{localize "AVANT.Traits"}}"{{/if}} />
         </div>
     {{/if}}
 
@@ -47,7 +47,7 @@
         <div class="form-group">
             <label class="short">
                 <a data-action="delete-overlay-property" data-property="time"><i class="fa-solid fa-xmark"></i></a>
-                {{localize "PF2E.Item.Spell.Cast"}}
+                {{localize "AVANT.Item.Spell.Cast"}}
             </label>
             <div>
                 <input type="text" name="{{dataPath}}.time.value" value="{{system.time.value}}" />
@@ -59,7 +59,7 @@
         <div class="form-group">
             <label class="short">
                 <a data-action="delete-overlay-property" data-property="target"><i class="fa-solid fa-xmark"></i></a>
-                {{localize "PF2E.SpellTargetLabel"}}
+                {{localize "AVANT.SpellTargetLabel"}}
             </label>
             <div>
                 <input type="text" name="{{dataPath}}.target.value" value="{{system.target.value}}" />
@@ -71,7 +71,7 @@
         <div class="form-group">
             <label class="short">
                 <a data-action="delete-overlay-property" data-property="area"><i class="fa-solid fa-xmark"></i></a>
-                {{localize "PF2E.Area.Label"}}
+                {{localize "AVANT.Area.Label"}}
             </label>
             <div class="details-container-two-columns">
                 <input type="number" name="{{dataPath}}.area.value" min="5" step="5" value="{{system.area.value}}" />
@@ -86,7 +86,7 @@
         <div class="form-group">
             <label class="short">
                 <a data-action="delete-overlay-property" data-property="range"><i class="fa-solid fa-xmark"></i></a>
-                {{localize "PF2E.TraitRange"}}
+                {{localize "AVANT.TraitRange"}}
             </label>
             <div>
                 <input type="text" name="{{dataPath}}.range.value" value="{{system.range.value}}" />
@@ -98,7 +98,7 @@
         <div class="damage-formulas">
             <h3>
                 <a data-action="delete-overlay-property" data-property="damage"><i class="fa-solid fa-xmark"></i></a>
-                {{localize "PF2E.DamageLabel"}}
+                {{localize "AVANT.DamageLabel"}}
                 <div class="item-controls">
                     <a data-action="add-damage-partial"><i class="fa-solid fa-plus"></i></a>
                 </div>
@@ -107,9 +107,9 @@
             {{#each system.damage as |damage id|}}
                 <div class="formula-section form-group">
                     <div class="form-fields">
-                        <input type="text" name="{{../dataPath}}.damage.{{id}}.formula" value="{{damage.formula}}" placeholder="{{localize "PF2E.Formula"}}" />
+                        <input type="text" name="{{../dataPath}}.damage.{{id}}.formula" value="{{damage.formula}}" placeholder="{{localize "AVANT.Formula"}}" />
                         <label class="apply-mod">
-                            {{localize "PF2E.SpellAbilityModLabel"}}
+                            {{localize "AVANT.SpellAbilityModLabel"}}
                             <input type="checkbox" name="{{../dataPath}}.damage.{{id}}.applyMod" {{checked damage.applyMod}} />
                         </label>
                         <select name="{{../dataPath}}.damage.{{id}}.category">
@@ -121,7 +121,7 @@
                         <div class="item-controls">
                             <a class="tag-selector"
                                 data-tag-selector="basic"
-                                data-title="PF2E.Item.MaterialEffects.Label"
+                                data-title="AVANT.Item.MaterialEffects.Label"
                                 data-config-types="materialDamageEffects"
                                 data-property="{{../dataPath}}.damage.{{id}}.materials"
                             ><i class="fa-solid fa-edit"></i></a>

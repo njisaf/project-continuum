@@ -6,7 +6,7 @@ import { BestiaryFilters, CompendiumBrowserIndexData } from "./data.ts";
 
 export class CompendiumBrowserBestiaryTab extends CompendiumBrowserTab {
     tabName: ContentTabName = "bestiary";
-    tabLabel = "PF2E.CompendiumBrowser.TabBestiary";
+    tabLabel = "AVANT.CompendiumBrowser.TabBestiary";
     declare filterData: BestiaryFilters;
 
     protected index = [
@@ -42,7 +42,7 @@ export class CompendiumBrowserBestiaryTab extends CompendiumBrowserTab {
             this.browser.loadedPacks("bestiary"),
             indexFields,
         )) {
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
             for (const actorData of index.filter((d) => d.type === "npc")) {
                 if (!this.hasAllIndexFields(actorData, this.index)) {
                     console.warn(
@@ -70,19 +70,19 @@ export class CompendiumBrowserBestiaryTab extends CompendiumBrowserTab {
                     source: sourceSlug,
                 });
             }
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - Loaded`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - Loaded`);
         }
 
         // Set indexData
         this.indexData = bestiaryActors;
 
         // Filters
-        this.filterData.checkboxes.sizes.options = this.generateCheckboxOptions(CONFIG.PF2E.actorSizes);
-        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.PF2E.creatureTraits);
-        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.PF2E.rarityTraits, false);
+        this.filterData.checkboxes.sizes.options = this.generateCheckboxOptions(CONFIG.AVANT.actorSizes);
+        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.AVANT.creatureTraits);
+        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.AVANT.rarityTraits, false);
         this.filterData.source.options = this.generateSourceCheckboxOptions(publications);
 
-        console.debug("PF2e System | Compendium Browser | Finished loading Bestiary actors");
+        console.debug("Avant System | Compendium Browser | Finished loading Bestiary actors");
     }
 
     protected override filterIndexData(entry: CompendiumBrowserIndexData): boolean {
@@ -116,20 +116,20 @@ export class CompendiumBrowserBestiaryTab extends CompendiumBrowserTab {
             checkboxes: {
                 sizes: {
                     isExpanded: true,
-                    label: "PF2E.CompendiumBrowser.Filter.Sizes",
+                    label: "AVANT.CompendiumBrowser.Filter.Sizes",
                     options: {},
                     selected: [],
                 },
                 rarity: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.Rarities",
+                    label: "AVANT.CompendiumBrowser.Filter.Rarities",
                     options: {},
                     selected: [],
                 },
             },
             source: {
                 isExpanded: false,
-                label: "PF2E.CompendiumBrowser.Filter.Source",
+                label: "AVANT.CompendiumBrowser.Filter.Source",
                 options: {},
                 selected: [],
             },
@@ -143,7 +143,7 @@ export class CompendiumBrowserBestiaryTab extends CompendiumBrowserTab {
                 direction: "asc",
                 options: {
                     name: { label: "Name", type: "alpha" },
-                    level: { label: "PF2E.LevelLabel", type: "numeric" },
+                    level: { label: "AVANT.LevelLabel", type: "numeric" },
                 },
                 type: "numeric",
             },

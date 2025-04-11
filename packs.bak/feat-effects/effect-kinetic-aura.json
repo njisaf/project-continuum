@@ -1,0 +1,113 @@
+{
+    "_id": "pLurcSPQb2gjAzoP",
+    "img": "icons/magic/unholy/orb-swirling-teal.webp",
+    "name": "Effect: Kinetic Aura",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.actionsavant.Item.Channel Elements]</p>\n<p>You activate your kinetic aura.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": true,
+            "title": "Pathfinder Rage of Elements"
+        },
+        "rules": [
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.Foot.Preformatted.5",
+                        "predicate": [
+                            "feat:aura-shaping"
+                        ],
+                        "value": 5
+                    },
+                    {
+                        "label": "AVANT.Foot.Preformatted.10",
+                        "value": 10
+                    },
+                    {
+                        "label": "AVANT.Foot.Preformatted.15",
+                        "predicate": [
+                            "feat:aura-shaping"
+                        ],
+                        "value": 15
+                    },
+                    {
+                        "label": "AVANT.Foot.Preformatted.20",
+                        "predicate": [
+                            "feat:aura-shaping"
+                        ],
+                        "value": 20
+                    },
+                    {
+                        "label": "AVANT.Foot.Preformatted.25",
+                        "predicate": [
+                            "feat:aura-shaping",
+                            {
+                                "gte": [
+                                    "self:level",
+                                    15
+                                ]
+                            }
+                        ],
+                        "value": 25
+                    },
+                    {
+                        "label": "AVANT.Foot.Preformatted.30",
+                        "predicate": [
+                            "feat:aura-shaping",
+                            {
+                                "gte": [
+                                    "self:level",
+                                    20
+                                ]
+                            }
+                        ],
+                        "value": 30
+                    }
+                ],
+                "flag": "auraRadius",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.AuraSize"
+            },
+            {
+                "key": "Aura",
+                "level": "@actor.level",
+                "priority": 99,
+                "radius": "@item.flags.avant.rulesSelections.auraRadius",
+                "slug": "kinetic-aura",
+                "traits": [
+                    "kineticist",
+                    "primal"
+                ]
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "flags.avant.kineticist.auraRadius",
+                "value": "@item.flags.avant.rulesSelections.auraRadius"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

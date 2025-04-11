@@ -1,24 +1,24 @@
 import { MAPSynthetic } from "../synthetics.ts";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
 /**
  * @category RuleElement
  */
-class MultipleAttackPenaltyRuleElement extends RuleElementPF2e<MAPRuleSchema> {
+class MultipleAttackPenaltyRuleElement extends RuleElementAvant<MAPRuleSchema> {
     static override defineSchema(): MAPRuleSchema {
         return {
             ...super.defineSchema(),
             selector: new fields.StringField({
                 required: true,
                 blank: false,
-                label: "PF2E.RuleEditor.General.Selector",
+                label: "AVANT.RuleEditor.General.Selector",
             }),
             value: new ResolvableValueField({
                 required: true,
                 initial: undefined,
-                label: "PF2E.RuleEditor.General.Value",
+                label: "AVANT.RuleEditor.General.Value",
             }),
         };
     }
@@ -31,7 +31,7 @@ class MultipleAttackPenaltyRuleElement extends RuleElementPF2e<MAPRuleSchema> {
 
         const value = Number(this.resolveValue(this.value)) || 0;
         if (value < 0) {
-            const label = game.i18n.format("PF2E.UI.RuleElements.MultipleAttackPenalty.Breakdown", {
+            const label = game.i18n.format("AVANT.UI.RuleElements.MultipleAttackPenalty.Breakdown", {
                 label: this.label,
             });
             const map: MAPSynthetic = { label, penalty: value, predicate: this.predicate };
@@ -44,7 +44,7 @@ class MultipleAttackPenaltyRuleElement extends RuleElementPF2e<MAPRuleSchema> {
 }
 
 interface MultipleAttackPenaltyRuleElement
-    extends RuleElementPF2e<MAPRuleSchema>,
+    extends RuleElementAvant<MAPRuleSchema>,
         ModelPropsFromRESchema<MAPRuleSchema> {}
 
 type MAPRuleSchema = RuleElementSchema & {

@@ -1,9 +1,9 @@
 import { CreatureConfig, CreatureConfigData } from "@actor/creature/config.ts";
-import { CharacterPF2e } from "./document.ts";
+import { CharacterAvant } from "./document.ts";
 
-export class CharacterConfig extends CreatureConfig<CharacterPF2e> {
+export class CharacterConfig extends CreatureConfig<CharacterAvant> {
     override async getData(options: Partial<DocumentSheetOptions> = {}): Promise<PCConfigData> {
-        const { showBasicUnarmed } = this.actor.flags.pf2e;
+        const { showBasicUnarmed } = this.actor.flags.avant;
         return {
             ...(await super.getData(options)),
             showBasicUnarmed,
@@ -11,6 +11,6 @@ export class CharacterConfig extends CreatureConfig<CharacterPF2e> {
     }
 }
 
-interface PCConfigData extends CreatureConfigData<CharacterPF2e> {
+interface PCConfigData extends CreatureConfigData<CharacterAvant> {
     showBasicUnarmed: boolean;
 }

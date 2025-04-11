@@ -1,11 +1,11 @@
-import type { CharacterPF2e } from "@actor";
-import type { FeatPF2e, ItemPF2e } from "@item";
+import type { CharacterAvant } from "@actor";
+import type { FeatAvant, ItemAvant } from "@item";
 import { sluggify } from "@util";
 import * as R from "remeda";
 import { FeatGroup } from "./group.ts";
 import { FeatGroupData, FeatSlotData } from "./types.ts";
 
-class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<TActor>> {
+class CharacterFeats<TActor extends CharacterAvant> extends Collection<FeatGroup<TActor>> {
     /** Feats belonging no actual group ("bonus feats" in rules text) */
     bonus: FeatGroup<TActor>;
 
@@ -16,17 +16,17 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
 
         this.bonus = new FeatGroup(actor, {
             id: "bonus",
-            label: "PF2E.Actor.Character.FeatSlot.BonusHeader",
+            label: "AVANT.Actor.Character.FeatSlot.BonusHeader",
         });
 
         this.createGroup({
             id: "ancestryfeature",
-            label: "PF2E.Actor.Character.FeatSlot.AncestryFeaturesHeader",
+            label: "AVANT.Actor.Character.FeatSlot.AncestryFeaturesHeader",
             supported: ["ancestryfeature"],
         });
         this.createGroup({
             id: "classfeature",
-            label: "PF2E.Actor.Character.FeatSlot.ClassFeaturesHeader",
+            label: "AVANT.Actor.Character.FeatSlot.ClassFeaturesHeader",
             supported: ["classfeature"],
             sorted: true,
         });
@@ -34,10 +34,10 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
         const ancestry = actor.system.details.ancestry;
         this.createGroup({
             id: "ancestry",
-            label: "PF2E.Actor.Character.FeatSlot.AncestryHeader",
+            label: "AVANT.Actor.Character.FeatSlot.AncestryHeader",
             supported: ["ancestry"],
             filter: {
-                traits: ancestry?.countsAs.flatMap((t) => (t in CONFIG.PF2E.featTraits ? t : [])) ?? [],
+                traits: ancestry?.countsAs.flatMap((t) => (t in CONFIG.AVANT.featTraits ? t : [])) ?? [],
             },
             slots: classFeatSlots?.ancestry ?? [],
         });
@@ -45,13 +45,13 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
         // Attempt to acquire the trait corresponding with actor's class, falling back to homebrew variations
         const classTrait = ((): string | null => {
             const slug = actor.class ? (actor.class.slug ?? sluggify(actor.class.name)) : null;
-            return slug && slug in CONFIG.PF2E.featTraits ? slug : null;
+            return slug && slug in CONFIG.AVANT.featTraits ? slug : null;
         })();
 
         const hasDedicationFeat = this.actor.itemTypes.feat.some((f) => f.traits.has("dedication"));
         this.createGroup({
             id: "class",
-            label: "PF2E.Actor.Character.FeatSlot.ClassHeader",
+            label: "AVANT.Actor.Character.FeatSlot.ClassHeader",
             supported: ["class"],
             filter: {
                 traits: [classTrait, hasDedicationFeat ? "archetype" : "dedication"].filter((t): t is string => !!t),
@@ -65,10 +65,10 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
             .filter((idx) => idx % 2 === 0);
 
         // Add free archetype (if active)
-        if (game.pf2e.settings.variants.fa) {
+        if (game.avant.settings.variants.fa) {
             this.createGroup({
                 id: "archetype",
-                label: "PF2E.Actor.Character.FeatSlot.ArchetypeHeader",
+                label: "AVANT.Actor.Character.FeatSlot.ArchetypeHeader",
                 supported: ["class"],
                 filter: {
                     traits: [
@@ -84,34 +84,34 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
                 ? {
                       id: actor.background.id,
                       level: 1,
-                      label: game.i18n.localize("PF2E.FeatBackgroundShort"),
+                      label: game.i18n.localize("AVANT.FeatBackgroundShort"),
                   }
                 : null;
         this.createGroup({
             id: "skill",
-            label: "PF2E.Actor.Character.FeatSlot.SkillHeader",
+            label: "AVANT.Actor.Character.FeatSlot.SkillHeader",
             supported: ["skill"],
             slots: [backgroundSkillFeats, classFeatSlots?.skill].flat().filter(R.isTruthy),
         });
 
         this.createGroup({
             id: "general",
-            label: "PF2E.Actor.Character.FeatSlot.GeneralHeader",
+            label: "AVANT.Actor.Character.FeatSlot.GeneralHeader",
             supported: ["general", "skill"],
             slots: classFeatSlots?.general ?? [],
         });
 
         // Add mythic if enabled
-        const mythicSetting = game.pf2e.settings.campaign.mythic;
+        const mythicSetting = game.avant.settings.campaign.mythic;
         if (mythicSetting !== "disabled") {
             this.createGroup({
                 id: "mythic",
-                label: "PF2E.Actor.Character.FeatSlot.MythicHeader",
-                placeholder: "PF2E.Actor.Character.FeatSlot.MythicFeatPlaceholder",
+                label: "AVANT.Actor.Character.FeatSlot.MythicHeader",
+                placeholder: "AVANT.Actor.Character.FeatSlot.MythicFeatPlaceholder",
                 customLimit:
                     mythicSetting === "variant-tiers"
                         ? {
-                              label: "PF2E.Actor.Character.FeatSlot.MythicTier",
+                              label: "AVANT.Actor.Character.FeatSlot.MythicTier",
                               min: 0,
                               max: 10,
                           }
@@ -122,8 +122,8 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
                 slots: [
                     {
                         id: "mythic-calling",
-                        label: "PF2E.Actor.Character.FeatSlot.MythicCallingShort",
-                        placeholder: "PF2E.Actor.Character.FeatSlot.MythicCallingPlaceholder",
+                        label: "AVANT.Actor.Character.FeatSlot.MythicCallingShort",
+                        placeholder: "AVANT.Actor.Character.FeatSlot.MythicCallingPlaceholder",
                         filter: {
                             categories: ["calling"],
                         },
@@ -135,7 +135,7 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
                         if (level === 12) {
                             return {
                                 ...base,
-                                placeholder: "PF2E.Actor.Character.FeatSlot.MythicDestinyPlaceholder",
+                                placeholder: "AVANT.Actor.Character.FeatSlot.MythicDestinyPlaceholder",
                                 filter: {
                                     traits: ["destiny"],
                                 },
@@ -158,8 +158,8 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
         }
 
         // Add campaign feats if enabled
-        if (game.pf2e.settings.campaign.feats.enabled) {
-            this.createGroup({ id: "campaign", label: "PF2E.Actor.Character.FeatSlot.CampaignHeader" });
+        if (game.avant.settings.campaign.feats.enabled) {
+            this.createGroup({ id: "campaign", label: "AVANT.Actor.Character.FeatSlot.CampaignHeader" });
         }
     }
 
@@ -171,9 +171,9 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
 
     /** Inserts a feat into the character. If groupId is empty string, it's a bonus feat. */
     async insertFeat(
-        feat: FeatPF2e,
+        feat: FeatAvant,
         slotData: { groupId: string; slotId: string | null } | null,
-    ): Promise<ItemPF2e<TActor>[]> {
+    ): Promise<ItemAvant<TActor>[]> {
         // Certain feat types aren't "real" feats and need to be inserted normally
         const alreadyHasFeat = this.actor.items.has(feat.id);
         if (isBoonOrCurse(feat)) {
@@ -191,7 +191,7 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
             const badGroup = this.get(groupId);
             if (badGroup) {
                 ui.notifications.warn(
-                    game.i18n.format("PF2E.Item.Feat.Warning.InvalidCategory", {
+                    game.i18n.format("AVANT.Item.Feat.Warning.InvalidCategory", {
                         item: feat.name,
                         category: game.i18n.format(badGroup.label),
                     }),
@@ -210,7 +210,7 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
 
     /** If a drop target is omitted or turns out to be invalid, make a limited attempt to find an eligible slot */
     #findBestLocation(
-        feat: FeatPF2e,
+        feat: FeatAvant,
         { requested }: { requested?: string },
     ): { group: FeatGroup<TActor> | null; slotId: string | null } {
         if (feat.isFeature) return { group: this.get(feat.category) ?? null, slotId: null };
@@ -239,10 +239,10 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
         // put the feats in their feat slots
         const feats = this.actor.itemTypes.feat.sort((f1, f2) => f1.sort - f2.sort);
         for (const feat of feats.filter((f) => !isBoonOrCurse(f))) {
-            const grantedBy = feat.flags.pf2e.grantedBy;
+            const grantedBy = feat.flags.avant.grantedBy;
             if (grantedBy && !feat.system.location) {
                 const granter = this.actor.items.get(grantedBy.id);
-                const grantsById = granter ? R.mapKeys(granter.flags.pf2e.itemGrants, (_, g) => g.id) : null;
+                const grantsById = granter ? R.mapKeys(granter.flags.avant.itemGrants, (_, g) => g.id) : null;
                 const isNested = grantsById?.[feat.id]?.nested !== false;
                 if (granter?.isOfType("feat") && granter.grants.includes(feat) && isNested) {
                     continue;
@@ -262,7 +262,7 @@ class CharacterFeats<TActor extends CharacterPF2e> extends Collection<FeatGroup<
     }
 }
 
-function isBoonOrCurse(feat: FeatPF2e) {
+function isBoonOrCurse(feat: FeatAvant) {
     return ["pfsboon", "deityboon", "curse"].includes(feat.category);
 }
 

@@ -6,10 +6,10 @@ export class Migration842NumifyNumericSettings extends MigrationBase {
 
     override async migrate(): Promise<void> {
         for (const setting of ["staminaVariant", "worldClock.timeConvention"]) {
-            const value = game.settings.storage.get("world").getItem(`pf2e.${setting}`);
+            const value = game.settings.storage.get("world").getItem(`avant.${setting}`);
             if (value === null) continue;
             if (typeof value !== "number") {
-                await game.settings.set("pf2e", setting, Number(value));
+                await game.settings.set("avant", setting, Number(value));
             }
         }
     }

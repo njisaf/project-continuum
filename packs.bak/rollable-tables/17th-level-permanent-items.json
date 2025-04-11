@@ -1,0 +1,476 @@
+{
+    "_id": "0jlGmwn6YGqsfG1q",
+    "description": "<p>Table of 17th-Level Permanent Items</p>",
+    "displayRoll": true,
+    "formula": "1d165",
+    "img": "icons/svg/d20-grey.svg",
+    "name": "17th-Level Permanent Items",
+    "ownership": {
+        "default": 0
+    },
+    "replacement": true,
+    "results": [
+        {
+            "_id": "ym4yu8G8JjvkyolF",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "K2rMmiBlzcysNuj6",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/apex-items/belt-of-regeneration.webp",
+            "range": [
+                1,
+                6
+            ],
+            "text": "Belt of Long Life",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "wGGifecdqAuMsSMy",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "WOiCJSS2MicKCMVs",
+            "drawn": false,
+            "img": "icons/equipment/wrist/bracer-segmented-leather.webp",
+            "range": [
+                7,
+                12
+            ],
+            "text": "Bracers of Strength",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "SOUNJEubhyc7xYE9",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "C3SwBSW8XzzBPDVT",
+            "drawn": false,
+            "img": "icons/equipment/back/mantle-collared-blue.webp",
+            "range": [
+                13,
+                18
+            ],
+            "text": "Cloak of Swiftness",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "4hRVczdLzPvBzQ6t",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "1FKDq4Gfev5GObDT",
+            "drawn": false,
+            "img": "icons/equipment/finger/ring-band-thin-silver-teal.webp",
+            "range": [
+                19,
+                24
+            ],
+            "text": "Crown of Intellect",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "80VEKNReXw5gRLsi",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "hjfoSyfsGSTLpPMr",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/apex-items/headband-of-inspired-wisdom.webp",
+            "range": [
+                25,
+                30
+            ],
+            "text": "Headwrap of Wisdom",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "DFlSIGNvTHUqEuam",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "AMOs47C4WiVY5IW3",
+            "drawn": false,
+            "img": "icons/equipment/neck/necklace-jeweled-silver-blue.webp",
+            "range": [
+                31,
+                36
+            ],
+            "text": "Necklace of Allure",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "L7xByb0nJayanRsL",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "aLA7pikfeNIAAGLw",
+            "drawn": false,
+            "img": "icons/equipment/chest/breastplate-banded-steel.webp",
+            "range": [
+                37,
+                39
+            ],
+            "text": "Impenetrable Scale",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "eJdkKJkZ0iV6rMET",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "ByRyBRjNBcK5rwQ9",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/held-items/crystal-ball-peridot.webp",
+            "range": [
+                40,
+                42
+            ],
+            "text": "Crystal Ball (Peridot)",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "kj3WbPMkao19WQro",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "fhOnKVwftnOwayBp",
+            "drawn": false,
+            "img": "icons/magic/earth/explosion-lava-orange.webp",
+            "range": [
+                43,
+                48
+            ],
+            "text": "Eternal Eruption of Sakalayo",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "GmctGkBejac8V4c0",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "2FjdEflsVldnuebM",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/runes/armor-property-runes/armor-property-runes.webp",
+            "range": [
+                49,
+                54
+            ],
+            "text": "Shadow (Major)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "w9aI81BWww2hmC8V",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "6xaxxKfvXED6LfIY",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/runes/weapon-property-runes/weapon-property-runes.webp",
+            "range": [
+                55,
+                55
+            ],
+            "text": "Vorpal",
+            "type": "pack",
+            "weight": 1
+        },
+        {
+            "_id": "krGdjQzVCJV4L8dL",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/shields/precious-material-shields/orichalcum-buckler.webp",
+            "range": [
+                56,
+                56
+            ],
+            "text": "Orichalcum Buckler (High-Grade)",
+            "type": "text",
+            "weight": 1
+        },
+        {
+            "_id": "5jH4YZ61q3ZXR8Up",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/shields/precious-material-shields/orichalcum-shield.webp",
+            "range": [
+                57,
+                57
+            ],
+            "text": "Orichalcum Shield (High-Grade)",
+            "type": "text",
+            "weight": 1
+        },
+        {
+            "_id": "ei0B9bj5o4dfjutO",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "Qs8RgNH6thRPv2jt",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/magic-wands/magic-wand.webp",
+            "range": [
+                58,
+                63
+            ],
+            "text": "Magic Wand (8th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "6sI9KTT76wMGLd5I",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "H1XGrl6Z0bzXN2oi",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-continuation.webp",
+            "range": [
+                64,
+                69
+            ],
+            "text": "Wand of Continuation (7th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "4h7EA9VpYQjzOrnO",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "WeX7rAO2kAyP0QnG",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-manifold-missiles.webp",
+            "range": [
+                70,
+                75
+            ],
+            "text": "Wand of Shardstorm (7th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "SWTpYQqnH8N5Rc27",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/weapons/greatsword.webp",
+            "range": [
+                76,
+                78
+            ],
+            "text": "Adamantine Weapon (High-Grade)",
+            "type": "text",
+            "weight": 3
+        },
+        {
+            "_id": "U6qWRAv8ho1VOAxD",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/weapons/greatsword.webp",
+            "range": [
+                79,
+                81
+            ],
+            "text": "Dawnsilver Weapon (High-Grade)",
+            "type": "text",
+            "weight": 3
+        },
+        {
+            "_id": "8VykN166sn0jGWUv",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/weapons/greatsword.webp",
+            "range": [
+                82,
+                84
+            ],
+            "text": "Duskwood Weapon (High-Grade)",
+            "type": "text",
+            "weight": 3
+        },
+        {
+            "_id": "r98ZFKTBhfj95PVV",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "pvxRcuBexbFawjCg",
+            "drawn": false,
+            "img": "icons/weapons/swords/sword-guard-red.webp",
+            "range": [
+                85,
+                90
+            ],
+            "text": "Searing Blade (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "q5iVaLDpXHXCPoM3",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "ZdAZ1ALZ28QOeCN7",
+            "drawn": false,
+            "img": "icons/equipment/chest/robe-collared-blue.webp",
+            "range": [
+                91,
+                96
+            ],
+            "text": "Accolade Robe (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "Refccn218PWSt6qK",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "FNccUmKsyXKmfe5c",
+            "drawn": false,
+            "img": "icons/equipment/wrist/bracer-studded-leather-steel.webp",
+            "range": [
+                97,
+                102
+            ],
+            "text": "Armbands of Athleticism (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "XsZaGyoWMXul2Rw9",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "kjFFmqci69k2zMXF",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/daredevil-boots.webp",
+            "range": [
+                103,
+                108
+            ],
+            "text": "Daredevil Boots (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "SIID2LyLE3WKICgQ",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "pDw2wi0znVb8Dysg",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/dread-blindfold.webp",
+            "range": [
+                109,
+                114
+            ],
+            "text": "Dread Blindfold",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "jintxS1zU5mnLgvL",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "DrjFwJhp66GfH5Wi",
+            "drawn": false,
+            "img": "icons/equipment/neck/choker-rounded-gold-green.webp",
+            "range": [
+                115,
+                120
+            ],
+            "text": "Entertainer's Cincture (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "9efvy46Lt0iYAIYL",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "AynKTlER5ZbfF62f",
+            "drawn": false,
+            "img": "icons/containers/bags/pouch-leather-green.webp",
+            "range": [
+                121,
+                126
+            ],
+            "text": "Humbug Pocket (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "dbq5v0mRAjWCVsCm",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "b9YHyjOL4sg7tjI4",
+            "drawn": false,
+            "img": "icons/equipment/finger/ring-faceted-ornate-silver-red.webp",
+            "range": [
+                127,
+                132
+            ],
+            "text": "Messenger's Ring (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "kZbWumUFlP59Eh0A",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "etnis6HOeGZEbScD",
+            "drawn": false,
+            "img": "icons/commodities/treasure/broach-jewel-gold-blue.webp",
+            "range": [
+                133,
+                138
+            ],
+            "text": "Shining Symbol (Major)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "l2yQnEp2GyXkEmyr",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "LRSIRUERqBAJ1HGT",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/voyagers-pack.webp",
+            "range": [
+                139,
+                141
+            ],
+            "text": "Voyager's Pack",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "zkWL3YmsSVsmkeU9",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "grRxpX1iE3zOJA1q",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-overflowing-life.webp",
+            "range": [
+                142,
+                147
+            ],
+            "text": "Wand of Overflowing Life (7th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "3x2LLKKDSDjasjJv",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "bnmfBLXOBd3ah6GK",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/alchemist-goggles.webp",
+            "range": [
+                148,
+                153
+            ],
+            "text": "Alchemist Goggles (Major)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "EPht3z9Tqmb2iybo",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "6fnjxb9sjrKm0N2r",
+            "drawn": false,
+            "img": "icons/equipment/neck/pendant-faceted-red.webp",
+            "range": [
+                154,
+                159
+            ],
+            "text": "Sanguine Pendant (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "TEyQokhJtDXJnZbe",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "uj09q6x8wPAZcMs9",
+            "drawn": false,
+            "img": "icons/equipment/waist/sash-cloth-green-white.webp",
+            "range": [
+                160,
+                165
+            ],
+            "text": "Sash of Prowess (Greater)",
+            "type": "pack",
+            "weight": 6
+        }
+    ]
+}

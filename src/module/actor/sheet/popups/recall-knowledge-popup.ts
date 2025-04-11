@@ -14,8 +14,8 @@ export class RecallKnowledgePopup extends Application {
             ...super.defaultOptions,
             id: "recall-knowledge-breakdown",
             classes: [],
-            title: game.i18n.localize("PF2E.RecallKnowledge.BreakdownTitle"),
-            template: "systems/pf2e/templates/actors/recall-knowledge.hbs",
+            title: game.i18n.localize("AVANT.RecallKnowledge.BreakdownTitle"),
+            template: "systems/avant/templates/actors/recall-knowledge.hbs",
             width: 600,
         };
     }
@@ -26,7 +26,7 @@ export class RecallKnowledgePopup extends Application {
         return {
             standard: {
                 label: localizeList(
-                    identificationData.skills.map((s) => game.i18n.localize(CONFIG.PF2E.skills[s].label)),
+                    identificationData.skills.map((s) => game.i18n.localize(CONFIG.AVANT.skills[s].label)),
                 ),
                 attempts: this.#padAttempts(identificationData.standard.progression),
             },

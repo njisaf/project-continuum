@@ -1,0 +1,96 @@
+{
+    "_id": "jevzf9JbJJibpqaI",
+    "img": "systems/avant/icons/actions/Passive.webp",
+    "name": "Skilled",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "familiar",
+        "description": {
+            "value": "<p>Choose a skill other than Acrobatics or Stealth. Your familiar's modifier for that skill is equal to your level plus your spellcasting attribute modifier, rather than just your level. You can select this ability repeatedly, choosing a different skill each time.</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Skill.Arcana",
+                        "value": "arcana"
+                    },
+                    {
+                        "label": "AVANT.Skill.Athletics",
+                        "value": "athletics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Crafting",
+                        "value": "crafting"
+                    },
+                    {
+                        "label": "AVANT.Skill.Deception",
+                        "value": "deception"
+                    },
+                    {
+                        "label": "AVANT.Skill.Diplomacy",
+                        "value": "diplomacy"
+                    },
+                    {
+                        "label": "AVANT.Skill.Intimidation",
+                        "value": "intimidation"
+                    },
+                    {
+                        "label": "AVANT.Skill.Medicine",
+                        "value": "medicine"
+                    },
+                    {
+                        "label": "AVANT.Skill.Nature",
+                        "value": "nature"
+                    },
+                    {
+                        "label": "AVANT.Skill.Occultism",
+                        "value": "occultism"
+                    },
+                    {
+                        "label": "AVANT.Skill.Performance",
+                        "value": "performance"
+                    },
+                    {
+                        "label": "AVANT.Skill.Religion",
+                        "value": "religion"
+                    },
+                    {
+                        "label": "AVANT.Skill.Society",
+                        "value": "society"
+                    },
+                    {
+                        "label": "AVANT.Skill.Survival",
+                        "value": "survival"
+                    },
+                    {
+                        "label": "AVANT.Skill.Thievery",
+                        "value": "thievery"
+                    }
+                ],
+                "flag": "skill",
+                "key": "ChoiceSet"
+            },
+            {
+                "key": "FlatModifier",
+                "selector": "{item|flags.avant.rulesSelections.skill}",
+                "value": "@actor.masterAttributeModifier"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "action"
+}

@@ -1,3 +1,3 @@
-export { AfflictionPF2e } from "./document.ts";
-export { AfflictionSheetPF2e } from "./sheet.ts";
+export { AfflictionAvant } from "./document.ts";
+export { AfflictionSheetAvant } from "./sheet.ts";
 export * from "./data.ts";

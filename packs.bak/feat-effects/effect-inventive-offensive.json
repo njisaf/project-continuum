@@ -1,0 +1,212 @@
+{
+    "_id": "SITsBOnOG1EJsEpl",
+    "img": "icons/weapons/axes/axe-simple-purple-black.webp",
+    "name": "Effect: Inventive Offensive",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.feats-srd.Item.Inventive Offensive]</p>\n<p>When you use this ability, add one of the following weapon traits to a melee weapon you wield: deadly d6, disarm, nonlethal, shove, trip, versatile B, versatile P, or versatile S. You cannot add a trait that the weapon already has. The weapon retains this trait until you a successfully hit and deal damage with the weapon. The weapon retains this trait only while you wield it, and you can have only one weapon modified in this way at any time.</p>\n<p>If you have legendary proficiency in Crafting, you can apply two weapon traits from the list when using this feat.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Character Guide"
+        },
+        "rules": [
+            {
+                "choices": {
+                    "ownedItems": true,
+                    "predicate": [
+                        "item:melee",
+                        {
+                            "gt": [
+                                "item:hands-held",
+                                0
+                            ]
+                        }
+                    ],
+                    "types": [
+                        "weapon"
+                    ]
+                },
+                "flag": "inventiveOffensiveWeapon",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Weapon"
+            },
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitDeadlyD6",
+                        "value": "deadly-d6"
+                    },
+                    {
+                        "label": "AVANT.TraitDisarm",
+                        "value": "disarm"
+                    },
+                    {
+                        "label": "AVANT.TraitNonlethal",
+                        "value": "nonlethal"
+                    },
+                    {
+                        "label": "AVANT.TraitShove",
+                        "value": "shove"
+                    },
+                    {
+                        "label": "AVANT.TraitTrip",
+                        "value": "trip"
+                    },
+                    {
+                        "label": "AVANT.TraitVersatileB",
+                        "value": "versatile-b"
+                    },
+                    {
+                        "label": "AVANT.TraitVersatileP",
+                        "value": "versatile-p"
+                    },
+                    {
+                        "label": "AVANT.TraitVersatileS",
+                        "value": "versatile-s"
+                    }
+                ],
+                "flag": "inventiveOffensiveFirstTrait",
+                "key": "ChoiceSet",
+                "rollOption": "inventive-offensive"
+            },
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitDeadlyD6",
+                        "predicate": [
+                            {
+                                "not": "inventive-offensive:deadly-d6"
+                            }
+                        ],
+                        "value": "deadly-d6"
+                    },
+                    {
+                        "label": "AVANT.TraitDisarm",
+                        "predicate": [
+                            {
+                                "not": "inventive-offensive:disarm"
+                            }
+                        ],
+                        "value": "disarm"
+                    },
+                    {
+                        "label": "AVANT.TraitNonlethal",
+                        "predicate": [
+                            {
+                                "not": "inventive-offensive:nonlethal"
+                            }
+                        ],
+                        "value": "nonlethal"
+                    },
+                    {
+                        "label": "AVANT.TraitShove",
+                        "predicate": [
+                            {
+                                "not": "inventive-offensive:shove"
+                            }
+                        ],
+                        "value": "shove"
+                    },
+                    {
+                        "label": "AVANT.TraitTrip",
+                        "predicate": [
+                            {
+                                "not": "inventive-offensive:trip"
+                            }
+                        ],
+                        "value": "trip"
+                    },
+                    {
+                        "label": "AVANT.TraitVersatileB",
+                        "predicate": [
+                            {
+                                "not": "inventive-offensive:versatile-b"
+                            }
+                        ],
+                        "value": "versatile-b"
+                    },
+                    {
+                        "label": "AVANT.TraitVersatileP",
+                        "predicate": [
+                            {
+                                "not": "inventive-offensive:versatile-p"
+                            }
+                        ],
+                        "value": "versatile-p"
+                    },
+                    {
+                        "label": "AVANT.TraitVersatileS",
+                        "predicate": [
+                            {
+                                "not": "inventive-offensive:versatile-s"
+                            }
+                        ],
+                        "value": "versatile-s"
+                    }
+                ],
+                "flag": "inventiveOffensiveSecondTrait",
+                "key": "ChoiceSet",
+                "predicate": [
+                    {
+                        "gte": [
+                            "skill:crafting:rank",
+                            4
+                        ]
+                    }
+                ]
+            },
+            {
+                "itemId": "{item|flags.avant.rulesSelections.inventiveOffensiveWeapon}",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "predicate": [
+                    {
+                        "gt": [
+                            "item:hands-held",
+                            0
+                        ]
+                    }
+                ],
+                "property": "traits",
+                "value": "{item|flags.avant.rulesSelections.inventiveOffensiveFirstTrait}"
+            },
+            {
+                "itemId": "{item|flags.avant.rulesSelections.inventiveOffensiveWeapon}",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "predicate": [
+                    {
+                        "gt": [
+                            "item:hands-held",
+                            0
+                        ]
+                    }
+                ],
+                "property": "traits",
+                "value": "{item|flags.avant.rulesSelections.inventiveOffensiveSecondTrait}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

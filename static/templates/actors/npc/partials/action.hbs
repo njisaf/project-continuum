@@ -19,7 +19,7 @@
     </h4>
 
     <div class="controls">
-        <a class="chat" data-action="item-to-chat" data-tooltip="PF2E.NPC.SendToChat"><i class="fa-solid fa-fw fa-message"></i></a>
+        <a class="chat" data-action="item-to-chat" data-tooltip="AVANT.NPC.SendToChat"><i class="fa-solid fa-fw fa-message"></i></a>
         {{#if @root.editable}}
             <a data-action="edit-item" data-tooltip="CONTROLS.CommonEdit"><i class="fa-solid fa-fw fa-edit"></i></a>
             <a data-action="delete-item" data-tooltip="Delete"><i class="fa-solid fa-fw fa-trash"></i></a>
@@ -28,7 +28,7 @@
     {{#if action.usable}}
         <div class="button-group">
             <button type="button" class="use-action" data-action="use-action">
-                <span>{{localize "PF2E.Action.Use"}}</span>
+                <span>{{localize "AVANT.Action.Use"}}</span>
             </button>
             {{#if action.frequency}}
                 <div class="frequency">
@@ -36,7 +36,7 @@
                         <span>
                         /
                         {{action.frequency.max}}
-                        {{localize "PF2E.Frequency.per"}}
+                        {{localize "AVANT.Frequency.per"}}
                         {{localize (lookup @root.frequencies action.frequency.per)}}
                         </span>
                     </div>

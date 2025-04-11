@@ -1,4 +1,4 @@
-import { CoinsPF2e } from "@item/physical/helpers.ts";
+import { CoinsAvant } from "@item/physical/helpers.ts";
 import { MAGIC_TRADITIONS } from "@item/spell/values.ts";
 import { localizer, sluggify } from "@util";
 import * as R from "remeda";
@@ -29,7 +29,7 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
         "source",
     ];
 
-    #localizeCoins = localizer("PF2E.CurrencyAbbreviations");
+    #localizeCoins = localizer("AVANT.CurrencyAbbreviations");
 
     constructor(browser: CompendiumBrowser) {
         super(browser);
@@ -39,7 +39,7 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
     }
 
     protected override async loadData(): Promise<void> {
-        console.debug("PF2e System | Compendium Browser | Started loading inventory items");
+        console.debug("Avant System | Compendium Browser | Started loading inventory items");
 
         const inventoryItems: CompendiumBrowserIndexData[] = [];
         const itemTypes = ["weapon", "shield", "armor", "equipment", "consumable", "treasure", "backpack", "kit"];
@@ -57,7 +57,7 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
             this.browser.loadedPacks("equipment"),
             indexFields,
         )) {
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
             for (const itemData of index) {
                 if (itemData.type === "treasure" && itemData.system.stackGroup === "coins") continue;
                 if (itemTypes.includes(itemData.type)) {
@@ -84,7 +84,7 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
                     // Store price as a number for better sorting (note: we may be dealing with old data, convert if needed)
                     const priceValue = itemData.system.price.value;
                     const priceCoins =
-                        typeof priceValue === "string" ? CoinsPF2e.fromString(priceValue) : new CoinsPF2e(priceValue);
+                        typeof priceValue === "string" ? CoinsAvant.fromString(priceValue) : new CoinsAvant(priceValue);
                     const coinValue = priceCoins.copperValue;
 
                     // Prepare publication source
@@ -128,23 +128,23 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
         this.indexData = inventoryItems;
 
         // Filters
-        this.filterData.checkboxes.armorTypes.options = this.generateCheckboxOptions(CONFIG.PF2E.armorCategories);
+        this.filterData.checkboxes.armorTypes.options = this.generateCheckboxOptions(CONFIG.AVANT.armorCategories);
         fu.mergeObject(
             this.filterData.checkboxes.armorTypes.options,
-            this.generateCheckboxOptions(CONFIG.PF2E.armorGroups),
+            this.generateCheckboxOptions(CONFIG.AVANT.armorGroups),
         );
-        this.filterData.checkboxes.weaponTypes.options = this.generateCheckboxOptions(CONFIG.PF2E.weaponCategories);
+        this.filterData.checkboxes.weaponTypes.options = this.generateCheckboxOptions(CONFIG.AVANT.weaponCategories);
         fu.mergeObject(
             this.filterData.checkboxes.weaponTypes.options,
-            this.generateCheckboxOptions(CONFIG.PF2E.weaponGroups),
+            this.generateCheckboxOptions(CONFIG.AVANT.weaponGroups),
         );
 
         this.filterData.traits.options = this.generateMultiselectOptions({
-            ...CONFIG.PF2E.armorTraits,
-            ...CONFIG.PF2E.consumableTraits,
-            ...CONFIG.PF2E.equipmentTraits,
-            ...CONFIG.PF2E.shieldTraits,
-            ...CONFIG.PF2E.weaponTraits,
+            ...CONFIG.AVANT.armorTraits,
+            ...CONFIG.AVANT.consumableTraits,
+            ...CONFIG.AVANT.equipmentTraits,
+            ...CONFIG.AVANT.shieldTraits,
+            ...CONFIG.AVANT.weaponTraits,
         });
 
         this.filterData.checkboxes.itemTypes.options = this.generateCheckboxOptions({
@@ -157,10 +157,10 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
             backpack: "TYPES.Item.backpack",
             kit: "TYPES.Item.kit",
         });
-        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.PF2E.rarityTraits, false);
+        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.AVANT.rarityTraits, false);
         this.filterData.source.options = this.generateSourceCheckboxOptions(publications);
 
-        console.debug("PF2e System | Compendium Browser | Finished loading inventory items");
+        console.debug("Avant System | Compendium Browser | Finished loading inventory items");
     }
 
     protected override filterIndexData(entry: CompendiumBrowserIndexData): boolean {
@@ -215,8 +215,8 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
                 upper = upper.replaceAll(translated, english);
             }
             return {
-                min: CoinsPF2e.fromString(lower).copperValue,
-                max: CoinsPF2e.fromString(upper).copperValue,
+                min: CoinsAvant.fromString(lower).copperValue,
+                max: CoinsAvant.fromString(upper).copperValue,
                 inputMin: lower,
                 inputMax: upper,
             };
@@ -230,25 +230,25 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
             checkboxes: {
                 itemTypes: {
                     isExpanded: true,
-                    label: "PF2E.CompendiumBrowser.Filter.InventoryTypes",
+                    label: "AVANT.CompendiumBrowser.Filter.InventoryTypes",
                     options: {},
                     selected: [],
                 },
                 rarity: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.Rarities",
+                    label: "AVANT.CompendiumBrowser.Filter.Rarities",
                     options: {},
                     selected: [],
                 },
                 armorTypes: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.ArmorFilters",
+                    label: "AVANT.CompendiumBrowser.Filter.ArmorFilters",
                     options: {},
                     selected: [],
                 },
                 weaponTypes: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.WeaponFilters",
+                    label: "AVANT.CompendiumBrowser.Filter.WeaponFilters",
                     options: {},
                     selected: [],
                 },
@@ -260,7 +260,7 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
             },
             source: {
                 isExpanded: false,
-                label: "PF2E.CompendiumBrowser.Filter.Source",
+                label: "AVANT.CompendiumBrowser.Filter.Source",
                 options: {},
                 selected: [],
             },
@@ -269,8 +269,8 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
                 direction: "asc",
                 options: {
                     name: { label: "Name", type: "alpha" },
-                    level: { label: "PF2E.LevelLabel", type: "numeric" },
-                    price: { label: "PF2E.PriceLabel", type: "numeric" },
+                    level: { label: "AVANT.LevelLabel", type: "numeric" },
+                    price: { label: "AVANT.PriceLabel", type: "numeric" },
                 },
                 type: "numeric",
             },
@@ -280,7 +280,7 @@ export class CompendiumBrowserEquipmentTab extends CompendiumBrowserTab {
                     defaultMin: `0${this.#localizeCoins("cp")}`,
                     defaultMax: `200,000${this.#localizeCoins("gp")}`,
                     isExpanded: false,
-                    label: "PF2E.PriceLabel",
+                    label: "AVANT.PriceLabel",
                     values: {
                         min: 0,
                         max: 20_000_000,

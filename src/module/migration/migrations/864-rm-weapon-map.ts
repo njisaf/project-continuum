@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -25,7 +25,7 @@ export class Migration864RemoveWeaponMAP extends MigrationBase {
     }
 }
 
-type MaybeWithMAPProperty = ItemSourcePF2e & {
+type MaybeWithMAPProperty = ItemSourceAvant & {
     system: {
         MAP?: unknown;
         "-=MAP"?: null;

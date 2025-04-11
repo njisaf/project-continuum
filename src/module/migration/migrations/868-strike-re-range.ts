@@ -1,4 +1,4 @@
-import type { ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration868StrikeRERange extends MigrationBase {
     static override version = 0.868;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const strikeREs = source.system.rules.filter((r): r is OldStrikeSource => r.key === "Strike");
         for (const rule of strikeREs) {
             if (typeof rule.maxRange === "number" && rule.range !== rule.maxRange / 6) {

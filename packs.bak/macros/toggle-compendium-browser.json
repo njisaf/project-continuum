@@ -1,0 +1,12 @@
+{
+    "_id": "s2sa8lo9dcIA6UGe",
+    "author": "Ooz20ZCUmh0bjKL3",
+    "command": "game.avant.compendiumBrowser.rendered ? game.avant.compendiumBrowser.close() : game.avant.compendiumBrowser.render(true);",
+    "img": "systems/avant/icons/equipment/adventuring-gear/advanced-book-of-translation.webp",
+    "name": "Toggle Compendium Browser",
+    "ownership": {
+        "default": 1
+    },
+    "scope": "global",
+    "type": "script"
+}

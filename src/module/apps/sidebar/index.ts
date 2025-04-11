@@ -1,5 +1,5 @@
-export { ActorDirectoryPF2e } from "./actor-directory.ts";
-export { ItemDirectoryPF2e } from "./item-directory.ts";
-export { ChatLogPF2e } from "./chat-log.ts";
-export { CompendiumDirectoryPF2e } from "./compendium-directory.ts";
-export { EncounterTrackerPF2e } from "./encounter-tracker.ts";
+export { ActorDirectoryAvant } from "./actor-directory.ts";
+export { ItemDirectoryAvant } from "./item-directory.ts";
+export { ChatLogAvant } from "./chat-log.ts";
+export { CompendiumDirectoryAvant } from "./compendium-directory.ts";
+export { EncounterTrackerAvant } from "./encounter-tracker.ts";

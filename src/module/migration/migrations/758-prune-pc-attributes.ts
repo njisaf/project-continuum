@@ -1,4 +1,4 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Remove inadvertently stored attributes caused by bug in Rest for the Night script */
@@ -62,6 +62,6 @@ export class Migration758PrunePCAttributes extends MigrationBase {
     }
 }
 
-type ActorSourceWithDeletions = ActorSourcePF2e & {
+type ActorSourceWithDeletions = ActorSourceAvant & {
     [K in `system.attributes.${Migration758PrunePCAttributes["toDelete"][number]}`]?: null;
 };

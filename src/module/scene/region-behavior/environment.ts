@@ -1,12 +1,12 @@
 import { resetActors } from "@actor/helpers.ts";
 import type { RegionEventType } from "types/foundry/client-esm/data/region-behaviors/base.d.ts";
 import type { SetField, StringField } from "types/foundry/common/data/fields.d.ts";
-import { RegionBehaviorPF2e } from "./document.ts";
-import { RegionEventPF2e } from "./types.ts";
+import { RegionBehaviorAvant } from "./document.ts";
+import { RegionEventAvant } from "./types.ts";
 
 class EnvironmentBehaviorType extends foundry.data.regionBehaviors.RegionBehaviorType<
     EnvironmentTypeSchema,
-    RegionBehaviorPF2e | null
+    RegionBehaviorAvant | null
 > {
     override events = new Set<RegionEventType>(["tokenEnter", "tokenExit"]);
 
@@ -16,25 +16,25 @@ class EnvironmentBehaviorType extends foundry.data.regionBehaviors.RegionBehavio
             environmentTypes: new fields.SetField(
                 new fields.StringField({
                     blank: true,
-                    choices: () => CONFIG.PF2E.environmentTypes,
+                    choices: () => CONFIG.AVANT.environmentTypes,
                 }),
-                { label: "PF2E.Region.Environment.Type.Label", hint: "PF2E.Region.Environment.Type.Hint" },
+                { label: "AVANT.Region.Environment.Type.Label", hint: "AVANT.Region.Environment.Type.Hint" },
             ),
             mode: new fields.StringField({
                 blank: false,
                 choices: () => ({
-                    add: "PF2E.Region.Environment.Mode.Add.Label",
-                    override: "PF2E.Region.Environment.Mode.Override.Label",
-                    remove: "PF2E.Region.Environment.Mode.Remove.Label",
+                    add: "AVANT.Region.Environment.Mode.Add.Label",
+                    override: "AVANT.Region.Environment.Mode.Override.Label",
+                    remove: "AVANT.Region.Environment.Mode.Remove.Label",
                 }),
                 initial: "add",
-                label: "PF2E.Region.Environment.Mode.Label",
-                hint: "PF2E.Region.Environment.Mode.Hint",
+                label: "AVANT.Region.Environment.Mode.Label",
+                hint: "AVANT.Region.Environment.Mode.Hint",
             }),
         };
     }
 
-    protected override async _handleRegionEvent(event: RegionEventPF2e): Promise<void> {
+    protected override async _handleRegionEvent(event: RegionEventAvant): Promise<void> {
         if (event.name === "tokenEnter" || event.name === "tokenExit") {
             if (event.data.token.actor) resetActors([event.data.token.actor], { tokens: true });
         }
@@ -42,7 +42,7 @@ class EnvironmentBehaviorType extends foundry.data.regionBehaviors.RegionBehavio
 }
 
 interface EnvironmentBehaviorType
-    extends foundry.data.regionBehaviors.RegionBehaviorType<EnvironmentTypeSchema, RegionBehaviorPF2e | null>,
+    extends foundry.data.regionBehaviors.RegionBehaviorType<EnvironmentTypeSchema, RegionBehaviorAvant | null>,
         ModelPropsFromSchema<EnvironmentTypeSchema> {}
 
 type EnvironmentTypeSchema = {

@@ -1,0 +1,33 @@
+{
+    "_id": "JAka1VWMPGOm5JpR",
+    "img": "systems/avant/icons/actions/OneAction.webp",
+    "name": "Verdant Rest",
+    "system": {
+        "actionType": {
+            "value": "action"
+        },
+        "actions": {
+            "value": 1
+        },
+        "category": "offensive",
+        "description": {
+            "value": "<p>You turn into a tree or other non-creature plant. This has the effect of using @UUID[Compendium.avant.spells-srd.Item.One with Plants] to turn into a plant, except that your AC is 30. You can Dismiss this effect to turn back. If you rest for 10 minutes in this form in natural sunlight, you recover half your maximum Hit Points. If you take your daily rest in this form, the rest restores you to maximum Hit Points and removes all non-permanent @UUID[Compendium.avant.conditionitems.Item.Drained], @UUID[Compendium.avant.conditionitems.Item.Enfeebled], @UUID[Compendium.avant.conditionitems.Item.Clumsy], and @UUID[Compendium.avant.conditionitems.Item.Stupefied] conditions, as well as all poisons and diseases of 19th level or lower.</p>"
+        },
+        "frequency": {
+            "max": 1,
+            "per": "PT1H"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [],
+        "traits": {
+            "value": [
+                "concentrate"
+            ]
+        }
+    },
+    "type": "action"
+}

@@ -1,0 +1,215 @@
+{
+    "_id": "8olfnTmWh0GGPDqX",
+    "img": "systems/avant/icons/spells/ki-strike.webp",
+    "name": "Spell Effect: Inner Upheaval",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Inner Upheaval]</p>\n<p>You gain a +1 status bonus to your attack rolls with the Strikes, and the Strikes deal 1d6 extra damage of the chosen type.</p><hr /><p><strong>Heightened (+4)</strong> The extra damage increases by 1d6.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "rounds",
+            "value": 1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "predicate": [
+                            "entwined-energy-ki:acid"
+                        ],
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "predicate": [
+                            "feat:elemental-fist"
+                        ],
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "feat:elemental-fist",
+                                    "entwined-energy-ki:cold"
+                                ]
+                            }
+                        ],
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "feat:elemental-fist",
+                                    "entwined-energy-ki:electricity"
+                                ]
+                            }
+                        ],
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "feat:elemental-fist",
+                                    "entwined-energy-ki:fire"
+                                ]
+                            }
+                        ],
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitForce",
+                        "value": "force"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "predicate": [
+                            "feat:elemental-fist"
+                        ],
+                        "value": "slashing"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "predicate": [
+                            "entwined-energy-ki:sonic"
+                        ],
+                        "value": "sonic"
+                    },
+                    {
+                        "label": "AVANT.TraitSpirit",
+                        "value": "spirit"
+                    },
+                    {
+                        "label": "AVANT.TraitVitality",
+                        "value": "vitality"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    }
+                ],
+                "flag": "damage",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DamageType",
+                "rollOption": "inner-upheaval"
+            },
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.TraitEarth",
+                        "value": "earth"
+                    },
+                    {
+                        "label": "AVANT.TraitWood",
+                        "value": "wood"
+                    }
+                ],
+                "key": "ChoiceSet",
+                "predicate": [
+                    "inner-upheaval:bludgeoning"
+                ],
+                "prompt": "AVANT.SpecificRule.Prompt.Element",
+                "rollOption": "inner-upheaval:bludgeoning"
+            },
+            {
+                "key": "FlatModifier",
+                "selector": "attack",
+                "type": "status",
+                "value": 1
+            },
+            {
+                "damageType": "{item|flags.avant.rulesSelections.damage}",
+                "diceNumber": "ceil(@item.level/4)",
+                "dieSize": "d6",
+                "key": "DamageDice",
+                "selector": "strike-damage"
+            },
+            {
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "inner-upheaval:electricity",
+                    "feat:elemental-fist"
+                ],
+                "property": "weapon-traits",
+                "value": "air"
+            },
+            {
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "inner-upheaval:bludgeoning:earth"
+                ],
+                "property": "weapon-traits",
+                "value": "earth"
+            },
+            {
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "inner-upheaval:fire",
+                    "feat:elemental-fist"
+                ],
+                "property": "weapon-traits",
+                "value": "fire"
+            },
+            {
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "inner-upheaval:slashing"
+                ],
+                "property": "weapon-traits",
+                "value": "metal"
+            },
+            {
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "inner-upheaval:cold",
+                    "feat:elemental-fist"
+                ],
+                "property": "weapon-traits",
+                "value": "water"
+            },
+            {
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "inner-upheaval:bludgeoning:wood"
+                ],
+                "property": "weapon-traits",
+                "value": "wood"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

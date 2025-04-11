@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import type { RuleElementSource } from "@module/rules/index.ts";
 import type { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { MigrationBase } from "../base.ts";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration719ShrugFlanking extends MigrationBase {
     static override version = 0.719;
 
-    override async updateItem(source: ItemSourcePF2e, actorSource?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actorSource?: ActorSourceAvant): Promise<void> {
         const slug = source.system.slug ?? "";
         switch (source.type) {
             case "action": {
@@ -117,7 +117,7 @@ export class Migration719ShrugFlanking extends MigrationBase {
                 damage: { base: { damageType: "piercing", dice: 1, die: "d8" } },
                 group: "brawling",
                 key: "Strike",
-                label: "PF2E.SpecificRule.Stance.Attack.WolfJaws",
+                label: "AVANT.SpecificRule.Stance.Attack.WolfJaws",
                 range: null,
                 slug: "wolf-jaws",
                 traits: ["agile", "backstabber", "finesse", "unarmed", "nonlethal"],

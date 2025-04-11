@@ -1,1 +1,1 @@
-export { CharacterPF2e } from "./document.ts";
+export { CharacterAvant } from "./document.ts";

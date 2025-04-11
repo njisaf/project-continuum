@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString } from "@util";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -16,14 +16,14 @@ export class Migration853RemasterLanguages extends MigrationBase {
         ["terran", "petran"],
     ]);
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         const traits: unknown = source.system.traits;
         if (R.isPlainObject(traits) && R.isPlainObject(traits.languages) && Array.isArray(traits.languages.value)) {
             traits.languages.value = traits.languages.value.map((l) => this.#OLD_TO_NEW_LANGUAGES.get(l) ?? l).sort();
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system = recursiveReplaceString(source.system, (s) => this.#OLD_TO_NEW_LANGUAGES.get(s) ?? s);
 
         if (source.type === "ancestry" && Array.isArray(source.system.additionalLanguages?.value)) {

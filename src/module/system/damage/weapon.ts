@@ -1,12 +1,12 @@
-import { ActorPF2e } from "@actor";
-import { DamageDicePF2e, ModifierPF2e, createAttributeModifier } from "@actor/modifiers.ts";
+import { ActorAvant } from "@actor";
+import { DamageDiceAvant, ModifierAvant, createAttributeModifier } from "@actor/modifiers.ts";
 import { ATTRIBUTE_ABBREVIATIONS } from "@actor/values.ts";
-import type { MeleePF2e, WeaponPF2e } from "@item";
+import type { MeleeAvant, WeaponAvant } from "@item";
 import type { NPCAttackDamage } from "@item/melee/data.ts";
 import { RUNE_DATA, getPropertyRuneDamage, getPropertyRuneModifierAdjustments } from "@item/physical/runes.ts";
 import type { WeaponDamage } from "@item/weapon/data.ts";
 import type { ZeroToThree } from "@module/data.ts";
-import { RollNotePF2e } from "@module/notes.ts";
+import { RollNoteAvant } from "@module/notes.ts";
 import {
     extractDamageAlterations,
     extractDamageDice,
@@ -32,7 +32,7 @@ import {
     WeaponDamageTemplate,
 } from "./types.ts";
 
-class WeaponDamagePF2e {
+class WeaponDamageAvant {
     static async fromNPCAttack({
         attack,
         actor,
@@ -44,21 +44,21 @@ class WeaponDamagePF2e {
             .filter((d) => !R.isDeepEqual(d, baseDamage));
 
         // Collect damage dice and modifiers from secondary damage instances
-        const damageDice: DamageDicePF2e[] = [];
-        const modifiers: ModifierPF2e[] = [];
+        const damageDice: DamageDiceAvant[] = [];
+        const modifiers: ModifierAvant[] = [];
         const labelFromCategory = {
             null: "",
             persistent: "",
-            precision: "PF2E.Damage.Precision",
+            precision: "AVANT.Damage.Precision",
             splash: attack.system.traits.value.some((t) => t.startsWith("scatter-"))
-                ? "PF2E.TraitScatter"
-                : "PF2E.TraitSplash",
+                ? "AVANT.TraitScatter"
+                : "AVANT.TraitSplash",
         };
         for (const instance of secondaryInstances) {
             const { damageType } = instance;
             if (instance.dice > 0 && instance.die) {
                 damageDice.push(
-                    new DamageDicePF2e({
+                    new DamageDiceAvant({
                         slug: "base",
                         label: labelFromCategory[instance.category ?? "null"],
                         selector: `${attack.id}-damage`,
@@ -71,7 +71,7 @@ class WeaponDamagePF2e {
             }
             if (instance.modifier) {
                 modifiers.push(
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "base",
                         label: labelFromCategory[instance.category ?? "null"],
                         modifier: instance.modifier,
@@ -82,7 +82,7 @@ class WeaponDamagePF2e {
             }
         }
 
-        return WeaponDamagePF2e.calculate({
+        return WeaponDamageAvant.calculate({
             weapon: attack,
             actor,
             damageDice,
@@ -112,7 +112,7 @@ class WeaponDamagePF2e {
         // NPC attacks have precious materials as quasi-traits: separate for IWR processing and separate display in chat
         const materialTraits = weapon.isOfType("melee")
             ? weapon.system.traits.value.filter(
-                  (t): t is MaterialDamageEffect => t in CONFIG.PF2E.materialDamageEffects,
+                  (t): t is MaterialDamageEffect => t in CONFIG.AVANT.materialDamageEffects,
               )
             : [];
 
@@ -157,8 +157,8 @@ class WeaponDamagePF2e {
             : 0;
         if (splashDamage > 0) {
             const slug = hasScatterTrait ? "scatter" : "splash";
-            const label = `PF2E.Trait${sluggify(slug, { camel: "bactrian" })}`;
-            const modifier = new ModifierPF2e({
+            const label = `AVANT.Trait${sluggify(slug, { camel: "bactrian" })}`;
+            const modifier = new ModifierAvant({
                 slug,
                 label,
                 modifier: splashDamage,
@@ -173,9 +173,9 @@ class WeaponDamagePF2e {
             if (weaponTraits.includes("kickback")) {
                 // For NPCs, subtract from the base damage and add back as an untype bonus
                 modifiers.push(
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "kickback",
-                        label: CONFIG.PF2E.weaponTraits.kickback,
+                        label: CONFIG.AVANT.weaponTraits.kickback,
                         modifier: 1,
                     }),
                 );
@@ -185,8 +185,8 @@ class WeaponDamagePF2e {
             const bonusDamage = Number(weapon.system.bonusDamage?.value);
             if (bonusDamage > 0) {
                 modifiers.push(
-                    new ModifierPF2e({
-                        label: "PF2E.WeaponBonusDamageLabel",
+                    new ModifierAvant({
+                        label: "AVANT.WeaponBonusDamageLabel",
                         slug: "bonus",
                         modifier: bonusDamage,
                     }),
@@ -199,10 +199,10 @@ class WeaponDamagePF2e {
             if (normalDice > 0) {
                 const damageType = customDamage.damageType || null;
                 damageDice.push(
-                    new DamageDicePF2e({
+                    new DamageDiceAvant({
                         selector: `${weapon.id}-damage`,
                         slug: "custom",
-                        label: "PF2E.WeaponCustomDamageLabel",
+                        label: "AVANT.WeaponCustomDamageLabel",
                         diceNumber: normalDice,
                         dieSize: customDamage.die,
                         damageType,
@@ -213,10 +213,10 @@ class WeaponDamagePF2e {
             if (critDice > 0) {
                 const damageType = customDamage.critDamageType || null;
                 damageDice.push(
-                    new DamageDicePF2e({
+                    new DamageDiceAvant({
                         selector: `${weapon.id}-damage`,
                         slug: "custom-critical",
-                        label: "PF2E.WeaponCustomDamageLabel",
+                        label: "AVANT.WeaponCustomDamageLabel",
                         diceNumber: critDice,
                         dieSize: customDamage.critDie,
                         damageType,
@@ -247,14 +247,14 @@ class WeaponDamagePF2e {
         })();
 
         if (critSpecEffect.length > 0) options.add("critical-specialization");
-        modifiers.push(...critSpecEffect.filter((e): e is ModifierPF2e => e instanceof ModifierPF2e));
-        damageDice.push(...critSpecEffect.filter((e): e is DamageDicePF2e => e instanceof DamageDicePF2e));
+        modifiers.push(...critSpecEffect.filter((e): e is ModifierAvant => e instanceof ModifierAvant));
+        damageDice.push(...critSpecEffect.filter((e): e is DamageDiceAvant => e instanceof DamageDiceAvant));
 
         // Property Runes
         const propertyRunes = weapon.system.runes.property;
         const runeDamage = getPropertyRuneDamage(weapon, propertyRunes, options);
-        damageDice.push(...runeDamage.filter((d): d is DamageDicePF2e => "diceNumber" in d));
-        modifiers.push(...runeDamage.filter((d): d is ModifierPF2e => "modifier" in d));
+        damageDice.push(...runeDamage.filter((d): d is DamageDiceAvant => "diceNumber" in d));
+        modifiers.push(...runeDamage.filter((d): d is ModifierAvant => "modifier" in d));
         const propertyRuneAdjustments = getPropertyRuneModifierAdjustments(propertyRunes);
 
         const irBypassData: DamageIRBypassData = {
@@ -267,8 +267,8 @@ class WeaponDamagePF2e {
 
         // Backstabber trait
         if (weaponTraits.some((t) => t === "backstabber") && options.has("target:condition:off-guard")) {
-            const modifier = new ModifierPF2e({
-                label: CONFIG.PF2E.weaponTraits.backstabber,
+            const modifier = new ModifierAvant({
+                label: CONFIG.AVANT.weaponTraits.backstabber,
                 slug: "backstabber",
                 modifier: potency > 2 ? 2 : 1,
                 damageCategory: "precision",
@@ -314,7 +314,7 @@ class WeaponDamagePF2e {
             : (strikingSynthetic?.bonus ?? 0);
 
         // Deadly trait
-        const traitLabels: Record<string, string> = CONFIG.PF2E.weaponTraits;
+        const traitLabels: Record<string, string> = CONFIG.AVANT.weaponTraits;
         const deadlyTraits = weaponTraits.filter((t) => t.startsWith("deadly-"));
         for (const slug of deadlyTraits) {
             const diceNumber = ((): number => {
@@ -322,7 +322,7 @@ class WeaponDamagePF2e {
                 return strikingDice > 1 ? strikingDice * baseNumber : baseNumber;
             })();
             damageDice.push(
-                new DamageDicePF2e({
+                new DamageDiceAvant({
                     selector: `${weapon.id}-damage`,
                     slug,
                     label: traitLabels[slug],
@@ -337,7 +337,7 @@ class WeaponDamagePF2e {
         for (const trait of weaponTraits.filter((t) => t.startsWith("fatal-d"))) {
             const dieSize = trait.substring(trait.indexOf("-") + 1) as DamageDieSize;
             damageDice.push(
-                new DamageDicePF2e({
+                new DamageDiceAvant({
                     selector: `${weapon.id}-damage`,
                     slug: trait,
                     label: traitLabels[trait],
@@ -353,16 +353,16 @@ class WeaponDamagePF2e {
         // Forceful trait
         if (weaponTraits.some((t) => t === "forceful") && weapon.isOfType("weapon")) {
             modifiers.push(
-                new ModifierPF2e({
+                new ModifierAvant({
                     slug: "forceful-second",
-                    label: "PF2E.Item.Weapon.Forceful.Second",
+                    label: "AVANT.Item.Weapon.Forceful.Second",
                     modifier: weapon._source.system.damage.dice + strikingDice,
                     type: "circumstance",
                     ignored: true,
                 }),
-                new ModifierPF2e({
+                new ModifierAvant({
                     slug: "forceful-third",
-                    label: "PF2E.Item.Weapon.Forceful.Third",
+                    label: "AVANT.Item.Weapon.Forceful.Third",
                     modifier: 2 * (weapon._source.system.damage.dice + strikingDice),
                     type: "circumstance",
                     ignored: true,
@@ -372,8 +372,8 @@ class WeaponDamagePF2e {
 
         // Tearing trait
         if (weaponTraits.some((t) => t === "tearing")) {
-            const modifier = new ModifierPF2e({
-                label: CONFIG.PF2E.weaponTraits.tearing,
+            const modifier = new ModifierAvant({
+                label: CONFIG.AVANT.weaponTraits.tearing,
                 slug: "tearing",
                 modifier: strikingDice > 1 ? 2 : 1,
                 damageType: "bleed",
@@ -385,9 +385,9 @@ class WeaponDamagePF2e {
         // Twin trait
         if (weaponTraits.some((t) => t === "twin") && weapon.isOfType("weapon")) {
             modifiers.push(
-                new ModifierPF2e({
+                new ModifierAvant({
                     slug: "twin-second",
-                    label: "PF2E.Item.Weapon.Twin.SecondPlus",
+                    label: "AVANT.Item.Weapon.Twin.SecondPlus",
                     modifier: weapon._source.system.damage.dice + strikingDice,
                     type: "circumstance",
                     ignored: true,
@@ -397,8 +397,8 @@ class WeaponDamagePF2e {
 
         // Venomous trait
         if (weaponTraits.some((t) => t === "venomous")) {
-            const modifier = new ModifierPF2e({
-                label: CONFIG.PF2E.weaponTraits.venomous,
+            const modifier = new ModifierAvant({
+                label: CONFIG.AVANT.weaponTraits.venomous,
                 slug: "venomous",
                 modifier: strikingDice > 1 ? 2 : 1,
                 damageType: "poison",
@@ -410,12 +410,12 @@ class WeaponDamagePF2e {
         // Add roll notes to the context
         const runeNotes = propertyRunes.flatMap((r) => {
             const data = RUNE_DATA.weapon.property[r].damage?.notes ?? [];
-            return data.map((d) => new RollNotePF2e({ selector: "strike-damage", ...d }));
+            return data.map((d) => new RollNoteAvant({ selector: "strike-damage", ...d }));
         });
-        context.notes = [runeNotes, critSpecEffect.filter((e): e is RollNotePF2e => e instanceof RollNotePF2e)].flat();
+        context.notes = [runeNotes, critSpecEffect.filter((e): e is RollNoteAvant => e instanceof RollNoteAvant)].flat();
 
         // Accumulate damage-affecting precious materials
-        const material = objectHasKey(CONFIG.PF2E.materialDamageEffects, weapon.system.material.type)
+        const material = objectHasKey(CONFIG.AVANT.materialDamageEffects, weapon.system.material.type)
             ? weapon.system.material.type
             : null;
         const materials: Set<MaterialDamageEffect> = new Set([materialTraits, material ?? []].flat());
@@ -504,7 +504,7 @@ class WeaponDamagePF2e {
         for (const modifier of testedModifiers) {
             modifier.applyDamageAlterations({ item: weapon, test: options });
         }
-        const maxIncreases = weapon.isOfType("weapon") && weapon.flags.pf2e.damageFacesUpgraded ? 0 : 1;
+        const maxIncreases = weapon.isOfType("weapon") && weapon.flags.avant.damageFacesUpgraded ? 0 : 1;
 
         const formulaData: DamageFormulaData = {
             base,
@@ -540,7 +540,7 @@ class WeaponDamagePF2e {
         };
 
         return {
-            name: `${game.i18n.localize("PF2E.DamageRoll")}: ${weapon.name}`,
+            name: `${game.i18n.localize("AVANT.DamageRoll")}: ${weapon.name}`,
             materials: Array.from(materials),
             modifiers: [...damageDice, ...testedModifiers],
             damage: {
@@ -590,25 +590,25 @@ interface ConvertedNPCDamage extends WeaponDamage {
 }
 
 interface WeaponDamageCalculateParams {
-    weapon: WeaponPF2e<ActorPF2e> | MeleePF2e<ActorPF2e>;
-    actor: ActorPF2e;
+    weapon: WeaponAvant<ActorAvant> | MeleeAvant<ActorAvant>;
+    actor: ActorAvant;
     weaponPotency?: PotencySynthetic | null;
-    damageDice?: DamageDicePF2e[];
-    modifiers?: ModifierPF2e[];
+    damageDice?: DamageDiceAvant[];
+    modifiers?: ModifierAvant[];
     context: DamageDamageContext;
 }
 
 interface NPCStrikeCalculateParams {
-    attack: MeleePF2e<ActorPF2e>;
-    actor: ActorPF2e;
+    attack: MeleeAvant<ActorAvant>;
+    actor: ActorAvant;
     context: DamageDamageContext;
 }
 
 interface ExcludeDamageParams {
-    actor: ActorPF2e;
-    modifiers: (DamageDicePF2e | ModifierPF2e)[];
-    weapon: WeaponPF2e | null;
+    actor: ActorAvant;
+    modifiers: (DamageDiceAvant | ModifierAvant)[];
+    weapon: WeaponAvant | null;
     options: Set<string>;
 }
 
-export { WeaponDamagePF2e, type ConvertedNPCDamage };
+export { WeaponDamageAvant, type ConvertedNPCDamage };

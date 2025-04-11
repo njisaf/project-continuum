@@ -1,0 +1,406 @@
+{
+    "_id": "6FmhLLYH94xhucIs",
+    "description": "<p>Table of 18th-Level Permanent Items</p>",
+    "displayRoll": true,
+    "formula": "1d149",
+    "img": "icons/svg/d20-grey.svg",
+    "name": "18th-Level Permanent Items",
+    "ownership": {
+        "default": 0
+    },
+    "replacement": true,
+    "results": [
+        {
+            "_id": "lW5MoTpfiIkEd4nw",
+            "documentCollection": "",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/armor/scale-mail.webp",
+            "range": [
+                1,
+                6
+            ],
+            "text": "Magic Armor (+3 Greater Resilient)",
+            "type": "text",
+            "weight": 6
+        },
+        {
+            "_id": "C6ippWC7SsXOvPgH",
+            "documentCollection": "",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/armor/breastplate.webp",
+            "range": [
+                7,
+                12
+            ],
+            "text": "Cold Iron Armor (High-Grade)",
+            "type": "text",
+            "weight": 6
+        },
+        {
+            "_id": "iki3QHowi13s59GG",
+            "documentCollection": "",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/armor/breastplate.webp",
+            "range": [
+                13,
+                18
+            ],
+            "text": "Silver Armor (High-Grade)",
+            "type": "text",
+            "weight": 6
+        },
+        {
+            "_id": "uPSAHbFjK7VEtKWc",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "rlDIbl6EQYXQpWVs",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/held-items/maestros-instrument.webp",
+            "range": [
+                19,
+                24
+            ],
+            "text": "Maestro's Instrument (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "GF6rEmovclKcZMfK",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "wYpWQCD2IYqDtqpc",
+            "drawn": false,
+            "img": "icons/containers/bags/pouch-leather-silver-white.webp",
+            "range": [
+                25,
+                30
+            ],
+            "text": "Marvelous Medicines (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "BQpxVGxblvkDbMzz",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "vZaXDOrp5Faxw5fS",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/held-items/possibility-tome.webp",
+            "range": [
+                31,
+                36
+            ],
+            "text": "Possibility Tome",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "JIPeYjkfh6sqbvKh",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "VBCk7JXGsuG0cug1",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/held-items/thurible-of-revelation.webp",
+            "range": [
+                37,
+                42
+            ],
+            "text": "Thurible of Revelation (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "9x7ts2ZyP0aalQWS",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "6ELjUFY0sEJ7nZlZ",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/runes/fundamental-armor-runes/armor-potency.webp",
+            "range": [
+                43,
+                48
+            ],
+            "text": "Armor Potency (+3)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "56T7eflwa5sNv3Kk",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "n8MonEa4ZBdvEovc",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/runes/weapon-property-runes/weapon-property-runes.webp",
+            "range": [
+                49,
+                54
+            ],
+            "text": "Brilliant (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "4ZahKFCfqj0RRGnq",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "ujWnpVMkbTljMGN9",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/runes/armor-property-runes/armor-property-runes.webp",
+            "range": [
+                55,
+                60
+            ],
+            "text": "Fortification (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "DWoJdSL3iQKDz9Dh",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "SUbYk6B1iPoGyyjh",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/shields/specific-shields/indestructible-shield.webp",
+            "range": [
+                61,
+                61
+            ],
+            "text": "Indestructible Shield",
+            "type": "pack",
+            "weight": 1
+        },
+        {
+            "_id": "MRcIkpq4YIWjFuqJ",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "La9qYc5NHsg423Jb",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/shields/specific-shields/reflecting-shield.webp",
+            "range": [
+                62,
+                64
+            ],
+            "text": "Reflecting Shield",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "AxdtTGmes632KVx2",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "20nQTcGzpUv8jJ6R",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-widening.webp",
+            "range": [
+                65,
+                70
+            ],
+            "text": "Wand of Widening (8th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "IrJG9FbHryJyRAs7",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": null,
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/weapons/shortsword.webp",
+            "range": [
+                71,
+                71
+            ],
+            "text": "Orichalcum Weapon (High-Grade)",
+            "type": "text",
+            "weight": 1
+        },
+        {
+            "_id": "owGfoVxCabOLbQlk",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "i9mxfSIBTTOwsSlx",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/weapons/specific-magic-weapons/storm-flash.webp",
+            "range": [
+                72,
+                77
+            ],
+            "text": "Storm Flash (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "4TxaeFaJyjNCLPsq",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "39wTBxfaHkAHwXhw",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/aluum-charm.webp",
+            "range": [
+                78,
+                80
+            ],
+            "text": "Countering Charm (Major)",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "RUh2yhWsz0D7jsNa",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "4v850xbHgUdlvamn",
+            "drawn": false,
+            "img": "icons/equipment/finger/ring-crown-gold-pink.webp",
+            "range": [
+                81,
+                86
+            ],
+            "text": "Crown of Witchcraft (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "QtZpUfs3ShKsxInI",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "V9iVPhIk980GT6A2",
+            "drawn": false,
+            "img": "icons/equipment/waist/belt-leather-studded-gold.webp",
+            "range": [
+                87,
+                92
+            ],
+            "text": "Inexplicable Apparatus",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "WIEb3T5u1PROoA6N",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "IdI7rfCk7WjGbJHN",
+            "drawn": false,
+            "img": "icons/equipment/back/mantle-collared-green.webp",
+            "range": [
+                93,
+                98
+            ],
+            "text": "Living Mantle (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "UbTg7A4Xc2SDUTsS",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "rXXNw6dwVn96giDi",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/worn-items/other-worn-items/goggles-of-night.webp",
+            "range": [
+                99,
+                104
+            ],
+            "text": "Obsidian Goggles (Major)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "mNqnqXh7bMrHsDgy",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "C7FeT7eVuwRnLhJy",
+            "drawn": false,
+            "img": "icons/commodities/treasure/broach-eye-silver-teal.webp",
+            "range": [
+                105,
+                107
+            ],
+            "text": "Symbol of Conflict (Major)",
+            "type": "pack",
+            "weight": 3
+        },
+        {
+            "_id": "q65YDWbuOFuZ1kyl",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "XKON66YXYLXlGPPg",
+            "drawn": false,
+            "img": "icons/equipment/chest/breastplate-gorget-steel-purple.webp",
+            "range": [
+                108,
+                113
+            ],
+            "text": "Warleader's Bulwark (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "a8xT7QYTVLN2bTjP",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "U28jkj5ZDl2drtEH",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-crackling-lightning.webp",
+            "range": [
+                114,
+                119
+            ],
+            "text": "Wand of Crackling Lightning (8th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "1WF1xYtdhBOK5qPu",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "LnXYSaLxWMyAT3Ef",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-slaying.webp",
+            "range": [
+                120,
+                125
+            ],
+            "text": "Wand of Slaughter (8th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "wfvrV6qqTLMCt7a1",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "q2kE0mEUAEL3gQv0",
+            "drawn": false,
+            "img": "systems/avant/icons/equipment/wands/specialty-wands/wand-of-the-snowfields.webp",
+            "range": [
+                126,
+                131
+            ],
+            "text": "Wand of the Snowfields (7th-Rank Spell)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "Ax7n9MKcYsaaQtCE",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "FKf6eELtbFhbK69W",
+            "drawn": false,
+            "img": "icons/equipment/head/helm-barbute-rounded-gold.webp",
+            "range": [
+                132,
+                137
+            ],
+            "text": "Helm Of Zeal (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "3SMLaDGYLWgKuxkV",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "2FlazfdJE2XPRba8",
+            "drawn": false,
+            "img": "icons/equipment/head/hood-purple-mask.webp",
+            "range": [
+                138,
+                143
+            ],
+            "text": "Prognostic Veil (Greater)",
+            "type": "pack",
+            "weight": 6
+        },
+        {
+            "_id": "7CchMzGHQtfeei3Y",
+            "documentCollection": "avant.equipment-srd",
+            "documentId": "Wkm2VYPsfGjWBtQe",
+            "drawn": false,
+            "img": "icons/equipment/finger/ring-band-engraved-scrolls-bronze.webp",
+            "range": [
+                144,
+                149
+            ],
+            "text": "Ring of Maniacal Devices (Greater)",
+            "type": "pack",
+            "weight": 6
+        }
+    ]
+}

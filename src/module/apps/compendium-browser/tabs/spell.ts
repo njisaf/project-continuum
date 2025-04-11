@@ -8,7 +8,7 @@ import { CompendiumBrowserIndexData, SpellFilters } from "./data.ts";
 
 export class CompendiumBrowserSpellTab extends CompendiumBrowserTab {
     tabName: ContentTabName = "spell";
-    tabLabel = "PF2E.Item.Spell.Plural";
+    tabLabel = "AVANT.Item.Spell.Plural";
     declare filterData: SpellFilters;
 
     /* MiniSearch */
@@ -35,7 +35,7 @@ export class CompendiumBrowserSpellTab extends CompendiumBrowserTab {
     }
 
     protected override async loadData(): Promise<void> {
-        console.debug("PF2e System | Compendium Browser | Started loading spells");
+        console.debug("Avant System | Compendium Browser | Started loading spells");
 
         const spells: CompendiumBrowserIndexData[] = [];
         const times = new Set<string>();
@@ -52,7 +52,7 @@ export class CompendiumBrowserSpellTab extends CompendiumBrowserTab {
 
         const data = this.browser.packLoader.loadPacks("Item", this.browser.loadedPacks("spell"), indexFields);
         for await (const { pack, index } of data) {
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
             for (const spellData of index) {
                 spellData.filters = {};
 
@@ -122,25 +122,25 @@ export class CompendiumBrowserSpellTab extends CompendiumBrowserTab {
         this.indexData = spells;
 
         // Filters
-        this.filterData.checkboxes.traditions.options = this.generateCheckboxOptions(CONFIG.PF2E.magicTraditions);
+        this.filterData.checkboxes.traditions.options = this.generateCheckboxOptions(CONFIG.AVANT.magicTraditions);
         // Special case for spell ranks
         for (let rank = 1; rank <= 10; rank++) {
             this.filterData.checkboxes.rank.options[rank] = {
-                label: game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) }),
+                label: game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) }),
                 selected: false,
             };
         }
-        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.PF2E.rarityTraits, false);
+        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.AVANT.rarityTraits, false);
         this.filterData.traits.options = this.generateMultiselectOptions(
-            R.omit(CONFIG.PF2E.spellTraits, Array.from(MAGIC_TRADITIONS)),
+            R.omit(CONFIG.AVANT.spellTraits, Array.from(MAGIC_TRADITIONS)),
         );
         this.filterData.source.options = this.generateSourceCheckboxOptions(publications);
         this.filterData.checkboxes.category.options = this.generateCheckboxOptions(
             {
                 spell: "TYPES.Item.spell",
-                cantrip: "PF2E.TraitCantrip",
-                focus: "PF2E.TraitFocus",
-                ritual: "PF2E.Item.Spell.Ritual.Label",
+                cantrip: "AVANT.TraitCantrip",
+                focus: "AVANT.TraitFocus",
+                ritual: "AVANT.Item.Spell.Ritual.Label",
             },
             false,
         );
@@ -153,7 +153,7 @@ export class CompendiumBrowserSpellTab extends CompendiumBrowserTab {
             {} as Record<string, string>,
         );
 
-        console.debug("PF2e System | Compendium Browser | Finished loading spells");
+        console.debug("Avant System | Compendium Browser | Finished loading spells");
     }
 
     protected override filterIndexData(indexData: CompendiumBrowserIndexData): boolean {
@@ -209,32 +209,32 @@ export class CompendiumBrowserSpellTab extends CompendiumBrowserTab {
             checkboxes: {
                 category: {
                     isExpanded: true,
-                    label: "PF2E.CompendiumBrowser.Filter.Categories",
+                    label: "AVANT.CompendiumBrowser.Filter.Categories",
                     options: {},
                     selected: [],
                 },
                 traditions: {
                     isExpanded: true,
-                    label: "PF2E.CompendiumBrowser.Filter.Traditions",
+                    label: "AVANT.CompendiumBrowser.Filter.Traditions",
                     options: {},
                     selected: [],
                 },
                 rank: {
                     isExpanded: true,
-                    label: "PF2E.Item.Spell.Rank.Plural",
+                    label: "AVANT.Item.Spell.Rank.Plural",
                     options: {},
                     selected: [],
                 },
                 rarity: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.Rarities",
+                    label: "AVANT.CompendiumBrowser.Filter.Rarities",
                     options: {},
                     selected: [],
                 },
             },
             source: {
                 isExpanded: false,
-                label: "PF2E.CompendiumBrowser.Filter.Source",
+                label: "AVANT.CompendiumBrowser.Filter.Source",
                 options: {},
                 selected: [],
             },
@@ -245,7 +245,7 @@ export class CompendiumBrowserSpellTab extends CompendiumBrowserTab {
             },
             selects: {
                 timefilter: {
-                    label: "PF2E.CompendiumBrowser.Filter.CastingTime",
+                    label: "AVANT.CompendiumBrowser.Filter.CastingTime",
                     options: {},
                     selected: "",
                 },
@@ -255,7 +255,7 @@ export class CompendiumBrowserSpellTab extends CompendiumBrowserTab {
                 direction: "asc",
                 options: {
                     name: { label: "Name", type: "alpha" },
-                    rank: { label: "PF2E.Item.Spell.Rank.Label", type: "numeric" },
+                    rank: { label: "AVANT.Item.Spell.Rank.Label", type: "numeric" },
                 },
                 type: "numeric",
             },

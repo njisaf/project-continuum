@@ -16,7 +16,7 @@ import fields = foundry.data.fields;
 type ChoiceSetSchema = RuleElementSchema & {
     /**
      * The options from which the user can choose. If a string is provided, it is treated as a reference to a record in
-     * `CONFIG.PF2E`, and the `PromptChoice` array is composed from its entries.
+     * `CONFIG.AVANT`, and the `PromptChoice` array is composed from its entries.
      */
     choices: DataUnionField<
         | StrictArrayField<StrictObjectField<PickableThing>, PickableThing[], PickableThing[], true, false, false>
@@ -50,8 +50,8 @@ type ChoiceSetSchema = RuleElementSchema & {
      */
     flag: fields.StringField<string, string, false, false, false>;
     /**
-     * Whether to propagate the flag to the actor: instead of `flags.pf2e.rulesSelections.${flag}`, it will take the
-     * form of `flags.pf2e.${flag}`.
+     * Whether to propagate the flag to the actor: instead of `flags.avant.rulesSelections.${flag}`, it will take the
+     * form of `flags.avant.${flag}`.
      */
     actorFlag: fields.BooleanField<boolean, boolean, false, false, true>;
     /** An optional roll option to be set from the selection */

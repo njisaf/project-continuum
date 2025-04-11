@@ -1,4 +1,4 @@
-import { FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Add negative healing to basic undead benefits */
@@ -14,7 +14,7 @@ export class Migration818BasicUndeadNegativeHealing extends MigrationBase {
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "feat" && this.#needsRE(source)) {
             const rule = {
                 key: "ActiveEffectLike",

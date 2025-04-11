@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { ConsumableSystemSource } from "@item/consumable/data.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -40,7 +40,7 @@ export class Migration815ConsumableDataCleanup extends MigrationBase {
         "weight",
     ]);
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "consumable") return;
 
         const systemData = source.system as ConsumableWithOtherKeys;

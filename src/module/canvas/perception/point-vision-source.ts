@@ -1,7 +1,7 @@
-import type { TokenPF2e } from "../token/index.ts";
+import type { TokenAvant } from "../token/index.ts";
 
 /** Subclassed to include hearing detection */
-class PointVisionSourcePF2e<TObject extends TokenPF2e = TokenPF2e> extends foundry.canvas.sources
+class PointVisionSourceAvant<TObject extends TokenAvant = TokenAvant> extends foundry.canvas.sources
     .PointVisionSource<TObject> {
     hearing?: PointSourcePolygon;
 
@@ -21,4 +21,4 @@ class PointVisionSourcePF2e<TObject extends TokenPF2e = TokenPF2e> extends found
     }
 }
 
-export { PointVisionSourcePF2e };
+export { PointVisionSourceAvant };

@@ -1,7 +1,7 @@
 import { SingleCheckAction } from "@actor/actions/index.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-const PREFIX = "PF2E.Actions.Balance";
+const PREFIX = "AVANT.Actions.Balance";
 
 function balance(options: SkillActionOptions): void {
     const slug = options?.skill ?? "acrobatics";
@@ -17,10 +17,10 @@ function balance(options: SkillActionOptions): void {
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Balance", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Balance", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Balance", "failure"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Balance", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Balance", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Balance", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Balance", "failure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Balance", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);

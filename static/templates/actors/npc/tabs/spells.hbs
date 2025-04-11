@@ -1,6 +1,6 @@
 <div class="tab spells" data-group="primary" data-tab="spells">
     <div class="toggles section-container headerless">
-        {{#if toggles.spellcasting}}{{> "systems/pf2e/templates/actors/partials/toggles.hbs" toggles=toggles.spellcasting}}{{/if}}
+        {{#if toggles.spellcasting}}{{> "systems/avant/templates/actors/partials/toggles.hbs" toggles=toggles.spellcasting}}{{/if}}
     </div>
     <ol class="entries-list" data-foundry-list>
         {{#each spellcastingEntries as |entry eid|}}
@@ -18,7 +18,7 @@
                         <a
                             class="skill-name prepared-toggle"
                             data-action="open-spell-preparation"
-                            data-tooltip="PF2E.ToggleSpellVisibilityTitle"
+                            data-tooltip="AVANT.ToggleSpellVisibilityTitle"
                         ><i class="fa-duotone fa-book-sparkles"></i></a>
                     {{/if}}
 
@@ -27,7 +27,7 @@
                     </h4>
                     {{#unless entry.isRitual}}
                         <div class="spellDC inline-field">
-                            <label data-tooltip="{{entry.statistic.dc.breakdown}}">{{localize "PF2E.NPC.Spells.DCLabel"}}</label>
+                            <label data-tooltip="{{entry.statistic.dc.breakdown}}">{{localize "AVANT.NPC.Spells.DCLabel"}}</label>
                             {{#if entry.isEphemeral}}
                                 <span
                                     class="modifier adjustable{{#if entry.adjustedHigher.dc}} adjusted-higher{{/if}}{{#if entry.adjustedLower.dc}} adjusted-lower{{/if}}"
@@ -44,7 +44,7 @@
                             {{/if}}
                         </div>
                         <div class="spellAttack inline-field">
-                            <label class="rollable" title="{{entry.statistic.check.breakdown}}">{{localize "PF2E.NPC.Spells.AttackLabel"}}</label>
+                            <label class="rollable" title="{{entry.statistic.check.breakdown}}">{{localize "AVANT.NPC.Spells.AttackLabel"}}</label>
                             {{#if entry.isEphemeral}}
                                 <span
                                     class="modifier adjustable{{#if entry.adjustedHigher.mod}} adjusted-higher{{/if}}{{#if entry.adjustedLower.mod}} adjusted-lower{{/if}}"
@@ -65,20 +65,20 @@
                     {{#if (and ../editable (not entry.isEphemeral))}}
                         <div class="item-controls">
                             {{#if (or entry.isPrepared entry.isSpontaneous entry.isInnate)}}
-                                <a data-action="toggle-show-slotless-ranks" data-tooltip="PF2E.ToggleSlotlessSpellLevelsTitle">
+                                <a data-action="toggle-show-slotless-ranks" data-tooltip="AVANT.ToggleSlotlessSpellLevelsTitle">
                                     <i class="{{#if entry.showSlotlessLevels}}fa-solid{{else}}fa-regular{{/if}} fa-fw fa-list-alt"></i>
                                 </a>
                             {{/if}}
                             {{#unless entry.isRitual}}
-                                <a data-action="spellcasting-edit" data-tooltip="PF2E.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
-                                <a data-action="spellcasting-remove" data-tooltip="PF2E.RemoveSpellcastingEntryTitle" data-type="{{eid}}"><i class="fa-solid fa-fw fa-trash"></i></a>
+                                <a data-action="spellcasting-edit" data-tooltip="AVANT.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
+                                <a data-action="spellcasting-remove" data-tooltip="AVANT.RemoveSpellcastingEntryTitle" data-type="{{eid}}"><i class="fa-solid fa-fw fa-trash"></i></a>
                             {{/unless}}
                         </div>
                     {{/if}}
                 </div>
                 {{#if entry.hasCollection}}
                     <div class="body">
-                        {{> "systems/pf2e/templates/actors/partials/spell-collection.hbs" entry=entry}}
+                        {{> "systems/avant/templates/actors/partials/spell-collection.hbs" entry=entry}}
                     </div>
                 {{/if}}
             </li>
@@ -91,6 +91,6 @@
             type="button"
             class="spellcasting-create blue"
             data-action="spellcasting-create"
-        ><i class="fa-solid fa-plus"></i> {{localize "PF2E.AddSpellcastingEntryTitle"}}</button>
+        ><i class="fa-solid fa-plus"></i> {{localize "AVANT.AddSpellcastingEntryTitle"}}</button>
     </div>
 </div>

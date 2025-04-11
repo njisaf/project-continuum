@@ -1,8 +1,8 @@
-import { NPCPF2e } from "@actor";
+import { NPCAvant } from "@actor";
 import { Rarity } from "@module/data.ts";
 import { creatureIdentificationDCs } from "@module/recall-knowledge.ts";
 
-function createCreature(level: number, rarity: Rarity, traits: string[]): NPCPF2e {
+function createCreature(level: number, rarity: Rarity, traits: string[]): NPCAvant {
     return {
         level,
         rarity,
@@ -12,7 +12,7 @@ function createCreature(level: number, rarity: Rarity, traits: string[]): NPCPF2
                 rarity,
             },
         },
-    } as unknown as NPCPF2e;
+    } as unknown as NPCAvant;
 }
 
 describe("test recall knowledge on creatures", () => {

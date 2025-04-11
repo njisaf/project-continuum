@@ -1,14 +1,14 @@
 import { ZeroToTwo } from "@module/data.ts";
-import { RegionBehaviorPF2e } from "./document.ts";
+import { RegionBehaviorAvant } from "./document.ts";
 import fields = foundry.data.fields;
 
 class EnvironmentFeatureBehaviorType extends foundry.data.regionBehaviors.RegionBehaviorType<
     EnvironmentFeatureTypeSchema,
-    RegionBehaviorPF2e | null
+    RegionBehaviorAvant | null
 > {
     static override defineSchema(): EnvironmentFeatureTypeSchema {
         const fields = foundry.data.fields;
-        const locPathPrefix = "PF2E.Region.EnvironmentFeature";
+        const locPathPrefix = "AVANT.Region.EnvironmentFeature";
         return {
             terrain: new fields.SchemaField(
                 {
@@ -31,7 +31,7 @@ class EnvironmentFeatureBehaviorType extends foundry.data.regionBehaviors.Region
 }
 
 interface EnvironmentFeatureBehaviorType
-    extends foundry.data.regionBehaviors.RegionBehaviorType<EnvironmentFeatureTypeSchema, RegionBehaviorPF2e | null>,
+    extends foundry.data.regionBehaviors.RegionBehaviorType<EnvironmentFeatureTypeSchema, RegionBehaviorAvant | null>,
         ModelPropsFromSchema<EnvironmentFeatureTypeSchema> {}
 
 type EnvironmentFeatureTypeSchema = {

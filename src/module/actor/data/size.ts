@@ -5,7 +5,7 @@ interface SizeDimensions {
     width: number;
 }
 
-export class ActorSizePF2e {
+export class ActorSizeAvant {
     /** The size category of this category */
     value: Size;
     /** The length dimension of this actor's space */
@@ -45,7 +45,7 @@ export class ActorSizePF2e {
         }
 
         this.value = params.value;
-        const spaces = ActorSizePF2e.defaultSpaces[params.value] ?? ActorSizePF2e.defaultSpaces.med;
+        const spaces = ActorSizeAvant.defaultSpaces[params.value] ?? ActorSizeAvant.defaultSpaces.med;
         this.length = params.length ?? spaces.length;
         this.width = params.width ?? spaces.width;
     }
@@ -55,8 +55,8 @@ export class ActorSizePF2e {
      * @param size The size to which this size is being compared
      * @param [smallIsMedium] Treat small as medium for both sizes
      */
-    equals(size: ActorSizePF2e | Size, { smallIsMedium = false } = {}): boolean {
-        const other = size instanceof ActorSizePF2e ? size : new ActorSizePF2e({ value: size });
+    equals(size: ActorSizeAvant | Size, { smallIsMedium = false } = {}): boolean {
+        const other = size instanceof ActorSizeAvant ? size : new ActorSizeAvant({ value: size });
         const thisSize = this.getEffectiveSize(this.value, { smallIsMedium });
         const otherSize = this.getEffectiveSize(other.value, { smallIsMedium });
         return thisSize === otherSize;
@@ -67,11 +67,11 @@ export class ActorSizePF2e {
      * @param size The size to which this size is being compared
      * @param [smallIsMedium] Treat small as medium for both sizes
      */
-    isLargerThan(size: ActorSizePF2e | Size, { smallIsMedium = false } = {}): boolean {
-        const other = size instanceof ActorSizePF2e ? size : new ActorSizePF2e({ value: size });
+    isLargerThan(size: ActorSizeAvant | Size, { smallIsMedium = false } = {}): boolean {
+        const other = size instanceof ActorSizeAvant ? size : new ActorSizeAvant({ value: size });
         const thisSize = this.getEffectiveSize(this.value, { smallIsMedium });
         const otherSize = this.getEffectiveSize(other.value, { smallIsMedium });
-        return ActorSizePF2e.sizeRanks[thisSize] > ActorSizePF2e.sizeRanks[otherSize];
+        return ActorSizeAvant.sizeRanks[thisSize] > ActorSizeAvant.sizeRanks[otherSize];
     }
 
     /**
@@ -79,11 +79,11 @@ export class ActorSizePF2e {
      * @param size The size to which this size is being compared
      * @param [smallIsMedium] Treat small as medium for both sizes
      */
-    isSmallerThan(size: ActorSizePF2e | Size, { smallIsMedium = false } = {}): boolean {
-        const other = size instanceof ActorSizePF2e ? size : new ActorSizePF2e({ value: size });
+    isSmallerThan(size: ActorSizeAvant | Size, { smallIsMedium = false } = {}): boolean {
+        const other = size instanceof ActorSizeAvant ? size : new ActorSizeAvant({ value: size });
         const thisSize = this.getEffectiveSize(this.value, { smallIsMedium });
         const otherSize = this.getEffectiveSize(other.value, { smallIsMedium });
-        return ActorSizePF2e.sizeRanks[thisSize] < ActorSizePF2e.sizeRanks[otherSize];
+        return ActorSizeAvant.sizeRanks[thisSize] < ActorSizeAvant.sizeRanks[otherSize];
     }
 
     /**
@@ -91,10 +91,10 @@ export class ActorSizePF2e {
      * @param size The size to which this size is being compared
      * @param [smallIsMedium] Ignore the difference between small and medium
      */
-    difference(size: ActorSizePF2e, { smallIsMedium = false } = {}): number {
+    difference(size: ActorSizeAvant, { smallIsMedium = false } = {}): number {
         const thisSize = this.getEffectiveSize(this.value, { smallIsMedium });
         const otherSize = this.getEffectiveSize(size.value, { smallIsMedium });
-        return ActorSizePF2e.sizeRanks[thisSize] - ActorSizePF2e.sizeRanks[otherSize];
+        return ActorSizeAvant.sizeRanks[thisSize] - ActorSizeAvant.sizeRanks[otherSize];
     }
 
     /**
@@ -120,7 +120,7 @@ export class ActorSizePF2e {
                     ? "grg"
                     : SIZES[SIZES.indexOf(this.value) + 1];
 
-        const newSpace = ActorSizePF2e.defaultSpaces[this.value];
+        const newSpace = ActorSizeAvant.defaultSpaces[this.value];
         this.length = newSpace.length;
         this.width = newSpace.width;
     }
@@ -133,12 +133,12 @@ export class ActorSizePF2e {
         const toTiny = (this.value === "med" && skipSmall) || this.value === "tiny";
         this.value = toTiny ? "tiny" : SIZES[SIZES.indexOf(this.value) - 1];
 
-        const newSpace = ActorSizePF2e.defaultSpaces[this.value];
+        const newSpace = ActorSizeAvant.defaultSpaces[this.value];
         this.length = newSpace.length;
         this.width = newSpace.width;
     }
 
     toString(): string {
-        return game.i18n.localize(CONFIG.PF2E.actorSizes[this.value]);
+        return game.i18n.localize(CONFIG.AVANT.actorSizes[this.value]);
     }
 }

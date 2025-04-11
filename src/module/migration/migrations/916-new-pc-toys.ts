@@ -1,4 +1,4 @@
-import { AbilitySource, ClassSource, FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { AbilitySource, ClassSource, FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { CraftingAbilityRuleSource } from "@module/rules/rule-element/crafting-ability.ts";
 import { NoteRESource } from "@module/rules/rule-element/roll-note.ts";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration916NewPCToys extends MigrationBase {
     static override version = 0.916;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const slug = source.system.slug;
         if (!slug) return;
 
@@ -22,7 +22,7 @@ export class Migration916NewPCToys extends MigrationBase {
     }
 
     get #explodeAELike(): AELikeSource {
-        const path = "flags.pf2e.inventor.explode";
+        const path = "flags.avant.inventor.explode";
         return { key: "ActiveEffectLike", mode: "override", path, priority: 49, value: "fire" };
     }
 
@@ -32,24 +32,24 @@ export class Migration916NewPCToys extends MigrationBase {
                 key: "Note",
                 predicate: ["self:action:trait:unstable"],
                 selector: ["inline-damage", "inline-healing", "strike-attack-roll"],
-                text: "PF2E.SpecificRule.Inventor.Unstable.Note",
-                title: "PF2E.TraitUnstable",
+                text: "AVANT.SpecificRule.Inventor.Unstable.Note",
+                title: "AVANT.TraitUnstable",
             },
             {
                 key: "Note",
                 outcome: ["failure"],
                 predicate: ["unstable-check"],
                 selector: ["flat-check"],
-                text: "PF2E.SpecificRule.Inventor.Unstable.FlatCheck.Failure",
-                title: "PF2E.Check.Result.Degree.Check.failure",
+                text: "AVANT.SpecificRule.Inventor.Unstable.FlatCheck.Failure",
+                title: "AVANT.Check.Result.Degree.Check.failure",
             },
             {
                 key: "Note",
                 outcome: ["criticalFailure"],
                 predicate: ["unstable-check"],
                 selector: ["flat-check"],
-                text: "PF2E.SpecificRule.Inventor.Unstable.FlatCheck.CriticalFailure",
-                title: "PF2E.Check.Result.Degree.Check.criticalFailure",
+                text: "AVANT.SpecificRule.Inventor.Unstable.FlatCheck.CriticalFailure",
+                title: "AVANT.Check.Result.Degree.Check.criticalFailure",
             },
         ];
     }
@@ -59,18 +59,18 @@ export class Migration916NewPCToys extends MigrationBase {
             const rules = [
                 {
                     key: "Note",
-                    title: "PF2E.Check.Result.Degree.Check.criticalSuccess",
+                    title: "AVANT.Check.Result.Degree.Check.criticalSuccess",
                     selector: "crafting",
                     predicate: ["self:action:slug:overdrive"],
-                    text: "PF2E.SpecificRule.Inventor.Overdrive.CriticalSuccess",
+                    text: "AVANT.SpecificRule.Inventor.Overdrive.CriticalSuccess",
                     outcome: ["criticalSuccess"],
                 },
                 {
                     key: "Note",
-                    title: "PF2E.Check.Result.Degree.Check.success",
+                    title: "AVANT.Check.Result.Degree.Check.success",
                     selector: "crafting",
                     predicate: ["self:action:slug:overdrive"],
-                    text: "PF2E.SpecificRule.Inventor.Overdrive.Success",
+                    text: "AVANT.SpecificRule.Inventor.Overdrive.Success",
                     outcome: ["success"],
                 },
                 {
@@ -78,8 +78,8 @@ export class Migration916NewPCToys extends MigrationBase {
                     outcome: ["criticalFailure"],
                     predicate: ["self:action:slug:overdrive"],
                     selector: "crafting",
-                    text: "PF2E.SpecificRule.Inventor.Overdrive.CriticalFailure",
-                    title: "PF2E.Check.Result.Degree.Check.criticalFailure",
+                    text: "AVANT.SpecificRule.Inventor.Overdrive.CriticalFailure",
+                    title: "AVANT.Check.Result.Degree.Check.criticalFailure",
                 },
             ];
             source.system.rules = rules;
@@ -94,7 +94,7 @@ export class Migration916NewPCToys extends MigrationBase {
 
     #updateFeat(source: FeatSource, slug: string): void {
         if (slug === "finishing-precision" && !source.system.rules.some((r) => r.key === "ActiveEffectLike")) {
-            const path = "flags.pf2e.swashbuckler.preciseStrike";
+            const path = "flags.avant.swashbuckler.preciseStrike";
             const rule = { key: "ActiveEffectLike", mode: "override", path, value: 1 };
             source.system.rules.push(rule);
         } else if (slug === "inventor-dedication" && !source.system.rules.some((r) => r.key === "Note")) {
@@ -110,8 +110,8 @@ export class Migration916NewPCToys extends MigrationBase {
                         },
                     ],
                     suboptions: [
-                        { label: "PF2E.SpecificRule.Inventor.Unstable.Stable", value: "stable" },
-                        { label: "PF2E.TraitUnstable", value: "unstable" },
+                        { label: "AVANT.SpecificRule.Inventor.Unstable.Stable", value: "stable" },
+                        { label: "AVANT.TraitUnstable", value: "unstable" },
                     ],
                     toggleable: true,
                 },
@@ -128,7 +128,7 @@ export class Migration916NewPCToys extends MigrationBase {
                         "megaton:stable",
                         {
                             or: [
-                                { and: ["feature:weapon-innovation", "item:id:{actor|flags.pf2e.innovationId}"] },
+                                { and: ["feature:weapon-innovation", "item:id:{actor|flags.avant.innovationId}"] },
                                 { and: ["feature:armor-innovation", "item:melee"] },
                             ],
                         },
@@ -142,7 +142,7 @@ export class Migration916NewPCToys extends MigrationBase {
                         "megaton:unstable",
                         {
                             or: [
-                                { and: ["feature:weapon-innovation", "item:id:{actor|flags.pf2e.innovationId}"] },
+                                { and: ["feature:weapon-innovation", "item:id:{actor|flags.avant.innovationId}"] },
                                 { and: ["feature:armor-innovation", "item:melee"] },
                             ],
                         },
@@ -171,7 +171,7 @@ export class Migration916NewPCToys extends MigrationBase {
             const rule = {
                 key: "ActiveEffectLike",
                 mode: "override",
-                path: "flags.pf2e.swashbuckler.preciseStrike",
+                path: "flags.avant.swashbuckler.preciseStrike",
                 predicate: ["class:swashbuckler"],
                 value: "ceil(@actor.level/4) + 1",
             };

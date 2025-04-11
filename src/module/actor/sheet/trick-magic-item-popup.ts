@@ -1,30 +1,30 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
-import type { ConsumablePF2e } from "@item";
+import type { ActorAvant, CharacterAvant } from "@actor";
+import type { ConsumableAvant } from "@item";
 import { TrickMagicItemDifficultyData, calculateTrickMagicItemCheckDC } from "@item/consumable/spell-consumables.ts";
 import { TRICK_MAGIC_SKILLS, TrickMagicItemEntry, TrickMagicItemSkill } from "@item/spellcasting-entry/trick.ts";
-import { ErrorPF2e, fontAwesomeIcon, localizer } from "@util";
+import { ErrorAvant, fontAwesomeIcon, localizer } from "@util";
 
 export class TrickMagicItemPopup {
     /** The wand or scroll being "tricked" */
-    readonly item: ConsumablePF2e<ActorPF2e>;
+    readonly item: ConsumableAvant<ActorAvant>;
 
     /** The actor doing the tricking */
-    declare readonly actor: CharacterPF2e;
+    declare readonly actor: CharacterAvant;
 
     /** The skill DC of the action's check */
     readonly checkDC: TrickMagicItemDifficultyData;
 
-    #localize = localizer("PF2E.TrickMagicItemPopup");
+    #localize = localizer("AVANT.TrickMagicItemPopup");
 
-    constructor(item: ConsumablePF2e) {
+    constructor(item: ConsumableAvant) {
         if (!item.isOfType("consumable")) {
-            throw ErrorPF2e("Unexpected item used for Trick Magic Item");
+            throw ErrorAvant("Unexpected item used for Trick Magic Item");
         }
         if (!item.actor?.isOfType("character")) {
-            throw ErrorPF2e(this.#localize("InvalidActor"));
+            throw ErrorAvant(this.#localize("InvalidActor"));
         }
 
-        this.item = item as ConsumablePF2e<CharacterPF2e>;
+        this.item = item as ConsumableAvant<CharacterAvant>;
         this.actor = item.actor;
         this.checkDC = calculateTrickMagicItemCheckDC(item);
 
@@ -34,7 +34,7 @@ export class TrickMagicItemPopup {
     async #initialize(): Promise<void> {
         const skills = TRICK_MAGIC_SKILLS.filter((skill) => skill in this.checkDC).map((value) => ({
             value,
-            label: game.i18n.localize(CONFIG.PF2E.skills[value].label),
+            label: game.i18n.localize(CONFIG.AVANT.skills[value].label),
             modifier: this.actor.skills[value].check.mod,
         }));
         const buttons = skills.reduce((accumulated: Record<string, DialogButton>, skill) => {

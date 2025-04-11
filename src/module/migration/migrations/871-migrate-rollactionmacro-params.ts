@@ -8,13 +8,13 @@ export class Migration871MigrateRollActionMacroParams extends MigrationBase {
     override async updateMacro(source: MacroSource): Promise<void> {
         if (source.type !== "script") return;
 
-        const matches = source.command.matchAll(/game\.pf2e\.rollActionMacro\("(.+)".*"(.+)"\)/gm);
+        const matches = source.command.matchAll(/game\.avant\.rollActionMacro\("(.+)".*"(.+)"\)/gm);
         for (const match of matches) {
             if (match.length < 3) continue;
             const [current, itemId, slug] = match;
             source.command = source.command.replace(
                 current,
-                `game.pf2e.rollActionMacro({ itemId: "${itemId}", slug: "${slug}" })`,
+                `game.avant.rollActionMacro({ itemId: "${itemId}", slug: "${slug}" })`,
             );
         }
     }

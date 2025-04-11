@@ -1,10 +1,10 @@
-import { TokenPF2e } from "../object.ts";
+import { TokenAvant } from "../object.ts";
 import { AuraRenderer } from "./renderer.ts";
 
 export class AuraRenderers extends Map<string, AuraRenderer> {
-    readonly token: TokenPF2e;
+    readonly token: TokenAvant;
 
-    constructor(token: TokenPF2e) {
+    constructor(token: TokenAvant) {
         super();
         this.token = token;
     }

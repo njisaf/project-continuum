@@ -1,22 +1,22 @@
-import type { ActorPF2e } from "@actor";
-import { DamageDicePF2e, ModifierPF2e } from "@actor/modifiers.ts";
+import type { ActorAvant } from "@actor";
+import { DamageDiceAvant, ModifierAvant } from "@actor/modifiers.ts";
 import { DamageContext } from "@actor/roll-context/damage.ts";
 import { AttributeString } from "@actor/types.ts";
 import { SAVE_TYPES } from "@actor/values.ts";
-import type { ConsumablePF2e } from "@item";
-import { ItemPF2e } from "@item";
+import type { ConsumableAvant } from "@item";
+import { ItemAvant } from "@item";
 import { processSanctification } from "@item/ability/helpers.ts";
-import { ItemSourcePF2e, RawItemChatData } from "@item/base/data/index.ts";
+import { ItemSourceAvant, RawItemChatData } from "@item/base/data/index.ts";
 import type { ItemDescriptionData } from "@item/base/data/system.ts";
 import { performLatePreparation } from "@item/helpers.ts";
 import { SpellSlotGroupId } from "@item/spellcasting-entry/collection.ts";
 import { spellSlotGroupIdToNumber } from "@item/spellcasting-entry/helpers.ts";
 import { BaseSpellcastingEntry } from "@item/spellcasting-entry/types.ts";
 import { RangeData } from "@item/types.ts";
-import { MeasuredTemplatePF2e } from "@module/canvas/index.ts";
-import { ChatMessagePF2e, ItemOriginFlag } from "@module/chat-message/index.ts";
+import { MeasuredTemplateAvant } from "@module/canvas/index.ts";
+import { ChatMessageAvant, ItemOriginFlag } from "@module/chat-message/index.ts";
 import { OneToTen, Rarity, ZeroToThree, ZeroToTwo } from "@module/data.ts";
-import { RollNotePF2e } from "@module/notes.ts";
+import { RollNoteAvant } from "@module/notes.ts";
 import {
     extractDamageAlterations,
     extractDamageDice,
@@ -25,10 +25,10 @@ import {
     processDamageCategoryStacking,
 } from "@module/rules/helpers.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
-import type { UserPF2e } from "@module/user/index.ts";
-import type { TokenDocumentPF2e } from "@scene";
+import type { UserAvant } from "@module/user/index.ts";
+import type { TokenDocumentAvant } from "@scene";
 import { CheckRoll } from "@system/check/index.ts";
-import { DamagePF2e } from "@system/damage/damage.ts";
+import { DamageAvant } from "@system/damage/damage.ts";
 import { DamageModifierDialog } from "@system/damage/dialog.ts";
 import { combinePartialTerms, createDamageFormula, parseTermsFromSimpleFormula } from "@system/damage/formula.ts";
 import { DamageCategorization, applyBaseDamageAlterations } from "@system/damage/helpers.ts";
@@ -42,9 +42,9 @@ import {
 } from "@system/damage/types.ts";
 import { DEGREE_OF_SUCCESS_STRINGS } from "@system/degree-of-success.ts";
 import { StatisticRollParameters } from "@system/statistic/index.ts";
-import { EnrichmentOptionsPF2e, TextEditorPF2e } from "@system/text-editor.ts";
+import { EnrichmentOptionsAvant, TextEditorAvant } from "@system/text-editor.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     createHTMLElement,
     getActionGlyph,
     htmlClosest,
@@ -64,24 +64,24 @@ import {
 import { SpellOverlayCollection } from "./overlay.ts";
 import { EffectAreaShape, MagicTradition, SpellTrait } from "./types.ts";
 
-class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
-    readonly parentItem: ConsumablePF2e<TParent> | null;
+class SpellAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
+    readonly parentItem: ConsumableAvant<TParent> | null;
 
     /** The original spell. Only exists if this is a variant */
-    declare original?: SpellPF2e<TParent>;
+    declare original?: SpellAvant<TParent>;
 
     /** The overlays that were applied to create this variant */
     declare appliedOverlays?: Map<SpellOverlayType, string>;
 
     declare overlays: SpellOverlayCollection;
 
-    constructor(data: PreCreate<ItemSourcePF2e>, context: SpellConstructionContext<TParent> = {}) {
+    constructor(data: PreCreate<ItemSourceAvant>, context: SpellConstructionContext<TParent> = {}) {
         super(data, context);
         this.parentItem = context.parentItem ?? null;
     }
 
     static override get validTraits(): Record<SpellTrait, string> {
-        return CONFIG.PF2E.spellTraits;
+        return CONFIG.AVANT.spellTraits;
     }
 
     /** The id of the override overlay that constitutes this variant */
@@ -149,9 +149,9 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
                 return { slug: defense.passive.statistic, label: game.i18n.localize(label) };
             }
         } else if (defense?.save) {
-            const saveLabel = game.i18n.localize(CONFIG.PF2E.saves[defense.save.statistic]);
+            const saveLabel = game.i18n.localize(CONFIG.AVANT.saves[defense.save.statistic]);
             const label = defense.save.basic
-                ? game.i18n.format("PF2E.Item.Spell.Defense.BasicDefense", { save: saveLabel })
+                ? game.i18n.format("AVANT.Item.Spell.Defense.BasicDefense", { save: saveLabel })
                 : saveLabel;
             return { slug: defense.save.statistic, label };
         }
@@ -337,7 +337,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
             .sort();
         const actionAndTraitOptions = new Set(["action:cast-a-spell", "self:action:slug:cast-a-spell", ...spellTraits]);
         const contextData = await new DamageContext({
-            origin: { actor, item: this as SpellPF2e<ActorPF2e>, statistic: checkStatistic },
+            origin: { actor, item: this as SpellAvant<ActorAvant>, statistic: checkStatistic },
             target: isAttack ? { token: params.target } : null,
             domains,
             options: actionAndTraitOptions,
@@ -361,8 +361,8 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         };
 
         // Add modifiers and damage die adjustments
-        const modifiers: ModifierPF2e[] = [];
-        const damageDice: DamageDicePF2e[] = [];
+        const modifiers: ModifierAvant[] = [];
+        const damageDice: DamageDiceAvant[] = [];
         const originClone = contextData.origin.actor;
         const { damageAlterations, modifierAdjustments } = actor.synthetics;
 
@@ -372,8 +372,8 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
                 .filter(([, d]) => d.applyMod)
                 .map(
                     ([k, d]) =>
-                        new ModifierPF2e({
-                            label: CONFIG.PF2E.abilities[attribute],
+                        new ModifierAvant({
+                            label: CONFIG.AVANT.abilities[attribute],
                             slug: `ability-${k}`,
                             // Not a restricted attribute modifier in the same way it is for checks or weapon damage
                             type: "untyped",
@@ -398,17 +398,17 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
 
             // Apply alterations to base damage
             if (actor) {
-                const item = this as SpellPF2e<NonNullable<TParent>>;
+                const item = this as SpellAvant<NonNullable<TParent>>;
                 applyBaseDamageAlterations({ actor, item, base, domains, rollOptions: context.options });
             }
 
             // Apply alterations to damage synthetics
             for (const dice of extracted.dice) {
-                dice.applyAlterations({ item: this as SpellPF2e<NonNullable<TParent>>, test: contextData.options });
+                dice.applyAlterations({ item: this as SpellAvant<NonNullable<TParent>>, test: contextData.options });
             }
             for (const modifier of extracted.modifiers) {
                 modifier.applyDamageAlterations({
-                    item: this as SpellPF2e<NonNullable<TParent>>,
+                    item: this as SpellAvant<NonNullable<TParent>>,
                     test: contextData.options,
                 });
             }
@@ -430,7 +430,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         }
 
         const { formula, breakdown } = createDamageFormula(formulaData);
-        const showBreakdown = game.pf2e.settings.metagame.breakdowns || !!context.self?.actor?.hasPlayerOwner;
+        const showBreakdown = game.avant.settings.metagame.breakdowns || !!context.self?.actor?.hasPlayerOwner;
         const roll = new DamageRoll(formula, {}, { showBreakdown });
 
         const template: SpellDamageTemplate = {
@@ -450,7 +450,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
      * If there's nothing to apply, returns null.
      */
     loadVariant(options?: SpellVariantOptions): this | null;
-    loadVariant(options: SpellVariantOptions = {}): SpellPF2e | null {
+    loadVariant(options: SpellVariantOptions = {}): SpellAvant | null {
         if (this.original) {
             const entryId = this.system.location.value;
             return this.original.loadVariant({ entryId, ...options });
@@ -472,7 +472,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
 
             const overlayTypes = overlays.map((overlay) => overlay.data.overlayType);
             if (overlayTypes.filter((type) => type === "override").length > 1) {
-                throw ErrorPF2e(
+                throw ErrorAvant(
                     `Error loading variant of Spell ${this.name} (${this.uuid}). Cannot apply multiple override overlays.`,
                 );
             }
@@ -515,7 +515,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
 
         // Create the variant and run additional prep since it exists outside the normal cycle
         const actor = this.parent;
-        const variant = new SpellPF2e(overrides, { parent: actor, parentItem: this.parentItem });
+        const variant = new SpellAvant(overrides, { parent: actor, parentItem: this.parentItem });
         variant.original = this;
         variant.appliedOverlays = appliedOverlays;
         variant.system.traits.value = Array.from(variant.traits);
@@ -534,8 +534,8 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
             .sort((first, second) => first.level - second.level);
     }
 
-    placeTemplate(message?: ChatMessagePF2e): Promise<MeasuredTemplatePF2e> {
-        if (!canvas.ready) throw ErrorPF2e("No canvas");
+    placeTemplate(message?: ChatMessageAvant): Promise<MeasuredTemplateAvant> {
+        if (!canvas.ready) throw ErrorAvant("No canvas");
         const templateConversion: Record<EffectAreaShape, MeasuredTemplateType> = {
             burst: "circle",
             cone: "cone",
@@ -547,7 +547,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         } as const;
 
         const area = this.system.area;
-        if (!area) throw ErrorPF2e("Attempted to create template with non-area spell");
+        if (!area) throw ErrorAvant("Attempted to create template with non-area spell");
         const templateType = templateConversion[area.type];
 
         const templateData: DeepPartial<foundry.documents.MeasuredTemplateSource> = {
@@ -555,7 +555,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
             distance: (Number(area.value) / 5) * canvas.dimensions.distance,
             fillColor: game.user.color,
             flags: {
-                pf2e: {
+                avant: {
                     messageId: message?.id,
                     origin: {
                         name: this.name,
@@ -672,7 +672,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         this.overlays = new SpellOverlayCollection(this, this.system.overlays);
     }
 
-    override prepareSiblingData(this: SpellPF2e<ActorPF2e>): void {
+    override prepareSiblingData(this: SpellAvant<ActorAvant>): void {
         if (this.spellcasting?.category === "innate") {
             fu.mergeObject(this.system.location, { uses: { value: 1, max: 1 } }, { overwrite: false });
         }
@@ -688,7 +688,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         }
     }
 
-    override onPrepareSynthetics(this: SpellPF2e<ActorPF2e>): void {
+    override onPrepareSynthetics(this: SpellAvant<ActorAvant>): void {
         this.system.cast.focusPoints = Math.clamp(this.system.cast.focusPoints, 0, 3) as ZeroToThree;
         processSanctification(this);
     }
@@ -785,7 +785,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     override async toMessage(
         event?: Maybe<MouseEvent | JQuery.TriggeredEvent>,
         { create = true, data, rollMode }: SpellToMessageOptions = {},
-    ): Promise<ChatMessagePF2e | undefined> {
+    ): Promise<ChatMessageAvant | undefined> {
         // NOTE: The parent toMessage() pulls "contextual data" from the DOM dataset.
         // Only spells/consumables currently use DOM data.
         // Eventually sheets should be handling "retrieve spell but heightened"
@@ -802,7 +802,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         if (!message) return undefined;
 
         const messageSource = message.toObject();
-        const flags = messageSource.flags.pf2e;
+        const flags = messageSource.flags.avant;
         const spellcasting = this.spellcasting;
 
         if (spellcasting?.statistic) {
@@ -830,7 +830,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
             return message;
         }
 
-        return ChatMessagePF2e.create(messageSource, { renderSheet: false });
+        return ChatMessageAvant.create(messageSource, { renderSheet: false });
     }
 
     override async getDescriptionData(): Promise<ItemDescriptionData> {
@@ -841,11 +841,11 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     }
 
     override async getChatData(
-        this: SpellPF2e<ActorPF2e>,
-        htmlOptions: EnrichmentOptionsPF2e = {},
+        this: SpellAvant<ActorAvant>,
+        htmlOptions: EnrichmentOptionsAvant = {},
         rollOptions: { castRank?: number | string; groupId?: SpellSlotGroupId } = {},
     ): Promise<RawItemChatData> {
-        if (!this.actor) throw ErrorPF2e(`Cannot retrieve chat data for unowned spell ${this.name}`);
+        if (!this.actor) throw ErrorAvant(`Cannot retrieve chat data for unowned spell ${this.name}`);
         const groupNumber = spellSlotGroupIdToNumber(rollOptions.groupId) || this.rank;
         const castRank = Number(rollOptions.castRank) || this.computeCastRank(groupNumber);
 
@@ -872,7 +872,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         const spellcasting = this.spellcasting;
         if (!spellcasting) {
             console.warn(
-                `PF2e System | Orphaned spell ${this.name} (${this.id}) on actor ${this.actor.name} (${this.actor.id})`,
+                `Avant System | Orphaned spell ${this.name} (${this.id}) on actor ${this.actor.name} (${this.actor.id})`,
             );
             return { ...systemData, traits: this.traitChatData() };
         }
@@ -880,7 +880,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         const statistic = spellcasting?.statistic;
         if (!statistic && !this.isRitual) {
             console.warn(
-                `PF2e System | Spell ${this.name} is missing a statistic to cast with (${this.id}) on actor ${this.actor.name} (${this.actor.id})`,
+                `Avant System | Spell ${this.name} is missing a statistic to cast with (${this.id}) on actor ${this.actor.name} (${this.actor.id})`,
             );
             return { ...systemData, traits: this.traitChatData() };
         }
@@ -896,16 +896,16 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
                 ? systemData.defense.save.statistic
                 : null;
         const isSave = !!saveType;
-        const saveKey = systemData.defense?.save?.basic ? "PF2E.SaveDCLabelBasic" : "PF2E.SaveDCLabel";
+        const saveKey = systemData.defense?.save?.basic ? "AVANT.SaveDCLabelBasic" : "AVANT.SaveDCLabel";
         const saveLabel = ((): string | null => {
             if (!(spellDC && saveType)) return null;
             const localized = game.i18n.format(saveKey, {
                 dc: spellDC,
-                type: game.i18n.localize(CONFIG.PF2E.saves[saveType]),
+                type: game.i18n.localize(CONFIG.AVANT.saves[saveType]),
             });
             const tempElement = createHTMLElement("div", { innerHTML: localized });
-            const visibility = game.pf2e.settings.metagame.dcs ? "all" : "owner";
-            TextEditorPF2e.convertXMLNode(tempElement, "dc", { visibility, whose: null });
+            const visibility = game.avant.settings.metagame.dcs ? "all" : "owner";
+            TextEditorAvant.convertXMLNode(tempElement, "dc", { visibility, whose: null });
             return tempElement.innerHTML;
         })();
 
@@ -913,9 +913,9 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         const damageKinds = this.damageKinds;
         const damageLabel = damageKinds.has("damage")
             ? damageKinds.has("healing")
-                ? "PF2E.Damage.Kind.Both.Roll.Verb"
-                : "PF2E.Damage.Kind.Damage.Roll.Verb"
-            : "PF2E.Damage.Kind.Healing.Roll.Verb";
+                ? "AVANT.Damage.Kind.Both.Roll.Verb"
+                : "AVANT.Damage.Kind.Damage.Roll.Verb"
+            : "AVANT.Damage.Kind.Healing.Roll.Verb";
 
         const { baseRank } = this;
         const heightened = castRank - baseRank;
@@ -924,12 +924,12 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         // Combine properties
         const area = this.area;
         const properties = [
-            heightened ? game.i18n.format("PF2E.SpellLevelBase", { level: ordinalString(baseRank) }) : null,
-            heightened ? game.i18n.format("PF2E.SpellLevelHeightened", { heightened }) : null,
+            heightened ? game.i18n.format("AVANT.SpellLevelBase", { level: ordinalString(baseRank) }) : null,
+            heightened ? game.i18n.format("AVANT.SpellLevelHeightened", { heightened }) : null,
         ].filter(R.isTruthy);
 
         const spellTraits = this.traitChatData(
-            CONFIG.PF2E.spellTraits,
+            CONFIG.AVANT.spellTraits,
             R.unique([...this.system.traits.value, spellcasting.tradition]).filter(R.isTruthy),
         );
         const rarity =
@@ -937,8 +937,8 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
                 ? null
                 : {
                       slug: this.rarity,
-                      label: CONFIG.PF2E.rarityTraits[this.rarity],
-                      description: CONFIG.PF2E.traitsDescriptions[this.rarity],
+                      label: CONFIG.AVANT.rarityTraits[this.rarity],
+                      description: CONFIG.AVANT.traitsDescriptions[this.rarity],
                   };
 
         return this.processChatData(htmlOptions, {
@@ -966,14 +966,14 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     }
 
     async rollAttack(
-        this: SpellPF2e<ActorPF2e>,
+        this: SpellAvant<ActorAvant>,
         event: MouseEvent | JQuery.ClickEvent,
         attackNumber = 1,
         context: StatisticRollParameters = {},
     ): Promise<Rolled<CheckRoll> | null> {
         const { statistic, tradition } = this.spellcasting ?? {};
         if (!statistic) {
-            throw ErrorPF2e("Spell points to location that is not a spellcasting type");
+            throw ErrorAvant("Spell points to location that is not a spellcasting type");
         }
 
         context.extraRollOptions = R.unique(["action:cast-a-spell", ...(context.extraRollOptions ?? [])]);
@@ -990,7 +990,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     }
 
     async rollDamage(
-        this: SpellPF2e<ActorPF2e>,
+        this: SpellAvant<ActorAvant>,
         event: MouseEvent | JQuery.ClickEvent,
         mapIncreases?: ZeroToTwo,
     ): Promise<Rolled<DamageRoll> | null> {
@@ -1020,13 +1020,13 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
             context.options.add(`map:increases:${mapIncreases}`);
         }
 
-        return DamagePF2e.roll(template, context);
+        return DamageAvant.roll(template, context);
     }
 
     /** Roll counteract check */
     async rollCounteract(event?: MouseEvent | JQuery.ClickEvent): Promise<Rolled<CheckRoll> | null> {
         event = event instanceof Event ? event : event?.originalEvent;
-        const actor: ActorPF2e | null = this.actor;
+        const actor: ActorAvant | null = this.actor;
         if (!actor?.isOfType("character", "npc")) {
             return null;
         }
@@ -1034,7 +1034,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         const spellcasting = this.spellcasting;
         if (!spellcasting?.statistic?.attribute) {
             console.warn(
-                ErrorPF2e(`Spell ${this.name} (${this.uuid}) is missing a statistic with which to counteract.`).message,
+                ErrorAvant(`Spell ${this.name} (${this.uuid}) is missing a statistic with which to counteract.`).message,
             );
             return null;
         }
@@ -1043,19 +1043,19 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         if (!statistic) return null;
 
         const domain = "counteract-check";
-        const localize = localizer("PF2E.Item.Spell.Counteract");
+        const localize = localizer("AVANT.Item.Spell.Counteract");
         const notes = [
-            new RollNotePF2e({ selector: domain, text: localize("Hint") }),
-            ...DEGREE_OF_SUCCESS_STRINGS.map((degreeString): RollNotePF2e => {
+            new RollNoteAvant({ selector: domain, text: localize("Hint") }),
+            ...DEGREE_OF_SUCCESS_STRINGS.map((degreeString): RollNoteAvant => {
                 const counteractRank = {
                     criticalFailure: 0,
                     failure: this.rank,
                     success: this.rank + 1,
                     criticalSuccess: this.rank + 3,
                 }[degreeString];
-                return new RollNotePF2e({
+                return new RollNoteAvant({
                     selector: domain,
-                    title: `PF2E.Check.Result.Degree.Check.${degreeString}`,
+                    title: `AVANT.Check.Result.Degree.Check.${degreeString}`,
                     text: localize(degreeString, { rank: counteractRank }),
                     outcome: [degreeString],
                 });
@@ -1065,7 +1065,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         const traits = R.unique([...this.system.traits.value, spellcasting.tradition]).filter(R.isNonNullish);
         return statistic.check.roll({
             ...eventToRollParams(event, { type: "check" }),
-            label: game.i18n.localize("PF2E.Check.Specific.Counteract"),
+            label: game.i18n.localize("AVANT.Check.Specific.Counteract"),
             extraRollNotes: notes,
             traits,
         });
@@ -1088,9 +1088,9 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         // Redirect the update of override spell variants to the appropriate update method if the spell sheet is currently rendered
         if (this.original && this.appliedOverlays!.has("override") && this.sheet.rendered) {
             return this.original.overlays.updateOverride(
-                this as SpellPF2e<ActorPF2e>,
+                this as SpellAvant<ActorAvant>,
                 data,
-                operation as Partial<DatabaseUpdateOperation<ActorPF2e>>,
+                operation as Partial<DatabaseUpdateOperation<ActorAvant>>,
             ) as Promise<this | undefined>;
         }
         return super.update(data, operation);
@@ -1099,7 +1099,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     protected override async _preCreate(
         data: this["_source"],
         operation: DatabaseCreateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!this.actor) {
             this._source.system.location = { value: null };
@@ -1121,7 +1121,7 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     protected override async _preUpdate(
         changed: DeepPartial<SpellSource>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) return super._preUpdate(changed, operation, user);
 
@@ -1216,13 +1216,13 @@ class SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     }
 }
 
-interface SpellPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface SpellAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: SpellSource;
     system: SpellSystemData;
 }
 
-interface SpellConstructionContext<TParent extends ActorPF2e | null> extends DocumentConstructionContext<TParent> {
-    parentItem?: Maybe<ConsumablePF2e<TParent>>;
+interface SpellConstructionContext<TParent extends ActorAvant | null> extends DocumentConstructionContext<TParent> {
+    parentItem?: Maybe<ConsumableAvant<TParent>>;
 }
 
 interface SpellDamage {
@@ -1246,7 +1246,7 @@ interface SpellToMessageOptions {
 interface SpellDamageOptions {
     rollMode?: RollMode | "roll";
     skipDialog?: boolean;
-    target?: Maybe<TokenDocumentPF2e>;
+    target?: Maybe<TokenDocumentAvant>;
 }
 
 interface SpellVariantOptions {
@@ -1255,4 +1255,4 @@ interface SpellVariantOptions {
     entryId?: string | null;
 }
 
-export { SpellPF2e, type SpellToMessageOptions };
+export { SpellAvant, type SpellToMessageOptions };

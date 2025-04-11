@@ -1,3 +1,3 @@
-type NPCAttackTrait = keyof typeof CONFIG.PF2E.npcAttackTraits;
+type NPCAttackTrait = keyof typeof CONFIG.AVANT.npcAttackTraits;
 
 export type { NPCAttackTrait };

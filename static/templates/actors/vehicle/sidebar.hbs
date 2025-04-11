@@ -1,24 +1,24 @@
 <header>
   <h2>
-      {{localize "PF2E.HitPointsHeader"}}
+      {{localize "AVANT.HitPointsHeader"}}
   </h2>
 </header>
 <div class="hitpoints">
   <div class="hp-big">
-    <div class="container temp-hp" title="{{localize "PF2E.ShieldBrokenThresholdLabel"}}">
-      <span for="data.attributes.hp.brokenThreshold" class="sidebar_label">{{localize "PF2E.vehicle.BrokenThresholdShortLabel"}}</span>
+    <div class="container temp-hp" title="{{localize "AVANT.ShieldBrokenThresholdLabel"}}">
+      <span for="data.attributes.hp.brokenThreshold" class="sidebar_label">{{localize "AVANT.vehicle.BrokenThresholdShortLabel"}}</span>
       <div class="data-value">
         <h2>{{data.attributes.hp.brokenThreshold}}</h2>
       </div>
     </div>
-    <div class="container current-hp" title="{{localize "PF2E.vehicle.CurrentHPTitle"}}">
-      <label for="{{options.id}}-vehicle-hp-temp" class="sidebar_label">{{localize "PF2E.CurrentHitPointsShortLabel"}}</label>
+    <div class="container current-hp" title="{{localize "AVANT.vehicle.CurrentHPTitle"}}">
+      <label for="{{options.id}}-vehicle-hp-temp" class="sidebar_label">{{localize "AVANT.CurrentHitPointsShortLabel"}}</label>
       <div class="data-value">
         <input id="{{options.id}}-vehicle-hp-temp" name="system.attributes.hp.value" type="number" value="{{data.attributes.hp.value}}" data-dtype="Number" placeholder="0" size="1"/>
       </div>
     </div>
-    <div class="container max-hp" title="{{localize "PF2E.vehicle.MaxHPTitle"}}">
-      <label for="{{options.id}}-vehicle-hp-max" class="sidebar_label">{{localize "PF2E.MaxHitPointsShortLabel"}}</label>
+    <div class="container max-hp" title="{{localize "AVANT.vehicle.MaxHPTitle"}}">
+      <label for="{{options.id}}-vehicle-hp-max" class="sidebar_label">{{localize "AVANT.MaxHitPointsShortLabel"}}</label>
       <div class="data-value">
         <input id="{{options.id}}-vehicle-hp-max" data-property="system.attributes.hp.max" type="number" value="{{data.attributes.hp.max}}" placeholder="0" size="1" />
       </div>
@@ -27,16 +27,16 @@
 </div>
 
 <header>
-    <h2>{{localize "PF2E.ArmorClassLabel"}}</h2>
+    <h2>{{localize "AVANT.ArmorClassLabel"}}</h2>
 </header>
 <div class="armor-class">
-    <div class="shield ac" title="{{localize "PF2E.ArmorClassLabel"}}">
+    <div class="shield ac" title="{{localize "AVANT.ArmorClassLabel"}}">
         <div class="data-value">
             <input id="{{options.id}}-vehicle-ac" class="adjustable {{ac.adjustmentClass}}" data-property="system.attributes.ac.value" type="number" value="{{ac.value}}" data-dtype="Number" placeholder="10" size="1"/>
         </div>
-        <label for="{{options.id}}-vehicle-ac" class="sidebar_label">{{localize "PF2E.ArmorClassShortLabel"}}</label>
+        <label for="{{options.id}}-vehicle-ac" class="sidebar_label">{{localize "AVANT.ArmorClassShortLabel"}}</label>
     </div>
-    <div class="shield hardness" title="{{localize "PF2E.vehicle.HardnessLabel"}}">
+    <div class="shield hardness" title="{{localize "AVANT.vehicle.HardnessLabel"}}">
         <div class="data-value">
             <input
                 id="{{options.id}}-vehicle-hardness"
@@ -47,20 +47,20 @@
                 value="{{data.attributes.hardness}}"
             />
         </div>
-        <label for="{{options.id}}-vehicle-hardness" class="sidebar_label">{{localize "PF2E.vehicle.HardnessShortLabel"}}</label>
+        <label for="{{options.id}}-vehicle-hardness" class="sidebar_label">{{localize "AVANT.vehicle.HardnessShortLabel"}}</label>
     </div>
 </div>
 
 <header>
-    <h2>{{localize "PF2E.SavesHeader"}}</h2>
+    <h2>{{localize "AVANT.SavesHeader"}}</h2>
 </header>
 <ul class="sidebar-saves">
     <li class="roll-data" data-save="fortitude">
-        <h2 class="sidebar_label">{{localize "PF2E.SavesFortitude"}}</h2>
+        <h2 class="sidebar_label">{{localize "AVANT.SavesFortitude"}}</h2>
         <div class="save-roll">
             {{#if options.editable}}
                 <a class="roll-icon" data-action="roll-check" data-statistic="fortitude">
-                    {{> "systems/pf2e/templates/actors/character/icons/d20.hbs"}}
+                    {{> "systems/avant/templates/actors/character/icons/d20.hbs"}}
                 </a>
             {{/if}}
             <input class="adjustable {{saves.fortitude.adjustmentClass}}" data-property="system.saves.fortitude.value" type="number" value="{{saves.fortitude.value}}" placeholder="0" />
@@ -69,10 +69,10 @@
 </ul>
 
 <header>
-    <h2>{{localize "PF2E.ImmunitiesLabel"}}</h2>
+    <h2>{{localize "AVANT.ImmunitiesLabel"}}</h2>
     {{#if editable}}
         <button type="button" class="modifiers_button" data-action="edit-immunities">
-            <i class="fa-solid fa-edit"></i> {{localize "PF2E.Edit"}}
+            <i class="fa-solid fa-edit"></i> {{localize "AVANT.Edit"}}
         </a>
     {{/if}}
 </header>
@@ -83,10 +83,10 @@
 </ol>
 
 <header>
-    <h2>{{localize "PF2E.WeaknessesLabel"}}</h2>
+    <h2>{{localize "AVANT.WeaknessesLabel"}}</h2>
     {{#if editable}}
         <button type="button" class="modifiers_button" data-action="edit-weaknesses">
-            <i class="fa-solid fa-edit"></i> {{localize "PF2E.Edit"}}
+            <i class="fa-solid fa-edit"></i> {{localize "AVANT.Edit"}}
         </button>
     {{/if}}
 </header>
@@ -97,10 +97,10 @@
 </ol>
 
 <header>
-    <h2>{{localize "PF2E.ResistancesLabel"}}</h2>
+    <h2>{{localize "AVANT.ResistancesLabel"}}</h2>
     {{#if editable}}
         <button type="button" class="modifiers_button" data-action="edit-resistances">
-            <i class="fa-solid fa-edit"></i> {{localize "PF2E.Edit"}}
+            <i class="fa-solid fa-edit"></i> {{localize "AVANT.Edit"}}
         </button>
     {{/if}}
 </header>
@@ -112,10 +112,10 @@
 <section class="emits-sound">
     <header class="sound-label">
         <h2>
-            <span>{{localize "PF2E.Actor.Vehicle.EmitsSound.Title"}}</span>
+            <span>{{localize "AVANT.Actor.Vehicle.EmitsSound.Title"}}</span>
             <i
                 class="fa-solid fa-circle-info"
-                data-tooltip="PF2E.Actor.Vehicle.EmitsSound.Hint"
+                data-tooltip="AVANT.Actor.Vehicle.EmitsSound.Hint"
                 data-tooltip-direction="RIGHT"
             ></i>
         </h2>

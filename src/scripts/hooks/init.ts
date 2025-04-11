@@ -1,21 +1,21 @@
 import { MystifiedTraits } from "@item/base/data/values.ts";
-import { HotbarPF2e } from "@module/apps/hotbar.ts";
+import { HotbarAvant } from "@module/apps/hotbar.ts";
 import {
-    ActorDirectoryPF2e,
-    ChatLogPF2e,
-    CompendiumDirectoryPF2e,
-    EncounterTrackerPF2e,
-    ItemDirectoryPF2e,
+    ActorDirectoryAvant,
+    ChatLogAvant,
+    CompendiumDirectoryAvant,
+    EncounterTrackerAvant,
+    ItemDirectoryAvant,
 } from "@module/apps/sidebar/index.ts";
 import { setPerceptionModes } from "@module/canvas/perception/modes.ts";
-import { RulerPF2e } from "@module/canvas/ruler.ts";
-import { TokenConfigPF2e } from "@scene/token-document/sheet.ts";
-import { PF2ECONFIG } from "@scripts/config/index.ts";
+import { RulerAvant } from "@module/canvas/ruler.ts";
+import { TokenConfigAvant } from "@scene/token-document/sheet.ts";
+import { AVANTCONFIG } from "@scripts/config/index.ts";
 import { registerHandlebarsHelpers } from "@scripts/handlebars.ts";
 import { registerFonts } from "@scripts/register-fonts.ts";
 import { registerKeybindings } from "@scripts/register-keybindings.ts";
 import { registerTemplates } from "@scripts/register-templates.ts";
-import { SetGamePF2e } from "@scripts/set-game-pf2e.ts";
+import { SetGameAvant } from "@scripts/set-game-avant.ts";
 import { registerSettings } from "@system/settings/index.ts";
 import { htmlQueryAll } from "@util";
 import * as R from "remeda";
@@ -23,9 +23,9 @@ import * as R from "remeda";
 export const Init = {
     listen: (): void => {
         Hooks.once("init", () => {
-            console.log("PF2e System | Initializing Pathfinder 2nd Edition System");
+            console.log("Avant System | Initializing Pathfinder 2nd Edition System");
 
-            CONFIG.PF2E = PF2ECONFIG;
+            CONFIG.AVANT = AVANTCONFIG;
             CONFIG.debug.ruleElement ??= false;
 
             setPerceptionModes();
@@ -35,20 +35,20 @@ export const Init = {
             // No use of decimals as tie breakers among initiative values
             CONFIG.Combat.initiative.decimals = 0;
 
-            // Assign the PF2e Sidebar subclasses
-            CONFIG.ui.actors = ActorDirectoryPF2e;
-            CONFIG.ui.items = ItemDirectoryPF2e;
-            CONFIG.ui.combat = EncounterTrackerPF2e;
-            CONFIG.ui.compendium = CompendiumDirectoryPF2e;
-            CONFIG.ui.hotbar = HotbarPF2e;
+            // Assign the Avant Sidebar subclasses
+            CONFIG.ui.actors = ActorDirectoryAvant;
+            CONFIG.ui.items = ItemDirectoryAvant;
+            CONFIG.ui.combat = EncounterTrackerAvant;
+            CONFIG.ui.compendium = CompendiumDirectoryAvant;
+            CONFIG.ui.hotbar = HotbarAvant;
 
             if (game.release.generation === 12) {
-                CONFIG.ui.chat = ChatLogPF2e;
-                CONFIG.Token.prototypeSheetClass = TokenConfigPF2e;
+                CONFIG.ui.chat = ChatLogAvant;
+                CONFIG.Token.prototypeSheetClass = TokenConfigAvant;
             }
 
             // Set after load in case of module conflicts
-            if (!RulerPF2e.hasModuleConflict) CONFIG.Canvas.rulerClass = RulerPF2e;
+            if (!RulerAvant.hasModuleConflict) CONFIG.Canvas.rulerClass = RulerAvant;
 
             // The condition in Pathfinder 2e is "blinded" rather than "blind"
             CONFIG.specialStatusEffects.BLIND = "blinded";
@@ -58,7 +58,7 @@ export const Init = {
                 // Template element for effects-panel
                 const uiTop = document.querySelector("#ui-top");
                 const template = document.createElement("template");
-                template.setAttribute("id", "pf2e-effects-panel");
+                template.setAttribute("id", "avant-effects-panel");
                 uiTop?.insertAdjacentElement("afterend", template);
             }
 
@@ -69,9 +69,9 @@ export const Init = {
 
             // Configure the bundled TinyMCE editor with PF2-specific options
             CONFIG.TinyMCE.extended_valid_elements = "pf2-action[action|glyph]";
-            CONFIG.TinyMCE.content_css.push("systems/pf2e/styles/pf2e.css");
+            CONFIG.TinyMCE.content_css.push("systems/avant/styles/avant.css");
             CONFIG.TinyMCE.style_formats = (CONFIG.TinyMCE.style_formats ?? []).concat({
-                title: "PF2E",
+                title: "AVANT",
                 items: [
                     {
                         title: "Icons 1 2 3 F R",
@@ -132,19 +132,19 @@ export const Init = {
             // Register custom enricher
             CONFIG.TextEditor.enrichers.push({
                 pattern: /@(Check|Localize|Template)\[([^\]]+)\](?:{([^}]+)})?/g,
-                enricher: (match, options) => game.pf2e.TextEditor.enrichString(match, options),
+                enricher: (match, options) => game.avant.TextEditor.enrichString(match, options),
             });
 
             // Register damage enricher, which is more complicated and needs an extra level of nesting
             // Derived from https://stackoverflow.com/questions/17759004/how-to-match-string-within-parentheses-nested-in-java/17759264#17759264
             CONFIG.TextEditor.enrichers.push({
                 pattern: /@(Damage)\[((?:[^[\]]|\[[^[\]]*\])*)\](?:{([^}]+)})?/g,
-                enricher: (match, options) => game.pf2e.TextEditor.enrichString(match, options),
+                enricher: (match, options) => game.avant.TextEditor.enrichString(match, options),
             });
 
             CONFIG.TextEditor.enrichers.push({
                 pattern: /\[\[\/(act)\s+(?<slug>[-a-z]+)(?:\s+(?<options>[^\]]+))?\]\](?:\{(?<label>[^}]+)\})?/g,
-                enricher: (match, options) => game.pf2e.TextEditor.enrichString(match, options),
+                enricher: (match, options) => game.avant.TextEditor.enrichString(match, options),
             });
 
             // Soft-set system-preferred core settings until they've been explicitly set by the GM
@@ -160,8 +160,8 @@ export const Init = {
 
             MystifiedTraits.compile();
 
-            // Create and populate initial game.pf2e interface
-            SetGamePF2e.onInit();
+            // Create and populate initial game.avant interface
+            SetGameAvant.onInit();
 
             // Disable tagify style sheets from modules
             for (const element of htmlQueryAll(document.head, "link[rel=stylesheet]")) {
@@ -171,7 +171,7 @@ export const Init = {
                 }
             }
 
-            game.pf2e.StatusEffects.initialize();
+            game.avant.StatusEffects.initialize();
         });
     },
 };

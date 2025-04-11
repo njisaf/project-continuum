@@ -1,24 +1,24 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
-import { AbstractEffectPF2e, EffectBadge } from "@item/abstract-effect/index.ts";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
+import { AbstractEffectAvant, EffectBadge } from "@item/abstract-effect/index.ts";
 import { reduceItemName } from "@item/helpers.ts";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
-import { RuleElementOptions, RuleElementPF2e } from "@module/rules/index.ts";
-import type { UserPF2e } from "@module/user/index.ts";
-import type { TokenDocumentPF2e } from "@scene/index.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
+import { RuleElementOptions, RuleElementAvant } from "@module/rules/index.ts";
+import type { UserAvant } from "@module/user/index.ts";
+import type { TokenDocumentAvant } from "@scene/index.ts";
 import { DamageCategorization } from "@system/damage/helpers.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
 import { Grouping } from "@system/damage/terms.ts";
 import { PERSISTENT_DAMAGE_IMAGES } from "@system/damage/values.ts";
 import { DegreeOfSuccess } from "@system/degree-of-success.ts";
 import { Statistic } from "@system/statistic/index.ts";
-import { ErrorPF2e, createHTMLElement } from "@util";
+import { ErrorAvant, createHTMLElement } from "@util";
 import { traitSlugToObject } from "@util/tags.ts";
 import * as R from "remeda";
 import { ConditionSource, ConditionSystemData, PersistentDamageData } from "./data.ts";
 import { ConditionKey, ConditionSlug } from "./types.ts";
 
-class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends AbstractEffectPF2e<TParent> {
+class ConditionAvant<TParent extends ActorAvant | null = ActorAvant | null> extends AbstractEffectAvant<TParent> {
     declare active: boolean;
 
     override get badge(): EffectBadge | null {
@@ -38,8 +38,8 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     }
 
     /** Retrieve this condition's origin from its granting effect, if any */
-    override get origin(): ActorPF2e | null {
-        const grantingItem = this.actor?.items.get(this.flags.pf2e.grantedBy?.id ?? "");
+    override get origin(): ActorAvant | null {
+        const grantingItem = this.actor?.items.get(this.flags.avant.grantedBy?.id ?? "");
         return grantingItem?.isOfType("affliction", "effect") ? grantingItem.origin : super.origin;
     }
 
@@ -48,8 +48,8 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
         return this.system.persistent ? `persistent-damage-${this.system.persistent.damageType}` : this.slug;
     }
 
-    get appliedBy(): ItemPF2e<ActorPF2e> | null {
-        const appliedById = this.system.references.parent?.id ?? this.flags.pf2e.grantedBy?.id ?? "";
+    get appliedBy(): ItemAvant<ActorAvant> | null {
+        const appliedById = this.system.references.parent?.id ?? this.flags.avant.grantedBy?.id ?? "";
         return this.actor?.items.get(appliedById) ?? this.actor?.conditions.get(appliedById) ?? null;
     }
 
@@ -64,15 +64,15 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
             return true;
         }
 
-        const granterId = this.flags.pf2e.grantedBy?.id ?? "";
+        const granterId = this.flags.avant.grantedBy?.id ?? "";
         const granter = this.actor?.items.get(granterId) ?? this.actor?.conditions.get(granterId);
-        const grants = Object.values(granter?.flags.pf2e.itemGrants ?? {});
+        const grants = Object.values(granter?.flags.avant.itemGrants ?? {});
         return grants.find((g) => g.id === this.id)?.onDelete === "restrict";
     }
 
     /** Is the condition found in the token HUD menu? */
     get isInHUD(): boolean {
-        return this.slug in CONFIG.PF2E.statusEffects.conditions;
+        return this.slug in CONFIG.AVANT.statusEffects.conditions;
     }
 
     /** Create a textual breakdown of what applied this condition */
@@ -97,7 +97,7 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
             .sort((a, b) => a.localeCompare(b, game.i18n.lang))
             .join(", ");
 
-        return list ? game.i18n.format("PF2E.EffectPanel.AppliedBy", { "condition-list": list }) : null;
+        return list ? game.i18n.format("AVANT.EffectPanel.AppliedBy", { "condition-list": list }) : null;
     }
 
     /**
@@ -121,15 +121,15 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
         return rollOptions;
     }
 
-    override async increase(this: ConditionPF2e<ActorPF2e>): Promise<void> {
+    override async increase(this: ConditionAvant<ActorAvant>): Promise<void> {
         await this.actor?.increaseCondition(this);
     }
 
-    override async decrease(this: ConditionPF2e<ActorPF2e>): Promise<void> {
+    override async decrease(this: ConditionAvant<ActorAvant>): Promise<void> {
         await this.actor?.decreaseCondition(this);
     }
 
-    async onEndTurn(options: { token?: TokenDocumentPF2e | null } = {}): Promise<void> {
+    async onEndTurn(options: { token?: TokenDocumentAvant | null } = {}): Promise<void> {
         const actor = this.actor;
         const token = options?.token ?? actor?.token;
         if (!this.active || !actor) return;
@@ -141,16 +141,16 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
                 if (traits.length === 0) {
                     return createHTMLElement("strong", { children: [this.name] }).outerHTML;
                 }
-                return renderTemplate("systems/pf2e/templates/chat/action/flavor.hbs", {
+                return renderTemplate("systems/avant/templates/chat/action/flavor.hbs", {
                     action: { title: this.name },
-                    traits: traits.map((t) => traitSlugToObject(t, CONFIG.PF2E.effectTraits)),
+                    traits: traits.map((t) => traitSlugToObject(t, CONFIG.AVANT.effectTraits)),
                 });
             })();
             await roll.toMessage(
                 {
-                    flags: { pf2e: { origin: { uuid: this.uuid } } },
+                    flags: { avant: { origin: { uuid: this.uuid } } },
                     flavor,
-                    speaker: ChatMessagePF2e.getSpeaker({ actor, token }),
+                    speaker: ChatMessageAvant.getSpeaker({ actor, token }),
                 },
                 { rollMode: "roll" },
             );
@@ -165,7 +165,7 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
             const { dc, damageType } = this.system.persistent;
             const result = await new Statistic(this.actor, {
                 slug: "pd-recovery",
-                label: game.i18n.format("PF2E.Item.Condition.PersistentDamage.Chat.RecoverLabel", {
+                label: game.i18n.format("AVANT.Item.Condition.PersistentDamage.Chat.RecoverLabel", {
                     name: this.name,
                 }),
                 check: { type: "flat-check" },
@@ -196,27 +196,27 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
         if (this.isEmbedded && typeof this.badge?.value === "number") {
             this.name = `${this.name} ${this.badge.value}`;
         }
-        const folder = CONFIG.PF2E.statusEffects.iconDir;
+        const folder = CONFIG.AVANT.statusEffects.iconDir;
         this.img = `${folder}${this.slug}.webp`;
 
         if (systemData.persistent) {
             const { formula, damageType } = systemData.persistent;
 
             const fullFormula = `(${formula})[persistent,${damageType}]`;
-            const critRule = game.settings.get("pf2e", "critRule") === "doubledamage" ? "double-damage" : "double-dice";
+            const critRule = game.settings.get("avant", "critRule") === "doubledamage" ? "double-damage" : "double-dice";
             // If this damage came from a critical hit, create the evaluatable persistent damage as also having been so
             const degreeOfSuccess = systemData.persistent.criticalHit ? 3 : null;
             const roll = new DamageRoll(fullFormula, {}, { evaluatePersistent: true, critRule, degreeOfSuccess });
             const dc = game.user.isGM && systemData.persistent.dc !== 15 ? systemData.persistent.dc : null;
 
-            const localizationKey = `PF2E.Item.Condition.PersistentDamage.${dc !== null ? "NameWithDC" : "Name"}`;
+            const localizationKey = `AVANT.Item.Condition.PersistentDamage.${dc !== null ? "NameWithDC" : "Name"}`;
             const headTerm = roll.instances.at(0)?.head;
             const shortFormula = headTerm instanceof Grouping ? headTerm.term.expression : headTerm?.expression;
 
             this.name = shortFormula
                 ? game.i18n.format(localizationKey, {
                       formula: shortFormula,
-                      damageType: game.i18n.localize(CONFIG.PF2E.damageRollFlavors[damageType] ?? damageType),
+                      damageType: game.i18n.localize(CONFIG.AVANT.damageRollFlavors[damageType] ?? damageType),
                       dc,
                   })
                 : this.name;
@@ -227,13 +227,13 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
         }
     }
 
-    override prepareSiblingData(this: ConditionPF2e<ActorPF2e>): void {
-        if (!this.actor) throw ErrorPF2e("prepareSiblingData may only be called from an embedded item");
+    override prepareSiblingData(this: ConditionAvant<ActorAvant>): void {
+        if (!this.actor) throw ErrorAvant("prepareSiblingData may only be called from an embedded item");
 
         // Inactive conditions shouldn't deactivate others
         if (!this.active) return;
 
-        const deactivate = (condition: ConditionPF2e<ActorPF2e>): void => {
+        const deactivate = (condition: ConditionAvant<ActorAvant>): void => {
             condition.active = false;
             condition.system.references.overriddenBy.push({ id: this.id, type: "condition" as const });
             // This is only needed if a late-arriving (typically in-memory) condition needs to deactivate
@@ -274,7 +274,7 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     }
 
     /** Log self in parent's conditions map */
-    override prepareActorData(this: ConditionPF2e<ActorPF2e>): void {
+    override prepareActorData(this: ConditionAvant<ActorAvant>): void {
         super.prepareActorData();
 
         if (this.active && this.system.persistent) {
@@ -284,7 +284,7 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     }
 
     /** Withhold all rule elements if this condition is inactive */
-    override prepareRuleElements(options?: RuleElementOptions): RuleElementPF2e[] {
+    override prepareRuleElements(options?: RuleElementOptions): RuleElementAvant[] {
         return this.active ? super.prepareRuleElements(options) : [];
     }
 
@@ -295,7 +295,7 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     protected override async _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: ConditionUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         operation.conditionValue = this.value;
         return super._preUpdate(changed, operation, user);
@@ -308,7 +308,7 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     ): void {
         super._onUpdate(changed, operation, userId);
 
-        if (!game.user.isGM && !this.actor?.hasPlayerOwner && game.settings.get("pf2e", "metagame_secretCondition")) {
+        if (!game.user.isGM && !this.actor?.hasPlayerOwner && game.settings.get("avant", "metagame_secretCondition")) {
             return;
         }
 
@@ -321,24 +321,24 @@ class ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
             this.actor?.getActiveTokens().shift()?.showFloatyText(change);
         }
 
-        game.pf2e.StatusEffects.refresh();
+        game.avant.StatusEffects.refresh();
     }
 }
 
-interface ConditionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends AbstractEffectPF2e<TParent> {
+interface ConditionAvant<TParent extends ActorAvant | null = ActorAvant | null> extends AbstractEffectAvant<TParent> {
     readonly _source: ConditionSource;
     system: ConditionSystemData;
 
     get slug(): ConditionSlug;
 }
 
-interface PersistentDamagePF2e<TParent extends ActorPF2e | null> extends ConditionPF2e<TParent> {
+interface PersistentDamageAvant<TParent extends ActorAvant | null> extends ConditionAvant<TParent> {
     system: Omit<ConditionSystemData, "persistent"> & { persistent: PersistentDamageData };
 }
 
-interface ConditionUpdateOperation<TParent extends ActorPF2e | null> extends DatabaseUpdateOperation<TParent> {
+interface ConditionUpdateOperation<TParent extends ActorAvant | null> extends DatabaseUpdateOperation<TParent> {
     conditionValue?: number | null;
 }
 
-export { ConditionPF2e };
-export type { ConditionUpdateOperation, PersistentDamagePF2e };
+export { ConditionAvant };
+export type { ConditionUpdateOperation, PersistentDamageAvant };

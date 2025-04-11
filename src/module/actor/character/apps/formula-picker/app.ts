@@ -1,8 +1,8 @@
-import { ActorPF2e } from "@actor/base.ts";
+import { ActorAvant } from "@actor/base.ts";
 import type { CraftingAbility } from "@actor/character/crafting/ability.ts";
-import { CharacterPF2e } from "@actor/character/document.ts";
+import { CharacterAvant } from "@actor/character/document.ts";
 import { ResourceData } from "@actor/creature/index.ts";
-import { AbilityItemPF2e, FeatPF2e, PhysicalItemPF2e } from "@item";
+import { AbilityItemAvant, FeatAvant, PhysicalItemAvant } from "@item";
 import { ItemType, TraitChatData } from "@item/base/data/index.ts";
 import { Rarity } from "@module/data.ts";
 import { SvelteApplicationMixin, type SvelteApplicationRenderContext } from "@module/sheet/mixin.svelte.ts";
@@ -13,9 +13,9 @@ import type ApplicationV2 from "types/foundry/client-esm/applications/api/applic
 import Root from "./app.svelte";
 
 interface FormulaPickerConfiguration extends ApplicationConfiguration {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
     ability: CraftingAbility;
-    item?: FeatPF2e | AbilityItemPF2e;
+    item?: FeatAvant | AbilityItemAvant;
     mode: "craft" | "prepare";
 }
 
@@ -42,16 +42,16 @@ class FormulaPicker extends SvelteApplicationMixin<
 
     override root = Root;
 
-    #resolve?: (value: PhysicalItemPF2e | null) => void;
+    #resolve?: (value: PhysicalItemAvant | null) => void;
 
-    #searchEngine = new MiniSearch<Pick<PhysicalItemPF2e, "id" | "name">>({
+    #searchEngine = new MiniSearch<Pick<PhysicalItemAvant, "id" | "name">>({
         fields: ["name"],
         idField: "id",
         processTerm: (t) => (t.length > 1 ? t.toLocaleLowerCase(game.i18n.lang) : null),
         searchOptions: { combineWith: "AND", prefix: true },
     });
 
-    selection: PhysicalItemPF2e | null = null;
+    selection: PhysicalItemAvant | null = null;
 
     constructor(options: Partial<FormulaPickerConfiguration>) {
         super(options);
@@ -73,7 +73,7 @@ class FormulaPicker extends SvelteApplicationMixin<
         this.#resolve?.(this.selection);
     }
 
-    async resolveSelection(): Promise<PhysicalItemPF2e | null> {
+    async resolveSelection(): Promise<PhysicalItemAvant | null> {
         this.render(true);
         return new Promise((resolve) => {
             this.#resolve = resolve;
@@ -90,16 +90,16 @@ class FormulaPicker extends SvelteApplicationMixin<
 
         const prompt =
             mode === "prepare"
-                ? game.i18n.format("PF2E.Actor.Character.Crafting.PrepareHint", {
+                ? game.i18n.format("AVANT.Actor.Character.Crafting.PrepareHint", {
                       remaining: sheetData.remainingSlots,
                   })
                 : resource
-                  ? game.i18n.format("PF2E.Actor.Character.Crafting.Action.Hint", {
+                  ? game.i18n.format("AVANT.Actor.Character.Crafting.Action.Hint", {
                         resource: resource.label,
                         value: resource.value,
                         max: resource.max,
                     })
-                  : game.i18n.localize("PF2E.Actor.Character.Crafting.Action.HintResourceless");
+                  : game.i18n.localize("AVANT.Actor.Character.Crafting.Action.HintResourceless");
 
         return {
             foundryApp: this,
@@ -157,12 +157,12 @@ class FormulaPicker extends SvelteApplicationMixin<
 }
 
 interface FormulaPickerContext extends SvelteApplicationRenderContext {
-    actor: ActorPF2e;
+    actor: ActorAvant;
     ability: CraftingAbility;
     mode: "craft" | "prepare";
     onSelect: (uuid: ItemUUID) => void;
     onDeselect: (uuid: ItemUUID) => void;
-    searchEngine: MiniSearch<Pick<PhysicalItemPF2e, "id" | "name">>;
+    searchEngine: MiniSearch<Pick<PhysicalItemAvant, "id" | "name">>;
     state: {
         name: string;
         resource: ResourceData | null;

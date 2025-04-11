@@ -58,7 +58,7 @@ type PhysicalItemSource =
     | TreasureSource
     | WeaponSource;
 
-type ItemSourcePF2e =
+type ItemSourceAvant =
     | PhysicalItemSource
     | AbilitySource
     | AfflictionSource
@@ -105,7 +105,7 @@ export type {
     Frequency,
     FrequencyInterval,
     FrequencySource,
-    ItemFlagsPF2e,
+    ItemFlagsAvant,
     ItemSystemData,
 } from "./system.ts";
 
@@ -123,7 +123,7 @@ export type {
     EffectSource,
     EquipmentSource,
     FeatSource,
-    ItemSourcePF2e,
+    ItemSourceAvant,
     ItemType,
     KitSource,
     LoreSource,

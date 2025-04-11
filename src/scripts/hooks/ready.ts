@@ -1,11 +1,11 @@
-import { ActorPF2e, PartyPF2e } from "@actor";
+import { ActorAvant, PartyAvant } from "@actor";
 import { resetActors } from "@actor/helpers.ts";
 import { createFirstParty } from "@actor/party/helpers.ts";
 import { MigrationSummary } from "@module/apps/migration-summary.ts";
 import { SceneDarknessAdjuster } from "@module/apps/scene-darkness-adjuster.ts";
 import { MigrationList } from "@module/migration/index.ts";
 import { MigrationRunner } from "@module/migration/runner/index.ts";
-import { SetGamePF2e } from "@scripts/set-game-pf2e.ts";
+import { SetGameAvant } from "@scripts/set-game-avant.ts";
 import { activateSocketListener } from "@scripts/socket.ts";
 import { storeInitialWorldVersions } from "@scripts/store-versions.ts";
 import { extendDragData } from "@scripts/system/dragstart-handler.ts";
@@ -14,19 +14,19 @@ export const Ready = {
     listen: (): void => {
         Hooks.once("ready", () => {
             // Proceed no further if blacklisted modules are enabled
-            const blacklistedModules = ["pf2e-action-support-engine", "pf2e-action-support-engine-macros"];
+            const blacklistedModules = ["avant-action-support-engine", "avant-action-support-engine-macros"];
             const blacklistedId = blacklistedModules.find((id) => game.modules.get(id)?.active);
             if (blacklistedId) {
-                const message = `PF2E System halted: module "${blacklistedId}" is not supported.`;
+                const message = `AVANT System halted: module "${blacklistedId}" is not supported.`;
                 ui.notifications.error(message, { permanent: true });
-                CONFIG.PF2E = {} as typeof CONFIG.PF2E;
-                game.pf2e = {} as typeof game.pf2e;
+                CONFIG.AVANT = {} as typeof CONFIG.AVANT;
+                game.avant = {} as typeof game.avant;
                 return;
             }
 
             // Once the entire VTT framework is initialized, check to see if we should perform a data migration
-            console.log("PF2e System | Starting Pathfinder 2nd Edition System");
-            console.debug(`PF2e System | Build mode: ${BUILD_MODE}`);
+            console.log("Avant System | Starting Pathfinder 2nd Edition System");
+            console.debug(`Avant System | Build mode: ${BUILD_MODE}`);
 
             // Enforce certain grid settings. These should be handled by our defaults, but a user may have changed them.
             // Changing a setting to the default still triggers onChange, and in V12.322 can trigger console errors
@@ -41,14 +41,14 @@ export const Ready = {
                 }
             }
 
-            // Some of game.pf2e must wait until the ready phase
-            SetGamePF2e.onReady();
+            // Some of game.avant must wait until the ready phase
+            SetGameAvant.onReady();
 
             // Add Scene Darkness Adjuster to `Scenes` apps list so that it will re-render on scene update
             game.scenes.apps.push(SceneDarknessAdjuster.instance);
 
             // Determine whether a system migration is required and feasible
-            const currentVersion = game.settings.get("pf2e", "worldSchemaVersion");
+            const currentVersion = game.settings.get("avant", "worldSchemaVersion");
 
             // Save the current world schema version if hasn't before.
             storeInitialWorldVersions().then(async () => {
@@ -63,7 +63,7 @@ export const Ready = {
                 if (migrationRunner.needsMigration()) {
                     if (currentVersion && currentVersion < MigrationRunner.MINIMUM_SAFE_VERSION) {
                         ui.notifications.error(
-                            `Your PF2E system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`,
+                            `Your AVANT system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`,
                             { permanent: true },
                         );
                     }
@@ -72,14 +72,14 @@ export const Ready = {
                 }
 
                 // Update the world system version
-                const previous = game.settings.get("pf2e", "worldSystemVersion");
+                const previous = game.settings.get("avant", "worldSystemVersion");
                 const current = game.system.version;
                 if (fu.isNewerVersion(current, previous)) {
-                    await game.settings.set("pf2e", "worldSystemVersion", current);
+                    await game.settings.set("avant", "worldSystemVersion", current);
                 }
 
                 // These modules claim compatibility with V11 but are abandoned
-                const abandonedModules = new Set(["pf2e-rules-based-npc-vision"]);
+                const abandonedModules = new Set(["avant-rules-based-npc-vision"]);
 
                 // Nag the GM for running unmaintained modules
                 const subV11Modules = game.modules.filter(
@@ -94,12 +94,12 @@ export const Ready = {
                 );
 
                 for (const badModule of subV11Modules) {
-                    const message = game.i18n.format("PF2E.ErrorMessage.SubV9Module", { module: badModule.title });
+                    const message = game.i18n.format("AVANT.ErrorMessage.SubV9Module", { module: badModule.title });
                     ui.notifications.warn(message);
                 }
             });
 
-            game.settings.get("pf2e", "homebrew.languageRarities").onReady();
+            game.settings.get("avant", "homebrew.languageRarities").onReady();
 
             activateSocketListener();
 
@@ -111,13 +111,13 @@ export const Ready = {
                 canvas.ready &&
                 game.user.isGM &&
                 !game.modules.get("gm-vision")?.active &&
-                game.pf2e.settings.gmVision
+                game.avant.settings.gmVision
             ) {
-                CONFIG.Canvas.darknessColor = CONFIG.PF2E.Canvas.darkness.gmVision;
+                CONFIG.Canvas.darknessColor = CONFIG.AVANT.Canvas.darkness.gmVision;
                 canvas.environment.initialize();
             }
 
-            game.pf2e.system.moduleArt.refresh().then(() => {
+            game.avant.system.moduleArt.refresh().then(() => {
                 if (game.modules.get("babele")?.active && game.i18n.lang !== "en") {
                     // For some reason, Babele calls its own "ready" hook twice, and only the second one is genuine.
                     Hooks.once("babele.ready", () => {
@@ -132,8 +132,8 @@ export const Ready = {
 
             // Now that all game data is available, Determine what actors we need to reprepare.
             // Add actors currently in an encounter, then in a party, then all familiars, then parties, then in terrains
-            const inEnvironments: ActorPF2e[] = [];
-            const hasSceneEnvironments = !!game.scenes.viewed?.flags.pf2e.environmentTypes?.length;
+            const inEnvironments: ActorAvant[] = [];
+            const hasSceneEnvironments = !!game.scenes.viewed?.flags.avant.environmentTypes?.length;
             for (const token of game.scenes.active?.tokens ?? []) {
                 const inEnvironmentRegion = !!token.regions?.some((r) =>
                     r.behaviors.some((b) => !b.disabled && ["environment", "environmentFeature"].includes(b.type)),
@@ -142,8 +142,8 @@ export const Ready = {
                     inEnvironments.push(token.actor);
                 }
             }
-            const parties = game.actors.filter((a): a is PartyPF2e<null> => a.isOfType("party"));
-            const actorsToReprepare: Set<ActorPF2e> = new Set([
+            const parties = game.actors.filter((a): a is PartyAvant<null> => a.isOfType("party"));
+            const actorsToReprepare: Set<ActorAvant> = new Set([
                 ...game.combats.contents.flatMap((e) => e.combatants.contents).flatMap((c) => c.actor ?? []),
                 ...parties.flatMap((p) => p.members).filter((a) => !a.isOfType("familiar")),
                 ...inEnvironments.filter((a) => !a.isOfType("familiar", "hazard", "loot", "party")),
@@ -154,11 +154,11 @@ export const Ready = {
             ui.actors.render();
 
             // Show the GM the Remaster changes journal entry if they haven't seen it already.
-            if (game.user.isGM && !game.settings.get("pf2e", "seenRemasterJournalEntry")) {
-                fromUuid("Compendium.pf2e.journals.JournalEntry.6L2eweJuM8W7OCf2").then((entry) => {
+            if (game.user.isGM && !game.settings.get("avant", "seenRemasterJournalEntry")) {
+                fromUuid("Compendium.avant.journals.JournalEntry.6L2eweJuM8W7OCf2").then((entry) => {
                     entry?.sheet.render(true);
                 });
-                game.settings.set("pf2e", "seenRemasterJournalEntry", true);
+                game.settings.set("avant", "seenRemasterJournalEntry", true);
             }
 
             // Reset all encounter data and re-render the tracker if an encounter is running
@@ -170,7 +170,7 @@ export const Ready = {
             }
 
             // Announce the system is ready in case any module needs access to an application not available until now
-            Hooks.callAll("pf2e.systemReady");
+            Hooks.callAll("avant.systemReady");
         });
     },
 };

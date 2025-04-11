@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { NPCAttackDamage } from "@item/melee/data.ts";
 import { SpellSystemSource } from "@item/spell/data.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
@@ -48,7 +48,7 @@ export class Migration885ConvertAlignmentDamage extends MigrationBase {
         return rule;
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         const traits: { value: string[] } =
             source.type === "character" ? { value: [] } : (source.system.traits ?? { value: [] });
 
@@ -87,7 +87,7 @@ export class Migration885ConvertAlignmentDamage extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e, actorSource?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actorSource?: ActorSourceAvant): Promise<void> {
         source.system.rules = source.system.rules.flatMap((r) => this.#migrateRule(r));
 
         if (source.type === "weapon") {

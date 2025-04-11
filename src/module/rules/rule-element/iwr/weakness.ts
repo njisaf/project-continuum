@@ -16,7 +16,7 @@ class WeaknessRuleElement extends IWRRuleElement<WeaknessRuleSchema> {
     }
 
     static override get dictionary(): Record<WeaknessType, string> {
-        return CONFIG.PF2E.weaknessTypes;
+        return CONFIG.AVANT.weaknessTypes;
     }
 
     get property(): Weakness[] {

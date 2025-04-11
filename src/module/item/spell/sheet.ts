@@ -1,12 +1,12 @@
-import type { ActorPF2e } from "@actor";
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
+import type { ActorAvant } from "@actor";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
 import { OneToTen } from "@module/data.ts";
 import { TagifyEntry, createTagifyTraits } from "@module/sheet/helpers.ts";
 import { DamageCategoryUnique, DamageType } from "@system/damage/types.ts";
 import { DAMAGE_CATEGORIES_UNIQUE } from "@system/damage/values.ts";
 import { HTMLTagifyTagsElement } from "@system/html-elements/tagify-tags.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     fontAwesomeIcon,
     getActionGlyph,
     htmlClosest,
@@ -24,7 +24,7 @@ import type {
     EffectAreaShape,
     SpellDamageSource,
     SpellHeighteningInterval,
-    SpellPF2e,
+    SpellAvant,
     SpellSystemData,
     SpellSystemSource,
 } from "./index.ts";
@@ -32,15 +32,15 @@ import { EFFECT_AREA_SHAPES, MAGIC_TRADITIONS } from "./values.ts";
 
 /** Set of properties that are legal for the purposes of spell overrides */
 const spellOverridable: Partial<Record<keyof SpellSystemData, string>> = {
-    traits: "PF2E.Traits",
-    time: "PF2E.Item.Spell.Cast",
-    target: "PF2E.SpellTargetLabel",
-    area: "PF2E.Area.Label",
-    range: "PF2E.TraitRange",
-    damage: "PF2E.DamageLabel",
+    traits: "AVANT.Traits",
+    time: "AVANT.Item.Spell.Cast",
+    target: "AVANT.SpellTargetLabel",
+    area: "AVANT.Area.Label",
+    range: "AVANT.TraitRange",
+    damage: "AVANT.DamageLabel",
 };
 
-export class SpellSheetPF2e extends ItemSheetPF2e<SpellPF2e> {
+export class SpellSheetAvant extends ItemSheetAvant<SpellAvant> {
     static override get defaultOptions(): ItemSheetOptions {
         return {
             ...super.defaultOptions,
@@ -80,19 +80,19 @@ export class SpellSheetPF2e extends ItemSheetPF2e<SpellPF2e> {
             return [
                 {
                     value: ["damage"],
-                    label: "PF2E.DamageLabel",
+                    label: "AVANT.DamageLabel",
                     selected: R.isDeepEqual(currentKinds, ["damage"]),
                     disabled: false,
                 },
                 {
                     value: ["healing"],
-                    label: "PF2E.TraitHealing",
+                    label: "AVANT.TraitHealing",
                     selected: R.isDeepEqual(currentKinds, ["healing"]),
                     disabled: healingDisabled,
                 },
                 {
                     value: ["damage", "healing"],
-                    label: "PF2E.Damage.Kind.Both.Label",
+                    label: "AVANT.Damage.Kind.Both.Label",
                     selected: R.isDeepEqual(currentKinds, ["damage", "healing"]),
                     disabled: healingDisabled,
                 },
@@ -101,33 +101,33 @@ export class SpellSheetPF2e extends ItemSheetPF2e<SpellPF2e> {
 
         return {
             ...sheetData,
-            areaShapes: R.mapToObj(EFFECT_AREA_SHAPES, (s) => [s, `PF2E.Area.Shape.${s}`]),
+            areaShapes: R.mapToObj(EFFECT_AREA_SHAPES, (s) => [s, `AVANT.Area.Shape.${s}`]),
             itemType: createSpellRankLabel(this.item),
             variants,
             isVariant: this.item.isVariant,
-            damageTypes: sortStringRecord(CONFIG.PF2E.damageTypes),
-            damageSubtypes: R.pick(CONFIG.PF2E.damageCategories, DAMAGE_CATEGORIES_UNIQUE),
+            damageTypes: sortStringRecord(CONFIG.AVANT.damageTypes),
+            damageSubtypes: R.pick(CONFIG.AVANT.damageCategories, DAMAGE_CATEGORIES_UNIQUE),
             damageKinds,
-            materials: CONFIG.PF2E.materialDamageEffects,
+            materials: CONFIG.AVANT.materialDamageEffects,
             heightenIntervals: R.range(1, 5).map((i) => ({
                 value: `${i}`,
-                label: game.i18n.format("PF2E.SpellScalingInterval.Selection", { interval: i }),
+                label: game.i18n.format("AVANT.SpellScalingInterval.Selection", { interval: i }),
             })),
             heightenOverlays: this.#prepareHeighteningLevels(),
             canHeighten: this.isEditable && this.getAvailableHeightenLevels().length > 0,
             defensePassiveOptions: [
-                { value: "ac", label: "PF2E.Check.DC.Specific.armor" },
-                { value: "fortitude-dc", label: "PF2E.Check.DC.Specific.fortitude" },
-                { value: "reflex-dc", label: "PF2E.Check.DC.Specific.reflex" },
-                { value: "will-dc", label: "PF2E.Check.DC.Specific.will" },
+                { value: "ac", label: "AVANT.Check.DC.Specific.armor" },
+                { value: "fortitude-dc", label: "AVANT.Check.DC.Specific.fortitude" },
+                { value: "reflex-dc", label: "AVANT.Check.DC.Specific.reflex" },
+                { value: "will-dc", label: "AVANT.Check.DC.Specific.will" },
             ],
-            defenseSaveOptions: CONFIG.PF2E.saves,
+            defenseSaveOptions: CONFIG.AVANT.saves,
         };
     }
 
     override get title(): string {
         return this.item.isVariant
-            ? game.i18n.format("PF2E.Item.Spell.Variants.SheetTitle", { originalName: this.item.original?.name ?? "" })
+            ? game.i18n.format("AVANT.Item.Spell.Variants.SheetTitle", { originalName: this.item.original?.name ?? "" })
             : super.title;
     }
 
@@ -146,7 +146,7 @@ export class SpellSheetPF2e extends ItemSheetPF2e<SpellPF2e> {
         }
 
         tagify(htmlQuery<HTMLTagifyTagsElement>(html, 'tagify-tags[name="system.traits.traditions"]'), {
-            whitelist: CONFIG.PF2E.magicTraditions,
+            whitelist: CONFIG.AVANT.magicTraditions,
         });
 
         for (const anchor of htmlQueryAll(html, "a[data-action=add-damage-partial]")) {
@@ -287,19 +287,19 @@ export class SpellSheetPF2e extends ItemSheetPF2e<SpellPF2e> {
                 if (id) {
                     const variant = this.item.loadVariant({ overlayIds: [id] });
                     if (!variant) {
-                        throw ErrorPF2e(
+                        throw ErrorAvant(
                             `Spell ${this.item.name} (${this.item.uuid}) does not have a variant with id: ${id}`,
                         );
                     }
                     new Dialog({
-                        title: game.i18n.localize("PF2E.Item.Spell.Variants.DeleteDialogTitle"),
-                        content: `<p>${game.i18n.format("PF2E.Item.Spell.Variants.DeleteDialogText", {
+                        title: game.i18n.localize("AVANT.Item.Spell.Variants.DeleteDialogTitle"),
+                        content: `<p>${game.i18n.format("AVANT.Item.Spell.Variants.DeleteDialogText", {
                             variantName: variant.name,
                         })}</p>`,
                         buttons: {
                             delete: {
                                 icon: fontAwesomeIcon("fa-trash").outerHTML,
-                                label: game.i18n.localize("PF2E.DeleteShortLabel"),
+                                label: game.i18n.localize("AVANT.DeleteShortLabel"),
                                 callback: () => {
                                     this.item.overlays.deleteOverlay(id);
                                 },
@@ -344,7 +344,7 @@ export class SpellSheetPF2e extends ItemSheetPF2e<SpellPF2e> {
 
         // Handle closing of override spell variant sheets
         if (this.item.original && this.item.appliedOverlays?.has("override") && !this.rendered) {
-            await this.item.original.overlays.updateOverride(this.item as SpellPF2e<ActorPF2e>, formData);
+            await this.item.original.overlays.updateOverride(this.item as SpellAvant<ActorAvant>, formData);
             return;
         }
 
@@ -454,7 +454,7 @@ export class SpellSheetPF2e extends ItemSheetPF2e<SpellPF2e> {
             return { value: 5, type: "burst" } satisfies SpellSystemSource["area"];
         }
 
-        throw ErrorPF2e(`Failed to initialize property ${property} for overlay`);
+        throw ErrorAvant(`Failed to initialize property ${property} for overlay`);
     }
 
     #prepareHeighteningLevels(): SpellSheetHeightenOverlayData[] {
@@ -480,17 +480,17 @@ export class SpellSheetPF2e extends ItemSheetPF2e<SpellPF2e> {
                 missing,
                 heightenLevels: availableLevels.map((l) => ({
                     value: `${l}`,
-                    label: game.i18n.format("PF2E.SpellScalingOverlay.Selection", { level: ordinalString(l) }),
+                    label: game.i18n.format("AVANT.SpellScalingOverlay.Selection", { level: ordinalString(l) }),
                 })),
                 traits: layer.system.traits?.value
-                    ? createTagifyTraits(layer.system.traits.value, { record: CONFIG.PF2E.spellTraits })
+                    ? createTagifyTraits(layer.system.traits.value, { record: CONFIG.AVANT.spellTraits })
                     : null,
             };
         });
     }
 }
 
-interface SpellSheetData extends ItemSheetDataPF2e<SpellPF2e> {
+interface SpellSheetData extends ItemSheetDataAvant<SpellAvant> {
     isVariant: boolean;
     variants: {
         name: string;
@@ -498,16 +498,16 @@ interface SpellSheetData extends ItemSheetDataPF2e<SpellPF2e> {
         sort: number;
         actions: string;
     }[];
-    materials: typeof CONFIG.PF2E.materialDamageEffects;
+    materials: typeof CONFIG.AVANT.materialDamageEffects;
     damageTypes: Record<DamageType, string>;
-    damageSubtypes: Pick<typeof CONFIG.PF2E.damageCategories, DamageCategoryUnique>;
+    damageSubtypes: Pick<typeof CONFIG.AVANT.damageCategories, DamageCategoryUnique>;
     damageKinds: Record<string, { value: string[]; label: string; selected: boolean; disabled: boolean }[]>;
     areaShapes: Record<EffectAreaShape, string>;
     heightenIntervals: FormSelectOption[];
     heightenOverlays: SpellSheetHeightenOverlayData[];
     canHeighten: boolean;
     defensePassiveOptions: FormSelectOption[];
-    defenseSaveOptions: typeof CONFIG.PF2E.saves;
+    defenseSaveOptions: typeof CONFIG.AVANT.saves;
 }
 
 interface SpellSheetOverlayData {

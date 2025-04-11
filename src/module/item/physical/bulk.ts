@@ -107,7 +107,7 @@ class Bulk {
     toString(): string {
         const { light, normal } = this;
         if (this.isNegligible) {
-            return game.i18n.localize("PF2E.Item.Physical.Bulk.Negligible.ShortLabel");
+            return game.i18n.localize("AVANT.Item.Physical.Bulk.Negligible.ShortLabel");
         }
 
         if (this.value === normal) {
@@ -115,12 +115,12 @@ class Bulk {
         }
 
         if (normal === 0 && light === 1) {
-            return game.i18n.localize("PF2E.Item.Physical.Bulk.Light.ShortLabel");
+            return game.i18n.localize("AVANT.Item.Physical.Bulk.Light.ShortLabel");
         }
         if (light > 0 && normal === 0) {
-            return game.i18n.format("PF2E.Item.Physical.Bulk.NLight", { light: light });
+            return game.i18n.format("AVANT.Item.Physical.Bulk.NLight", { light: light });
         }
-        return game.i18n.format("PF2E.Item.Physical.Bulk.WithLight", { bulk: normal, light: light });
+        return game.i18n.format("AVANT.Item.Physical.Bulk.WithLight", { bulk: normal, light: light });
     }
 
     double(): Bulk {

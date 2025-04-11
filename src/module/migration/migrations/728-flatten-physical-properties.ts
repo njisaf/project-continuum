@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { Size, SIZES, ValueAndMax } from "@module/data.ts";
 import * as R from "remeda";
@@ -12,7 +12,7 @@ export class Migration728FlattenPhysicalProperties extends MigrationBase {
     private numericKeys = ["quantity", "hardness"] as const;
     private stringKeys = ["stackGroup", "containerId"] as const;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!itemIsOfType(source, "physical")) return;
 
         const system: MaybeOldSystemSource = source.system;

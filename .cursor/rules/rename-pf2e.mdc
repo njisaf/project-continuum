@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Remove all references in code to "pathfinder" of "pf2e".
+
+Replace with the equivalent of "avant", maintaining case.

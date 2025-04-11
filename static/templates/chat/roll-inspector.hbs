@@ -1,6 +1,6 @@
-<div class="content" data-tooltip-class="pf2e">
+<div class="content" data-tooltip-class="avant">
     <section class="summary">
-        <div class="type">{{localize "PF2E.Roll.Type"}}: <input disabled value="{{context.type}}"></div>
+        <div class="type">{{localize "AVANT.Roll.Type"}}: <input disabled value="{{context.type}}"></div>
         {{#if domains}}
             <div class="tags domains">
                 {{#each domains}}<span class="tag tag_alt">{{this}}</span>{{/each}}
@@ -9,8 +9,8 @@
     </section>
 
     <section class="roll-options">
-        <h3>{{localize "PF2E.ChatRollDetails.RollOptions"}}</h3>
-        <input type="search" class="filter" placeholder="{{localize "PF2E.CompendiumBrowser.Filter.SearchPlaceholder"}}" />
+        <h3>{{localize "AVANT.ChatRollDetails.RollOptions"}}</h3>
+        <input type="search" class="filter" placeholder="{{localize "AVANT.CompendiumBrowser.Filter.SearchPlaceholder"}}" />
         <ul>
             {{#each rollOptions as |option|}}
                 <li>{{option}}</li>
@@ -30,16 +30,16 @@
     <section class="modifiers">
         <h3>
             {{~#if dice~}}
-                {{localize "PF2E.ChatRollDetails.DiceAndModifiers"}}
+                {{localize "AVANT.ChatRollDetails.DiceAndModifiers"}}
             {{~else~}}
-                {{localize "PF2E.ModifiersTitle"}}
+                {{localize "AVANT.ModifiersTitle"}}
             {{~/if~}}
         </h3>
 
         <ul class="modifier-list">
             {{#if (eq context.type "flat-check")}}
                 <li class="empty">
-                    {{localize "PF2E.ChatRollDetails.FlatCheckNoModifiers"}}
+                    {{localize "AVANT.ChatRollDetails.FlatCheckNoModifiers"}}
                 </li>
             {{else if (and (not modifiers.length) (not dice.length))}}
                 <li class="empty">
@@ -68,7 +68,7 @@
                         <i class="fa-solid fa-circle-info"></i>
                     </h4>
                     <div>
-                        <span>{{localize (concat "PF2E.ModifierType." m.type)}} {{m.value}} {{m.damageType}} {{#if m.category}}({{m.category}}){{/if}}</span>
+                        <span>{{localize (concat "AVANT.ModifierType." m.type)}} {{m.value}} {{m.damageType}} {{#if m.category}}({{m.category}}){{/if}}</span>
                         <span>{{m.critical}}</span>
                     </div>
                 </li>

@@ -1,0 +1,312 @@
+{
+    "_id": "c9rhGmKft1BVT4JO",
+    "folder": "hRuA31I9HNgxDJL1",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Skill Mastery (Rogue)",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "class",
+        "description": {
+            "value": "<p>Increase your proficiency rank in one of your skills from expert to master and in another of your skills from trained to expert. You gain a skill feat associated with one of the skills you chose; you must meet all its prerequisites.</p>\n<hr />\n<p><strong>Special</strong> You can select this feat up to five times.</p>"
+        },
+        "level": {
+            "value": 8
+        },
+        "maxTakable": 5,
+        "prerequisites": {
+            "value": [
+                {
+                    "value": "Rogue Dedication"
+                },
+                {
+                    "value": "trained in at least one skill and expert in at least one skill"
+                }
+            ]
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Skill.Acrobatics",
+                        "predicate": [
+                            "skill:acrobatics:rank:2"
+                        ],
+                        "value": "acrobatics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Arcana",
+                        "predicate": [
+                            "skill:arcana:rank:2"
+                        ],
+                        "value": "arcana"
+                    },
+                    {
+                        "label": "AVANT.Skill.Athletics",
+                        "predicate": [
+                            "skill:athletics:rank:2"
+                        ],
+                        "value": "athletics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Crafting",
+                        "predicate": [
+                            "skill:crafting:rank:2"
+                        ],
+                        "value": "crafting"
+                    },
+                    {
+                        "label": "AVANT.Skill.Deception",
+                        "predicate": [
+                            "skill:deception:rank:2"
+                        ],
+                        "value": "deception"
+                    },
+                    {
+                        "label": "AVANT.Skill.Diplomacy",
+                        "predicate": [
+                            "skill:diplomacy:rank:2"
+                        ],
+                        "value": "diplomacy"
+                    },
+                    {
+                        "label": "AVANT.Skill.Intimidation",
+                        "predicate": [
+                            "skill:intimidation:rank:2"
+                        ],
+                        "value": "intimidation"
+                    },
+                    {
+                        "label": "AVANT.Skill.Medicine",
+                        "predicate": [
+                            "skill:medicine:rank:2"
+                        ],
+                        "value": "medicine"
+                    },
+                    {
+                        "label": "AVANT.Skill.Nature",
+                        "predicate": [
+                            "skill:nature:rank:2"
+                        ],
+                        "value": "nature"
+                    },
+                    {
+                        "label": "AVANT.Skill.Occultism",
+                        "predicate": [
+                            "skill:occultism:rank:2"
+                        ],
+                        "value": "occultism"
+                    },
+                    {
+                        "label": "AVANT.Skill.Performance",
+                        "predicate": [
+                            "skill:performance:rank:2"
+                        ],
+                        "value": "performance"
+                    },
+                    {
+                        "label": "AVANT.Skill.Religion",
+                        "predicate": [
+                            "skill:religion:rank:2"
+                        ],
+                        "value": "religion"
+                    },
+                    {
+                        "label": "AVANT.Skill.Society",
+                        "predicate": [
+                            "skill:society:rank:2"
+                        ],
+                        "value": "society"
+                    },
+                    {
+                        "label": "AVANT.Skill.Stealth",
+                        "predicate": [
+                            "skill:stealth:rank:2"
+                        ],
+                        "value": "stealth"
+                    },
+                    {
+                        "label": "AVANT.Skill.Survival",
+                        "predicate": [
+                            "skill:survival:rank:2"
+                        ],
+                        "value": "survival"
+                    },
+                    {
+                        "label": "AVANT.Skill.Thievery",
+                        "predicate": [
+                            "skill:thievery:rank:2"
+                        ],
+                        "value": "thievery"
+                    }
+                ],
+                "flag": "skillMaster",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.SkillMastery.MasterPrompt"
+            },
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Skill.Acrobatics",
+                        "predicate": [
+                            "skill:acrobatics:rank:1"
+                        ],
+                        "value": "acrobatics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Arcana",
+                        "predicate": [
+                            "skill:arcana:rank:1"
+                        ],
+                        "value": "arcana"
+                    },
+                    {
+                        "label": "AVANT.Skill.Athletics",
+                        "predicate": [
+                            "skill:athletics:rank:1"
+                        ],
+                        "value": "athletics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Crafting",
+                        "predicate": [
+                            "skill:crafting:rank:1"
+                        ],
+                        "value": "crafting"
+                    },
+                    {
+                        "label": "AVANT.Skill.Deception",
+                        "predicate": [
+                            "skill:deception:rank:1"
+                        ],
+                        "value": "deception"
+                    },
+                    {
+                        "label": "AVANT.Skill.Diplomacy",
+                        "predicate": [
+                            "skill:diplomacy:rank:1"
+                        ],
+                        "value": "diplomacy"
+                    },
+                    {
+                        "label": "AVANT.Skill.Intimidation",
+                        "predicate": [
+                            "skill:intimidation:rank:1"
+                        ],
+                        "value": "intimidation"
+                    },
+                    {
+                        "label": "AVANT.Skill.Medicine",
+                        "predicate": [
+                            "skill:medicine:rank:1"
+                        ],
+                        "value": "medicine"
+                    },
+                    {
+                        "label": "AVANT.Skill.Nature",
+                        "predicate": [
+                            "skill:nature:rank:1"
+                        ],
+                        "value": "nature"
+                    },
+                    {
+                        "label": "AVANT.Skill.Occultism",
+                        "predicate": [
+                            "skill:occultism:rank:1"
+                        ],
+                        "value": "occultism"
+                    },
+                    {
+                        "label": "AVANT.Skill.Performance",
+                        "predicate": [
+                            "skill:performance:rank:1"
+                        ],
+                        "value": "performance"
+                    },
+                    {
+                        "label": "AVANT.Skill.Religion",
+                        "predicate": [
+                            "skill:religion:rank:1"
+                        ],
+                        "value": "religion"
+                    },
+                    {
+                        "label": "AVANT.Skill.Society",
+                        "predicate": [
+                            "skill:society:rank:1"
+                        ],
+                        "value": "society"
+                    },
+                    {
+                        "label": "AVANT.Skill.Stealth",
+                        "predicate": [
+                            "skill:stealth:rank:1"
+                        ],
+                        "value": "stealth"
+                    },
+                    {
+                        "label": "AVANT.Skill.Survival",
+                        "predicate": [
+                            "skill:survival:rank:1"
+                        ],
+                        "value": "survival"
+                    },
+                    {
+                        "label": "AVANT.Skill.Thievery",
+                        "predicate": [
+                            "skill:thievery:rank:1"
+                        ],
+                        "value": "thievery"
+                    }
+                ],
+                "flag": "skillExpert",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.SkillMastery.ExpertPrompt"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "upgrade",
+                "path": "system.skills.{item|flags.avant.rulesSelections.skillExpert}.rank",
+                "value": 2
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "upgrade",
+                "path": "system.skills.{item|flags.avant.rulesSelections.skillMaster}.rank",
+                "value": 3
+            },
+            {
+                "adjustName": false,
+                "choices": {
+                    "filter": [
+                        "item:trait:skill"
+                    ],
+                    "itemType": "feat"
+                },
+                "flag": "skillMasteryRogue",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.SkillFeat"
+            },
+            {
+                "key": "GrantItem",
+                "uuid": "{item|flags.avant.rulesSelections.skillMasteryRogue}"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "archetype"
+            ]
+        }
+    },
+    "type": "feat"
+}

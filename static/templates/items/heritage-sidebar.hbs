@@ -3,7 +3,7 @@
         <label class="pf-title">{{localize "TYPES.Item.ancestry"}}</label>
         <div
             class="drop-zone{{#if ancestryRefBroken}} ancestry-ref-broken{{/if}}"
-            data-tooltip="PF2E.Item.Heritage.{{#if ancestryRefBroken}}AncestryNotFound{{else}}DragAncestryHere{{/if}}"
+            data-tooltip="AVANT.Item.Heritage.{{#if ancestryRefBroken}}AncestryNotFound{{else}}DragAncestryHere{{/if}}"
         >
             {{!-- Check data.ancestry instead of the ancestry item in case the required ancestry has a broken UUID reference  --}}
             {{#if data.ancestry}}
@@ -13,11 +13,11 @@
                     <a
                         class="remove-ancestry"
                         data-action="remove-ancestry"
-                        data-tooltip="PF2E.Item.Heritage.RemoveAncestry"
+                        data-tooltip="AVANT.Item.Heritage.RemoveAncestry"
                     ><i class="fa-solid fa-trash"></i></a>
                 {{/if}}
             {{else}}
-                {{localize "PF2E.Item.Heritage.NoneVersatile"}}
+                {{localize "AVANT.Item.Heritage.NoneVersatile"}}
             {{/if}}
         </div>
     </div>

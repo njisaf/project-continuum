@@ -1,2 +1,2 @@
-export { TokenConfigPF2e } from "./sheet.ts";
-export { TokenDocumentPF2e } from "./document.ts";
+export { TokenConfigAvant } from "./sheet.ts";
+export { TokenDocumentAvant } from "./document.ts";

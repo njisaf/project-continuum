@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Add color darkvision flags to fetchlings and the Resonant Reflection of Life */
@@ -6,17 +6,17 @@ export class Migration801ColorDarkvision extends MigrationBase {
     static override version = 0.801;
 
     get #colorDarkvision() {
-        return { key: "ActiveEffectLike", path: "flags.pf2e.colorDarkvision", mode: "override", value: true };
+        return { key: "ActiveEffectLike", path: "flags.avant.colorDarkvision", mode: "override", value: true };
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!source.system.slug) return;
         const isFetchling = source.type === "ancestry" && source.system.slug === "fetchling";
         const isResonantLight =
             source.type === "feat" && source.system.slug === "resonant-reflection-reflection-of-light";
         const getsColorDarkvision = isFetchling || isResonantLight;
         const rules: Record<string, unknown>[] = source.system.rules;
-        if (getsColorDarkvision && !rules.some((r) => r.path === "flags.pf2e.colorDarkvision")) {
+        if (getsColorDarkvision && !rules.some((r) => r.path === "flags.avant.colorDarkvision")) {
             source.system.rules.push(this.#colorDarkvision);
         }
     }

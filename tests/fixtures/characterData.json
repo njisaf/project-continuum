@@ -534,7 +534,7 @@
     "core": {
       "sheetClass": ""
     },
-    "pf2e": {
+    "avant": {
       "editSheet": {
         "value": true
       },
@@ -544,7 +544,7 @@
     },
     "exportSource": {
       "world": "testworld",
-      "system": "pf2e",
+      "system": "avant",
       "coreVersion": "0.5.5",
       "systemVersion": "0.554.0"
     }

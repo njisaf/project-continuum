@@ -1,15 +1,15 @@
-<div class="chat-card pf2e kingdom">
+<div class="chat-card avant kingdom">
     <header class="card-header flexrow">
-        <h3>{{localize "PF2E.Kingmaker.Kingdom.CollectDialog.Header"}}</h3>
+        <h3>{{localize "AVANT.Kingmaker.Kingdom.CollectDialog.Header"}}</h3>
     </header>
-    <p>{{localize "PF2E.Kingmaker.Kingdom.CollectDialog.Description" dice=formula}}</p>
+    <p>{{localize "AVANT.Kingmaker.Kingdom.CollectDialog.Description" dice=formula}}</p>
     <ul>
     {{#each commodities as |value slug|}}
-        <li>{{value}} {{localize (concat "PF2E.Kingmaker.Kingdom.Commodity." slug)}}</li>
+        <li>{{value}} {{localize (concat "AVANT.Kingmaker.Kingdom.Commodity." slug)}}</li>
     {{/each}}
     </ul>
-    <p>{{localize "PF2E.Kingmaker.Kingdom.CollectDialog.Disclaimer"}}</p>
+    <p>{{localize "AVANT.Kingmaker.Kingdom.CollectDialog.Disclaimer"}}</p>
     <button type="button" data-action="kingdom-collect" data-visibility="owner">
-        {{localize "PF2E.Kingmaker.Confirm"}}
+        {{localize "AVANT.Kingmaker.Confirm"}}
     </button>
 </div>

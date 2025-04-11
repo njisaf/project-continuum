@@ -1,19 +1,19 @@
-import { EffectPF2e } from "@item";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import { EffectAvant } from "@item";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { ActionDefaultOptions } from "@system/action-macros/index.ts";
-import { ErrorPF2e, localizer } from "@util";
+import { ErrorAvant, localizer } from "@util";
 
 /** Effect: Raise a Shield */
-const ITEM_UUID = "Compendium.pf2e.equipment-effects.Item.2YgXoHvJfrDHucMr";
+const ITEM_UUID = "Compendium.avant.equipment-effects.Item.2YgXoHvJfrDHucMr";
 
 const TEMPLATES = {
-    flavor: "./systems/pf2e/templates/chat/action/flavor.hbs",
-    content: "./systems/pf2e/templates/chat/action/content.hbs",
+    flavor: "./systems/avant/templates/chat/action/flavor.hbs",
+    content: "./systems/avant/templates/chat/action/content.hbs",
 };
 
 /** A macro for the Raise a Shield action */
 export async function raiseAShield(options: ActionDefaultOptions): Promise<void> {
-    const localize = localizer("PF2E.Actions.RaiseAShield");
+    const localize = localizer("AVANT.Actions.RaiseAShield");
 
     const actors = Array.isArray(options.actors) ? options.actors : [options.actors];
     const actor = actors[0];
@@ -38,7 +38,7 @@ export async function raiseAShield(options: ActionDefaultOptions): Promise<void>
     }
 
     const shield = actor.heldShield;
-    const speaker = ChatMessagePF2e.getSpeaker({ actor });
+    const speaker = ChatMessageAvant.getSpeaker({ actor });
 
     const isSuccess = await (async (): Promise<boolean> => {
         if (shield?.isDestroyed) {
@@ -46,8 +46,8 @@ export async function raiseAShield(options: ActionDefaultOptions): Promise<void>
             return false;
         } else if (shield?.isBroken === false) {
             const effect = await fromUuid(ITEM_UUID);
-            if (!(effect instanceof EffectPF2e)) {
-                throw ErrorPF2e("Raise a Shield effect not found");
+            if (!(effect instanceof EffectAvant)) {
+                throw ErrorAvant("Raise a Shield effect not found");
             }
             await actor.createEmbeddedDocuments("Item", [effect.toObject()]);
             return true;
@@ -73,7 +73,7 @@ export async function raiseAShield(options: ActionDefaultOptions): Promise<void>
             action: { title: localize(`${actionType}Title`), glyph },
         });
 
-        await ChatMessagePF2e.create({
+        await ChatMessageAvant.create({
             style: CONST.CHAT_MESSAGE_STYLES.EMOTE,
             speaker,
             flavor,

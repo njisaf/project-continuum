@@ -1,4 +1,4 @@
-import type { ActorPF2e, ActorType } from "@actor";
+import type { ActorAvant, ActorType } from "@actor";
 import { ACTOR_TYPES } from "@actor/values.ts";
 import * as R from "remeda";
 
@@ -7,9 +7,9 @@ const actorTypes: (ActorType | "creature")[] = [...ACTOR_TYPES];
 /**
  * Collects every actor whose token is controlled on the canvas.
  * @param [options] Filter and fallback options
- * @returns An array of ActorPF2E instances filtered by the requested types.
+ * @returns An array of ActorAVANT instances filtered by the requested types.
  */
-function getSelectedActors(options: GetSelectedActorsOptions = {}): ActorPF2e[] {
+function getSelectedActors(options: GetSelectedActorsOptions = {}): ActorAvant[] {
     const { include = actorTypes, exclude = [], assignedFallback = false } = options;
     const actors = R.unique(
         game.user

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e, SpellSource } from "@item/base/data/index.ts";
+import { ItemSourceAvant, SpellSource } from "@item/base/data/index.ts";
 import { SpellSystemSource } from "@item/spell/data.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration772V10EmbeddedSpellData extends MigrationBase {
     static override version = 0.772;
 
-    override async preUpdateItem(source: ItemSourcePF2e): Promise<void> {
+    override async preUpdateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "consumable" && source.system.spell) {
             const embeddedSpell: MaybeWithOldProps = source.system.spell;
             if (embeddedSpell.data?.data) {

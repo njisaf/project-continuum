@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.CreateADiversion";
+const PREFIX = "AVANT.Actions.CreateADiversion";
 const CREATE_A_DIVERSION_VARIANTS = ["distracting-words", "gesture", "trick"] as const;
 type CreateADiversionVariant = (typeof CREATE_A_DIVERSION_VARIANTS)[number];
 

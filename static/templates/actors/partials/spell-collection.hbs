@@ -23,7 +23,7 @@
                                         type="number"
                                         name="system.resources.focus.value"
                                         value="{{@root.data.resources.focus.value}}"
-                                        data-tooltip="PF2E.Focus.label"
+                                        data-tooltip="AVANT.Focus.label"
                                         placeholder="0"
                                     />
                                 </span>
@@ -33,7 +33,7 @@
                                         type="number"
                                         name="system.resources.focus.max"
                                         value="{{@root.data.resources.focus.max}}"
-                                        data-tooltip="PF2E.Focus.Pool"
+                                        data-tooltip="AVANT.Focus.Pool"
                                         placeholder="0"
                                     />
                                 </span>
@@ -68,23 +68,23 @@
                         {{/if}}
                     </div>
 
-                    <div class="defense">{{localize "PF2E.Item.Spell.Defense.Label"}}</div>
+                    <div class="defense">{{localize "AVANT.Item.Spell.Defense.Label"}}</div>
 
                     {{~#if entry.isInnate~}}
-                        <div class="uses">{{localize "PF2E.SpellUsesLabel"}}</div>
+                        <div class="uses">{{localize "AVANT.SpellUsesLabel"}}</div>
                     {{~else~}}
-                        <div class="range">{{localize "PF2E.TraitRange"}}</div>
+                        <div class="range">{{localize "AVANT.TraitRange"}}</div>
                     {{~/if~}}
 
                     {{#if @root.editable}}
                         {{!-- This button will get removed by the stylesheet, and only exists for sizing reasons (localization) --}}
-                        <button type="button" class="cast-spell blue invisible">{{localize "PF2E.Item.Spell.Cast"}}</button>
+                        <button type="button" class="cast-spell blue invisible">{{localize "AVANT.Item.Spell.Cast"}}</button>
 
                         <div class="item-controls">
                             {{#unless (or entry.isPrepared (eq entry.category "items"))}}
                                 <a
                                     data-action="create-item"
-                                    data-tooltip="PF2E.CreateSpellTitle"
+                                    data-tooltip="AVANT.CreateSpellTitle"
                                     data-type="spell"
                                     data-group-id="{{group.id}}"
                                     data-location="{{entry.id}}"
@@ -92,7 +92,7 @@
                                 {{#unless entry.isRitual}}
                                     <a
                                         data-action="browse-spells"
-                                        data-tooltip="PF2E.OpenSpellBrowserTitle"
+                                        data-tooltip="AVANT.OpenSpellBrowserTitle"
                                         {{#if (eq group.id "cantrips")}}data-category="cantrip"{{/if}}
                                         data-rank="{{group.maxRank}}"
                                         data-location="{{entry.id}}"
@@ -171,13 +171,13 @@
                                     class="cast-spell blue"
                                     data-action="draw-item"
                                     data-item-id="{{spell.parentItem.id}}"
-                                >{{localize "PF2E.Actions.Interact.Draw.Title"}}</button>
+                                >{{localize "AVANT.Actions.Interact.Draw.Title"}}</button>
                             {{else}}
                                 <button
                                     type="button"
                                     class="cast-spell blue"
                                     data-action="cast-spell"
-                                >{{localize "PF2E.Item.Spell.Cast"}}</button>
+                                >{{localize "AVANT.Item.Spell.Cast"}}</button>
                             {{/if}}
 
                             <div class="item-controls">
@@ -186,23 +186,23 @@
                                         {{#unless (eq group.id "cantrips")}}
                                             <a
                                                 data-action="toggle-slot-expended"
-                                                data-tooltip="{{#if slot.expended}}PF2E.RestoreSpellTitle{{else}}PF2E.ExpendSpellTitle{{/if}}"
+                                                data-tooltip="{{#if slot.expended}}AVANT.RestoreSpellTitle{{else}}AVANT.ExpendSpellTitle{{/if}}"
                                             ><i class="fa-solid fa-fw fa-{{#if slot.expended}}plus{{else}}minus{{/if}}-square"></i></a>
                                         {{/unless}}
                                         <a
                                             data-action="unprepare-spell"
-                                            data-tooltip="PF2E.UnprepareItemTitle"
+                                            data-tooltip="AVANT.UnprepareItemTitle"
                                         ><i class="fa-solid fa-fw fa-trash"></i></a>
                                     {{else if (ne entry.category "items")}}
                                         {{#if (and entry.isSpontaneous (ne group.id "cantrips"))}}
                                             <a
                                                 data-action="toggle-signature-spell"
-                                                data-tooltip="PF2E.ToggleSignatureSpellTitle"
+                                                data-tooltip="AVANT.ToggleSignatureSpellTitle"
                                             ><i class="fa-{{#if slot.signature}}solid{{else}}regular{{/if}} fa-fw fa-star"></i></a>
                                         {{/if}}
                                         {{#unless slot.virtual}}
-                                            <a data-action="edit-item" data-tooltip="PF2E.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
-                                            <a data-action="delete-item" data-tooltip="PF2E.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
+                                            <a data-action="edit-item" data-tooltip="AVANT.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
+                                            <a data-action="delete-item" data-tooltip="AVANT.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
                                         {{/unless}}
                                     {{/if}}
                                 {{/if}}
@@ -220,7 +220,7 @@
                         >
                             <div class="item-name empty">
                                 <div class="item-image framed"></div>
-                                <h4>{{localize "PF2E.SpellSlotEmpty"}}</h4>
+                                <h4>{{localize "AVANT.SpellSlotEmpty"}}</h4>
                             </div>
                         </li>
                     {{/if}}
@@ -232,7 +232,7 @@
             <li class="spell">
                 <div class="item-name empty">
                     <div class="item-image framed"></div>
-                    <h4>{{localize "PF2E.SpellSlotEmpty"}}</h4>
+                    <h4>{{localize "AVANT.SpellSlotEmpty"}}</h4>
                 </div>
             </li>
         {{/if}}

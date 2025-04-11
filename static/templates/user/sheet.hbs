@@ -3,38 +3,38 @@
         <div data-application-part="form"></div>
     </section>
 
-    {{!-- PF2e Settings --}}
-    <section class="tab standard-form{{#if (eq tabGroups.primary "pf2e")}} active{{/if}}" data-tab="pf2e" data-group="primary">
+    {{!-- Avant Settings --}}
+    <section class="tab standard-form{{#if (eq tabGroups.primary "avant")}} active{{/if}}" data-tab="avant" data-group="primary">
         <div class="form-group">
-            <label for="{{user.uuid}}-showEffectPanel">{{localize "PF2E.SETTINGS.User.EffectPanel.Name"}}</label>
+            <label for="{{user.uuid}}-showEffectPanel">{{localize "AVANT.SETTINGS.User.EffectPanel.Name"}}</label>
             <div class="form-fields">
-                <input id="{{user.uuid}}-showEffectPanel" type="checkbox" name="flags.pf2e.settings.showEffectPanel" {{checked user.flags.pf2e.settings.showEffectPanel}} />
+                <input id="{{user.uuid}}-showEffectPanel" type="checkbox" name="flags.avant.settings.showEffectPanel" {{checked user.flags.avant.settings.showEffectPanel}} />
             </div>
-            <p class="hint">{{localize "PF2E.SETTINGS.User.EffectPanel.Hint"}}</p>
+            <p class="hint">{{localize "AVANT.SETTINGS.User.EffectPanel.Hint"}}</p>
         </div>
 
         <div class="form-group">
-            <label for="{{user.uuid}}-showCheckDialogs">{{localize "PF2E.SettingsQuickChecksLabel"}}</label>
+            <label for="{{user.uuid}}-showCheckDialogs">{{localize "AVANT.SettingsQuickChecksLabel"}}</label>
             <div class="form-fields">
-                <input id="{{user.uuid}}-showCheckDialogs" type="checkbox" name="flags.pf2e.settings.showCheckDialogs" {{checked user.flags.pf2e.settings.showCheckDialogs}} />
+                <input id="{{user.uuid}}-showCheckDialogs" type="checkbox" name="flags.avant.settings.showCheckDialogs" {{checked user.flags.avant.settings.showCheckDialogs}} />
             </div>
-            <p class="hint">{{localize "PF2E.SettingsQuickChecksNotes"}}</p>
+            <p class="hint">{{localize "AVANT.SettingsQuickChecksNotes"}}</p>
         </div>
 
         <div class="form-group">
-            <label for="{{user.uuid}}-showDamageDialogs">{{localize "PF2E.SettingsQuickDamageLabel"}}</label>
+            <label for="{{user.uuid}}-showDamageDialogs">{{localize "AVANT.SettingsQuickDamageLabel"}}</label>
             <div class="form-fields">
-                <input id="{{user.uuid}}-showDamageDialogs" type="checkbox" name="flags.pf2e.settings.showDamageDialogs" {{checked user.flags.pf2e.settings.showDamageDialogs}} />
+                <input id="{{user.uuid}}-showDamageDialogs" type="checkbox" name="flags.avant.settings.showDamageDialogs" {{checked user.flags.avant.settings.showDamageDialogs}} />
             </div>
-            <p class="hint">{{localize "PF2E.SettingsQuickDamageNotes"}}</p>
+            <p class="hint">{{localize "AVANT.SettingsQuickDamageNotes"}}</p>
         </div>
 
         <div class="form-group monochrome-darkvision">
-            <label for="{{user.uuid}}-monochromeDarkvision">{{localize "PF2E.SETTINGS.User.MonochromeDarkvision.Name"}}</label>
+            <label for="{{user.uuid}}-monochromeDarkvision">{{localize "AVANT.SETTINGS.User.MonochromeDarkvision.Name"}}</label>
             <div class="form-fields">
-                <input id="{{user.uuid}}-monochromeDarkvision" type="checkbox" name="flags.pf2e.settings.monochromeDarkvision" {{checked user.flags.pf2e.settings.monochromeDarkvision}} />
+                <input id="{{user.uuid}}-monochromeDarkvision" type="checkbox" name="flags.avant.settings.monochromeDarkvision" {{checked user.flags.avant.settings.monochromeDarkvision}} />
             </div>
-            <p class="hint">{{localize "PF2E.SETTINGS.User.MonochromeDarkvision.Hint"}}</p>
+            <p class="hint">{{localize "AVANT.SETTINGS.User.MonochromeDarkvision.Hint"}}</p>
         </div>
 
         <footer class="form-footer">

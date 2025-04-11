@@ -1,4 +1,4 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { OneToTen, ZeroToTen } from "@module/data.ts";
 import { Statistic } from "@system/statistic/statistic.ts";
 import * as R from "remeda";
@@ -6,7 +6,7 @@ import type { SpellSlotGroupId } from "./collection.ts";
 import type { SpellcastingEntry } from "./types.ts";
 
 /** Create a statistic that draws from limited domains for the purpose of counteracting. */
-function createCounteractStatistic<TActor extends ActorPF2e>(ability: SpellcastingEntry<TActor>): Statistic<TActor> {
+function createCounteractStatistic<TActor extends ActorAvant>(ability: SpellcastingEntry<TActor>): Statistic<TActor> {
     const actor = ability.actor;
 
     // NPCs have neither a proficiency bonus nor specified attribute modifier: use their base attack roll modifier
@@ -16,7 +16,7 @@ function createCounteractStatistic<TActor extends ActorPF2e>(ability: Spellcasti
 
     return new Statistic(actor, {
         slug: "counteract",
-        label: "PF2E.Item.Spell.Counteract.Label",
+        label: "AVANT.Item.Spell.Counteract.Label",
         attribute: ability.statistic.attribute,
         rank: ability.statistic.rank || 1,
         check: { type: "check", modifiers: [baseModifier].filter(R.isTruthy) },

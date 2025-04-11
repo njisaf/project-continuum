@@ -1,4 +1,4 @@
-import type { ActorType, CharacterPF2e, FamiliarPF2e } from "@actor";
+import type { ActorType, CharacterAvant, FamiliarAvant } from "@actor";
 import type { SenseAcuity, SenseType } from "@actor/creature/types.ts";
 import {
     SENSES_WITH_MANDATORY_ACUITIES,
@@ -7,14 +7,14 @@ import {
     SENSE_TYPES,
 } from "@actor/creature/values.ts";
 import { tupleHasValue } from "@util";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
 /**
  * @category RuleElement
  */
-class SenseRuleElement extends RuleElementPF2e<SenseRuleSchema> {
+class SenseRuleElement extends RuleElementAvant<SenseRuleSchema> {
     protected static override validActorTypes: ActorType[] = ["character", "familiar", "npc"];
 
     static override defineSchema(): SenseRuleSchema {
@@ -51,8 +51,8 @@ class SenseRuleElement extends RuleElementPF2e<SenseRuleSchema> {
     }
 }
 
-interface SenseRuleElement extends RuleElementPF2e<SenseRuleSchema>, ModelPropsFromRESchema<SenseRuleSchema> {
-    get actor(): CharacterPF2e | FamiliarPF2e;
+interface SenseRuleElement extends RuleElementAvant<SenseRuleSchema>, ModelPropsFromRESchema<SenseRuleSchema> {
+    get actor(): CharacterAvant | FamiliarAvant;
 }
 
 type SenseRuleSchema = RuleElementSchema & {

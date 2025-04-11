@@ -1,5 +1,5 @@
 import { userColorForActor } from "@actor/helpers.ts";
-import type { ItemPF2e } from "@item";
+import type { ItemAvant } from "@item";
 import type { AuraRuleElement, AuraRuleElementSchema } from "@module/rules/rule-element/aura.ts";
 import type { HTMLTagifyTagsElement } from "@system/html-elements/tagify-tags.ts";
 import { htmlClosest, htmlQuery, htmlQueryAll, isImageFilePath } from "@util";
@@ -8,7 +8,7 @@ import * as R from "remeda";
 import { RuleElementForm, RuleElementFormSheetData, RuleElementFormTabData } from "./base.ts";
 
 class AuraForm extends RuleElementForm<AuraRuleElementSource, AuraRuleElement> {
-    override template = "systems/pf2e/templates/items/rules/aura.hbs";
+    override template = "systems/avant/templates/items/rules/aura.hbs";
 
     protected override tabs: RuleElementFormTabData = {
         names: ["basics", "effects", "appearance"],
@@ -35,15 +35,15 @@ class AuraForm extends RuleElementForm<AuraRuleElementSource, AuraRuleElement> {
 
         const traitsElement = htmlQuery<HTMLTagifyTagsElement>(html, "tagify-tags.tagify-traits");
         if (traitsElement) {
-            const whitelist = { ...CONFIG.PF2E.spellTraits, ...CONFIG.PF2E.actionTraits };
+            const whitelist = { ...CONFIG.AVANT.spellTraits, ...CONFIG.AVANT.actionTraits };
             tagify(traitsElement, { whitelist, enforceWhitelist: false });
         }
 
         for (const eventsElement of htmlQueryAll<HTMLTagifyTagsElement>(html, "tagify-tags.tagify-events")) {
             const whitelist = [
-                ["enter", game.i18n.localize("PF2E.RuleEditor.Aura.Effects.EventsOptions.Enter")],
-                ["turn-start", game.i18n.localize("PF2E.RuleEditor.Aura.Effects.EventsOptions.TurnStart")],
-                ["turn-end", game.i18n.localize("PF2E.RuleEditor.Aura.Effects.EventsOptions.TurnEnd")],
+                ["enter", game.i18n.localize("AVANT.RuleEditor.Aura.Effects.EventsOptions.Enter")],
+                ["turn-start", game.i18n.localize("AVANT.RuleEditor.Aura.Effects.EventsOptions.TurnStart")],
+                ["turn-end", game.i18n.localize("AVANT.RuleEditor.Aura.Effects.EventsOptions.TurnEnd")],
             ].sort((a, b) => a[1].localeCompare(b[1], game.i18n.lang));
             tagify(eventsElement, { whitelist: R.mapToObj(whitelist, (w) => [w[0], w[1]]), enforceWhitelist: true });
         }
@@ -127,9 +127,9 @@ class AuraForm extends RuleElementForm<AuraRuleElementSource, AuraRuleElement> {
         return {
             ...(await super.getData()),
             affectsOptions: {
-                all: "PF2E.RuleEditor.Aura.Effects.AffectsOptions.All",
-                allies: "PF2E.RuleEditor.Aura.Effects.AffectsOptions.Allies",
-                enemies: "PF2E.RuleEditor.Aura.Effects.AffectsOptions.Enemies",
+                all: "AVANT.RuleEditor.Aura.Effects.AffectsOptions.All",
+                allies: "AVANT.RuleEditor.Aura.Effects.AffectsOptions.Allies",
+                enemies: "AVANT.RuleEditor.Aura.Effects.AffectsOptions.Enemies",
             },
             effects: this.effectsArray.map((e) => ({
                 ...e,
@@ -137,12 +137,12 @@ class AuraForm extends RuleElementForm<AuraRuleElementSource, AuraRuleElement> {
             })),
             borderColor: border?.color === "user-color" ? userColor : (border?.color?.toString() ?? null),
             highlightColor: highlight.color === "user-color" ? userColor : highlight?.color?.toString(),
-            saveTypes: CONFIG.PF2E.saves,
+            saveTypes: CONFIG.AVANT.saves,
             isImageFile: isImageFilePath(this.rule.appearance?.texture?.src),
         };
     }
 
-    protected override async onDrop(event: DragEvent, element: HTMLElement): Promise<ItemPF2e | null> {
+    protected override async onDrop(event: DragEvent, element: HTMLElement): Promise<ItemAvant | null> {
         const { id } = element.dataset;
         if (id !== "aura-effect-drop") return null;
         const item = await super.onDrop(event, element);
@@ -267,7 +267,7 @@ interface AuraSheetData extends RuleElementFormSheetData<AuraRuleElementSource, 
         }[];
     borderColor: HexColorString | null;
     highlightColor: HexColorString;
-    saveTypes: ConfigPF2e["PF2E"]["saves"];
+    saveTypes: ConfigAvant["AVANT"]["saves"];
     isImageFile: boolean;
 }
 

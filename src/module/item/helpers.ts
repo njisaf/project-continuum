@@ -1,31 +1,31 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { createHTMLElement, setHasElement } from "@util";
 import { processSanctification } from "./ability/helpers.ts";
-import type { ItemSourcePF2e, ItemType } from "./base/data/index.ts";
-import type { ItemPF2e } from "./base/document.ts";
-import type { PhysicalItemPF2e } from "./physical/document.ts";
+import type { ItemSourceAvant, ItemType } from "./base/data/index.ts";
+import type { ItemAvant } from "./base/document.ts";
+import type { PhysicalItemAvant } from "./physical/document.ts";
 import { PHYSICAL_ITEM_TYPES } from "./physical/values.ts";
 import type { ItemInstances } from "./types.ts";
 
-type ItemOrSource = PreCreate<ItemSourcePF2e> | ItemPF2e;
+type ItemOrSource = PreCreate<ItemSourceAvant> | ItemAvant;
 
-/** Determine in a type-safe way whether an `ItemPF2e` or `ItemSourcePF2e` is among certain types */
-function itemIsOfType<TParent extends ActorPF2e | null, TType extends ItemType>(
+/** Determine in a type-safe way whether an `ItemAvant` or `ItemSourceAvant` is among certain types */
+function itemIsOfType<TParent extends ActorAvant | null, TType extends ItemType>(
     item: ItemOrSource,
     ...types: TType[]
 ): item is ItemInstances<TParent>[TType] | ItemInstances<TParent>[TType]["_source"];
-function itemIsOfType<TParent extends ActorPF2e | null, TType extends "physical" | ItemType>(
+function itemIsOfType<TParent extends ActorAvant | null, TType extends "physical" | ItemType>(
     item: ItemOrSource,
     ...types: TType[]
 ): item is TType extends "physical"
-    ? PhysicalItemPF2e<TParent> | PhysicalItemPF2e<TParent>["_source"]
+    ? PhysicalItemAvant<TParent> | PhysicalItemAvant<TParent>["_source"]
     : TType extends ItemType
       ? ItemInstances<TParent>[TType] | ItemInstances<TParent>[TType]["_source"]
       : never;
-function itemIsOfType<TParent extends ActorPF2e | null>(
+function itemIsOfType<TParent extends ActorAvant | null>(
     item: ItemOrSource,
     type: "physical",
-): item is PhysicalItemPF2e<TParent> | PhysicalItemPF2e["_source"];
+): item is PhysicalItemAvant<TParent> | PhysicalItemAvant["_source"];
 function itemIsOfType(item: ItemOrSource, ...types: string[]): boolean {
     return (
         typeof item.name === "string" &&
@@ -42,12 +42,12 @@ function reduceItemName(label: string): string {
  * Performs late prep tasks on an item that doesn't exist in the actor, such as a cloned one.
  * If the item isn't embedded, nothing happens.
  */
-function performLatePreparation(item: ItemPF2e): void {
+function performLatePreparation(item: ItemAvant): void {
     const actor = item.actor;
     if (!actor) return;
 
     for (const alteration of actor.synthetics.itemAlterations.filter((a) => !a.isLazy)) {
-        alteration.applyAlteration({ singleItem: item as ItemPF2e<ActorPF2e> });
+        alteration.applyAlteration({ singleItem: item as ItemAvant<ActorAvant> });
     }
 
     if (item.isOfType("spell", "feat", "action")) {

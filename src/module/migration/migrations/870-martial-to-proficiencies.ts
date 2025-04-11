@@ -1,7 +1,7 @@
 import { CharacterSystemSource, MartialProficiency } from "@actor/character/data.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { ARMOR_CATEGORIES } from "@item/armor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString, tupleHasValue } from "@util";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -12,7 +12,7 @@ export class Migration870MartialToProficiencies extends MigrationBase {
 
     #defensePathPattern = new RegExp(String.raw`system\.martial\.(?:${Array.from(ARMOR_CATEGORIES).join("|")})\.`);
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type !== "character") return;
 
         const systemSource: MaybeWithOldMartialData = source.system;
@@ -42,7 +42,7 @@ export class Migration870MartialToProficiencies extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.rules = source.system.rules.map((r) =>
             recursiveReplaceString(r, (text) => {
                 const key = this.#defensePathPattern.test(text) ? "defenses" : "attacks";

@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { isObject } from "@util";
@@ -16,7 +16,7 @@ export class Migration790MultipleClassDCs extends MigrationBase {
         ["ring-bell", "thaumaturge"],
     ]);
 
-    #isClassFeature(source: ItemSourcePF2e): source is FeatSource & { system: { featType: "classfeature" } } {
+    #isClassFeature(source: ItemSourceAvant): source is FeatSource & { system: { featType: "classfeature" } } {
         return (
             source.type === "feat" &&
             "featType" in source.system &&
@@ -26,7 +26,7 @@ export class Migration790MultipleClassDCs extends MigrationBase {
     }
 
     // Remove custom modifiers at old "class" selector
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type !== "character") return;
 
         const customModifiers: Record<string, unknown> = source.system.customModifiers ?? {};
@@ -35,7 +35,7 @@ export class Migration790MultipleClassDCs extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (this.#isClassFeature(source)) {
             const classSlug = source.system.traits.value.at(0);
             if (!classSlug) return;

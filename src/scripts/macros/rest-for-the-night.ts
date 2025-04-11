@@ -1,8 +1,8 @@
-import { CharacterPF2e } from "@actor";
+import { CharacterAvant } from "@actor";
 import { CharacterAttributesSource, CharacterResourcesSource } from "@actor/character/data.ts";
-import type { ItemSourcePF2e } from "@item/base/data/index.ts";
-import { ChatMessageSourcePF2e } from "@module/chat-message/data.ts";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import type { ItemSourceAvant } from "@item/base/data/index.ts";
+import { ChatMessageSourceAvant } from "@module/chat-message/data.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { ActionDefaultOptions } from "@system/action-macros/index.ts";
 import { localizer } from "@util";
 
@@ -11,14 +11,14 @@ interface RestForTheNightOptions extends ActionDefaultOptions {
 }
 
 /** A macro for the Rest for the Night quasi-action */
-export async function restForTheNight(options: RestForTheNightOptions): Promise<ChatMessagePF2e[]> {
+export async function restForTheNight(options: RestForTheNightOptions): Promise<ChatMessageAvant[]> {
     const actors = Array.isArray(options.actors) ? options.actors : [options.actors];
-    const characters = actors.filter((a): a is CharacterPF2e => a?.type === "character");
+    const characters = actors.filter((a): a is CharacterAvant => a?.type === "character");
     if (actors.length === 0) {
-        ui.notifications.error(game.i18n.localize("PF2E.ErrorMessage.NoPCTokenSelected"));
+        ui.notifications.error(game.i18n.localize("AVANT.ErrorMessage.NoPCTokenSelected"));
         return [];
     }
-    const localize = localizer("PF2E.Action.RestForTheNight");
+    const localize = localizer("AVANT.Action.RestForTheNight");
     const promptMessage = ((): string => {
         const element = document.createElement("p");
         element.innerText = localize("Prompt");
@@ -35,14 +35,14 @@ export async function restForTheNight(options: RestForTheNightOptions): Promise<
         return [];
     }
 
-    const messages: PreCreate<ChatMessageSourcePF2e>[] = [];
+    const messages: PreCreate<ChatMessageSourceAvant>[] = [];
 
     for (const actor of characters) {
         const actorUpdates: ActorUpdates = {
             attributes: { hp: { value: actor._source.system.attributes.hp.value } },
             resources: {},
         };
-        const itemCreates: PreCreate<ItemSourcePF2e>[] = [];
+        const itemCreates: PreCreate<ItemSourceAvant>[] = [];
         const itemUpdates: EmbeddedDocumentUpdateData[] = [];
         // A list of messages informing the user of updates made due to rest
         const statements: string[] = [];
@@ -57,8 +57,8 @@ export async function restForTheNight(options: RestForTheNightOptions): Promise<
         if (hpRestored > 0) {
             const singularOrPlural =
                 hpRestored === 1
-                    ? "PF2E.Action.RestForTheNight.Message.HitPointsSingle"
-                    : "PF2E.Action.RestForTheNight.Message.HitPoints";
+                    ? "AVANT.Action.RestForTheNight.Message.HitPointsSingle"
+                    : "AVANT.Action.RestForTheNight.Message.HitPoints";
             actorUpdates.attributes.hp = { value: (attributes.hp.value += hpRestored) };
             statements.push(game.i18n.format(singularOrPlural, { hitPoints: hpRestored }));
         }
@@ -122,7 +122,7 @@ export async function restForTheNight(options: RestForTheNightOptions): Promise<
         itemUpdates.push(...recharges.itemUpdates);
 
         // Stamina points
-        if (game.pf2e.settings.variants.stamina) {
+        if (game.avant.settings.variants.stamina) {
             const stamina = attributes.hp.sp ?? { value: 0, max: 0 };
             const resolve = resources.resolve ?? { value: 0, max: 0 };
             if (stamina.value < stamina.max) {
@@ -137,8 +137,8 @@ export async function restForTheNight(options: RestForTheNightOptions): Promise<
 
         // Updated actor with the sweet fruits of rest
         const hasActorUpdates = Object.keys({ ...actorUpdates.attributes, ...actorUpdates.resources }).length > 0;
-        if (hasActorUpdates || actor.flags.pf2e.dailyCraftingComplete) {
-            await actor.update({ "flags.pf2e.dailyCraftingComplete": false, system: actorUpdates }, { render: false });
+        if (hasActorUpdates || actor.flags.avant.dailyCraftingComplete) {
+            await actor.update({ "flags.avant.dailyCraftingComplete": false, system: actorUpdates }, { render: false });
         }
 
         if (itemCreates.length > 0) {
@@ -186,14 +186,14 @@ export async function restForTheNight(options: RestForTheNightOptions): Promise<
         // Conditions removed
         const reducedConditions = RECOVERABLE_CONDITIONS.filter((c) => conditionChanges[c] === "reduced");
         for (const slug of reducedConditions) {
-            const { name } = game.pf2e.ConditionManager.getCondition(slug);
+            const { name } = game.avant.ConditionManager.getCondition(slug);
             statements.push(localize("Message.ConditionReduced", { condition: name }));
         }
 
         // Condition value reduction
         const removedConditions = RECOVERABLE_CONDITIONS.filter((c) => conditionChanges[c] === "removed");
         for (const slug of removedConditions) {
-            const { name } = game.pf2e.ConditionManager.getCondition(slug);
+            const { name } = game.avant.ConditionManager.getCondition(slug);
             statements.push(localize("Message.ConditionRemoved", { condition: name }));
         }
 
@@ -210,11 +210,11 @@ export async function restForTheNight(options: RestForTheNightOptions): Promise<
         const content = [actorAwakens, recoveryList.outerHTML].join("\n");
 
         // Call a hook for modules to do anything extra
-        Hooks.callAll("pf2e.restForTheNight", actor);
-        messages.push({ author: game.user.id, content, speaker: ChatMessagePF2e.getSpeaker({ actor }) });
+        Hooks.callAll("avant.restForTheNight", actor);
+        messages.push({ author: game.user.id, content, speaker: ChatMessageAvant.getSpeaker({ actor }) });
     }
 
-    return ChatMessagePF2e.createDocuments(messages, { restForTheNight: true });
+    return ChatMessageAvant.createDocuments(messages, { restForTheNight: true });
 }
 
 interface ActorUpdates {

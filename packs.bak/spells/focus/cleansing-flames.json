@@ -1,0 +1,54 @@
+{
+    "_id": "tf4PMMMzR5xxJDun",
+    "folder": "wnvibtD90h7CStDC",
+    "img": "icons/magic/fire/flame-burning-campfire-rocks.webp",
+    "name": "Cleansing Flames",
+    "system": {
+        "area": null,
+        "cost": {
+            "value": ""
+        },
+        "counteraction": true,
+        "damage": {},
+        "defense": null,
+        "description": {
+            "value": "<p>You wrap the target in purifying flames. You can attempt to counteract a single poison or non-curse effect imparting the @UUID[Compendium.avant.conditionitems.Item.Clumsy], @UUID[Compendium.avant.conditionitems.Item.Dazzled], @UUID[Compendium.avant.conditionitems.Item.Enfeebled], @UUID[Compendium.avant.conditionitems.Item.Fatigued], @UUID[Compendium.avant.conditionitems.Item.Frightened], @UUID[Compendium.avant.conditionitems.Item.Paralyzed], @UUID[Compendium.avant.conditionitems.Item.Sickened], or @UUID[Compendium.avant.conditionitems.Item.Stupefied] condition. The target can choose to empower the flames with their life force, becoming @UUID[Compendium.avant.conditionitems.Item.Drained]{Drained 1} (or increasing their drained value by 1, if already under the condition) to grant you a +1 circumstance bonus to your counteract check.</p>"
+        },
+        "duration": {
+            "sustained": false,
+            "value": ""
+        },
+        "level": {
+            "value": 5
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder #168: King of the Mountain"
+        },
+        "range": {
+            "value": "touch"
+        },
+        "requirements": "",
+        "rules": [],
+        "target": {
+            "value": "1 creature"
+        },
+        "time": {
+            "value": "2"
+        },
+        "traits": {
+            "rarity": "uncommon",
+            "traditions": [],
+            "value": [
+                "concentrate",
+                "fire",
+                "focus",
+                "healing",
+                "manipulate",
+                "sorcerer"
+            ]
+        }
+    },
+    "type": "spell"
+}

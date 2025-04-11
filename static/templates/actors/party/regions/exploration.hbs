@@ -2,28 +2,28 @@
     {{#if members}}
         <ol class="box-list exploration-members">
             <li class="box summary">
-                <header>{{localize "PF2E.Actor.Party.TravelHeader"}}</header>
+                <header>{{localize "AVANT.Actor.Party.TravelHeader"}}</header>
                 <div class="summary-data">
                     <div>
-                        <label>{{localize "PF2E.TravelSpeed.Label"}}</label>
-                        <span class="value">{{explorationSummary.speed}} {{localize "PF2E.Foot.Plural"}}</span>
+                        <label>{{localize "AVANT.TravelSpeed.Label"}}</label>
+                        <span class="value">{{explorationSummary.speed}} {{localize "AVANT.Foot.Plural"}}</span>
                     </div>
                     <hr/>
                     <div>
-                        <label>{{localize "PF2E.TravelSpeed.FeetPerMinute"}}</label>
+                        <label>{{localize "AVANT.TravelSpeed.FeetPerMinute"}}</label>
                         <span class="value">{{explorationSummary.feetPerMinute}}</span>
                     </div>
                     <div>
-                        <label>{{localize "PF2E.TravelSpeed.MilesPerHour"}}</label>
+                        <label>{{localize "AVANT.TravelSpeed.MilesPerHour"}}</label>
                         <span class="value">{{explorationSummary.milesPerHour}}</span>
                     </div>
                     <div>
-                        <label>{{localize "PF2E.TravelSpeed.MilesPerDay"}}</label>
+                        <label>{{localize "AVANT.TravelSpeed.MilesPerDay"}}</label>
                         <span class="value">{{explorationSummary.milesPerDay}}</span>
                     </div>
                     <hr/>
                     <div>
-                        <label>{{localize "PF2E.TravelSpeed.HexplorationActivities"}}</label>
+                        <label>{{localize "AVANT.TravelSpeed.HexplorationActivities"}}</label>
                         <span class="value">{{explorationSummary.activities}}</span>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     {{#unless member.restricted}}
                         <div class="sub-data">
                             <span>
-                                <i class="fa-solid fa-person-running"></i> {{member.actor.attributes.speed.total}} {{localize "PF2E.TravelSpeed.FeetAcronym"}}
+                                <i class="fa-solid fa-person-running"></i> {{member.actor.attributes.speed.total}} {{localize "AVANT.TravelSpeed.FeetAcronym"}}
                             </span>
                             <span>
                                 <i class="fa-solid fa-eye"></i> {{member.actor.perception.dc.value}}
@@ -52,16 +52,16 @@
             {{/each}}
         </ol>
     {{else}}
-        {{localize "PF2E.Actor.Party.BlankSlate"}}
+        {{localize "AVANT.Actor.Party.BlankSlate"}}
     {{/if}}
 </aside>
 <section class="content">
     {{#if @root.options.editable}}
         <header class="content-header">
-            <a data-action="clear-exploration">{{localize "PF2E.Actor.Party.ClearActivities.Label"}}</a>
+            <a data-action="clear-exploration">{{localize "AVANT.Actor.Party.ClearActivities.Label"}}</a>
             <div class="buttons">
-                <button type="button" data-action="prompt" data-tooltip="PF2E.Actor.Party.CheckPrompt.TitleShort"><i class="fa-solid fa-dice-d20"></i></button>
-                <button type="button" data-action="rest" data-tooltip="PF2E.Actor.Party.Rest" ><i class="fa-solid fa-fw fa-bed"></i></button>
+                <button type="button" data-action="prompt" data-tooltip="AVANT.Actor.Party.CheckPrompt.TitleShort"><i class="fa-solid fa-dice-d20"></i></button>
+                <button type="button" data-action="rest" data-tooltip="AVANT.Actor.Party.Rest" ><i class="fa-solid fa-fw fa-bed"></i></button>
             </div>
         </header>
     {{/if}}
@@ -90,8 +90,8 @@
                         <div class="empty" data-action="open-sheet" data-tab="exploration">
                             <div class="icon"><i class="fa-solid fa-plus fa-fw"></i></div>
                             <div>
-                                <div class="name">{{localize "PF2E.Item.Ability.Type.Activity"}}</div>
-                                <div class="hint">{{localize "PF2E.Actor.Party.SlotAvailable"}}</div>
+                                <div class="name">{{localize "AVANT.Item.Ability.Type.Activity"}}</div>
+                                <div class="hint">{{localize "AVANT.Actor.Party.SlotAvailable"}}</div>
                             </div>
                         </div>
                     {{/if}}

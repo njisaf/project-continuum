@@ -1,7 +1,7 @@
 <form>
     {{#if rollTables}}
         <div class="form-group">
-            <label>{{localize "PF2E.CompendiumBrowser.RollTable.AddLabel"}}</label>
+            <label>{{localize "AVANT.CompendiumBrowser.RollTable.AddLabel"}}</label>
             <select name="roll-table">
                 {{#each rollTables as |table|}}
                     <option value="{{table.id}}">{{table.name}}</option>
@@ -9,22 +9,22 @@
             </select>
         </div>
         <div class="form-group">
-            <label>{{localize "PF2E.CompendiumBrowser.RollTable.WeightLabel"}}</label>
+            <label>{{localize "AVANT.CompendiumBrowser.RollTable.WeightLabel"}}</label>
             <input type="text" name="weight" placeholder="1">
         </div>
         <hr>
-        <p>{{localize "PF2E.CompendiumBrowser.RollTable.AddDialogText" count=count}}</p>
+        <p>{{localize "AVANT.CompendiumBrowser.RollTable.AddDialogText" count=count}}</p>
     {{else}}
         <div class="form-group">
             <label>{{localize "Name"}}</label>
-            <input type="text" name="name" placeholder="{{localize "PF2E.CompendiumBrowser.Title"}}">
+            <input type="text" name="name" placeholder="{{localize "AVANT.CompendiumBrowser.Title"}}">
         </div>
         <div class="form-group">
-            <label>{{localize "PF2E.CompendiumBrowser.RollTable.WeightLabel"}}</label>
+            <label>{{localize "AVANT.CompendiumBrowser.RollTable.WeightLabel"}}</label>
             <input type="text" name="weight" placeholder="1">
         </div>
         <hr>
-        <p>{{localize "PF2E.CompendiumBrowser.RollTable.CreateDialogText" count=count}}</p>
+        <p>{{localize "AVANT.CompendiumBrowser.RollTable.CreateDialogText" count=count}}</p>
     {{/if}}
     <br>
 </form>

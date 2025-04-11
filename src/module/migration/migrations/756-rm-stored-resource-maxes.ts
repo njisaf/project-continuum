@@ -1,4 +1,4 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Remove inadvertently stored focus and infused-reagents maxes caused by bug in Rest for the Night script */
@@ -14,7 +14,7 @@ export class Migration756RMStoredResourceMaxes extends MigrationBase {
     }
 }
 
-type ActorSourceWithDeletions = ActorSourcePF2e & {
+type ActorSourceWithDeletions = ActorSourceAvant & {
     "system.resources.focus.-=max"?: null;
     "system.resources.crafting.infusedReagents.-=max"?: null;
     "system.resources.-=investiture"?: null;

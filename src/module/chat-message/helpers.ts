@@ -1,12 +1,12 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { FormulaPicker } from "@actor/character/apps/formula-picker/app.ts";
-import { AbilityItemPF2e, FeatPF2e } from "@item";
+import { AbilityItemAvant, FeatAvant } from "@item";
 import { extractEphemeralEffects } from "@module/rules/helpers.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
-import { ErrorPF2e, getActionGlyph, htmlQuery, htmlQueryAll, tupleHasValue } from "@util";
+import { ErrorAvant, getActionGlyph, htmlQuery, htmlQueryAll, tupleHasValue } from "@util";
 import { traitSlugToObject } from "@util/tags.ts";
-import { ChatContextFlag, ChatMessageFlagsPF2e, CheckContextChatFlag } from "./data.ts";
-import { ChatMessagePF2e } from "./document.ts";
+import { ChatContextFlag, ChatMessageFlagsAvant, CheckContextChatFlag } from "./data.ts";
+import { ChatMessageAvant } from "./document.ts";
 
 function isCheckContextFlag(flag?: ChatContextFlag): flag is CheckContextChatFlag {
     return !!flag && !tupleHasValue(["damage-roll", "spell-cast"], flag.type);
@@ -14,9 +14,9 @@ function isCheckContextFlag(flag?: ChatContextFlag): flag is CheckContextChatFla
 
 /** Create a message with collapsed action description and button to apply an effect */
 async function createUseActionMessage(
-    item: AbilityItemPF2e<ActorPF2e> | FeatPF2e<ActorPF2e>,
+    item: AbilityItemAvant<ActorAvant> | FeatAvant<ActorAvant>,
     rollMode: RollMode | "roll" = "roll",
-): Promise<ChatMessagePF2e | null> {
+): Promise<ChatMessageAvant | null> {
     const { actor, actionCost } = item;
     const token = actor.getActiveTokens(true, true).shift() ?? null;
 
@@ -50,11 +50,11 @@ async function createUseActionMessage(
         return (await item.toMessage(null, { rollMode })) ?? null;
     }
 
-    const speaker = ChatMessagePF2e.getSpeaker({ actor, token });
-    const flavor = await renderTemplate("systems/pf2e/templates/chat/action/flavor.hbs", {
+    const speaker = ChatMessageAvant.getSpeaker({ actor, token });
+    const flavor = await renderTemplate("systems/avant/templates/chat/action/flavor.hbs", {
         action: { title: item.name, glyph: getActionGlyph(actionCost) },
         item,
-        traits: item.system.traits.value.map((t) => traitSlugToObject(t, CONFIG.PF2E.actionTraits)),
+        traits: item.system.traits.value.map((t) => traitSlugToObject(t, CONFIG.AVANT.actionTraits)),
     });
 
     // Get a preview slice of the message
@@ -68,7 +68,7 @@ async function createUseActionMessage(
 
         return tempDiv.innerText.slice(0, previewLength);
     })();
-    const content = await renderTemplate("systems/pf2e/templates/chat/action/collapsed.hbs", {
+    const content = await renderTemplate("systems/avant/templates/chat/action/collapsed.hbs", {
         actor: item.actor,
         description: {
             full: descriptionPreview && descriptionPreview.length < previewLength ? item.description : null,
@@ -78,16 +78,16 @@ async function createUseActionMessage(
         craftedItem: craftedItem?.toAnchor({ attrs: { draggable: "true" } }).outerHTML,
         withoutResources: craftedItem && !consumeResources,
     });
-    const flags: { pf2e: ChatMessageFlagsPF2e["pf2e"] } = { pf2e: {} };
+    const flags: { avant: ChatMessageFlagsAvant["avant"] } = { avant: {} };
     if (item.system.selfEffect) {
-        flags.pf2e.context = { type: "self-effect", item: item.id };
+        flags.avant.context = { type: "self-effect", item: item.id };
     } else {
-        flags.pf2e.origin = item.getOriginData();
+        flags.avant.origin = item.getOriginData();
     }
 
     // Create the message
-    const messageData = ChatMessagePF2e.applyRollMode({ speaker, flavor, content, flags }, rollMode);
-    return (await ChatMessagePF2e.create(messageData)) ?? null;
+    const messageData = ChatMessageAvant.applyRollMode({ speaker, flavor, content, flags }, rollMode);
+    return (await ChatMessageAvant.create(messageData)) ?? null;
 }
 
 async function applyDamageFromMessage({
@@ -102,18 +102,18 @@ async function applyDamageFromMessage({
     const html = htmlQuery(ui.chat.element[0], `li.chat-message[data-message-id="${message.id}"]`);
     const tokens = html?.dataset.actorIsTarget && message.token ? [message.token] : game.user.getActiveTokens();
     if (tokens.length === 0) {
-        ui.notifications.error("PF2E.ErrorMessage.NoTokenSelected", { localize: true });
+        ui.notifications.error("AVANT.ErrorMessage.NoTokenSelected", { localize: true });
         return;
     }
 
-    const shieldBlockRequest = CONFIG.PF2E.chatDamageButtonShieldToggle;
+    const shieldBlockRequest = CONFIG.AVANT.chatDamageButtonShieldToggle;
     const roll = message.rolls.at(rollIndex);
-    if (!(roll instanceof DamageRoll)) throw ErrorPF2e("Unexpected error retrieving damage roll");
+    if (!(roll instanceof DamageRoll)) throw ErrorAvant("Unexpected error retrieving damage roll");
 
     const damage = multiplier < 0 ? multiplier * roll.total + addend : roll.alter(multiplier, addend);
 
     // Get origin roll options and apply damage to a contextual clone: this may influence condition IWR, for example
-    const messageRollOptions = [...(message.flags.pf2e.context?.options ?? [])];
+    const messageRollOptions = [...(message.flags.avant.context?.options ?? [])];
     const originRollOptions = messageRollOptions
         .filter((o) => o.startsWith("self:"))
         .map((o) => o.replace(/^self/, "origin"));
@@ -161,22 +161,22 @@ async function applyDamageFromMessage({
             skipIWR: multiplier <= 0,
             rollOptions,
             shieldBlockRequest,
-            outcome: message.flags.pf2e.context?.outcome,
+            outcome: message.flags.avant.context?.outcome,
         });
     }
     toggleOffShieldBlock(message.id);
 }
 
 interface ApplyDamageFromMessageParams {
-    message: ChatMessagePF2e;
+    message: ChatMessageAvant;
     multiplier?: number;
     addend?: number;
     promptModifier?: boolean;
     rollIndex?: number;
 }
 
-async function shiftAdjustDamage(message: ChatMessagePF2e, multiplier: number, rollIndex: number): Promise<void> {
-    const content = await renderTemplate("systems/pf2e/templates/chat/damage/adjustment-dialog.hbs");
+async function shiftAdjustDamage(message: ChatMessageAvant, multiplier: number, rollIndex: number): Promise<void> {
+    const content = await renderTemplate("systems/avant/templates/chat/damage/adjustment-dialog.hbs");
     const AdjustmentDialog = class extends Dialog {
         override activateListeners($html: JQuery): void {
             super.activateListeners($html);
@@ -185,11 +185,11 @@ async function shiftAdjustDamage(message: ChatMessagePF2e, multiplier: number, r
     };
     const isHealing = multiplier < 0;
     new AdjustmentDialog({
-        title: game.i18n.localize(isHealing ? "PF2E.UI.shiftModifyHealingTitle" : "PF2E.UI.shiftModifyDamageTitle"),
+        title: game.i18n.localize(isHealing ? "AVANT.UI.shiftModifyHealingTitle" : "AVANT.UI.shiftModifyDamageTitle"),
         content,
         buttons: {
             ok: {
-                label: game.i18n.localize("PF2E.OK"),
+                label: game.i18n.localize("AVANT.OK"),
                 callback: async ($dialog: JQuery) => {
                     // In case of healing, multipler will have negative sign. The user will expect that positive
                     // modifier would increase healing value, while negative would decrease.
@@ -221,14 +221,14 @@ function toggleOffShieldBlock(messageId: string): void {
         const button = htmlQuery(document.body, selector);
         button?.classList.remove("shield-activated");
     }
-    CONFIG.PF2E.chatDamageButtonShieldToggle = false;
+    CONFIG.AVANT.chatDamageButtonShieldToggle = false;
 }
 
 /**
  * Show or hide a clear-measured-template button on a message (applicable to spell cards with template-placed buttons).
  * The button will be shown if templates are placed and the user has ownership; otherwise it will be hidden.
  */
-function toggleClearTemplatesButton(message: ChatMessagePF2e | null): void {
+function toggleClearTemplatesButton(message: ChatMessageAvant | null): void {
     if (!message || !canvas.ready) return;
 
     const selector = `li[data-message-id="${message.id}"] button[data-action=spell-template-clear]`;

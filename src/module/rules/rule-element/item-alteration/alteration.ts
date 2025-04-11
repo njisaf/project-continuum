@@ -1,6 +1,6 @@
-import type { ActorPF2e } from "@actor";
-import { ItemPF2e, PhysicalItemPF2e } from "@item";
-import type { FrequencyInterval, ItemSourcePF2e, PhysicalItemSource } from "@item/base/data/index.ts";
+import type { ActorAvant } from "@actor";
+import { ItemAvant, PhysicalItemAvant } from "@item";
+import type { FrequencyInterval, ItemSourceAvant, PhysicalItemSource } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { prepareBulkData } from "@item/physical/helpers.ts";
 import type { WeaponRangeIncrement } from "@item/weapon/types.ts";
@@ -12,11 +12,11 @@ import * as R from "remeda";
 import type { StringField } from "types/foundry/common/data/fields.d.ts";
 import type { DataModelValidationFailure } from "types/foundry/common/data/validation-failure.d.ts";
 import { AELikeChangeMode, AELikeRuleElement } from "../ae-like.ts";
-import type { RuleElementPF2e } from "../base.ts";
+import type { RuleElementAvant } from "../base.ts";
 import { ResolvableValueField } from "../data.ts";
 import { ITEM_ALTERATION_VALIDATORS } from "./schemas.ts";
 
-class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlterationSchema> {
+class ItemAlteration extends foundry.abstract.DataModel<RuleElementAvant, ItemAlterationSchema> {
     static VALID_PROPERTIES = [
         "ac-bonus",
         "area-size",
@@ -65,11 +65,11 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
         };
     }
 
-    get rule(): RuleElementPF2e {
+    get rule(): RuleElementAvant {
         return this.parent;
     }
 
-    get actor(): ActorPF2e {
+    get actor(): ActorAvant {
         return this.parent.actor;
     }
 
@@ -77,10 +77,10 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
      * Apply this alteration to an item (or source)
      * @param item The item to be altered
      */
-    applyTo(item: ItemPF2e<ActorPF2e> | ItemSourcePF2e): void {
+    applyTo(item: ItemAvant<ActorAvant> | ItemSourceAvant): void {
         const fallbackValue = ITEM_ALTERATION_VALIDATORS[this.property].fields.value.getInitialValue();
         const data: {
-            item: ItemPF2e | ItemSourcePF2e;
+            item: ItemAvant | ItemSourceAvant;
             alteration: { mode: string; itemType: string; value: unknown };
         } = {
             item,
@@ -178,20 +178,20 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
             }
             case "damage-dice-faces": {
                 const validator = ITEM_ALTERATION_VALIDATORS[this.property];
-                if (!validator.isValid(data) || !(data.item instanceof ItemPF2e)) {
+                if (!validator.isValid(data) || !(data.item instanceof ItemAvant)) {
                     return;
                 }
 
                 const item = data.item;
                 if (!item.system.damage.die) return;
-                if (this.mode === "upgrade" && !item.flags.pf2e.damageFacesUpgraded) {
+                if (this.mode === "upgrade" && !item.flags.avant.damageFacesUpgraded) {
                     item.system.damage.die = nextDamageDieSize({ upgrade: item.system.damage.die });
-                    item.flags.pf2e.damageFacesUpgraded = true;
+                    item.flags.avant.damageFacesUpgraded = true;
                 } else if (this.mode === "downgrade") {
                     item.system.damage.die = nextDamageDieSize({ downgrade: item.system.damage.die });
                 } else if (this.mode === "override" && typeof data.alteration.value === "number") {
                     if (data.alteration.value > Number(item.system.damage.die.replace("d", ""))) {
-                        item.flags.pf2e.damageFacesUpgraded = true;
+                        item.flags.avant.damageFacesUpgraded = true;
                     }
                     item.system.damage.die = `d${data.alteration.value}`;
                 }
@@ -220,7 +220,7 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
             }
             case "defense-passive": {
                 const validator = ITEM_ALTERATION_VALIDATORS[this.property];
-                if (validator.isValid(data) && data.item instanceof ItemPF2e && data.item.system.defense?.passive) {
+                if (validator.isValid(data) && data.item instanceof ItemAvant && data.item.system.defense?.passive) {
                     data.item.system.defense.passive.statistic = data.alteration.value;
                 }
                 return;
@@ -228,7 +228,7 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
             case "description": {
                 const validator = ITEM_ALTERATION_VALIDATORS[this.property];
                 if (!validator.isValid(data)) return;
-                if (!(data.item instanceof ItemPF2e)) return;
+                if (!(data.item instanceof ItemAvant)) return;
                 const contents = validator.initialize(validator.clean(data.alteration)).value;
                 if (this.mode === "override") {
                     data.item.system.description.override = contents;
@@ -251,7 +251,7 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
             case "focus-point-cost": {
                 const validator = ITEM_ALTERATION_VALIDATORS[this.property];
                 if (!validator.isValid(data)) return;
-                if (!(data.item instanceof ItemPF2e) || data.item.isRitual) return;
+                if (!(data.item instanceof ItemAvant) || data.item.isRitual) return;
                 const newValue = AELikeRuleElement.getNewValue(
                     this.mode,
                     data.item.system.cast.focusPoints,
@@ -302,7 +302,7 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
                     data.item.system.material.grade = "standard";
                     // If this is a constructed item, have the displayed name reflect the new material
                     if ("_source" in data.item) {
-                        data.item.name = game.pf2e.system.generateItemName(data.item);
+                        data.item.name = game.avant.system.generateItemName(data.item);
                     }
                 }
                 return;
@@ -426,7 +426,7 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
     }
 
     /** Adjust creature shield data due it being set before item alterations occur */
-    #adjustCreatureShieldData(item: PhysicalItemPF2e | PhysicalItemSource): void {
+    #adjustCreatureShieldData(item: PhysicalItemAvant | PhysicalItemSource): void {
         if ("actor" in item && item.actor?.isOfType("character", "npc") && item.isOfType("shield")) {
             const heldShield = item.actor.heldShield;
             if (item === heldShield) {
@@ -445,7 +445,7 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
         current: FrequencyInterval,
         newValue: string,
     ): FrequencyInterval | DataModelValidationFailure {
-        if (!objectHasKey(CONFIG.PF2E.frequencies, newValue)) {
+        if (!objectHasKey(CONFIG.AVANT.frequencies, newValue)) {
             return new foundry.data.validation.DataModelValidationFailure({ invalidValue: current, fallback: false });
         }
         if (mode === "override") return newValue;
@@ -465,7 +465,7 @@ class ItemAlteration extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlt
 }
 
 interface ItemAlteration
-    extends foundry.abstract.DataModel<RuleElementPF2e, ItemAlterationSchema>,
+    extends foundry.abstract.DataModel<RuleElementAvant, ItemAlterationSchema>,
         ModelPropsFromSchema<ItemAlterationSchema> {}
 
 type ItemAlterationSchema = {

@@ -1,15 +1,15 @@
-import { CharacterPF2e } from "@actor";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import { CharacterAvant } from "@actor";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { ActionDefaultOptions } from "@system/action-macros/index.ts";
 import type { Statistic } from "@system/statistic/index.ts";
 import { fontAwesomeIcon, localizer } from "@util";
 
 export function encouragingWords(options: ActionDefaultOptions): void {
-    const localize = localizer("PF2E.Actions.EncouragingWords");
+    const localize = localizer("AVANT.Actions.EncouragingWords");
 
     const actors = Array.isArray(options.actors) ? options.actors : [options.actors];
     const actor = actors[0];
-    if (actors.length > 1 || !(actor instanceof CharacterPF2e)) {
+    if (actors.length > 1 || !(actor instanceof CharacterAvant)) {
         ui.notifications.error(localize("BadArgs"));
         return;
     }
@@ -40,8 +40,8 @@ export function encouragingWords(options: ActionDefaultOptions): void {
                     const rollType = degreeOfSuccess > 1 ? localize("Recovery") : localize("Damage");
                     const token = actor.getActiveTokens().shift()?.document ?? null;
 
-                    ChatMessagePF2e.create({
-                        speaker: ChatMessagePF2e.getSpeaker({ actor, token }),
+                    ChatMessageAvant.create({
+                        speaker: ChatMessageAvant.getSpeaker({ actor, token }),
                         flavor: `<strong>${rollType} ${localize("Title")}</strong> (${successLabel})`,
                         rolls: [healRoll.toJSON()],
                     });

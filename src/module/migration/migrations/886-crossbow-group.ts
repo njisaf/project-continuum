@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString, sluggify } from "@util";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration886CrossbowGroup extends MigrationBase {
     static override version = 0.886;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "weapon" && source.system.group === "bow") {
             const otherTags: string[] = source.system.traits.otherTags ?? [];
             const slug = source.system.slug ?? sluggify(source.name);

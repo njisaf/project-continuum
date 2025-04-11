@@ -6,7 +6,7 @@ import type { ArmorCategory } from "@item/armor/types.ts";
 import { ItemSystemModel, ItemSystemSchema } from "@item/base/data/model.ts";
 import type {
     ActionType,
-    BaseItemSourcePF2e,
+    BaseItemSourceAvant,
     Frequency,
     ItemSystemSource,
     ItemTraits,
@@ -17,13 +17,13 @@ import type { OneToFour, OneToThree } from "@module/data.ts";
 import { RarityField } from "@module/model.ts";
 import { LaxArrayField, NullCoercingNumberField, RecordField, SlugField } from "@system/schema-data-fields.ts";
 import { SourcePropFromDataField } from "types/foundry/common/data/fields.js";
-import type { FeatPF2e } from "./document.ts";
+import type { FeatAvant } from "./document.ts";
 import type { FeatOrFeatureCategory, FeatTrait } from "./types.ts";
 import fields = foundry.data.fields;
 
-type FeatSource = BaseItemSourcePF2e<"feat", FeatSystemSource>;
+type FeatSource = BaseItemSourceAvant<"feat", FeatSystemSource>;
 
-class FeatSystemData extends ItemSystemModel<FeatPF2e, FeatSystemSchema> {
+class FeatSystemData extends ItemSystemModel<FeatAvant, FeatSystemSchema> {
     declare traits: FeatTraits;
 
     declare maxTakable: number;
@@ -35,20 +35,20 @@ class FeatSystemData extends ItemSystemModel<FeatPF2e, FeatSystemSchema> {
     declare subfeatures: FeatSubfeatures;
 
     static override defineSchema(): FeatSystemSchema {
-        const featTraits: Record<FeatTrait, string> = CONFIG.PF2E.featTraits;
-        const featCategories: Record<FeatOrFeatureCategory, string> = CONFIG.PF2E.featCategories;
-        const actionTypes: Record<ActionType, string> = CONFIG.PF2E.actionTypes;
-        const attributes: Record<AttributeString, string> = CONFIG.PF2E.abilities;
-        const senseTypes: Record<SenseType, string> = CONFIG.PF2E.senses;
-        const senseAcuities: Record<SenseAcuity, string> = CONFIG.PF2E.senseAcuities;
-        const languages: Record<Language, string> = CONFIG.PF2E.languages;
+        const featTraits: Record<FeatTrait, string> = CONFIG.AVANT.featTraits;
+        const featCategories: Record<FeatOrFeatureCategory, string> = CONFIG.AVANT.featCategories;
+        const actionTypes: Record<ActionType, string> = CONFIG.AVANT.actionTypes;
+        const attributes: Record<AttributeString, string> = CONFIG.AVANT.abilities;
+        const senseTypes: Record<SenseType, string> = CONFIG.AVANT.senses;
+        const senseAcuities: Record<SenseAcuity, string> = CONFIG.AVANT.senseAcuities;
+        const languages: Record<Language, string> = CONFIG.AVANT.languages;
         const increasableProficiencies: Record<IncreasableProficiency, string> = {
-            ...CONFIG.PF2E.saves,
-            ...CONFIG.PF2E.classTraits,
-            ...CONFIG.PF2E.armorCategories,
-            ...CONFIG.PF2E.weaponCategories,
-            perception: "PF2E.PerceptionLabel",
-            spellcasting: "PF2E.Item.Spell.Plural",
+            ...CONFIG.AVANT.saves,
+            ...CONFIG.AVANT.classTraits,
+            ...CONFIG.AVANT.armorCategories,
+            ...CONFIG.AVANT.weaponCategories,
+            perception: "AVANT.PerceptionLabel",
+            spellcasting: "AVANT.Item.Spell.Plural",
         };
 
         return {
@@ -236,7 +236,7 @@ class FeatSystemData extends ItemSystemModel<FeatPF2e, FeatSystemSchema> {
 }
 
 interface FeatSystemData
-    extends ItemSystemModel<FeatPF2e, FeatSystemSchema>,
+    extends ItemSystemModel<FeatAvant, FeatSystemSchema>,
         Omit<ModelPropsFromSchema<FeatSystemSchema>, "description"> {}
 
 type FeatSystemSchema = Omit<ItemSystemSchema, "traits"> & {

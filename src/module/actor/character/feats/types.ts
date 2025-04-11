@@ -1,11 +1,11 @@
-import type { ActorPF2e } from "@actor/base.ts";
-import type { FeatPF2e, HeritagePF2e, ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor/base.ts";
+import type { FeatAvant, HeritageAvant, ItemAvant } from "@item";
 import type { ItemSystemData } from "@item/base/data/index.ts";
 import type { FeatOrFeatureCategory } from "@item/feat/types.ts";
 import type { FeatGroup } from "./group.ts";
 
 /** Any document that is similar enough to a feat/feature to be used as a feat for the purposes of feat groups */
-interface FeatLike<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface FeatLike<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly level: number | null;
     category: string;
     group: FeatGroup<NonNullable<TParent>, this> | null;
@@ -69,11 +69,11 @@ interface FeatSlotData {
 }
 
 /** An active feat slot in a feat group, including any feats that it might be containing */
-interface FeatSlot<TItem extends FeatLike | HeritagePF2e = FeatPF2e> extends FeatSlotData {
+interface FeatSlot<TItem extends FeatLike | HeritageAvant = FeatAvant> extends FeatSlotData {
     id: string;
     level: number | null;
     feat?: Maybe<TItem>;
-    children: FeatSlot<FeatLike | HeritagePF2e>[];
+    children: FeatSlot<FeatLike | HeritageAvant>[];
 }
 
 export type { FeatBrowserFilterProps, FeatGroupData, FeatLike, FeatSlot, FeatSlotData };

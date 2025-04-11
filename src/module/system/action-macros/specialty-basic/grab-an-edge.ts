@@ -1,6 +1,6 @@
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.GrabAnEdge";
+const PREFIX = "AVANT.Actions.GrabAnEdge";
 
 const grabAnEdge = new SingleCheckAction({
     cost: "reaction",

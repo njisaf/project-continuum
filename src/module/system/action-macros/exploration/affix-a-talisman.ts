@@ -1,8 +1,8 @@
 import { SimpleAction } from "@actor/actions/index.ts";
 
 const affixATalisman = new SimpleAction({
-    description: "PF2E.Actions.AffixATalisman.Description",
-    name: "PF2E.Actions.AffixATalisman.Title",
+    description: "AVANT.Actions.AffixATalisman.Description",
+    name: "AVANT.Actions.AffixATalisman.Title",
     slug: "affix-a-talisman",
     traits: ["exploration", "manipulate"],
 });

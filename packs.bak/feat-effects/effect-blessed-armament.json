@@ -1,0 +1,169 @@
+{
+    "_id": "sCxi8lOH8tWQjLh0",
+    "img": "systems/avant/icons/equipment/runes/weapon-property-runes/weapon-property-runes.webp",
+    "name": "Effect: Blessed Armament",
+    "system": {
+        "description": {
+            "value": "<p>The item gains the effect of a property rune.</p><hr /><p>From <em>@UUID[Compendium.avant.classfeatures.Item.Blessed Armament]</em></p>\n<p>@UUID[Compendium.avant.equipment-srd.Item.Vitalizing], @UUID[Compendium.avant.equipment-srd.Item.Ghost Touch], @UUID[Compendium.avant.equipment-srd.Item.Fearsome], @UUID[Compendium.avant.equipment-srd.Item.Returning], or @UUID[Compendium.avant.equipment-srd.Item.Shifting]</p><hr /><p>From <em>@UUID[Compendium.avant.feats-srd.Item.Radiant Armament]</em>:</p>\n<p>@UUID[Compendium.avant.equipment-srd.Item.Astral], @UUID[Compendium.avant.equipment-srd.Item.Brilliant], @UUID[Compendium.avant.equipment-srd.Item.Holy], or @UUID[Compendium.avant.equipment-srd.Item.Unholy]</p><hr /><p>From <em>@UUID[Compendium.avant.feats-srd.Item.Armament Paragon]</em>:</p>\n<p>@UUID[Compendium.avant.equipment-srd.Item.Animated], @UUID[Compendium.avant.equipment-srd.Item.Vitalizing (Greater)], or @UUID[Compendium.avant.equipment-srd.Item.Keen]</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 0
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "choices": {
+                    "includeHandwraps": true,
+                    "ownedItems": true,
+                    "types": [
+                        "weapon"
+                    ]
+                },
+                "flag": "weapon",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Weapon"
+            },
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.WeaponPropertyRune.astral.Name",
+                        "predicate": [
+                            "feat:radiant-armament"
+                        ],
+                        "value": "astral"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterAstral.Name",
+                        "predicate": [
+                            "feat:armament-paragon",
+                            "feat:radiant-armament"
+                        ],
+                        "value": "greater-astral"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.brilliant.Name",
+                        "predicate": [
+                            "feat:radiant-armament"
+                        ],
+                        "value": "brilliant"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterBrilliant.Name",
+                        "predicate": [
+                            "feat:armament-paragon",
+                            "feat:radiant-armament"
+                        ],
+                        "value": "greater-brilliant"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.fearsome.Name",
+                        "value": "fearsome"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterFearsome.Name",
+                        "predicate": [
+                            "feat:armament-paragon"
+                        ],
+                        "value": "greater-fearsome"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.ghostTouch.Name",
+                        "value": "ghost-touch"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.grievous.Name",
+                        "predicate": [
+                            "feat:armament-paragon"
+                        ],
+                        "value": "grievous"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.holy.Name",
+                        "predicate": [
+                            "feat:radiant-armament",
+                            "sanctification:holy"
+                        ],
+                        "value": "holy"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.keen.Name",
+                        "predicate": [
+                            "feat:armament-paragon"
+                        ],
+                        "value": "keen"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.returning.Name",
+                        "value": "returning"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.shifting.Name",
+                        "value": "shifting"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.unholy.Name",
+                        "predicate": [
+                            "feat:radiant-armament",
+                            "sanctification:unholy"
+                        ],
+                        "value": "unholy"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.disrupting.Name",
+                        "value": "disrupting"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.greaterDisrupting.Name",
+                        "predicate": [
+                            "feat:armament-paragon"
+                        ],
+                        "value": "greater-disrupting"
+                    }
+                ],
+                "flag": "rune",
+                "key": "ChoiceSet"
+            },
+            {
+                "definition": [
+                    {
+                        "or": [
+                            "item:id:{item|flags.avant.rulesSelections.weapon}",
+                            "item:category:{item|flags.avant.rulesSelections.weapon}"
+                        ]
+                    }
+                ],
+                "key": "AdjustStrike",
+                "mode": "add",
+                "property": "property-runes",
+                "value": "{item|flags.avant.rulesSelections.rune}"
+            },
+            {
+                "key": "CriticalSpecialization",
+                "predicate": [
+                    "item:id:{item|flags.avant.rulesSelections.weapon}"
+                ]
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

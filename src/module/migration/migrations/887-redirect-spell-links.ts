@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString } from "@util";
 import type { JournalEntrySource } from "types/foundry/common/documents/journal-entry.d.ts";
 import { MigrationBase } from "../base.ts";
@@ -34,38 +34,38 @@ export class Migration887RedirectSpellLinks extends MigrationBase {
         },
     ];
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         for (const spell of this.#spells) {
             const { from, to } = spell;
             if ("game" in globalThis) {
-                const isolatedUUID = new RegExp(String.raw`^Compendium\.pf2e\.spells-srd\.(?:Item\.)?${from._id}$`);
+                const isolatedUUID = new RegExp(String.raw`^Compendium\.avant\.spells-srd\.(?:Item\.)?${from._id}$`);
                 source.system = recursiveReplaceString(source.system, (s) =>
-                    s.replace(isolatedUUID, `Compendium.pf2e.spells-srd.Item.${to._id}`),
+                    s.replace(isolatedUUID, `Compendium.avant.spells-srd.Item.${to._id}`),
                 );
 
                 const { description } = source.system;
                 description.value = description.value.replace(
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${from._id}]{${from.name}}`,
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${to._id}]{${to.name}}`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${from._id}]{${from.name}}`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${to._id}]{${to.name}}`,
                 );
                 description.gm &&= description.gm.replace(
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${from._id}]{${from.name}}`,
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${to._id}]{${to.name}}`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${from._id}]{${from.name}}`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${to._id}]{${to.name}}`,
                 );
             } else {
-                const isolatedUUID = new RegExp(String.raw`^Compendium\.pf2e\.spells-srd\.Item\.${from.name}$`);
+                const isolatedUUID = new RegExp(String.raw`^Compendium\.avant\.spells-srd\.Item\.${from.name}$`);
                 source.system = recursiveReplaceString(source.system, (s) =>
-                    s.replace(isolatedUUID, `Compendium.pf2e.spells-srd.Item.${to.name}`),
+                    s.replace(isolatedUUID, `Compendium.avant.spells-srd.Item.${to.name}`),
                 );
 
                 const { description } = source.system;
                 description.value = description.value.replaceAll(
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${from.name}]`,
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${to.name}]`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${from.name}]`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${to.name}]`,
                 );
                 description.gm &&= description.gm.replaceAll(
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${from.name}]`,
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${to.name}]`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${from.name}]`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${to.name}]`,
                 );
             }
         }
@@ -76,12 +76,12 @@ export class Migration887RedirectSpellLinks extends MigrationBase {
             const { from, to } = spell;
             for (const page of source.pages) {
                 page.text.content &&= page.text.content.replace(
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${from._id}]{${from.name}}`,
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${to._id}]{${to.name}}`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${from._id}]{${from.name}}`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${to._id}]{${to.name}}`,
                 );
                 page.text.content &&= page.text.content.replace(
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${from.name}]`,
-                    `@UUID[Compendium.pf2e.spells-srd.Item.${to.name}]`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${from.name}]`,
+                    `@UUID[Compendium.avant.spells-srd.Item.${to.name}]`,
                 );
             }
         }

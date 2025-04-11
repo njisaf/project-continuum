@@ -1,19 +1,19 @@
-import type { NPCPF2e } from "@actor";
+import type { NPCAvant } from "@actor";
 import { NPCSkillData, NPCSource } from "@actor/npc/data.ts";
 import { LoreSource } from "@item/base/data/index.ts";
 import { htmlClosest, htmlQuery, htmlQueryAll, objectHasKey } from "@util";
 
 /** Specialized form to setup skills for an NPC character. */
-export class NPCSkillsEditor extends DocumentSheet<NPCPF2e> {
-    get actor(): NPCPF2e {
+export class NPCSkillsEditor extends DocumentSheet<NPCAvant> {
+    get actor(): NPCAvant {
         return this.object;
     }
 
     static override get defaultOptions(): DocumentSheetOptions {
         return {
             ...super.defaultOptions,
-            classes: ["pf2e", "npc-skills-editor"],
-            template: "systems/pf2e/templates/actors/npc/skills-editor.hbs",
+            classes: ["avant", "npc-skills-editor"],
+            template: "systems/avant/templates/actors/npc/skills-editor.hbs",
             height: "auto",
             scrollY: [".scroll-container"],
             sheetConfig: false,
@@ -26,7 +26,7 @@ export class NPCSkillsEditor extends DocumentSheet<NPCPF2e> {
     }
 
     override get title(): string {
-        return game.i18n.format("PF2E.Actor.NPC.SkillsEditor.Title", { actor: this.actor.name });
+        return game.i18n.format("AVANT.Actor.NPC.SkillsEditor.Title", { actor: this.actor.name });
     }
 
     /** Prepare data to be sent to HTML. */
@@ -48,7 +48,7 @@ export class NPCSkillsEditor extends DocumentSheet<NPCPF2e> {
 
         htmlQuery(html, "button[data-action=add-skill]")?.addEventListener("click", async (event) => {
             const slug = htmlQuery(htmlClosest(event.currentTarget, ".skill-selector"), "select")?.value;
-            if (slug && slug in CONFIG.PF2E.skills) {
+            if (slug && slug in CONFIG.AVANT.skills) {
                 await this.actor.update({ [`system.skills.${slug}`]: { base: 0 } });
             }
         });
@@ -68,7 +68,7 @@ export class NPCSkillsEditor extends DocumentSheet<NPCPF2e> {
         for (const button of htmlQueryAll(html, "a[data-action=add-special-skill]")) {
             button.addEventListener("click", (event): void => {
                 const skill = htmlClosest(event.target, "[data-skill]")?.dataset.skill;
-                if (!objectHasKey(CONFIG.PF2E.skills, skill)) return;
+                if (!objectHasKey(CONFIG.AVANT.skills, skill)) return;
 
                 const special = fu.duplicate(this.actor._source.system.skills[skill]?.special ?? []);
                 special.push({ label: "", base: 0 });
@@ -79,7 +79,7 @@ export class NPCSkillsEditor extends DocumentSheet<NPCPF2e> {
         for (const button of htmlQueryAll(html, "a[data-action=remove-special-skill]")) {
             button.addEventListener("click", (event): void => {
                 const skill = htmlClosest(event.target, "[data-skill]")?.dataset.skill;
-                if (!objectHasKey(CONFIG.PF2E.skills, skill) || !(event.currentTarget instanceof HTMLElement)) return;
+                if (!objectHasKey(CONFIG.AVANT.skills, skill) || !(event.currentTarget instanceof HTMLElement)) return;
 
                 const index = Number(event.currentTarget.dataset.specialSkillIndex);
                 const special =
@@ -152,7 +152,7 @@ export class NPCSkillsEditor extends DocumentSheet<NPCPF2e> {
                     if (special.predicate?.length === 0) {
                         delete special.predicate;
                     } else if (!Array.isArray(special.predicate)) {
-                        throw Error(game.i18n.localize("PF2E.Actor.NPC.SkillsEditor.Error.PredicateArray"));
+                        throw Error(game.i18n.localize("AVANT.Actor.NPC.SkillsEditor.Error.PredicateArray"));
                     }
                 }
             }
@@ -182,8 +182,8 @@ export class NPCSkillsEditor extends DocumentSheet<NPCPF2e> {
     }
 }
 
-interface EditorData extends DocumentSheetData<NPCPF2e> {
-    actor: NPCPF2e;
+interface EditorData extends DocumentSheetData<NPCAvant> {
+    actor: NPCAvant;
     trainedSkills: NPCSkillData[];
     loreSkills: NPCSkillData[];
     untrainedSkills: NPCSkillData[];

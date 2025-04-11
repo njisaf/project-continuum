@@ -1,13 +1,13 @@
-import { ChatMessagePF2e } from "./index.ts";
+import { ChatMessageAvant } from "./index.ts";
 
 export class CriticalHitAndFumbleCards {
     private static rollTypes = ["attack-roll", "spell-attack-roll"];
     private static diceSoNice: boolean;
     private static appendButtonsOption: boolean;
 
-    static handleDraw(message: ChatMessagePF2e): void {
+    static handleDraw(message: ChatMessageAvant): void {
         if (message.isAuthor && message.isContentVisible) {
-            const type = message.flags.pf2e.context?.type ?? "";
+            const type = message.flags.avant.context?.type ?? "";
             const firstDie = message.rolls.at(0)?.dice[0];
             if (firstDie && firstDie.faces === 20 && this.rollTypes.includes(type)) {
                 if (firstDie.total === 20) {
@@ -34,7 +34,7 @@ export class CriticalHitAndFumbleCards {
     private static drawFromTable(table: "critTable" | "fumbleTable", automatic = false): void {
         const tableId = table === "critTable" ? "FTEpsIWWVrDj0jNG" : "WzMGWMIrrPvSp75D";
         game.packs
-            .get<CompendiumCollection<RollTable>>("pf2e.rollable-tables", { strict: true })
+            .get<CompendiumCollection<RollTable>>("avant.rollable-tables", { strict: true })
             .getDocument(tableId)
             .then((rollTable) => {
                 rollTable?.draw({ displayChat: false }).then((draw) => {
@@ -50,19 +50,19 @@ export class CriticalHitAndFumbleCards {
             });
     }
 
-    static appendButtons(message: ChatMessagePF2e, $html: JQuery): void {
-        this.appendButtonsOption ??= game.pf2e.settings.critFumble.buttons;
+    static appendButtons(message: ChatMessageAvant, $html: JQuery): void {
+        this.appendButtonsOption ??= game.avant.settings.critFumble.buttons;
         if (this.appendButtonsOption && (message.isAuthor || game.user.isGM) && message.isContentVisible) {
-            const type = message.flags.pf2e.context?.type ?? "";
+            const type = message.flags.avant.context?.type ?? "";
             if (this.rollTypes.includes(type)) {
                 const $critButton = $(
                     `<button class="dice-total-fullDamage-btn" style="width: 22px; height:22px; font-size:10px;line-height:1px"><i class="fa-solid fa-thumbs-up" title="${game.i18n.localize(
-                        "PF2E.CriticalHitCardButtonTitle",
+                        "AVANT.CriticalHitCardButtonTitle",
                     )}"></i></button>`,
                 );
                 const $fumbleButton = $(
                     `<button class="dice-total-fullDamage-btn" style="width: 22px; height:22px; font-size:10px;line-height:1px"><i class="fa-solid fa-thumbs-down" title="${game.i18n.localize(
-                        "PF2E.CriticalFumbleCardButtonTitle",
+                        "AVANT.CriticalFumbleCardButtonTitle",
                     )}"></i></button>`,
                 );
                 const $container = $(

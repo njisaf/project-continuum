@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.MakeAnImpression";
+const PREFIX = "AVANT.Actions.MakeAnImpression";
 
 function makeAnImpression(options: SkillActionOptions): void {
     const slug = options?.skill ?? "diplomacy";
@@ -10,16 +10,16 @@ function makeAnImpression(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph,
-        title: "PF2E.Actions.MakeAnImpression.Title",
+        title: "AVANT.Actions.MakeAnImpression.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["auditory", "concentrate", "exploration", "linguistic", "mental"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass ?? "will",
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.MakeAnImpression", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.MakeAnImpression", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.MakeAnImpression", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.MakeAnImpression", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.MakeAnImpression", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.MakeAnImpression", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);

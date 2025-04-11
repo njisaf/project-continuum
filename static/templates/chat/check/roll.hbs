@@ -1,4 +1,4 @@
-<div class="dice-roll {{type}}{{#if action}} {{action}}{{/if}}" data-tooltip-class="pf2e">
+<div class="dice-roll {{type}}{{#if action}} {{action}}{{/if}}" data-tooltip-class="avant">
     {{#if flavor~}}
         <div class="dice-flavor">
             {{flavor}}
@@ -18,7 +18,7 @@
 {{#if canRollDamage}}
     <div class="message-buttons" data-identifier="{{identifier}}">
         <button type="button" class="success" data-action="{{action}}-damage" data-outcome="success">
-            {{localize "PF2E.DamageLabel"}}
+            {{localize "AVANT.DamageLabel"}}
             {{#if (eq degree 2)}}
                 <span class="cue"{{#unless showDamageCue}} data-visibility="owner" data-whose="opposer"{{/unless}}>
                     <i class="fa-duotone fa-bullseye-pointer fa-flip-horizontal fa-fw"></i>
@@ -26,7 +26,7 @@
             {{/if}}
         </button>
         <button type="button" class="critical-success" data-action="{{action}}-damage" data-outcome="critical-success">
-            {{localize "PF2E.CriticalDamageLabel"}}
+            {{localize "AVANT.CriticalDamageLabel"}}
             {{#if (eq degree 3)}}
                 <span class="cue"{{#unless showDamageCue}} data-visibility="owner" data-whose="opposer"{{/unless}}>
                     <i class="fa-duotone fa-bullseye-pointer fa-flip-horizontal fa-fw"></i>

@@ -1,9 +1,9 @@
-import type { ActorPF2e, CreaturePF2e } from "@actor";
+import type { ActorAvant, CreatureAvant } from "@actor";
 import { TraitViewData } from "@actor/data/base.ts";
 import { calculateMAPs } from "@actor/helpers.ts";
 import {
     CheckModifier,
-    ModifierPF2e,
+    ModifierAvant,
     PROFICIENCY_RANK_OPTION,
     StatisticModifier,
     createAttributeModifier,
@@ -11,10 +11,10 @@ import {
 } from "@actor/modifiers.ts";
 import { CheckContext } from "@actor/roll-context/check.ts";
 import { AttributeString } from "@actor/types.ts";
-import type { ItemPF2e } from "@item";
+import type { ItemAvant } from "@item";
 import { AbilityTrait } from "@item/ability/types.ts";
 import { ZeroToFour, ZeroToTwo } from "@module/data.ts";
-import { RollNotePF2e, RollNoteSource } from "@module/notes.ts";
+import { RollNoteAvant, RollNoteSource } from "@module/notes.ts";
 import {
     extractDegreeOfSuccessAdjustments,
     extractModifierAdjustments,
@@ -24,12 +24,12 @@ import {
     extractRollTwice,
 } from "@module/rules/helpers.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
-import type { TokenDocumentPF2e } from "@scene";
-import { CheckPF2e, CheckRollCallback } from "@system/check/check.ts";
+import type { TokenDocumentAvant } from "@scene";
+import { CheckAvant, CheckRollCallback } from "@system/check/check.ts";
 import type { CheckRoll } from "@system/check/index.ts";
 import { CheckCheckContext, CheckType, RollTwiceOption } from "@system/check/types.ts";
 import { CheckDC, DEGREE_ADJUSTMENT_AMOUNTS } from "@system/degree-of-success.ts";
-import { ErrorPF2e, isObject, signedInteger, sluggify } from "@util";
+import { ErrorAvant, isObject, signedInteger, sluggify } from "@util";
 import * as R from "remeda";
 import { BaseStatistic } from "./base.ts";
 import {
@@ -41,7 +41,7 @@ import {
 } from "./data.ts";
 
 /** A Pathfinder statistic used to perform checks and calculate DCs */
-class Statistic<TActor extends ActorPF2e = ActorPF2e> extends BaseStatistic<TActor> {
+class Statistic<TActor extends ActorAvant = ActorAvant> extends BaseStatistic<TActor> {
     attribute: AttributeString | null = null;
 
     rank: ZeroToFour | null = null;
@@ -104,7 +104,7 @@ class Statistic<TActor extends ActorPF2e = ActorPF2e> extends BaseStatistic<TAct
     }
 
     /** Get the attribute modifier used with this statistic. Since NPC statistics are contrived, create a new one. */
-    get attributeModifier(): ModifierPF2e | null {
+    get attributeModifier(): ModifierAvant | null {
         if (this.actor.isOfType("npc")) {
             return this.attribute
                 ? createAttributeModifier({ actor: this.actor, attribute: this.attribute, domains: this.domains })
@@ -180,14 +180,14 @@ class Statistic<TActor extends ActorPF2e = ActorPF2e> extends BaseStatistic<TAct
         data: Omit<DeepPartial<StatisticData>, "check" | "dc" | "modifiers"> & {
             dc?: Partial<StatisticDifficultyClassData>;
             check?: Partial<StatisticCheckData>;
-            modifiers?: ModifierPF2e[];
+            modifiers?: ModifierAvant[];
         },
     ): this;
     clone(
         data: Omit<DeepPartial<StatisticData>, "check" | "dc" | "modifiers"> & {
             dc?: Partial<StatisticDifficultyClassData>;
             check?: Partial<StatisticCheckData>;
-            modifiers?: ModifierPF2e[];
+            modifiers?: ModifierAvant[];
         },
     ): Statistic<TActor> {
         function maybeMergeArrays<T>(arr1: Maybe<T[]>, arr2: Maybe<T[]>) {
@@ -221,14 +221,14 @@ class Statistic<TActor extends ActorPF2e = ActorPF2e> extends BaseStatistic<TAct
         data: Omit<DeepPartial<StatisticData>, "check" | "dc" | "modifiers"> & {
             dc?: Partial<StatisticDifficultyClassData>;
             check?: Partial<StatisticCheckData>;
-            modifiers?: ModifierPF2e[];
+            modifiers?: ModifierAvant[];
         },
     ): this;
     extend(
         data: Omit<DeepPartial<StatisticData>, "check" | "dc" | "modifiers"> & {
             dc?: Partial<StatisticDifficultyClassData>;
             check?: Partial<StatisticCheckData>;
-            modifiers?: ModifierPF2e[];
+            modifiers?: ModifierAvant[];
         },
     ): Statistic<TActor> {
         const extended = this.clone(data);
@@ -265,7 +265,7 @@ class Statistic<TActor extends ActorPF2e = ActorPF2e> extends BaseStatistic<TAct
 
     /** Returns data intended to be merged back into actor data. By default the value is the DC */
     getTraceData(
-        this: Statistic<CreaturePF2e>,
+        this: Statistic<CreatureAvant>,
         options?: { value?: "dc" | "mod" },
     ): StatisticTraceData<AttributeString>;
     getTraceData(options?: { value?: "dc" | "mod" }): StatisticTraceData;
@@ -296,7 +296,7 @@ class StatisticCheck<TParent extends Statistic = Statistic> {
     label: string;
     domains: string[];
     mod: number;
-    modifiers: ModifierPF2e[];
+    modifiers: ModifierAvant[];
 
     constructor(parent: TParent, data: StatisticData, config: RollOptionConfig = {}) {
         this.parent = parent;
@@ -354,14 +354,14 @@ class StatisticCheck<TParent extends Statistic = Statistic> {
             ...checkOnlyModifiers.map((m) => m.clone({ domains: this.domains }, { test: rollOptions })),
         ];
         if (this.type === "flat-check" && this.modifiers.length > 0) {
-            console.error(ErrorPF2e("Flat checks cannot have modifiers.").message);
+            console.error(ErrorAvant("Flat checks cannot have modifiers.").message);
             this.modifiers = [];
         }
 
         this.mod = new StatisticModifier(this.label, this.modifiers, rollOptions).totalModifier;
     }
 
-    get actor(): ActorPF2e {
+    get actor(): ActorAvant {
         return this.parent.actor;
     }
 
@@ -370,23 +370,23 @@ class StatisticCheck<TParent extends Statistic = Statistic> {
         if (data.check?.label) return game.i18n.localize(data.check?.label);
 
         // Check for specific check localization, and use if it exists
-        const checkKey = `PF2E.ActionsCheck.${this.parent.slug}`;
+        const checkKey = `AVANT.ActionsCheck.${this.parent.slug}`;
         const checkLabel = game.i18n.localize(checkKey);
         if (!["x", "x-attack-roll"].includes(this.parent.slug) && checkLabel !== checkKey) {
             return checkLabel;
         }
 
         if (this.domains.includes("spell-attack-roll")) {
-            return game.i18n.format("PF2E.SpellAttackWithTradition", { tradition: parentLabel });
+            return game.i18n.format("AVANT.SpellAttackWithTradition", { tradition: parentLabel });
         }
 
         switch (this.type) {
             case "skill-check":
-                return game.i18n.format("PF2E.SkillCheckWithName", { skillName: parentLabel });
+                return game.i18n.format("AVANT.SkillCheckWithName", { skillName: parentLabel });
             case "saving-throw":
-                return game.i18n.format("PF2E.SavingThrowWithName", { saveName: parentLabel });
+                return game.i18n.format("AVANT.SavingThrowWithName", { saveName: parentLabel });
             case "perception-check":
-                return game.i18n.format("PF2E.PerceptionCheck");
+                return game.i18n.format("AVANT.PerceptionCheck");
             default:
                 return parentLabel;
         }
@@ -544,7 +544,7 @@ class StatisticCheck<TParent extends Statistic = Statistic> {
                 dosAdjustments.push({
                     adjustments: {
                         all: {
-                            label: "PF2E.TraitIncapacitation",
+                            label: "AVANT.TraitIncapacitation",
                             amount,
                         },
                     },
@@ -560,7 +560,7 @@ class StatisticCheck<TParent extends Statistic = Statistic> {
             } else {
                 const maps = calculateMAPs(item, { domains, options });
                 const penalty = maps[`map${mapIncreases}`];
-                extraModifiers.push(new ModifierPF2e(maps.label, penalty, "untyped"));
+                extraModifiers.push(new ModifierAvant(maps.label, penalty, "untyped"));
             }
         }
 
@@ -568,7 +568,7 @@ class StatisticCheck<TParent extends Statistic = Statistic> {
         const traits =
             args.traits
                 ?.map((t) => (typeof t === "string" ? t : t.name))
-                .filter((t): t is AbilityTrait => t in CONFIG.PF2E.actionTraits) ?? [];
+                .filter((t): t is AbilityTrait => t in CONFIG.AVANT.actionTraits) ?? [];
         for (const trait of traits) {
             options.add(trait);
         }
@@ -612,7 +612,7 @@ class StatisticCheck<TParent extends Statistic = Statistic> {
         const clonedStatistic = selfIsTarget ? rollContext.target?.statistic : rollContext.origin?.statistic;
         const modifiers = clonedStatistic?.check.modifiers ?? this.modifiers;
         const check = new CheckModifier(this.parent.slug, { modifiers }, extraModifiers);
-        const roll = await CheckPF2e.roll(check, context, null, args.callback);
+        const roll = await CheckAvant.roll(check, context, null, args.callback);
 
         if (roll) {
             for (const rule of selfActor.rules.filter((r) => !r.ignored)) {
@@ -643,13 +643,13 @@ interface StatisticRollParameters {
     /** The slug of an action of which this check is a constituent roll */
     action?: string;
     /** What token to use for the roll itself. Defaults to the actor's token */
-    token?: Maybe<TokenDocumentPF2e>;
+    token?: Maybe<TokenDocumentAvant>;
     /** Which attack this is (for the purposes of multiple attack penalty) */
     attackNumber?: number;
     /** Optional target for the roll */
-    target?: Maybe<ActorPF2e>;
+    target?: Maybe<ActorAvant>;
     /** Optional origin for the roll: only one of target and origin may be provided */
-    origin?: Maybe<ActorPF2e>;
+    origin?: Maybe<ActorAvant>;
     /** Optional DC data for the roll */
     dc?: CheckDC | CheckDCReference | number | null;
     /** Optional override for the check modifier label */
@@ -659,13 +659,13 @@ interface StatisticRollParameters {
     /** Optional override for the dialog's title: defaults to label */
     title?: string;
     /** Any additional roll notes that should be used in the roll. */
-    extraRollNotes?: (RollNotePF2e | RollNoteSource)[];
+    extraRollNotes?: (RollNoteAvant | RollNoteSource)[];
     /** Any additional options that should be used in the roll. */
     extraRollOptions?: string[];
     /** Additional modifiers */
-    modifiers?: ModifierPF2e[];
+    modifiers?: ModifierAvant[];
     /** The originating item of this attack, if any */
-    item?: ItemPF2e<ActorPF2e> | null;
+    item?: ItemAvant<ActorAvant> | null;
     /** The roll mode (i.e., 'roll', 'blindroll', etc) to use when rendering this roll. */
     rollMode?: RollMode | "roll";
     /** Should the dialog be skipped */
@@ -688,7 +688,7 @@ class StatisticDifficultyClass<TParent extends Statistic = Statistic> {
     parent: TParent;
     domains: string[];
     label?: string;
-    modifiers: ModifierPF2e[];
+    modifiers: ModifierAvant[];
     options: Set<string>;
 
     constructor(parent: TParent, data: StatisticData, options: RollOptionConfig = {}) {
@@ -744,7 +744,7 @@ class StatisticDifficultyClass<TParent extends Statistic = Statistic> {
 
     get breakdown(): string {
         const enabledMods = this.modifiers.filter((m) => m.enabled);
-        return [game.i18n.localize("PF2E.DCBase")]
+        return [game.i18n.localize("AVANT.DCBase")]
             .concat(enabledMods.map((m) => `${m.label} ${signedInteger(m.modifier)}`))
             .join(", ");
     }
@@ -761,9 +761,9 @@ interface CheckDCReference {
 
 interface RollOptionConfig {
     extraRollOptions?: string[];
-    item?: ItemPF2e | null;
-    origin?: ActorPF2e | null;
-    target?: ActorPF2e | null;
+    item?: ItemAvant | null;
+    origin?: ActorAvant | null;
+    target?: ActorAvant | null;
 }
 
 export { Statistic, StatisticCheck, StatisticDifficultyClass };

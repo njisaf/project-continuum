@@ -7,16 +7,16 @@ export function tamper(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph ?? "A",
-        title: "PF2E.Actions.Tamper.Title",
+        title: "AVANT.Actions.Tamper.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["inventor", "manipulate"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass ?? "reflex",
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Tamper", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Tamper", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Tamper", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Tamper", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Tamper", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Tamper", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);

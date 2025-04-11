@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -31,7 +31,7 @@ export class Migration727TrimSelfRollOptions extends MigrationBase {
         return obj;
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.rules = source.system.rules.map((r) => this.trimPredicates(r)) as RuleElementSource[];
     }
 }

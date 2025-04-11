@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.Feint";
+const PREFIX = "AVANT.Actions.Feint";
 
 function feint(options: SkillActionOptions): void {
     const slug = options?.skill ?? "deception";

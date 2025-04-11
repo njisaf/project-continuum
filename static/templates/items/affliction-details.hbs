@@ -1,6 +1,6 @@
 <ol class="form-list">
     <div class="form-group">
-        <label>{{localize "PF2E.Item.Affliction.SaveLabel"}}</label>
+        <label>{{localize "AVANT.Item.Affliction.SaveLabel"}}</label>
         <div class="form-fields">
             <input type="number" name="system.save.value" value="{{data.save.value}}">
             <select name="system.save.type">
@@ -13,7 +13,7 @@
 {{#each stages as |stage stageId|}}
     <ol class="form-list subsection affliction-stage" data-stage-id="{{stageId}}">
         <header>
-            <h3>{{localize "PF2E.Item.Affliction.Stage" stage=stage.stage}}</h3>
+            <h3>{{localize "AVANT.Item.Affliction.Stage" stage=stage.stage}}</h3>
             <div class="item-controls">
                 <i class="fa-solid fa-fw fa-times" data-action="stage-delete"></i>
             </div>
@@ -21,7 +21,7 @@
 
         <div class="damage-formulas">
             <h3>
-                {{localize "PF2E.Formula"}}
+                {{localize "AVANT.Formula"}}
                 <div class="item-controls">
                     <i class="fa-solid fa-fw fa-plus" data-action="damage-create"></i>
                 </div>
@@ -30,7 +30,7 @@
             {{#each stage.damage as |damage id|}}
                 <div class="formula-section">
                     <div class="formula-row">
-                        <input type="text" name="system.stages.{{stageId}}.damage.{{id}}.formula" value="{{damage.formula}}" placeholder="{{localize "PF2E.Formula"}}" />
+                        <input type="text" name="system.stages.{{stageId}}.damage.{{id}}.formula" value="{{damage.formula}}" placeholder="{{localize "AVANT.Formula"}}" />
                         <select name="system.stages.{{stageId}}.damage.{{id}}.category">
                             {{selectOptions @root.damageCategories selected=damage.category blank="" localize=true}}
                         </select>
@@ -47,7 +47,7 @@
 
         <section>
             <h3>
-                {{localize "PF2E.ConditionsLabel"}}
+                {{localize "AVANT.ConditionsLabel"}}
                 <div class="item-controls">
                     <i class="fa-solid fa-fw fa-plus" data-action="condition-create"></i>
                 </div>
@@ -63,7 +63,7 @@
                         {{/if}}
                         {{#if @root.options.editable}}
                             <div class="item-controls">
-                                <a class="link {{#if condition.linked}}linked{{/if}}" data-action="condition-link" title="{{localize "PF2E.Item.Affliction.Linked.Title"}}">
+                                <a class="link {{#if condition.linked}}linked{{/if}}" data-action="condition-link" title="{{localize "AVANT.Item.Affliction.Linked.Title"}}">
                                     <i class="fa-solid fa-fw {{#if condition.linked}}fa-link{{else}}fa-link-slash{{/if}}"></i>
                                 </a>
                                 <a class="remove" data-action="condition-delete"><i class="fa-solid fa-fw fa-times"></i></a>
@@ -75,7 +75,7 @@
         </section>
 
         <section class="item-ref-group">
-            <h3>{{localize "PF2E.EffectsLabel"}}</h3>
+            <h3>{{localize "AVANT.EffectsLabel"}}</h3>
             {{#if stage.effects}}
                 <ul class="item-refs">
                     {{#each stage.effects as |effect|}}
@@ -91,12 +91,12 @@
         </section>
 
         <div class="form-group">
-            <label class="short">{{localize "PF2E.Time.Duration"}}</label>
-            {{> systems/pf2e/templates/items/partials/duration.hbs base=(concat "system.stages." stageId ".duration") duration=stage.duration units=../durationUnits}}
+            <label class="short">{{localize "AVANT.Time.Duration"}}</label>
+            {{> systems/avant/templates/items/partials/duration.hbs base=(concat "system.stages." stageId ".duration") duration=stage.duration units=../durationUnits}}
         </div>
     </ol>
 {{/each}}
 
 <button type="button" data-action="stage-add">
-    <i class="fa-solid fa-plus"></i>{{localize "PF2E.Item.Affliction.AddStage"}}
+    <i class="fa-solid fa-plus"></i>{{localize "AVANT.Item.Affliction.AddStage"}}
 </button>

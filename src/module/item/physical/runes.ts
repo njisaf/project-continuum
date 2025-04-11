@@ -1,14 +1,14 @@
 import { AutomaticBonusProgression as ABP } from "@actor/character/automatic-bonus-progression.ts";
 import type { CreatureTrait } from "@actor/creature/index.ts";
 import {
-    DamageDicePF2e,
+    DamageDiceAvant,
     DamageDiceParameters,
     ModifierAdjustment,
     ModifierObjectParams,
-    ModifierPF2e,
+    ModifierAvant,
 } from "@actor/modifiers.ts";
 import { ResistanceType } from "@actor/types.ts";
-import type { ArmorPF2e, MeleePF2e, PhysicalItemPF2e, WeaponPF2e } from "@item";
+import type { ArmorAvant, MeleeAvant, PhysicalItemAvant, WeaponAvant } from "@item";
 import { AbilityTrait } from "@item/ability/types.ts";
 import { ArmorPropertyRuneType, ResilientRuneType } from "@item/armor/types.ts";
 import { SpellTrait } from "@item/spell/types.ts";
@@ -21,7 +21,7 @@ import { Predicate } from "@system/predication.ts";
 import { sluggify } from "@util";
 import * as R from "remeda";
 
-function getPropertyRuneSlots(item: WeaponPF2e | ArmorPF2e): ZeroToFour {
+function getPropertyRuneSlots(item: WeaponAvant | ArmorAvant): ZeroToFour {
     const fromMaterial = item.system.material.type === "orichalcum" ? 1 : 0;
     const getABPPotency = item.isOfType("weapon") ? ABP.getAttackPotency : ABP.getDefensePotency;
 
@@ -46,7 +46,7 @@ function prunePropertyRunes(runes: (string | null)[], validTypes: Record<string,
     );
 }
 
-function getRuneValuationData(item: PhysicalItemPF2e): RuneData[] {
+function getRuneValuationData(item: PhysicalItemAvant): RuneData[] {
     if (!item.isOfType("armor", "shield", "weapon")) {
         return [];
     }
@@ -88,7 +88,7 @@ function getRuneValuationData(item: PhysicalItemPF2e): RuneData[] {
     ).filter(R.isTruthy);
 }
 
-function getPropertyRuneDegreeAdjustments(item: WeaponPF2e): DegreeOfSuccessAdjustment[] {
+function getPropertyRuneDegreeAdjustments(item: WeaponAvant): DegreeOfSuccessAdjustment[] {
     return R.unique(
         [
             item.system.runes.property.map((p) => WEAPON_PROPERTY_RUNES[p].attack?.dosAdjustments),
@@ -98,10 +98,10 @@ function getPropertyRuneDegreeAdjustments(item: WeaponPF2e): DegreeOfSuccessAdju
 }
 
 function getPropertyRuneDamage(
-    weapon: WeaponPF2e | MeleePF2e,
+    weapon: WeaponAvant | MeleeAvant,
     runes: WeaponPropertyRuneType[],
     options: Set<string>,
-): (DamageDicePF2e | ModifierPF2e)[] {
+): (DamageDiceAvant | ModifierAvant)[] {
     return runes.flatMap((rune) => {
         const runeData = WEAPON_PROPERTY_RUNES[rune];
         return fu.deepClone(runeData.damage?.additional ?? []).map((data) => {
@@ -112,9 +112,9 @@ function getPropertyRuneDamage(
                     typeof data.modifier === "string"
                         ? Number(Roll.replaceFormulaData(data.modifier, resolvables)) || 0
                         : data.modifier;
-                return new ModifierPF2e({ ...data, slug, modifier: value });
+                return new ModifierAvant({ ...data, slug, modifier: value });
             } else {
-                const dice = new DamageDicePF2e({
+                const dice = new DamageDiceAvant({
                     selector: "strike-damage",
                     slug,
                     label: RUNE_DATA.weapon.property[rune]?.name,
@@ -182,7 +182,7 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
     potency: {
         0: null,
         1: {
-            name: "PF2E.ArmorPotencyRune1",
+            name: "AVANT.ArmorPotencyRune1",
             value: 1,
             level: 5,
             price: 160,
@@ -190,7 +190,7 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
             traits: [],
         },
         2: {
-            name: "PF2E.ArmorPotencyRune2",
+            name: "AVANT.ArmorPotencyRune2",
             value: 2,
             level: 11,
             price: 1060,
@@ -198,7 +198,7 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
             traits: [],
         },
         3: {
-            name: "PF2E.ArmorPotencyRune3",
+            name: "AVANT.ArmorPotencyRune3",
             value: 3,
             level: 18,
             price: 20_560,
@@ -206,7 +206,7 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
             traits: [],
         },
         4: {
-            name: "PF2E.ArmorPotencyRune4",
+            name: "AVANT.ArmorPotencyRune4",
             value: 4,
             level: 20,
             price: 70_000,
@@ -217,7 +217,7 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
     resilient: {
         0: null,
         1: {
-            name: "PF2E.ArmorResilientRune",
+            name: "AVANT.ArmorResilientRune",
             level: 8,
             price: 340,
             rarity: "common",
@@ -225,7 +225,7 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
             traits: [],
         },
         2: {
-            name: "PF2E.ArmorGreaterResilientRune",
+            name: "AVANT.ArmorGreaterResilientRune",
             level: 14,
             price: 3440,
             rarity: "common",
@@ -233,7 +233,7 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
             traits: [],
         },
         3: {
-            name: "PF2E.ArmorMajorResilientRune",
+            name: "AVANT.ArmorMajorResilientRune",
             level: 20,
             price: 49_440,
             rarity: "common",
@@ -241,7 +241,7 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
             traits: [],
         },
         4: {
-            name: "PF2E.ArmorMythicResilientRune",
+            name: "AVANT.ArmorMythicResilientRune",
             level: 20,
             price: 70_000,
             rarity: "rare",
@@ -251,9 +251,9 @@ const FUNDAMENTAL_ARMOR_RUNE_DATA: FundamentalArmorRuneData = {
     },
 };
 
-// striking: "PF2E.ArmorStrikingRune",
-// greaterStriking: "PF2E.ArmorGreaterStrikingRune",
-// majorStriking: "PF2E.ArmorMajorStrikingRune",
+// striking: "AVANT.ArmorStrikingRune",
+// greaterStriking: "AVANT.ArmorGreaterStrikingRune",
+// majorStriking: "AVANT.ArmorMajorStrikingRune",
 
 interface FundamentalWeaponRuneData {
     potency: Record<ZeroToFour, PotencyRuneData | null>;
@@ -264,7 +264,7 @@ const FUNDAMENTAL_WEAPON_RUNE_DATA: FundamentalWeaponRuneData = {
     potency: {
         0: null,
         1: {
-            name: "PF2E.WeaponPotencyRune1",
+            name: "AVANT.WeaponPotencyRune1",
             value: 1,
             level: 2,
             price: 35,
@@ -272,7 +272,7 @@ const FUNDAMENTAL_WEAPON_RUNE_DATA: FundamentalWeaponRuneData = {
             traits: [],
         },
         2: {
-            name: "PF2E.WeaponPotencyRune2",
+            name: "AVANT.WeaponPotencyRune2",
             value: 2,
             level: 10,
             price: 935,
@@ -280,7 +280,7 @@ const FUNDAMENTAL_WEAPON_RUNE_DATA: FundamentalWeaponRuneData = {
             traits: [],
         },
         3: {
-            name: "PF2E.WeaponPotencyRune3",
+            name: "AVANT.WeaponPotencyRune3",
             value: 3,
             level: 16,
             price: 8935,
@@ -288,7 +288,7 @@ const FUNDAMENTAL_WEAPON_RUNE_DATA: FundamentalWeaponRuneData = {
             traits: [],
         },
         4: {
-            name: "PF2E.WeaponPotencyRune4",
+            name: "AVANT.WeaponPotencyRune4",
             value: 4,
             level: 20,
             price: 70_000,
@@ -300,7 +300,7 @@ const FUNDAMENTAL_WEAPON_RUNE_DATA: FundamentalWeaponRuneData = {
     striking: {
         0: null,
         1: {
-            name: "PF2E.Item.Weapon.Rune.Striking.Striking",
+            name: "AVANT.Item.Weapon.Rune.Striking.Striking",
             level: 4,
             price: 65,
             rarity: "common",
@@ -308,7 +308,7 @@ const FUNDAMENTAL_WEAPON_RUNE_DATA: FundamentalWeaponRuneData = {
             traits: [],
         },
         2: {
-            name: "PF2E.Item.Weapon.Rune.Striking.Greater",
+            name: "AVANT.Item.Weapon.Rune.Striking.Greater",
             level: 12,
             price: 1065,
             rarity: "common",
@@ -316,7 +316,7 @@ const FUNDAMENTAL_WEAPON_RUNE_DATA: FundamentalWeaponRuneData = {
             traits: [],
         },
         3: {
-            name: "PF2E.Item.Weapon.Rune.Striking.Major",
+            name: "AVANT.Item.Weapon.Rune.Striking.Major",
             level: 19,
             price: 31_065,
             rarity: "common",
@@ -324,7 +324,7 @@ const FUNDAMENTAL_WEAPON_RUNE_DATA: FundamentalWeaponRuneData = {
             traits: [],
         },
         4: {
-            name: "PF2E.Item.Weapon.Rune.Striking.Mythic",
+            name: "AVANT.Item.Weapon.Rune.Striking.Mythic",
             level: 20,
             price: 70_000,
             rarity: "rare",
@@ -342,7 +342,7 @@ const FUNDAMENTAL_SHIELD_RUNE_DATA: FundamentalShieldRuneData = {
     reinforcing: {
         0: null,
         1: {
-            name: "PF2E.Item.Shield.Rune.Reinforcing.Minor",
+            name: "AVANT.Item.Shield.Rune.Reinforcing.Minor",
             level: 4,
             price: 75,
             rarity: "common",
@@ -351,7 +351,7 @@ const FUNDAMENTAL_SHIELD_RUNE_DATA: FundamentalShieldRuneData = {
             maxHP: { increase: 44, max: 64 },
         },
         2: {
-            name: "PF2E.Item.Shield.Rune.Reinforcing.Lesser",
+            name: "AVANT.Item.Shield.Rune.Reinforcing.Lesser",
             level: 7,
             price: 300,
             rarity: "common",
@@ -360,7 +360,7 @@ const FUNDAMENTAL_SHIELD_RUNE_DATA: FundamentalShieldRuneData = {
             maxHP: { increase: 52, max: 80 },
         },
         3: {
-            name: "PF2E.Item.Shield.Rune.Reinforcing.Moderate",
+            name: "AVANT.Item.Shield.Rune.Reinforcing.Moderate",
             level: 10,
             price: 900,
             rarity: "common",
@@ -369,7 +369,7 @@ const FUNDAMENTAL_SHIELD_RUNE_DATA: FundamentalShieldRuneData = {
             maxHP: { increase: 64, max: 104 },
         },
         4: {
-            name: "PF2E.Item.Shield.Rune.Reinforcing.Greater",
+            name: "AVANT.Item.Shield.Rune.Reinforcing.Greater",
             level: 13,
             price: 2500,
             rarity: "common",
@@ -378,7 +378,7 @@ const FUNDAMENTAL_SHIELD_RUNE_DATA: FundamentalShieldRuneData = {
             maxHP: { increase: 80, max: 120 },
         },
         5: {
-            name: "PF2E.Item.Shield.Rune.Reinforcing.Major",
+            name: "AVANT.Item.Shield.Rune.Reinforcing.Major",
             level: 16,
             price: 8000,
             rarity: "common",
@@ -387,7 +387,7 @@ const FUNDAMENTAL_SHIELD_RUNE_DATA: FundamentalShieldRuneData = {
             maxHP: { increase: 84, max: 136 },
         },
         6: {
-            name: "PF2E.Item.Shield.Rune.Reinforcing.Supreme",
+            name: "AVANT.Item.Shield.Rune.Reinforcing.Supreme",
             level: 19,
             price: 32_000,
             rarity: "common",
@@ -433,7 +433,7 @@ interface RuneNoteData extends Pick<RollNoteSource, "outcome" | "predicate" | "t
 // https://2e.aonprd.com/Equipment.aspx?Category=23&Subcategory=26
 export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorPropertyRuneData<T> } = {
     acidResistant: {
-        name: "PF2E.ArmorPropertyRuneAcidResistant",
+        name: "AVANT.ArmorPropertyRuneAcidResistant",
         level: 8,
         price: 420,
         rarity: "common",
@@ -441,7 +441,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     advancing: {
-        name: "PF2E.ArmorPropertyRuneAdvancing",
+        name: "AVANT.ArmorPropertyRuneAdvancing",
         level: 9,
         price: 625,
         rarity: "common",
@@ -449,7 +449,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     aimAiding: {
-        name: "PF2E.ArmorPropertyRuneAimAiding",
+        name: "AVANT.ArmorPropertyRuneAimAiding",
         level: 6,
         price: 225,
         rarity: "common",
@@ -457,7 +457,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     antimagic: {
-        name: "PF2E.ArmorPropertyRuneAntimagic",
+        name: "AVANT.ArmorPropertyRuneAntimagic",
         level: 15,
         price: 6500,
         rarity: "uncommon",
@@ -465,7 +465,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     assisting: {
-        name: "PF2E.ArmorPropertyRuneAssisting",
+        name: "AVANT.ArmorPropertyRuneAssisting",
         level: 5,
         price: 125,
         rarity: "common",
@@ -473,7 +473,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     bitter: {
-        name: "PF2E.ArmorPropertyRuneBitter",
+        name: "AVANT.ArmorPropertyRuneBitter",
         level: 9,
         price: 135,
         rarity: "uncommon",
@@ -481,7 +481,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical", "poison"],
     },
     coldResistant: {
-        name: "PF2E.ArmorPropertyRuneColdResistant",
+        name: "AVANT.ArmorPropertyRuneColdResistant",
         level: 8,
         price: 420,
         rarity: "common",
@@ -489,7 +489,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     deathless: {
-        name: "PF2E.ArmorPropertyRuneDeathless",
+        name: "AVANT.ArmorPropertyRuneDeathless",
         level: 7,
         price: 330,
         rarity: "uncommon",
@@ -497,7 +497,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["healing", "magical"],
     },
     electricityResistant: {
-        name: "PF2E.ArmorPropertyRuneElectricityResistant",
+        name: "AVANT.ArmorPropertyRuneElectricityResistant",
         level: 8,
         price: 420,
         rarity: "common",
@@ -505,7 +505,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     energyAdaptive: {
-        name: "PF2E.ArmorPropertyRuneEnergyAdaptive",
+        name: "AVANT.ArmorPropertyRuneEnergyAdaptive",
         level: 13,
         price: 2600,
         rarity: "common",
@@ -513,7 +513,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     ethereal: {
-        name: "PF2E.ArmorPropertyRuneEthereal",
+        name: "AVANT.ArmorPropertyRuneEthereal",
         level: 17,
         price: 13_500,
         rarity: "common",
@@ -521,7 +521,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     fireResistant: {
-        name: "PF2E.ArmorPropertyRuneFireResistant",
+        name: "AVANT.ArmorPropertyRuneFireResistant",
         level: 8,
         price: 420,
         rarity: "common",
@@ -529,7 +529,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     fortification: {
-        name: "PF2E.ArmorPropertyRuneFortification",
+        name: "AVANT.ArmorPropertyRuneFortification",
         level: 12,
         price: 2000,
         rarity: "common",
@@ -537,7 +537,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     glamered: {
-        name: "PF2E.ArmorPropertyRuneGlamered",
+        name: "AVANT.ArmorPropertyRuneGlamered",
         level: 5,
         price: 140,
         rarity: "common",
@@ -545,7 +545,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["illusion", "magical"],
     },
     gliding: {
-        name: "PF2E.ArmorPropertyRuneGliding",
+        name: "AVANT.ArmorPropertyRuneGliding",
         level: 8,
         price: 450,
         rarity: "common",
@@ -553,7 +553,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterAcidResistant: {
-        name: "PF2E.ArmorPropertyRuneGreaterAcidResistant",
+        name: "AVANT.ArmorPropertyRuneGreaterAcidResistant",
         level: 12,
         price: 1650,
         rarity: "common",
@@ -561,7 +561,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterAdvancing: {
-        name: "PF2E.ArmorPropertyRuneGreaterAdvancing",
+        name: "AVANT.ArmorPropertyRuneGreaterAdvancing",
         level: 16,
         price: 8000,
         rarity: "common",
@@ -569,7 +569,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterColdResistant: {
-        name: "PF2E.ArmorPropertyRuneGreaterColdResistant",
+        name: "AVANT.ArmorPropertyRuneGreaterColdResistant",
         level: 12,
         price: 1650,
         rarity: "common",
@@ -577,7 +577,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterDread: {
-        name: "PF2E.ArmorPropertyRuneGreaterDread",
+        name: "AVANT.ArmorPropertyRuneGreaterDread",
         level: 18,
         price: 21_000,
         rarity: "uncommon",
@@ -585,7 +585,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["emotion", "fear", "magical", "mental", "visual"],
     },
     greaterElectricityResistant: {
-        name: "PF2E.ArmorPropertyRuneGreaterElectricityResistant",
+        name: "AVANT.ArmorPropertyRuneGreaterElectricityResistant",
         level: 12,
         price: 1650,
         rarity: "common",
@@ -593,7 +593,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterFireResistant: {
-        name: "PF2E.ArmorPropertyRuneGreaterFireResistant",
+        name: "AVANT.ArmorPropertyRuneGreaterFireResistant",
         level: 12,
         price: 1650,
         rarity: "common",
@@ -601,7 +601,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterFortification: {
-        name: "PF2E.ArmorPropertyRuneGreaterFortification",
+        name: "AVANT.ArmorPropertyRuneGreaterFortification",
         level: 19,
         price: 24_000,
         rarity: "common",
@@ -609,7 +609,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterInvisibility: {
-        name: "PF2E.ArmorPropertyRuneGreaterInvisibility",
+        name: "AVANT.ArmorPropertyRuneGreaterInvisibility",
         level: 10,
         price: 1000,
         rarity: "common",
@@ -617,7 +617,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["illusion", "magical"],
     },
     greaterReady: {
-        name: "PF2E.ArmorPropertyRuneGreaterReady",
+        name: "AVANT.ArmorPropertyRuneGreaterReady",
         level: 11,
         price: 1200,
         rarity: "common",
@@ -625,7 +625,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterShadow: {
-        name: "PF2E.ArmorPropertyRuneGreaterShadow",
+        name: "AVANT.ArmorPropertyRuneGreaterShadow",
         level: 9,
         price: 650,
         rarity: "common",
@@ -633,7 +633,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterSlick: {
-        name: "PF2E.ArmorPropertyRuneGreaterSlick",
+        name: "AVANT.ArmorPropertyRuneGreaterSlick",
         level: 8,
         price: 450,
         rarity: "common",
@@ -641,7 +641,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterStanching: {
-        name: "PF2E.ArmorPropertyRuneGreaterStanching",
+        name: "AVANT.ArmorPropertyRuneGreaterStanching",
         level: 9,
         price: 600,
         rarity: "uncommon",
@@ -649,7 +649,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterQuenching: {
-        name: "PF2E.ArmorPropertyRuneGreaterQuenching",
+        name: "AVANT.ArmorPropertyRuneGreaterQuenching",
         level: 10,
         price: 1000,
         rarity: "common",
@@ -657,7 +657,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterSwallowSpike: {
-        name: "PF2E.ArmorPropertyRuneGreaterSwallowSpike",
+        name: "AVANT.ArmorPropertyRuneGreaterSwallowSpike",
         level: 12,
         price: 1750,
         rarity: "common",
@@ -665,7 +665,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     greaterWinged: {
-        name: "PF2E.ArmorPropertyRuneGreaterWinged",
+        name: "AVANT.ArmorPropertyRuneGreaterWinged",
         level: 19,
         price: 35_000,
         rarity: "common",
@@ -673,7 +673,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     immovable: {
-        name: "PF2E.ArmorPropertyRuneImmovable",
+        name: "AVANT.ArmorPropertyRuneImmovable",
         level: 12,
         price: 1800,
         rarity: "uncommon",
@@ -681,7 +681,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     implacable: {
-        name: "PF2E.ArmorPropertyRuneImplacable",
+        name: "AVANT.ArmorPropertyRuneImplacable",
         level: 11,
         price: 1200,
         rarity: "uncommon",
@@ -689,7 +689,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     invisibility: {
-        name: "PF2E.ArmorPropertyRuneInvisibility",
+        name: "AVANT.ArmorPropertyRuneInvisibility",
         level: 8,
         price: 500,
         rarity: "common",
@@ -697,7 +697,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["illusion", "magical"],
     },
     lesserDread: {
-        name: "PF2E.ArmorPropertyRuneLesserDread",
+        name: "AVANT.ArmorPropertyRuneLesserDread",
         level: 6,
         price: 225,
         rarity: "uncommon",
@@ -705,7 +705,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["emotion", "fear", "magical", "mental", "visual"],
     },
     magnetizing: {
-        name: "PF2E.ArmorPropertyRuneMagnetizing",
+        name: "AVANT.ArmorPropertyRuneMagnetizing",
         level: 10,
         price: 900,
         rarity: "common",
@@ -713,7 +713,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     majorQuenching: {
-        name: "PF2E.ArmorPropertyRuneMajorQuenching",
+        name: "AVANT.ArmorPropertyRuneMajorQuenching",
         level: 14,
         price: 4500,
         rarity: "common",
@@ -721,7 +721,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     majorShadow: {
-        name: "PF2E.ArmorPropertyRuneMajorShadow",
+        name: "AVANT.ArmorPropertyRuneMajorShadow",
         level: 17,
         price: 14_000,
         rarity: "common",
@@ -729,7 +729,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     majorSlick: {
-        name: "PF2E.ArmorPropertyRuneMajorSlick",
+        name: "AVANT.ArmorPropertyRuneMajorSlick",
         level: 16,
         price: 9000,
         rarity: "common",
@@ -737,7 +737,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     majorStanching: {
-        name: "PF2E.ArmorPropertyRuneMajorStanching",
+        name: "AVANT.ArmorPropertyRuneMajorStanching",
         level: 13,
         price: 2500,
         rarity: "uncommon",
@@ -745,7 +745,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     majorSwallowSpike: {
-        name: "PF2E.ArmorPropertyRuneMajorSwallowSpike",
+        name: "AVANT.ArmorPropertyRuneMajorSwallowSpike",
         level: 16,
         price: 19_250,
         rarity: "common",
@@ -753,7 +753,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     malleable: {
-        name: "PF2E.ArmorPropertyRuneMalleable",
+        name: "AVANT.ArmorPropertyRuneMalleable",
         level: 9,
         price: 650,
         rarity: "common",
@@ -761,7 +761,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical", "metal"],
     },
     misleading: {
-        name: "PF2E.ArmorPropertyRuneMisleading",
+        name: "AVANT.ArmorPropertyRuneMisleading",
         level: 16,
         price: 8000,
         rarity: "common",
@@ -769,7 +769,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["illusion", "magical"],
     },
     moderateDread: {
-        name: "PF2E.ArmorPropertyRuneModerateDread",
+        name: "AVANT.ArmorPropertyRuneModerateDread",
         level: 12,
         price: 1800,
         rarity: "uncommon",
@@ -777,7 +777,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["emotion", "fear", "magical", "mental", "visual"],
     },
     portable: {
-        name: "PF2E.ArmorPropertyRunePortable",
+        name: "AVANT.ArmorPropertyRunePortable",
         level: 9,
         price: 660,
         rarity: "common",
@@ -785,7 +785,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     quenching: {
-        name: "PF2E.ArmorPropertyRuneQuenching",
+        name: "AVANT.ArmorPropertyRuneQuenching",
         level: 6,
         price: 250,
         rarity: "common",
@@ -793,7 +793,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     raiment: {
-        name: "PF2E.ArmorPropertyRuneRaiment",
+        name: "AVANT.ArmorPropertyRuneRaiment",
         level: 5,
         price: 140,
         rarity: "common",
@@ -801,7 +801,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["illusion", "magical"],
     },
     ready: {
-        name: "PF2E.ArmorPropertyRuneReady",
+        name: "AVANT.ArmorPropertyRuneReady",
         level: 6,
         price: 200,
         rarity: "common",
@@ -809,7 +809,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     rockBraced: {
-        name: "PF2E.ArmorPropertyRuneRockBraced",
+        name: "AVANT.ArmorPropertyRuneRockBraced",
         level: 13,
         price: 3000,
         rarity: "rare",
@@ -817,7 +817,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["dwarf", "magical", "saggorak"],
     },
     shadow: {
-        name: "PF2E.ArmorPropertyRuneShadow",
+        name: "AVANT.ArmorPropertyRuneShadow",
         level: 5,
         price: 55,
         rarity: "common",
@@ -825,7 +825,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     sinisterKnight: {
-        name: "PF2E.ArmorPropertyRuneSinisterKnight",
+        name: "AVANT.ArmorPropertyRuneSinisterKnight",
         level: 8,
         price: 500,
         rarity: "uncommon",
@@ -833,7 +833,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["illusion", "magical"],
     },
     sizeChanging: {
-        name: "PF2E.ArmorPropertyRuneSizeChanging",
+        name: "AVANT.ArmorPropertyRuneSizeChanging",
         level: 7,
         price: 350,
         rarity: "common",
@@ -841,7 +841,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     slick: {
-        name: "PF2E.ArmorPropertyRuneSlick",
+        name: "AVANT.ArmorPropertyRuneSlick",
         level: 5,
         price: 45,
         rarity: "common",
@@ -849,7 +849,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     soaring: {
-        name: "PF2E.ArmorPropertyRuneSoaring",
+        name: "AVANT.ArmorPropertyRuneSoaring",
         level: 14,
         price: 3750,
         rarity: "common",
@@ -857,7 +857,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     stanching: {
-        name: "PF2E.ArmorPropertyRuneStanching",
+        name: "AVANT.ArmorPropertyRuneStanching",
         level: 5,
         price: 130,
         rarity: "uncommon",
@@ -865,7 +865,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     swallowSpike: {
-        name: "PF2E.ArmorPropertyRuneSwallowSpike",
+        name: "AVANT.ArmorPropertyRuneSwallowSpike",
         level: 6,
         price: 200,
         rarity: "common",
@@ -873,7 +873,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     trueQuenching: {
-        name: "PF2E.ArmorPropertyRuneTrueQuenching",
+        name: "AVANT.ArmorPropertyRuneTrueQuenching",
         level: 18,
         price: 24_000,
         rarity: "common",
@@ -881,7 +881,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     trueStanching: {
-        name: "PF2E.ArmorPropertyRuneTrueStanching",
+        name: "AVANT.ArmorPropertyRuneTrueStanching",
         level: 17,
         price: 12_500,
         rarity: "uncommon",
@@ -889,7 +889,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
         traits: ["magical"],
     },
     winged: {
-        name: "PF2E.ArmorPropertyRuneWinged",
+        name: "AVANT.ArmorPropertyRuneWinged",
         level: 13,
         price: 2500,
         rarity: "common",
@@ -902,7 +902,7 @@ export const ARMOR_PROPERTY_RUNES: { [T in ArmorPropertyRuneType]: ArmorProperty
 const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRuneData<T> } = {
     ancestralEchoing: {
         level: 15,
-        name: "PF2E.WeaponPropertyRune.ancestralEchoing.Name",
+        name: "AVANT.WeaponPropertyRune.ancestralEchoing.Name",
         price: 9500,
         rarity: "rare",
         slug: "ancestralEchoing",
@@ -913,13 +913,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.anchoring.Name",
-                    text: "PF2E.WeaponPropertyRune.anchoring.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.anchoring.Name",
+                    text: "AVANT.WeaponPropertyRune.anchoring.Note.criticalSuccess",
                 },
             ],
         },
         level: 10,
-        name: "PF2E.WeaponPropertyRune.anchoring.Name",
+        name: "AVANT.WeaponPropertyRune.anchoring.Name",
         price: 900,
         rarity: "uncommon",
         slug: "anchoring",
@@ -937,13 +937,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
             notes: [
                 {
-                    title: "PF2E.WeaponPropertyRune.ashen.Name",
-                    text: "PF2E.WeaponPropertyRune.ashen.Note.success",
+                    title: "AVANT.WeaponPropertyRune.ashen.Name",
+                    text: "AVANT.WeaponPropertyRune.ashen.Note.success",
                 },
             ],
         },
         level: 9,
-        name: "PF2E.WeaponPropertyRune.ashen.Name",
+        name: "AVANT.WeaponPropertyRune.ashen.Name",
         price: 700,
         rarity: "common",
         slug: "ashen",
@@ -951,7 +951,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     astral: {
         level: 8,
-        name: "PF2E.WeaponPropertyRune.astral.Name",
+        name: "AVANT.WeaponPropertyRune.astral.Name",
         price: 450,
         rarity: "common",
         slug: "astral",
@@ -962,7 +962,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     authorized: {
         level: 3,
-        name: "PF2E.WeaponPropertyRune.authorized.Name",
+        name: "AVANT.WeaponPropertyRune.authorized.Name",
         price: 50,
         rarity: "common",
         slug: "authorized",
@@ -970,7 +970,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     bane: {
         level: 4,
-        name: "PF2E.WeaponPropertyRune.bane.Name",
+        name: "AVANT.WeaponPropertyRune.bane.Name",
         price: 100,
         rarity: "uncommon",
         slug: "bane",
@@ -978,7 +978,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     bloodbane: {
         level: 8,
-        name: "PF2E.WeaponPropertyRune.bloodbane.Name",
+        name: "AVANT.WeaponPropertyRune.bloodbane.Name",
         price: 475,
         rarity: "uncommon",
         slug: "bloodbane",
@@ -989,13 +989,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.bloodbane.Name",
-                    text: "PF2E.WeaponPropertyRune.bloodthirsty.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.bloodbane.Name",
+                    text: "AVANT.WeaponPropertyRune.bloodthirsty.Note.criticalSuccess",
                 },
             ],
         },
         level: 16,
-        name: "PF2E.WeaponPropertyRune.bloodthirsty.Name",
+        name: "AVANT.WeaponPropertyRune.bloodthirsty.Name",
         price: 8500,
         rarity: "uncommon",
         slug: "bloodthirsty",
@@ -1021,13 +1021,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.brilliant.Name",
-                    text: "PF2E.WeaponPropertyRune.brilliant.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.brilliant.Name",
+                    text: "AVANT.WeaponPropertyRune.brilliant.Note.criticalSuccess",
                 },
             ],
         },
         level: 12,
-        name: "PF2E.WeaponPropertyRune.brilliant.Name",
+        name: "AVANT.WeaponPropertyRune.brilliant.Name",
         price: 2000,
         rarity: "common",
         slug: "brilliant",
@@ -1035,7 +1035,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     called: {
         level: 7,
-        name: "PF2E.WeaponPropertyRune.called.Name",
+        name: "AVANT.WeaponPropertyRune.called.Name",
         price: 350,
         rarity: "common",
         slug: "called",
@@ -1043,7 +1043,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     coating: {
         level: 9,
-        name: "PF2E.WeaponPropertyRune.coating.Name",
+        name: "AVANT.WeaponPropertyRune.coating.Name",
         price: 700,
         rarity: "common",
         slug: "coating",
@@ -1051,7 +1051,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     conducting: {
         level: 7,
-        name: "PF2E.WeaponPropertyRune.conducting.Name",
+        name: "AVANT.WeaponPropertyRune.conducting.Name",
         price: 300,
         rarity: "common",
         slug: "conducting",
@@ -1063,13 +1063,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.corrosive.Name",
-                    text: "PF2E.WeaponPropertyRune.corrosive.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.corrosive.Name",
+                    text: "AVANT.WeaponPropertyRune.corrosive.Note.criticalSuccess",
                 },
             ],
         },
         level: 8,
-        name: "PF2E.WeaponPropertyRune.corrosive.Name",
+        name: "AVANT.WeaponPropertyRune.corrosive.Name",
         price: 500,
         rarity: "common",
         slug: "corrosive",
@@ -1080,13 +1080,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.crushing.Name",
-                    text: "PF2E.WeaponPropertyRune.crushing.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.crushing.Name",
+                    text: "AVANT.WeaponPropertyRune.crushing.Note.criticalSuccess",
                 },
             ],
         },
         level: 3,
-        name: "PF2E.WeaponPropertyRune.crushing.Name",
+        name: "AVANT.WeaponPropertyRune.crushing.Name",
         price: 50,
         rarity: "uncommon",
         slug: "crushing",
@@ -1094,7 +1094,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     cunning: {
         level: 5,
-        name: "PF2E.WeaponPropertyRune.cunning.Name",
+        name: "AVANT.WeaponPropertyRune.cunning.Name",
         price: 140,
         rarity: "common",
         slug: "cunning",
@@ -1102,7 +1102,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     dancing: {
         level: 13,
-        name: "PF2E.WeaponPropertyRune.dancing.Name",
+        name: "AVANT.WeaponPropertyRune.dancing.Name",
         price: 2700,
         rarity: "uncommon",
         slug: "dancing",
@@ -1128,7 +1128,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
         },
         level: 8,
-        name: "PF2E.WeaponPropertyRune.decaying.Name",
+        name: "AVANT.WeaponPropertyRune.decaying.Name",
         price: 500,
         rarity: "common",
         slug: "decaying",
@@ -1156,7 +1156,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
         },
         level: 7,
-        name: "PF2E.WeaponPropertyRune.deathdrinking.Name",
+        name: "AVANT.WeaponPropertyRune.deathdrinking.Name",
         price: 360,
         rarity: "rare",
         slug: "deathdrinking",
@@ -1175,7 +1175,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
         },
         level: 6,
-        name: "PF2E.WeaponPropertyRune.demolishing.Name",
+        name: "AVANT.WeaponPropertyRune.demolishing.Name",
         price: 225,
         rarity: "rare",
         slug: "demolishing",
@@ -1195,14 +1195,14 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.disrupting.Name",
-                    text: "PF2E.WeaponPropertyRune.disrupting.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.disrupting.Name",
+                    text: "AVANT.WeaponPropertyRune.disrupting.Note.criticalSuccess",
                     predicate: ["target:negative-healing"],
                 },
             ],
         },
         level: 5,
-        name: "PF2E.WeaponPropertyRune.disrupting.Name",
+        name: "AVANT.WeaponPropertyRune.disrupting.Name",
         price: 150,
         rarity: "common",
         slug: "disrupting",
@@ -1210,7 +1210,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     earthbinding: {
         level: 5,
-        name: "PF2E.WeaponPropertyRune.earthbinding.Name",
+        name: "AVANT.WeaponPropertyRune.earthbinding.Name",
         price: 125,
         rarity: "common",
         slug: "earthbinding",
@@ -1218,7 +1218,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     energizing: {
         level: 6,
-        name: "PF2E.WeaponPropertyRune.energizing.Name",
+        name: "AVANT.WeaponPropertyRune.energizing.Name",
         price: 250,
         rarity: "uncommon",
         slug: "energizing",
@@ -1226,7 +1226,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     extending: {
         level: 7,
-        name: "PF2E.WeaponPropertyRune.extending.Name",
+        name: "AVANT.WeaponPropertyRune.extending.Name",
         price: 700,
         rarity: "common",
         slug: "extending",
@@ -1234,7 +1234,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     fanged: {
         level: 2,
-        name: "PF2E.WeaponPropertyRune.fanged.Name",
+        name: "AVANT.WeaponPropertyRune.fanged.Name",
         price: 30,
         rarity: "uncommon",
         slug: "fanged",
@@ -1245,13 +1245,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.fearsome.Name",
-                    text: "PF2E.WeaponPropertyRune.fearsome.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.fearsome.Name",
+                    text: "AVANT.WeaponPropertyRune.fearsome.Note.criticalSuccess",
                 },
             ],
         },
         level: 5,
-        name: "PF2E.WeaponPropertyRune.fearsome.Name",
+        name: "AVANT.WeaponPropertyRune.fearsome.Name",
         price: 160,
         rarity: "common",
         slug: "fearsome",
@@ -1271,7 +1271,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
         },
         level: 8,
-        name: "PF2E.WeaponPropertyRune.flaming.Name",
+        name: "AVANT.WeaponPropertyRune.flaming.Name",
         price: 500,
         rarity: "common",
         slug: "flaming",
@@ -1282,13 +1282,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.flickering.Name",
-                    text: "PF2E.WeaponPropertyRune.flickering.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.flickering.Name",
+                    text: "AVANT.WeaponPropertyRune.flickering.Note.criticalSuccess",
                 },
             ],
         },
         level: 6,
-        name: "PF2E.WeaponPropertyRune.flickering.Name",
+        name: "AVANT.WeaponPropertyRune.flickering.Name",
         price: 250,
         rarity: "uncommon",
         slug: "flickering",
@@ -1296,7 +1296,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     flurrying: {
         level: 7,
-        name: "PF2E.WeaponPropertyRune.flurrying.Name",
+        name: "AVANT.WeaponPropertyRune.flurrying.Name",
         price: 360,
         rarity: "common",
         slug: "flurrying",
@@ -1308,13 +1308,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.frost.Name",
-                    text: "PF2E.WeaponPropertyRune.frost.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.frost.Name",
+                    text: "AVANT.WeaponPropertyRune.frost.Note.criticalSuccess",
                 },
             ],
         },
         level: 8,
-        name: "PF2E.WeaponPropertyRune.frost.Name",
+        name: "AVANT.WeaponPropertyRune.frost.Name",
         price: 500,
         rarity: "common",
         slug: "frost",
@@ -1322,7 +1322,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     ghostTouch: {
         level: 4,
-        name: "PF2E.WeaponPropertyRune.ghostTouch.Name",
+        name: "AVANT.WeaponPropertyRune.ghostTouch.Name",
         price: 75,
         rarity: "common",
         slug: "ghostTouch",
@@ -1343,13 +1343,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["target:trait:giant"],
-                    title: "PF2E.WeaponPropertyRune.giantKilling.Name",
-                    text: "PF2E.WeaponPropertyRune.giantKilling.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.giantKilling.Name",
+                    text: "AVANT.WeaponPropertyRune.giantKilling.Note.criticalSuccess",
                 },
             ],
         },
         level: 8,
-        name: "PF2E.WeaponPropertyRune.giantKilling.Name",
+        name: "AVANT.WeaponPropertyRune.giantKilling.Name",
         price: 450,
         rarity: "rare",
         slug: "giantKilling",
@@ -1360,18 +1360,18 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterAnchoring.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterAnchoring.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterAnchoring.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterAnchoring.Note.criticalSuccess",
                 },
                 {
                     outcome: ["success"],
-                    title: "PF2E.WeaponPropertyRune.greaterAnchoring.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterAnchoring.Note.success",
+                    title: "AVANT.WeaponPropertyRune.greaterAnchoring.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterAnchoring.Note.success",
                 },
             ],
         },
         level: 18,
-        name: "PF2E.WeaponPropertyRune.greaterAnchoring.Name",
+        name: "AVANT.WeaponPropertyRune.greaterAnchoring.Name",
         price: 22_000,
         rarity: "uncommon",
         slug: "greaterAnchoring",
@@ -1389,13 +1389,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
             notes: [
                 {
-                    title: "PF2E.WeaponPropertyRune.greaterAshen.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterAshen.Note.success",
+                    title: "AVANT.WeaponPropertyRune.greaterAshen.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterAshen.Note.success",
                 },
             ],
         },
         level: 16,
-        name: "PF2E.WeaponPropertyRune.greaterAshen.Name",
+        name: "AVANT.WeaponPropertyRune.greaterAshen.Name",
         price: 9000,
         rarity: "common",
         slug: "greaterAshen",
@@ -1403,7 +1403,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     greaterAstral: {
         level: 15,
-        name: "PF2E.WeaponPropertyRune.greaterAstral.Name",
+        name: "AVANT.WeaponPropertyRune.greaterAstral.Name",
         price: 6000,
         rarity: "common",
         slug: "greaterAstral",
@@ -1415,7 +1415,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     greaterBloodbane: {
         level: 13,
-        name: "PF2E.WeaponPropertyRune.greaterBloodbane.Name",
+        name: "AVANT.WeaponPropertyRune.greaterBloodbane.Name",
         price: 2800,
         rarity: "uncommon",
         slug: "greaterBloodbane",
@@ -1441,13 +1441,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterBrilliant.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterBrilliant.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterBrilliant.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterBrilliant.Note.criticalSuccess",
                 },
                 {
                     outcome: ["success"],
-                    title: "PF2E.WeaponPropertyRune.greaterBrilliant.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterBrilliant.Note.success",
+                    title: "AVANT.WeaponPropertyRune.greaterBrilliant.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterBrilliant.Note.success",
                 },
             ],
             ignoredResistances: [
@@ -1457,7 +1457,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
         },
         level: 18,
-        name: "PF2E.WeaponPropertyRune.greaterBrilliant.Name",
+        name: "AVANT.WeaponPropertyRune.greaterBrilliant.Name",
         price: 24_000,
         rarity: "common",
         slug: "greaterBrilliant",
@@ -1469,19 +1469,19 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterCorrosive.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterCorrosive.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterCorrosive.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterCorrosive.Note.criticalSuccess",
                 },
                 {
                     outcome: ["success"],
-                    title: "PF2E.WeaponPropertyRune.greaterCorrosive.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterCorrosive.Note.success",
+                    title: "AVANT.WeaponPropertyRune.greaterCorrosive.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterCorrosive.Note.success",
                 },
             ],
             ignoredResistances: [{ type: "acid", max: Infinity }],
         },
         level: 15,
-        name: "PF2E.WeaponPropertyRune.greaterCorrosive.Name",
+        name: "AVANT.WeaponPropertyRune.greaterCorrosive.Name",
         price: 6500,
         rarity: "common",
         slug: "greaterCorrosive",
@@ -1492,13 +1492,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterCrushing.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterCrushing.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterCrushing.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterCrushing.Note.criticalSuccess",
                 },
             ],
         },
         level: 9,
-        name: "PF2E.WeaponPropertyRune.greaterCrushing.Name",
+        name: "AVANT.WeaponPropertyRune.greaterCrushing.Name",
         price: 650,
         rarity: "uncommon",
         slug: "greaterCrushing",
@@ -1525,7 +1525,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ignoredResistances: [{ type: "void", max: Infinity }],
         },
         level: 15,
-        name: "PF2E.WeaponPropertyRune.greaterDecaying.Name",
+        name: "AVANT.WeaponPropertyRune.greaterDecaying.Name",
         price: 6500,
         rarity: "common",
         slug: "greaterDecaying",
@@ -1545,14 +1545,14 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterDisrupting.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterDisrupting.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterDisrupting.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterDisrupting.Note.criticalSuccess",
                     predicate: ["target:negative-healing"],
                 },
             ],
         },
         level: 14,
-        name: "PF2E.WeaponPropertyRune.greaterDisrupting.Name",
+        name: "AVANT.WeaponPropertyRune.greaterDisrupting.Name",
         price: 4300,
         rarity: "uncommon",
         slug: "greaterDisrupting",
@@ -1560,7 +1560,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     greaterExtending: {
         level: 13,
-        name: "PF2E.WeaponPropertyRune.greaterExtending.Name",
+        name: "AVANT.WeaponPropertyRune.greaterExtending.Name",
         price: 3000,
         rarity: "common",
         slug: "greaterExtending",
@@ -1568,7 +1568,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     greaterFanged: {
         level: 8,
-        name: "PF2E.WeaponPropertyRune.greaterFanged.Name",
+        name: "AVANT.WeaponPropertyRune.greaterFanged.Name",
         price: 425,
         rarity: "uncommon",
         slug: "greaterFanged",
@@ -1579,13 +1579,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterFearsome.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterFearsome.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterFearsome.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterFearsome.Note.criticalSuccess",
                 },
             ],
         },
         level: 12,
-        name: "PF2E.WeaponPropertyRune.greaterFearsome.Name",
+        name: "AVANT.WeaponPropertyRune.greaterFearsome.Name",
         price: 2000,
         rarity: "common",
         slug: "greaterFearsome",
@@ -1606,19 +1606,19 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterFlaming.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterFlaming.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterFlaming.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterFlaming.Note.criticalSuccess",
                 },
                 {
                     outcome: ["success"],
-                    title: "PF2E.WeaponPropertyRune.greaterFlaming.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterFlaming.Note.success",
+                    title: "AVANT.WeaponPropertyRune.greaterFlaming.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterFlaming.Note.success",
                 },
             ],
             ignoredResistances: [{ type: "fire", max: Infinity }],
         },
         level: 15,
-        name: "PF2E.WeaponPropertyRune.greaterFlaming.Name",
+        name: "AVANT.WeaponPropertyRune.greaterFlaming.Name",
         price: 6500,
         rarity: "common",
         slug: "greaterFlaming",
@@ -1630,19 +1630,19 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterFrost.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterFrost.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterFrost.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterFrost.Note.criticalSuccess",
                 },
                 {
                     outcome: ["success"],
-                    title: "PF2E.WeaponPropertyRune.greaterFrost.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterFrost.Note.success",
+                    title: "AVANT.WeaponPropertyRune.greaterFrost.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterFrost.Note.success",
                 },
             ],
             ignoredResistances: [{ type: "cold", max: Infinity }],
         },
         level: 15,
-        name: "PF2E.WeaponPropertyRune.greaterFrost.Name",
+        name: "AVANT.WeaponPropertyRune.greaterFrost.Name",
         price: 6500,
         rarity: "common",
         slug: "greaterFrost",
@@ -1664,13 +1664,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["target:trait:giant"],
-                    title: "PF2E.WeaponPropertyRune.greaterGiantKilling.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterGiantKilling.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterGiantKilling.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterGiantKilling.Note.criticalSuccess",
                 },
             ],
         },
         level: 15,
-        name: "PF2E.WeaponPropertyRune.greaterGiantKilling.Name",
+        name: "AVANT.WeaponPropertyRune.greaterGiantKilling.Name",
         price: 6000,
         rarity: "rare",
         slug: "greaterGiantKilling",
@@ -1678,7 +1678,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     greaterHauling: {
         level: 11,
-        name: "PF2E.WeaponPropertyRune.greaterHauling.Name",
+        name: "AVANT.WeaponPropertyRune.greaterHauling.Name",
         price: 1300,
         rarity: "uncommon",
         slug: "greaterHauling",
@@ -1690,13 +1690,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterImpactful.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterImpactful.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterImpactful.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterImpactful.Note.criticalSuccess",
                 },
             ],
         },
         level: 17,
-        name: "PF2E.WeaponPropertyRune.greaterImpactful.Name",
+        name: "AVANT.WeaponPropertyRune.greaterImpactful.Name",
         price: 15_000,
         rarity: "common",
         slug: "greaterImpactful",
@@ -1704,7 +1704,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     greaterRooting: {
         level: 11,
-        name: "PF2E.WeaponPropertyRune.greaterRooting.Name",
+        name: "AVANT.WeaponPropertyRune.greaterRooting.Name",
         price: 1400,
         rarity: "common",
         slug: "greaterRooting",
@@ -1713,8 +1713,8 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterRooting.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterRooting.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterRooting.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterRooting.Note.criticalSuccess",
                 },
             ],
         },
@@ -1725,19 +1725,19 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterShock.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterShock.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterShock.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterShock.Note.criticalSuccess",
                 },
                 {
                     outcome: ["success"],
-                    title: "PF2E.WeaponPropertyRune.greaterShock.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterShock.Note.success",
+                    title: "AVANT.WeaponPropertyRune.greaterShock.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterShock.Note.success",
                 },
             ],
             ignoredResistances: [{ type: "electricity", max: Infinity }],
         },
         level: 15,
-        name: "PF2E.WeaponPropertyRune.greaterShock.Name",
+        name: "AVANT.WeaponPropertyRune.greaterShock.Name",
         price: 6500,
         rarity: "common",
         slug: "greaterShock",
@@ -1749,19 +1749,19 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.greaterThundering.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterThundering.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.greaterThundering.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterThundering.Note.criticalSuccess",
                 },
                 {
                     outcome: ["success"],
-                    title: "PF2E.WeaponPropertyRune.greaterThundering.Name",
-                    text: "PF2E.WeaponPropertyRune.greaterThundering.Note.success",
+                    title: "AVANT.WeaponPropertyRune.greaterThundering.Name",
+                    text: "AVANT.WeaponPropertyRune.greaterThundering.Note.success",
                 },
             ],
             ignoredResistances: [{ type: "sonic", max: Infinity }],
         },
         level: 15,
-        name: "PF2E.WeaponPropertyRune.greaterThundering.Name",
+        name: "AVANT.WeaponPropertyRune.greaterThundering.Name",
         price: 6500,
         rarity: "common",
         slug: "greaterThundering",
@@ -1782,80 +1782,80 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:axe"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Axe",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Axe",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:bow"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Bow",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Bow",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: [{ or: ["item:group:brawling", "item:group:firearm"] }],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Brawling",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Brawling",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:club"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Club",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Club",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:crossbow"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Crossbow",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Crossbow",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:flail"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Flail",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Flail",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:hammer"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Hammer",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Hammer",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:knife"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Knife",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Knife",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:polearm"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Polearm",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Polearm",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:shield"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Shield",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Shield",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:sling"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Sling",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Sling",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:spear"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Spear",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Spear",
                 },
                 {
                     outcome: ["criticalSuccess"],
                     predicate: ["item:group:sword"],
-                    title: "PF2E.WeaponPropertyRune.grievous.Name",
-                    text: "PF2E.WeaponPropertyRune.grievous.Note.Sword",
+                    title: "AVANT.WeaponPropertyRune.grievous.Name",
+                    text: "AVANT.WeaponPropertyRune.grievous.Note.Sword",
                 },
             ],
             adjustments: [
@@ -1867,7 +1867,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
         },
         level: 9,
-        name: "PF2E.WeaponPropertyRune.grievous.Name",
+        name: "AVANT.WeaponPropertyRune.grievous.Name",
         price: 700,
         rarity: "common",
         slug: "grievous",
@@ -1875,7 +1875,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     hauling: {
         level: 6,
-        name: "PF2E.WeaponPropertyRune.hauling.Name",
+        name: "AVANT.WeaponPropertyRune.hauling.Name",
         price: 225,
         rarity: "uncommon",
         slug: "hauling",
@@ -1883,7 +1883,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     holy: {
         level: 11,
-        name: "PF2E.WeaponPropertyRune.holy.Name",
+        name: "AVANT.WeaponPropertyRune.holy.Name",
         price: 1400,
         rarity: "common",
         slug: "holy",
@@ -1906,7 +1906,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
         },
         strikeAdjustments: [
             {
-                adjustTraits: (_weapon: WeaponPF2e | MeleePF2e, traits: AbilityTrait[]): void => {
+                adjustTraits: (_weapon: WeaponAvant | MeleeAvant, traits: AbilityTrait[]): void => {
                     if (!traits.includes("holy")) traits.push("holy");
                 },
             },
@@ -1917,13 +1917,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.hopeful.Name",
-                    text: "PF2E.WeaponPropertyRune.hopeful.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.hopeful.Name",
+                    text: "AVANT.WeaponPropertyRune.hopeful.Note.criticalSuccess",
                 },
             ],
         },
         level: 11,
-        name: "PF2E.WeaponPropertyRune.hopeful.Name",
+        name: "AVANT.WeaponPropertyRune.hopeful.Name",
         price: 1200,
         rarity: "uncommon",
         slug: "hopeful",
@@ -1931,14 +1931,14 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     hooked: {
         level: 5,
-        name: "PF2E.WeaponPropertyRune.hooked.Name",
+        name: "AVANT.WeaponPropertyRune.hooked.Name",
         price: 140,
         rarity: "rare",
         slug: "hooked",
         traits: ["magical"],
         strikeAdjustments: [
             {
-                adjustWeapon: (weapon: WeaponPF2e | MeleePF2e): void => {
+                adjustWeapon: (weapon: WeaponAvant | MeleeAvant): void => {
                     if (!weapon.system.traits.value.includes("trip")) {
                         weapon.system.traits.value.push("trip");
                     }
@@ -1952,13 +1952,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.impactful.Name",
-                    text: "PF2E.WeaponPropertyRune.impactful.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.impactful.Name",
+                    text: "AVANT.WeaponPropertyRune.impactful.Note.criticalSuccess",
                 },
             ],
         },
         level: 10,
-        name: "PF2E.WeaponPropertyRune.impactful.Name",
+        name: "AVANT.WeaponPropertyRune.impactful.Name",
         price: 1000,
         rarity: "common",
         slug: "impactful",
@@ -1966,7 +1966,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     impossible: {
         level: 20,
-        name: "PF2E.WeaponPropertyRune.impossible.Name",
+        name: "AVANT.WeaponPropertyRune.impossible.Name",
         price: 70_000,
         rarity: "common",
         slug: "impossible",
@@ -1974,7 +1974,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
         strikeAdjustments: [
             {
                 // Double the base range increment
-                adjustWeapon: (weapon: WeaponPF2e | MeleePF2e): void => {
+                adjustWeapon: (weapon: WeaponAvant | MeleeAvant): void => {
                     if (weapon.isOfType("weapon") && weapon.system.range && weapon._source.system.range) {
                         const sourceRange = weapon._source.system.range;
                         const preparedRange = weapon.system.range;
@@ -1989,7 +1989,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
         attack: {
             dosAdjustments: [
                 {
-                    adjustments: { success: { label: "PF2E.WeaponPropertyRune.keen.Name", amount: "criticalSuccess" } },
+                    adjustments: { success: { label: "AVANT.WeaponPropertyRune.keen.Name", amount: "criticalSuccess" } },
                     predicate: new Predicate([
                         "check:total:natural:19",
                         { or: ["item:damage:type:slashing", "item:damage:type:piercing"] },
@@ -1998,7 +1998,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             ],
         },
         level: 13,
-        name: "PF2E.WeaponPropertyRune.keen.Name",
+        name: "AVANT.WeaponPropertyRune.keen.Name",
         price: 3000,
         rarity: "uncommon",
         slug: "keen",
@@ -2006,7 +2006,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     kinWarding: {
         level: 3,
-        name: "PF2E.WeaponPropertyRune.kinWarding.Name",
+        name: "AVANT.WeaponPropertyRune.kinWarding.Name",
         price: 52,
         rarity: "uncommon",
         slug: "kinWarding",
@@ -2014,7 +2014,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     majorFanged: {
         level: 15,
-        name: "PF2E.WeaponPropertyRune.majorFanged.Name",
+        name: "AVANT.WeaponPropertyRune.majorFanged.Name",
         price: 6000,
         rarity: "uncommon",
         slug: "majorFanged",
@@ -2022,7 +2022,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     majorRooting: {
         level: 15,
-        name: "PF2E.WeaponPropertyRune.majorRooting.Name",
+        name: "AVANT.WeaponPropertyRune.majorRooting.Name",
         price: 6500,
         rarity: "common",
         slug: "majorRooting",
@@ -2031,8 +2031,8 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.majorRooting.Name",
-                    text: "PF2E.WeaponPropertyRune.majorRooting.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.majorRooting.Name",
+                    text: "AVANT.WeaponPropertyRune.majorRooting.Note.criticalSuccess",
                 },
             ],
         },
@@ -2040,7 +2040,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     merciful: {
         strikeAdjustments: [
             {
-                adjustWeapon: (weapon: WeaponPF2e | MeleePF2e): void => {
+                adjustWeapon: (weapon: WeaponAvant | MeleeAvant): void => {
                     if (!weapon.system.traits.value.includes("nonlethal")) {
                         weapon.system.traits.value.push("nonlethal");
                     }
@@ -2048,7 +2048,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             },
         ],
         level: 4,
-        name: "PF2E.WeaponPropertyRune.merciful.Name",
+        name: "AVANT.WeaponPropertyRune.merciful.Name",
         price: 70,
         rarity: "common",
         slug: "merciful",
@@ -2060,13 +2060,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.nightmare.Name",
-                    text: "PF2E.WeaponPropertyRune.nightmare.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.nightmare.Name",
+                    text: "AVANT.WeaponPropertyRune.nightmare.Note.criticalSuccess",
                 },
             ],
         },
         level: 9,
-        name: "PF2E.WeaponPropertyRune.nightmare.Name",
+        name: "AVANT.WeaponPropertyRune.nightmare.Name",
         price: 250,
         rarity: "uncommon",
         slug: "nightmare",
@@ -2074,7 +2074,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     pacifying: {
         level: 5,
-        name: "PF2E.WeaponPropertyRune.pacifying.Name",
+        name: "AVANT.WeaponPropertyRune.pacifying.Name",
         price: 150,
         rarity: "uncommon",
         slug: "pacifying",
@@ -2083,11 +2083,11 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     returning: {
         attack: {
             notes: [
-                { title: "PF2E.WeaponPropertyRune.returning.Name", text: "PF2E.WeaponPropertyRune.returning.Note" },
+                { title: "AVANT.WeaponPropertyRune.returning.Name", text: "AVANT.WeaponPropertyRune.returning.Note" },
             ],
         },
         level: 3,
-        name: "PF2E.WeaponPropertyRune.returning.Name",
+        name: "AVANT.WeaponPropertyRune.returning.Name",
         price: 55,
         rarity: "common",
         slug: "returning",
@@ -2095,7 +2095,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     rooting: {
         level: 7,
-        name: "PF2E.WeaponPropertyRune.rooting.Name",
+        name: "AVANT.WeaponPropertyRune.rooting.Name",
         price: 360,
         rarity: "common",
         slug: "rooting",
@@ -2104,8 +2104,8 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.rooting.Name",
-                    text: "PF2E.WeaponPropertyRune.rooting.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.rooting.Name",
+                    text: "AVANT.WeaponPropertyRune.rooting.Note.criticalSuccess",
                 },
             ],
         },
@@ -2115,7 +2115,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             additional: [{ damageType: "slashing", diceNumber: 1, dieSize: "d4" }],
         },
         level: 10,
-        name: "PF2E.WeaponPropertyRune.serrating.Name",
+        name: "AVANT.WeaponPropertyRune.serrating.Name",
         price: 1000,
         rarity: "uncommon",
         slug: "serrating",
@@ -2123,7 +2123,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     shifting: {
         level: 6,
-        name: "PF2E.WeaponPropertyRune.shifting.Name",
+        name: "AVANT.WeaponPropertyRune.shifting.Name",
         price: 225,
         rarity: "common",
         slug: "shifting",
@@ -2135,13 +2135,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.shock.Name",
-                    text: "PF2E.WeaponPropertyRune.shock.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.shock.Name",
+                    text: "AVANT.WeaponPropertyRune.shock.Note.criticalSuccess",
                 },
             ],
         },
         level: 8,
-        name: "PF2E.WeaponPropertyRune.shock.Name",
+        name: "AVANT.WeaponPropertyRune.shock.Name",
         price: 500,
         rarity: "common",
         slug: "shock",
@@ -2153,7 +2153,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
                 {
                     damageCategory: "splash",
                     damageType: "bludgeoning",
-                    label: "PF2E.WeaponPropertyRune.shockwave.Name",
+                    label: "AVANT.WeaponPropertyRune.shockwave.Name",
                     modifier: "@item.baseDamage.dice",
                     predicate: ["item:melee", "item:damage:type:bludgeoning"],
                 },
@@ -2162,13 +2162,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
                 {
                     outcome: ["success", "criticalSuccess"],
                     predicate: ["item:melee", "item:damage:type:bludgeoning"],
-                    title: "PF2E.WeaponPropertyRune.shockwave.Name",
-                    text: "PF2E.WeaponPropertyRune.shockwave.Note",
+                    title: "AVANT.WeaponPropertyRune.shockwave.Name",
+                    text: "AVANT.WeaponPropertyRune.shockwave.Note",
                 },
             ],
         },
         level: 13,
-        name: "PF2E.WeaponPropertyRune.shockwave.Name",
+        name: "AVANT.WeaponPropertyRune.shockwave.Name",
         price: 3000,
         rarity: "common",
         slug: "shockwave",
@@ -2176,7 +2176,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     speed: {
         level: 16,
-        name: "PF2E.WeaponPropertyRune.speed.Name",
+        name: "AVANT.WeaponPropertyRune.speed.Name",
         price: 10_000,
         rarity: "rare",
         slug: "speed",
@@ -2184,7 +2184,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     spellStoring: {
         level: 13,
-        name: "PF2E.WeaponPropertyRune.spellStoring.Name",
+        name: "AVANT.WeaponPropertyRune.spellStoring.Name",
         price: 2700,
         rarity: "uncommon",
         slug: "spellStoring",
@@ -2192,7 +2192,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     swarming: {
         level: 9,
-        name: "PF2E.WeaponPropertyRune.swarming.Name",
+        name: "AVANT.WeaponPropertyRune.swarming.Name",
         price: 700,
         rarity: "common",
         slug: "swarming",
@@ -2204,13 +2204,13 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.thundering.Name",
-                    text: "PF2E.WeaponPropertyRune.thundering.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.thundering.Name",
+                    text: "AVANT.WeaponPropertyRune.thundering.Note.criticalSuccess",
                 },
             ],
         },
         level: 8,
-        name: "PF2E.WeaponPropertyRune.thundering.Name",
+        name: "AVANT.WeaponPropertyRune.thundering.Name",
         price: 500,
         rarity: "common",
         slug: "thundering",
@@ -2218,7 +2218,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     trueRooting: {
         level: 19,
-        name: "PF2E.WeaponPropertyRune.trueRooting.Name",
+        name: "AVANT.WeaponPropertyRune.trueRooting.Name",
         price: 40_000,
         rarity: "common",
         slug: "trueRooting",
@@ -2227,15 +2227,15 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             notes: [
                 {
                     outcome: ["criticalSuccess"],
-                    title: "PF2E.WeaponPropertyRune.trueRooting.Name",
-                    text: "PF2E.WeaponPropertyRune.trueRooting.Note.criticalSuccess",
+                    title: "AVANT.WeaponPropertyRune.trueRooting.Name",
+                    text: "AVANT.WeaponPropertyRune.trueRooting.Note.criticalSuccess",
                 },
             ],
         },
     },
     underwater: {
         level: 3,
-        name: "PF2E.WeaponPropertyRune.underwater.Name",
+        name: "AVANT.WeaponPropertyRune.underwater.Name",
         price: 50,
         rarity: "common",
         slug: "underwater",
@@ -2243,7 +2243,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     unholy: {
         level: 11,
-        name: "PF2E.WeaponPropertyRune.unholy.Name",
+        name: "AVANT.WeaponPropertyRune.unholy.Name",
         price: 1400,
         rarity: "common",
         slug: "unholy",
@@ -2266,7 +2266,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
         },
         strikeAdjustments: [
             {
-                adjustTraits: (_weapon: WeaponPF2e | MeleePF2e, traits: AbilityTrait[]): void => {
+                adjustTraits: (_weapon: WeaponAvant | MeleeAvant, traits: AbilityTrait[]): void => {
                     if (!traits.includes("unholy")) traits.push("unholy");
                 },
             },
@@ -2274,7 +2274,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
     },
     vorpal: {
         level: 17,
-        name: "PF2E.WeaponPropertyRune.vorpal.Name",
+        name: "AVANT.WeaponPropertyRune.vorpal.Name",
         price: 15_000,
         rarity: "rare",
         slug: "vorpal",
@@ -2285,7 +2285,7 @@ const WEAPON_PROPERTY_RUNES: { [T in WeaponPropertyRuneType]: WeaponPropertyRune
             additional: [{ damageType: "bleed", diceNumber: 1, dieSize: "d6" }],
         },
         level: 7,
-        name: "PF2E.WeaponPropertyRune.wounding.Name",
+        name: "AVANT.WeaponPropertyRune.wounding.Name",
         price: 340,
         rarity: "common",
         slug: "wounding",

@@ -1,20 +1,20 @@
-import { ActorSheetPF2e, SheetClickActionHandlers } from "@actor/sheet/base.ts";
-import { ActorSheetDataPF2e } from "@actor/sheet/data-types.ts";
+import { ActorSheetAvant, SheetClickActionHandlers } from "@actor/sheet/base.ts";
+import { ActorSheetDataAvant } from "@actor/sheet/data-types.ts";
 import { ItemSummaryRenderer } from "@actor/sheet/item-summary-renderer.ts";
-import { CampaignFeaturePF2e, ItemPF2e, ItemProxyPF2e } from "@item";
-import type { ItemSourcePF2e } from "@item/base/data/index.ts";
-import type { DropCanvasItemDataPF2e } from "@module/canvas/drop-canvas-data.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import { CampaignFeatureAvant, ItemAvant, ItemProxyAvant } from "@item";
+import type { ItemSourceAvant } from "@item/base/data/index.ts";
+import type { DropCanvasItemDataAvant } from "@module/canvas/drop-canvas-data.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { AdjustedValue, eventToRollParams, getAdjustedValue, getAdjustment } from "@module/sheet/helpers.ts";
 import { kingmakerTraits } from "@scripts/config/traits.ts";
-import { ErrorPF2e, htmlClosest, htmlQuery, htmlQueryAll, objectHasKey, tupleHasValue } from "@util";
+import { ErrorAvant, htmlClosest, htmlQuery, htmlQueryAll, objectHasKey, tupleHasValue } from "@util";
 import * as R from "remeda";
-import type { ArmyPF2e } from "./document.ts";
+import type { ArmyAvant } from "./document.ts";
 import { ARMY_TYPES, BASIC_WAR_ACTIONS_FOLDER, getArmyGearData } from "./values.ts";
 
-class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
+class ArmySheetAvant extends ActorSheetAvant<ArmyAvant> {
     /** Basic war actions are sheet data. Note that they cannot ever work with rule elements */
-    basicWarActions: CampaignFeaturePF2e[] = [];
+    basicWarActions: CampaignFeatureAvant[] = [];
 
     override itemRenderer = new ArmyItemRenderer(this);
 
@@ -25,7 +25,7 @@ class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
             classes: [...options.classes, "army"],
             width: 750,
             height: 625,
-            template: "systems/pf2e/templates/actors/army/sheet.hbs",
+            template: "systems/avant/templates/actors/army/sheet.hbs",
             scrollY: [".sheet-body"],
         };
     }
@@ -36,14 +36,14 @@ class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
         const campaignFeatures = actor.itemTypes.campaignFeature;
 
         if (!this.basicWarActions.length) {
-            const pack = game.packs.get("pf2e.kingmaker-features");
+            const pack = game.packs.get("avant.kingmaker-features");
             const compendiumFeatures = ((await pack?.getDocuments({ type: "campaignFeature" })) ?? []).filter(
-                (d): d is CampaignFeaturePF2e<null> => d instanceof ItemPF2e && d.isOfType("campaignFeature"),
+                (d): d is CampaignFeatureAvant<null> => d instanceof ItemAvant && d.isOfType("campaignFeature"),
             );
             this.basicWarActions = compendiumFeatures
                 .filter((d) => d.system.category === "army-war-action" && d.folder?.id === BASIC_WAR_ACTIONS_FOLDER)
-                .map((i) => new ItemProxyPF2e(i.toObject(true), { parent: this.actor }))
-                .filter((i): i is CampaignFeaturePF2e<ArmyPF2e> => i.isOfType("campaignFeature"));
+                .map((i) => new ItemProxyAvant(i.toObject(true), { parent: this.actor }))
+                .filter((i): i is CampaignFeatureAvant<ArmyAvant> => i.isOfType("campaignFeature"));
         }
 
         return {
@@ -74,7 +74,7 @@ class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
             },
             linked: !!actor.prototypeToken.actorLink && (!actor.token || actor.token.isLinked),
             armyTypes: R.pick(kingmakerTraits, ARMY_TYPES),
-            rarityTraits: CONFIG.PF2E.rarityTraits,
+            rarityTraits: CONFIG.AVANT.rarityTraits,
             saves: R.sortBy(
                 (["maneuver", "morale"] as const).map((slug) => {
                     const statistic = this.actor[slug];
@@ -118,7 +118,7 @@ class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
 
         htmlQuery(html, "[data-action=link-actor]")?.addEventListener("click", () => {
             if (this.actor.token) {
-                ui.notifications.error("PF2E.Kingmaker.Army.Alliance.LinkError", { localize: true });
+                ui.notifications.error("AVANT.Kingmaker.Army.Alliance.LinkError", { localize: true });
             } else {
                 this.actor.update({ prototypeToken: { actorLink: true } });
             }
@@ -200,15 +200,15 @@ class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
                     : rawGearType;
             if (!objectHasKey(gearData, gearType)) continue;
 
-            const kingmakerTraits: Record<string, string | undefined> = CONFIG.PF2E.kingmakerTraits;
-            const actionTraits: Record<string, string | undefined> = CONFIG.PF2E.actionTraits;
-            const descriptions: Record<string, string | undefined> = CONFIG.PF2E.traitsDescriptions;
+            const kingmakerTraits: Record<string, string | undefined> = CONFIG.AVANT.kingmakerTraits;
+            const actionTraits: Record<string, string | undefined> = CONFIG.AVANT.actionTraits;
+            const descriptions: Record<string, string | undefined> = CONFIG.AVANT.traitsDescriptions;
 
             showGear.addEventListener("click", async () => {
                 const gear = gearData[gearType];
-                ChatMessagePF2e.create({
-                    speaker: ChatMessagePF2e.getSpeaker({ actor: this.actor }),
-                    content: await renderTemplate("systems/pf2e/templates/actors/army/gear-card.hbs", {
+                ChatMessageAvant.create({
+                    speaker: ChatMessageAvant.getSpeaker({ actor: this.actor }),
+                    content: await renderTemplate("systems/avant/templates/actors/army/gear-card.hbs", {
                         ...gear,
                         level: gear.level ?? (gear.ranks?.length ? `${gear.ranks[0].level}+` : null),
                         traits: gear.traits.map((t) => ({
@@ -262,9 +262,9 @@ class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
         return handlers;
     }
 
-    protected override async _onDropItem(event: DragEvent, data: DropCanvasItemDataPF2e): Promise<ItemPF2e[]> {
-        const item = await ItemPF2e.fromDropData(data);
-        if (!item) throw ErrorPF2e("Unable to create item from drop data!");
+    protected override async _onDropItem(event: DragEvent, data: DropCanvasItemDataAvant): Promise<ItemAvant[]> {
+        const item = await ItemAvant.fromDropData(data);
+        if (!item) throw ErrorAvant("Unable to create item from drop data!");
 
         // If the actor is the same, call the parent method, which will eventually call the sort instead
         if (this.actor.uuid === item.parent?.uuid) {
@@ -281,7 +281,7 @@ class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
     }
 
     /** Handle a drop event for an existing Owned Item to sort that item */
-    protected override async _onSortItem(event: DragEvent, itemSource: ItemSourcePF2e): Promise<ItemPF2e[]> {
+    protected override async _onSortItem(event: DragEvent, itemSource: ItemSourceAvant): Promise<ItemAvant[]> {
         const item = this.actor.items.get(itemSource._id!);
         if (item?.isOfType("campaignFeature") && (item.isFeat || item.isFeature)) {
             // In the army sheet, dragging outside the slot immediately makes it a bonus slot
@@ -305,7 +305,7 @@ class ArmySheetPF2e extends ActorSheetPF2e<ArmyPF2e> {
     }
 }
 
-class ArmyItemRenderer extends ItemSummaryRenderer<ArmyPF2e, ArmySheetPF2e> {
+class ArmyItemRenderer extends ItemSummaryRenderer<ArmyAvant, ArmySheetAvant> {
     protected override async getItemFromElement(element: HTMLElement): Promise<ClientDocument | null> {
         const slug = element.dataset.slug;
         const item = this.sheet.basicWarActions.find((a) => a.slug === slug);
@@ -313,7 +313,7 @@ class ArmyItemRenderer extends ItemSummaryRenderer<ArmyPF2e, ArmySheetPF2e> {
     }
 }
 
-interface ArmySheetData extends ActorSheetDataPF2e<ArmyPF2e> {
+interface ArmySheetData extends ActorSheetDataAvant<ArmyAvant> {
     description: string;
     ac: {
         value: number;
@@ -330,8 +330,8 @@ interface ArmySheetData extends ActorSheetDataPF2e<ArmyPF2e> {
     armyTypes: Record<string, string>;
     rarityTraits: Record<string, string>;
     saves: ArmySaveSheetData[];
-    basicWarActions: CampaignFeaturePF2e[];
-    warActions: CampaignFeaturePF2e[];
+    basicWarActions: CampaignFeatureAvant[];
+    warActions: CampaignFeatureAvant[];
 }
 
 interface ArmySaveSheetData {
@@ -342,4 +342,4 @@ interface ArmySaveSheetData {
     adjustmentClass: string | null;
 }
 
-export { ArmySheetPF2e };
+export { ArmySheetAvant };

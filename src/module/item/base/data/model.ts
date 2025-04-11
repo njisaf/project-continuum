@@ -1,15 +1,15 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { MigrationDataField } from "@module/data.ts";
 import { PublicationField } from "@module/model.ts";
 import type { RuleElementSource } from "@module/rules/index.ts";
 import { SlugField } from "@system/schema-data-fields.ts";
-import type { ItemPF2e } from "../document.ts";
+import type { ItemAvant } from "../document.ts";
 import type { ItemDescriptionData } from "./system.ts";
 import fields = foundry.data.fields;
 
-abstract class ItemSystemModel<TParent extends ItemPF2e, TSchema extends ItemSystemSchema> extends foundry.abstract
+abstract class ItemSystemModel<TParent extends ItemAvant, TSchema extends ItemSystemSchema> extends foundry.abstract
     .TypeDataModel<TParent, TSchema> {
-    static override LOCALIZATION_PREFIXES = ["PF2E.Item"];
+    static override LOCALIZATION_PREFIXES = ["AVANT.Item"];
 
     static override defineSchema(): ItemSystemSchema {
         const anyStringField = (): fields.StringField<string, string, true, false, true> =>
@@ -52,12 +52,12 @@ abstract class ItemSystemModel<TParent extends ItemPF2e, TSchema extends ItemSys
         };
     }
 
-    get actor(): ActorPF2e | null {
+    get actor(): ActorAvant | null {
         return this.parent.actor;
     }
 }
 
-interface ItemSystemModel<TParent extends ItemPF2e, TSchema extends ItemSystemSchema>
+interface ItemSystemModel<TParent extends ItemAvant, TSchema extends ItemSystemSchema>
     extends foundry.abstract.TypeDataModel<TParent, TSchema> {
     description: ItemDescriptionData;
 }

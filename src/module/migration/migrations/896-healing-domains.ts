@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Fix traits on spell variants */
 export class Migration896HealingDomains extends MigrationBase {
     static override version = 0.896;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!["effect", "feat"].includes(source.type)) return;
 
         switch (source.system.slug) {

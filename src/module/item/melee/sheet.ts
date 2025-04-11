@@ -1,11 +1,11 @@
-import { ItemSheetDataPF2e, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
+import { ItemSheetDataAvant, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
 import { SheetOptions, createSheetOptions } from "@module/sheet/helpers.ts";
 import { damageCategoriesUnique } from "@scripts/config/damage.ts";
 import { DamageCategoryUnique } from "@system/damage/types.ts";
 import { htmlClosest, htmlQueryAll } from "@util";
-import type { MeleePF2e } from "./index.ts";
+import type { MeleeAvant } from "./index.ts";
 
-export class MeleeSheetPF2e extends ItemSheetPF2e<MeleePF2e> {
+export class MeleeSheetAvant extends ItemSheetAvant<MeleeAvant> {
     override async getData(options?: Partial<DocumentSheetOptions>): Promise<MeleeSheetData> {
         const sheetData = await super.getData(options);
 
@@ -17,7 +17,7 @@ export class MeleeSheetPF2e extends ItemSheetPF2e<MeleePF2e> {
 
         return {
             ...sheetData,
-            damageTypes: CONFIG.PF2E.damageTypes,
+            damageTypes: CONFIG.AVANT.damageTypes,
             damageCategories: damageCategoriesUnique,
             attackEffects: createSheetOptions(this.getAttackEffectOptions(), this.item.system.attackEffects),
         };
@@ -59,8 +59,8 @@ export class MeleeSheetPF2e extends ItemSheetPF2e<MeleePF2e> {
     }
 }
 
-interface MeleeSheetData extends ItemSheetDataPF2e<MeleePF2e> {
-    damageTypes: ConfigPF2e["PF2E"]["damageTypes"];
+interface MeleeSheetData extends ItemSheetDataAvant<MeleeAvant> {
+    damageTypes: ConfigAvant["AVANT"]["damageTypes"];
     damageCategories: Record<DamageCategoryUnique, string>;
     attackEffects: SheetOptions;
 }

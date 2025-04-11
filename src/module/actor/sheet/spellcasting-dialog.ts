@@ -1,13 +1,13 @@
-import type { CreaturePF2e } from "@actor";
+import type { CreatureAvant } from "@actor";
 import type { AttributeString } from "@actor/types.ts";
-import { SpellcastingEntryPF2e } from "@item";
+import { SpellcastingEntryAvant } from "@item";
 import type { SpellcastingEntrySource, SpellcastingEntrySystemSource } from "@item/spellcasting-entry/data.ts";
 import { ordinalString } from "@util";
 import * as R from "remeda";
 
 /** Dialog to create or edit spellcasting entries. It works on a clone of spellcasting entry, but will not persist unless the changes are accepted */
-class SpellcastingCreateAndEditDialog extends FormApplication<SpellcastingEntryPF2e<CreaturePF2e>> {
-    constructor(object: SpellcastingEntryPF2e<CreaturePF2e>, options?: Partial<FormApplicationOptions>) {
+class SpellcastingCreateAndEditDialog extends FormApplication<SpellcastingEntryAvant<CreatureAvant>> {
+    constructor(object: SpellcastingEntryAvant<CreatureAvant>, options?: Partial<FormApplicationOptions>) {
         super(object.clone({}, { keepId: true }), options);
     }
 
@@ -15,8 +15,8 @@ class SpellcastingCreateAndEditDialog extends FormApplication<SpellcastingEntryP
         return {
             ...super.defaultOptions,
             id: "spellcasting-dialog",
-            template: "systems/pf2e/templates/actors/spellcasting-dialog.hbs",
-            title: "PF2E.SpellcastingSettings.Title",
+            template: "systems/avant/templates/actors/spellcasting-dialog.hbs",
+            title: "AVANT.SpellcastingSettings.Title",
             width: 350,
             height: "auto",
             closeOnSubmit: false,
@@ -41,24 +41,24 @@ class SpellcastingCreateAndEditDialog extends FormApplication<SpellcastingEntryP
                 ...extraStatistics,
                 ...classDCs.map((c) => ({
                     slug: c.slug,
-                    label: game.i18n.format("PF2E.Actor.Character.ClassDC.LabelSpecific", { class: c.label }),
+                    label: game.i18n.format("AVANT.Actor.Character.ClassDC.LabelSpecific", { class: c.label }),
                 })),
             ],
-            magicTraditions: CONFIG.PF2E.magicTraditions,
+            magicTraditions: CONFIG.AVANT.magicTraditions,
             spellcastingTypes: R.omit(
-                CONFIG.PF2E.preparationType,
+                CONFIG.AVANT.preparationType,
                 (["ritual", actor.type === "character" ? "items" : null] as const).filter(R.isTruthy),
             ),
-            attributes: CONFIG.PF2E.abilities,
+            attributes: CONFIG.AVANT.abilities,
             isAttributeConfigurable: this.#canSetAttribute(),
             selectedAttribute: selectedStatistic?.attribute ?? this.object.attribute,
             autoHeightenLevels: Object.fromEntries(
                 R.range(1, 11).map((level) => [
                     level.toString(),
-                    game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(level) }),
+                    game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(level) }),
                 ]),
             ),
-            validItemTypes: { scroll: "PF2E.Actor.Creature.Spellcasting.ValidItemTypes.Scroll" },
+            validItemTypes: { scroll: "AVANT.Actor.Creature.Spellcasting.ValidItemTypes.Scroll" },
         };
     }
 
@@ -126,21 +126,21 @@ class SpellcastingCreateAndEditDialog extends FormApplication<SpellcastingEntryP
 
         if (this.object.id === null) {
             updateData.name = (() => {
-                const locKey = CONFIG.PF2E.preparationType[updateData.system.prepared.value];
+                const locKey = CONFIG.AVANT.preparationType[updateData.system.prepared.value];
                 const preparationType = game.i18n.localize(locKey);
-                const magicTraditions: Record<string, string> = CONFIG.PF2E.magicTraditions;
+                const magicTraditions: Record<string, string> = CONFIG.AVANT.magicTraditions;
                 const traditionSpells = game.i18n.localize(magicTraditions[this.object.tradition ?? ""]);
                 if (!traditionSpells) {
                     return preparationType;
                 } else {
-                    return game.i18n.format("PF2E.SpellCastingFormat", { preparationType, traditionSpells });
+                    return game.i18n.format("AVANT.SpellCastingFormat", { preparationType, traditionSpells });
                 }
             })();
 
             await actor.createEmbeddedDocuments("Item", [updateData]);
         } else {
             const actualEntry = actor.spellcasting.get(this.object.id);
-            if (!(actualEntry instanceof SpellcastingEntryPF2e)) return;
+            if (!(actualEntry instanceof SpellcastingEntryAvant)) return;
 
             const system = R.pick(updateData.system, [
                 "prepared",
@@ -156,13 +156,13 @@ class SpellcastingCreateAndEditDialog extends FormApplication<SpellcastingEntryP
     }
 }
 
-interface SpellcastingCreateAndEditDialogSheetData extends FormApplicationData<SpellcastingEntryPF2e<CreaturePF2e>> {
-    actor: CreaturePF2e;
+interface SpellcastingCreateAndEditDialogSheetData extends FormApplicationData<SpellcastingEntryAvant<CreatureAvant>> {
+    actor: CreatureAvant;
     system: SpellcastingEntrySystemSource;
-    magicTraditions: typeof CONFIG.PF2E.magicTraditions;
+    magicTraditions: typeof CONFIG.AVANT.magicTraditions;
     statistics: { slug: string; label: string }[];
-    spellcastingTypes: Partial<typeof CONFIG.PF2E.preparationType>;
-    attributes: typeof CONFIG.PF2E.abilities;
+    spellcastingTypes: Partial<typeof CONFIG.AVANT.preparationType>;
+    attributes: typeof CONFIG.AVANT.abilities;
     isAttributeConfigurable: boolean;
     selectedAttribute: AttributeString;
     autoHeightenLevels: Record<string, string>;
@@ -170,11 +170,11 @@ interface SpellcastingCreateAndEditDialogSheetData extends FormApplicationData<S
 }
 
 async function createSpellcastingDialog(
-    object: CreaturePF2e | SpellcastingEntryPF2e<CreaturePF2e>,
+    object: CreatureAvant | SpellcastingEntryAvant<CreatureAvant>,
 ): Promise<SpellcastingCreateAndEditDialog> {
     const item =
         "prototypeToken" in object
-            ? new SpellcastingEntryPF2e(
+            ? new SpellcastingEntryAvant(
                   {
                       name: "Untitled",
                       type: "spellcastingEntry",

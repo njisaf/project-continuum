@@ -5,7 +5,7 @@ import * as R from "remeda";
 import { RuleElementForm, RuleElementFormSheetData, RuleElementFormTabData } from "./base.ts";
 
 class TokenImageForm extends RuleElementForm<RuleElementSource, TokenImageRuleElement> {
-    override template = "systems/pf2e/templates/items/rules/token-image.hbs";
+    override template = "systems/avant/templates/items/rules/token-image.hbs";
 
     protected override tabs: RuleElementFormTabData = {
         names: ["basics", "ring"],

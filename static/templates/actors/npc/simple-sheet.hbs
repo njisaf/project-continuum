@@ -1,4 +1,4 @@
-<form class="npc-sheet simple" autocomplete="off" data-tooltip-class="pf2e">
+<form class="npc-sheet simple" autocomplete="off" data-tooltip-class="avant">
     <div class="sidebar">
         {{!-- Image --}}
         <div class="image-container">
@@ -10,7 +10,7 @@
     <div class="subsection health">
         <header>
             <label for="{{document.uuid}}-hp" data-tooltip="{{data.attributes.hp.breakdown}}">
-                <span>{{localize "PF2E.HitPointsShortLabel"}}</span>
+                <span>{{localize "AVANT.HitPointsShortLabel"}}</span>
             </label>
 
             <span class="hit-points">
@@ -38,7 +38,7 @@
         {{!-- Temp HP --}}
         <div class="side-bar-section-content">
             <div class="hp-temp labeled-field">
-                <label for="{{document.uuid}}-temp-hp">{{localize "PF2E.RuleElement.TempHPShortLabel"}}</label>
+                <label for="{{document.uuid}}-temp-hp">{{localize "AVANT.RuleElement.TempHPShortLabel"}}</label>
                 <input
                     class="hp-temp-value"
                     type="number"
@@ -62,7 +62,7 @@
                             data-action="roll-check"
                             data-statistic="will"
                             data-tooltip="{{will.breakdown}}"
-                        >{{localize "PF2E.SavesWill"}}</a>
+                        >{{localize "AVANT.SavesWill"}}</a>
                     </label>
                     <input
                         type="text"
@@ -85,7 +85,7 @@
                         data-action="roll-check"
                         data-statistic="perception"
                         data-tooltip="{{data.perception.breakdown}}"
-                    >{{localize "PF2E.PerceptionLabel"}}</a>
+                    >{{localize "AVANT.PerceptionLabel"}}</a>
                 </label>
                 {{#with data.perception as |perception|}}
                     <input
@@ -105,14 +105,14 @@
                             {{~#if sense.emphasizeLabel}}<em>{{sense.label}}</em>{{else}}{{sense.label}}{{/if~}}
                         </li>
                     {{/each~}}
-                    {{~#unless data.perception.vision}}<li>{{localize "PF2E.Actor.Creature.Sense.NoVision"}}</li>{{/unless}}
+                    {{~#unless data.perception.vision}}<li>{{localize "AVANT.Actor.Creature.Sense.NoVision"}}</li>{{/unless}}
                 </ul>
 
                 <input
                     type="text"
                     name="system.perception.details"
                     value="{{data.perception.details}}"
-                    placeholder="{{localize "PF2E.SpecialSensesLabel"}}"
+                    placeholder="{{localize "AVANT.SpecialSensesLabel"}}"
                 />
             </div>
         </div>
@@ -121,11 +121,11 @@
         <div class="subsection skills">
             <header>
                 <label>
-                    <label class="attribute-label">{{localize "PF2E.SkillsLabel"}}</label>
+                    <label class="attribute-label">{{localize "AVANT.SkillsLabel"}}</label>
                 </label>
                 {{#if editable}}
                     <div class="controls">
-                        <a data-action="edit-skills" data-tooltip="PF2E.NPC.EditSkills"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a data-action="edit-skills" data-tooltip="AVANT.NPC.EditSkills"><i class="fa-solid fa-pen-to-square"></i></a>
                     </div>
                 {{/if}}
             </header>
@@ -157,8 +157,8 @@
         <header>
             {{!-- Name & Level --}}
             <div class="name flexrow bottom-separator">
-                <input class="name-value" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "PF2E.CharacterNamePlaceholder"}}" spellcheck="false" />
-                <label class="level-label">{{localize "PF2E.NPC.Creature"}}</label>
+                <input class="name-value" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "AVANT.CharacterNamePlaceholder"}}" spellcheck="false" />
+                <label class="level-label">{{localize "AVANT.NPC.Creature"}}</label>
                 {{#with data.details.level as |level|}}
                     <input class="level adjustable{{#if level.adjustedHigher}} adjusted-higher{{else if level.adjustedLower}} adjusted-lower{{/if}}" type="text" data-property="system.details.level.value" value="{{level.value}}" placeholder="1" data-dtype="Number" />
                 {{/with}}
@@ -177,7 +177,7 @@
             {{!-- Traits Selector --}}
             <div class="flexrow">
                 <tagify-tags class="tags paizo-style" name="system.traits.value" value="{{json traitTagifyData}}"
-                    {{#if (eq data.traits.value.length 0)}}placeholder="{{localize "PF2E.Traits"}}"{{/if}} />
+                    {{#if (eq data.traits.value.length 0)}}placeholder="{{localize "AVANT.Traits"}}"{{/if}} />
             </div>
             {{!-- Blurb --}}
             <div class="flexrow">
@@ -189,7 +189,7 @@
         <section class="sheet-body notes active">
             {{!-- Description --}}
             <div class="notes-section public-notes section-container">
-                <h4>{{localize "PF2E.NPC.PublicNotes"}}</h4>
+                <h4>{{localize "AVANT.NPC.PublicNotes"}}</h4>
                 <div class="notes-text">
                     {{editor enrichedContent.publicNotes target="system.details.publicNotes" button=true editable=editable engine="prosemirror"}}
                 </div>
@@ -198,7 +198,7 @@
             {{#if user.isGM}}
                 {{!-- Private Notes --}}
                 <div class="notes-section private-notes section-container">
-                    <h4>{{localize "PF2E.NPC.PrivateNotes"}}</h4>
+                    <h4>{{localize "AVANT.NPC.PrivateNotes"}}</h4>
                     <div class="notes-text">
                         {{editor enrichedContent.privateNotes target="system.details.privateNotes" button=true editable=editable engine="prosemirror"}}
                     </div>
@@ -207,18 +207,18 @@
 
             {{#if (and editable document.conditions.active.length)}}
                 <div class="notes-section section-container effects">
-                    <h4>{{localize "PF2E.ConditionsLabel"}}</h4>
+                    <h4>{{localize "AVANT.ConditionsLabel"}}</h4>
                     <ol class="effects-list">
-                        {{> "systems/pf2e/templates/actors/partials/effects.hbs" effects=document.conditions.active}}
+                        {{> "systems/avant/templates/actors/partials/effects.hbs" effects=document.conditions.active}}
                     </ol>
                 </div>
             {{/if}}
 
             {{#if (and editable document.itemTypes.effect.length)}}
                 <div class="notes-section section-container effects">
-                    <h4>{{localize "PF2E.EffectsLabel"}}</h4>
+                    <h4>{{localize "AVANT.EffectsLabel"}}</h4>
                     <ol class="effects-list">
-                        {{> "systems/pf2e/templates/actors/partials/effects.hbs" effects=document.itemTypes.effect}}
+                        {{> "systems/avant/templates/actors/partials/effects.hbs" effects=document.itemTypes.effect}}
                     </ol>
                 </div>
             {{/if}}
@@ -228,7 +228,7 @@
                 <div class="notes-section publication">
                     <h4>Publication</h4>
                     <div class="notes-text">
-                        {{> "systems/pf2e/templates/partials/publication-data.hbs" path="system.details.publication" data=data.details.publication}}
+                        {{> "systems/avant/templates/partials/publication-data.hbs" path="system.details.publication" data=data.details.publication}}
                     </div>
                 </div>
             {{/if}}

@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { sluggify } from "@util";
 import { MigrationBase } from "../base.ts";
 
@@ -7,24 +7,24 @@ import { MigrationBase } from "../base.ts";
 export class Migration894NoLayOnHandsVsUndead extends MigrationBase {
     static override version = 0.894;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         source.items = source.items.filter(
             (i) => i.type !== "spell" || (i.system.slug ?? sluggify(i.name)) !== "lay-on-hands-vs-undead",
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const { description } = source.system;
         if (source.type === "effect") {
             description.value = description.value.replace(
-                /@UUID\[Compendium\.pf2e\.spells-srd\.Item\.(?:Lay on Hands \(Vs\. Undead\)|IxyD7YdRbSSucxZp)\]/g,
+                /@UUID\[Compendium\.avant\.spells-srd\.Item\.(?:Lay on Hands \(Vs\. Undead\)|IxyD7YdRbSSucxZp)\]/g,
                 "game" in globalThis
-                    ? "@UUID[Compendium.pf2e.spells-srd.Item.zNN9212H2FGfM7VS]"
-                    : "@UUID[Compendium.pf2e.spells-srd.Item.Lay on Hands]",
+                    ? "@UUID[Compendium.avant.spells-srd.Item.zNN9212H2FGfM7VS]"
+                    : "@UUID[Compendium.avant.spells-srd.Item.Lay on Hands]",
             );
         } else {
             description.value = description.value.replace(
-                /<p>(?:<em>)?@UUID\[Compendium.pf2e.spells-srd\.(?:Item\.)?(?:Lay on Hands \(Vs\. Undead\)|IxyD7YdRbSSucxZp)\](?:<\/em>)?<\/p>\n?/g,
+                /<p>(?:<em>)?@UUID\[Compendium.avant.spells-srd\.(?:Item\.)?(?:Lay on Hands \(Vs\. Undead\)|IxyD7YdRbSSucxZp)\](?:<\/em>)?<\/p>\n?/g,
                 "",
             );
         }

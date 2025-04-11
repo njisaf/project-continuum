@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Remove redundant "sustained for up to" in free-text spell durations. */
 export class Migration913SpellSustainedText extends MigrationBase {
     static override version = 0.913;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "spell") return;
 
         const duration = source.system.duration;

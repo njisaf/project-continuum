@@ -1,12 +1,12 @@
-import type { ActorType, CreaturePF2e } from "@actor";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ActorType, CreatureAvant } from "@actor";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import type { BooleanField } from "types/foundry/common/data/fields.d.ts";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
 /** Reduce current hit points without applying damage */
-class LoseHitPointsRuleElement extends RuleElementPF2e<LoseHitPointsRuleSchema> {
+class LoseHitPointsRuleElement extends RuleElementAvant<LoseHitPointsRuleSchema> {
     static override validActorTypes: ActorType[] = ["character", "familiar", "npc"];
 
     static override defineSchema(): LoseHitPointsRuleSchema {
@@ -35,7 +35,7 @@ class LoseHitPointsRuleElement extends RuleElementPF2e<LoseHitPointsRuleSchema> 
         }
     }
 
-    override async preUpdate(changes: DeepPartial<ItemSourcePF2e>): Promise<void> {
+    override async preUpdate(changes: DeepPartial<ItemSourceAvant>): Promise<void> {
         if (!this.reevaluateOnUpdate || this.ignored) return;
         const previousValue = Math.trunc(Math.abs(Number(this.resolveValue(this.value)) || 0));
         const newItem = this.item.clone(changes);
@@ -57,9 +57,9 @@ class LoseHitPointsRuleElement extends RuleElementPF2e<LoseHitPointsRuleSchema> 
 type LoseHitPointsSource = SourceFromSchema<LoseHitPointsRuleSchema>;
 
 interface LoseHitPointsRuleElement
-    extends RuleElementPF2e<LoseHitPointsRuleSchema>,
+    extends RuleElementAvant<LoseHitPointsRuleSchema>,
         ModelPropsFromRESchema<LoseHitPointsRuleSchema> {
-    get actor(): CreaturePF2e;
+    get actor(): CreatureAvant;
 }
 
 type LoseHitPointsRuleSchema = RuleElementSchema & {

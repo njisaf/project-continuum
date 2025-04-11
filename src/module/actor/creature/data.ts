@@ -8,11 +8,11 @@ import type {
     ActorSystemSource,
     ActorTraitsSource,
     AttributeBasedTraceData,
-    BaseActorSourcePF2e,
+    BaseActorSourceAvant,
     StrikeData,
 } from "@actor/data/base.ts";
-import type { ActorSizePF2e } from "@actor/data/size.ts";
-import type { ModifierPF2e, RawModifier, StatisticModifier } from "@actor/modifiers.ts";
+import type { ActorSizeAvant } from "@actor/data/size.ts";
+import type { ModifierAvant, RawModifier, StatisticModifier } from "@actor/modifiers.ts";
 import type { AttributeString, MovementType, SaveType, SkillSlug } from "@actor/types.ts";
 import type { LabeledNumber, Size, ValueAndMax, ValueAndMaybeMax, ZeroToThree } from "@module/data.ts";
 import type { ArmorClassTraceData } from "@system/statistic/index.ts";
@@ -22,7 +22,7 @@ import type { CreatureActorType, CreatureTrait, Language, SenseAcuity, SenseType
 type BaseCreatureSource<
     TType extends CreatureActorType,
     TSystemSource extends CreatureSystemSource,
-> = BaseActorSourcePF2e<TType, TSystemSource>;
+> = BaseActorSourceAvant<TType, TSystemSource>;
 
 /** Skill and Lore statistics for rolling. */
 
@@ -81,7 +81,7 @@ interface CreatureSystemData extends Omit<CreatureSystemSource, "attributes">, A
     perception: CreaturePerceptionData;
 
     /** Maps roll types -> a list of modifiers which should affect that roll type. */
-    customModifiers: Record<string, ModifierPF2e[]>;
+    customModifiers: Record<string, ModifierAvant[]>;
 
     /** Saving throw data */
     saves: CreatureSaves;
@@ -113,7 +113,7 @@ interface AbilityData {
 type Abilities = Record<AttributeString, AbilityData>;
 
 interface CreatureTraitsData extends Required<CreatureTraitsSource> {
-    size: ActorSizePF2e;
+    size: ActorSizeAvant;
     /** Temporary variable that holds pre-equipment resize data */
     naturalSize?: Size;
 }

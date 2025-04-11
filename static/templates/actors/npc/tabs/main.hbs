@@ -1,20 +1,20 @@
 <section class="tab main" data-group="primary" data-tab="main">
     {{!-- TOGGLES --}}
     <div class="toggles section-container headerless">
-        {{#if toggles.actions}}{{> "systems/pf2e/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}{{/if}}
+        {{#if toggles.actions}}{{> "systems/avant/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}{{/if}}
     </div>
     <div class="recall-knowledge section-container">
         <div class="section-header">
-            <h4>{{localize "PF2E.RecallKnowledge.Label"}}</h4>
-            <button type="button" class="breakdown" data-action="open-recall-breakdown">{{localize "PF2E.RecallKnowledge.Breakdown"}}</button>
+            <h4>{{localize "AVANT.RecallKnowledge.Label"}}</h4>
+            <button type="button" class="breakdown" data-action="open-recall-breakdown">{{localize "AVANT.RecallKnowledge.Breakdown"}}</button>
         </div>
         <div class="section-body">
             {{#if identificationDCs.standard}}
-                <div class="tag-legacy identification-skills" data-tooltip="PF2E.Actor.NPC.Identification.Skills.Tooltip">
+                <div class="tag-legacy identification-skills" data-tooltip="AVANT.Actor.NPC.Identification.Skills.Tooltip">
                     {{identificationDCs.standard}}
                 </div>
             {{/if}}
-            <div class="tag-legacy identification-skills" data-tooltip="PF2E.Actor.NPC.Identification.Lore.Tooltip">
+            <div class="tag-legacy identification-skills" data-tooltip="AVANT.Actor.NPC.Identification.Lore.Tooltip">
                 {{identificationDCs.lore}}
             </div>
         </div>
@@ -22,7 +22,7 @@
     <div class="top-sections">
         <div class="attribute-modifiers section-container">
             <div class="section-header">
-                <h4>{{localize "PF2E.Actor.Creature.AttributeModifiers"}}</h4>
+                <h4>{{localize "AVANT.Actor.Creature.AttributeModifiers"}}</h4>
             </div>
             {{!-- ATTRIBUTE MODIFIERS --}}
             <div class="section-body">
@@ -47,10 +47,10 @@
         {{!-- PERCEPTION & SENSES --}}
         <div class="senses section-container">
             <div class="section-header">
-                <h4>{{localize "PF2E.NPC.SensesLabel"}}</h4>
+                <h4>{{localize "AVANT.NPC.SensesLabel"}}</h4>
                 {{#if editable}}
                     <div class="controls">
-                        <a class="tag-selector" data-tag-selector="senses" data-tooltip="PF2E.NPC.EditSenses"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="tag-selector" data-tag-selector="senses" data-tooltip="AVANT.NPC.EditSenses"><i class="fa-solid fa-pen-to-square"></i></a>
                     </div>
                 {{/if}}
             </div>
@@ -61,7 +61,7 @@
                         data-action="roll-check"
                         data-statistic="perception"
                         data-tooltip="{{data.perception.breakdown}}"
-                    >{{localize "PF2E.PerceptionLabel"}}</a>
+                    >{{localize "AVANT.PerceptionLabel"}}</a>
                     <input
                         type="text"
                         value="{{numberFormat data.perception.mod decimals=0 sign=true}}"
@@ -77,14 +77,14 @@
                             {{~#if sense.emphasizeLabel}}<em>{{sense.label}}</em>{{else}}{{sense.label}}{{/if~}}
                         </li>
                     {{/each~}}
-                    {{~#unless data.perception.vision}}<li>{{localize "PF2E.Actor.Creature.Sense.NoVision"}}</li>{{/unless}}
+                    {{~#unless data.perception.vision}}<li>{{localize "AVANT.Actor.Creature.Sense.NoVision"}}</li>{{/unless}}
                 </ul>
 
                 <input
                     type="text"
                     name="system.perception.details"
                     value="{{data.perception.details}}"
-                    placeholder="{{localize "PF2E.SpecialSensesLabel"}}"
+                    placeholder="{{localize "AVANT.SpecialSensesLabel"}}"
                 />
             </div>
         </div>
@@ -93,13 +93,13 @@
     {{!-- LANGUAGES --}}
     <div class="languages section-container">
         <div class="section-header" data-attribute="languages" for="data.traits.languages">
-            <h4>{{localize "PF2E.Actor.Creature.Language.Plural"}}</h4>
+            <h4>{{localize "AVANT.Actor.Creature.Language.Plural"}}</h4>
             {{# if editable}}
                 <div class="languages-controls controls">
                     <a
                         class="tag-selector edit"
                         data-tag-selector="languages"
-                        data-tooltip="PF2E.NPC.EditLanguages"><i class="fa-solid fa-pen-to-square"></i></a>
+                        data-tooltip="AVANT.NPC.EditLanguages"><i class="fa-solid fa-pen-to-square"></i></a>
                 </div>
             {{/if}}
         </div>
@@ -119,10 +119,10 @@
     {{!-- SKILLS --}}
     <div class="skills section-container">
         <div class="section-header">
-            <h4>{{localize "PF2E.SkillsLabel"}}</h4>
+            <h4>{{localize "AVANT.SkillsLabel"}}</h4>
             {{#if options.editable}}
                 <div class="skills-controls controls" for="data.skills">
-                    <a data-action="edit-skills" data-tooltip="PF2E.NPC.EditSkills"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a data-action="edit-skills" data-tooltip="AVANT.NPC.EditSkills"><i class="fa-solid fa-pen-to-square"></i></a>
                 </div>
             {{/if}}
         </div>
@@ -141,7 +141,7 @@
                             </a>
                             {{#each skill.special as |special idx|}}
                                 <a class="roll" data-action="roll-check" data-variant="{{idx}}">
-                                    ({{localize "PF2E.Actor.NPC.SpecialSkill" mod=special.mod label=special.label}})
+                                    ({{localize "AVANT.Actor.NPC.SpecialSkill" mod=special.mod label=special.label}})
                                 </a>
                             {{/each}}
                         </div>
@@ -154,17 +154,17 @@
     {{!-- ATTACKS --}}
     <div class="attacks section-container">
         <div class="section-header">
-            <h4>{{localize "PF2E.NPC.Attacks"}}</h4>
+            <h4>{{localize "AVANT.NPC.Attacks"}}</h4>
             {{#if options.editable}}
                 <div class="attacks-controls controls">
-                    <a data-action="create-item" data-type="melee"><i class="fa-solid fa-plus"></i> {{localize "PF2E.TraitAttack"}}</a>
+                    <a data-action="create-item" data-type="melee"><i class="fa-solid fa-plus"></i> {{localize "AVANT.TraitAttack"}}</a>
                 </div>
             {{/if}}
         </div>
         <div class="section-body">
             <ol class="actions-list strikes-list item-list">
                 {{#each attacks as |attack index|}}
-                    {{> "systems/pf2e/templates/actors/npc/partials/attack.hbs" action=attack index=index}}
+                    {{> "systems/avant/templates/actors/npc/partials/attack.hbs" action=attack index=index}}
                 {{/each}}
             </ol>
         </div>
@@ -173,12 +173,12 @@
     {{!-- ACTIONS --}}
     <div class="actions section-container">
         <div class="section-header">
-            <h4>{{localize "PF2E.ActionActionsLabel"}}</h4>
+            <h4>{{localize "AVANT.ActionActionsLabel"}}</h4>
             {{#if options.editable}}
                 <div class="actions-controls controls">
                     <a
                         data-action="create-item"
-                        data-tooltip="PF2E.NPC.AddAction"
+                        data-tooltip="AVANT.NPC.AddAction"
                         data-type="action"
                         data-action-type="action"
                     ><i class="fa-solid fa-plus"></i></a>
@@ -188,7 +188,7 @@
         <div class="section-body">
             <ol class="actions-list item-list">
                 {{#each actions.active.actions as |action actionId|}}
-                    {{> "systems/pf2e/templates/actors/npc/partials/action.hbs" action=action}}
+                    {{> "systems/avant/templates/actors/npc/partials/action.hbs" action=action}}
                 {{/each}}
             </ol>
         </div>
@@ -197,12 +197,12 @@
     {{!-- PASSIVES --}}
     <div class="passives section-container">
         <div class="section-header">
-            <h4>{{localize "PF2E.NPC.PassivesLabel"}}</h4>
+            <h4>{{localize "AVANT.NPC.PassivesLabel"}}</h4>
             {{#if options.editable}}
                 <div class="actions-controls controls">
                     <a
                         data-action="create-item"
-                        data-tooltip="PF2E.NPC.AddPassive"
+                        data-tooltip="AVANT.NPC.AddPassive"
                         data-type="action"
                         data-action-type="passive"
                     ><i class="fa-solid fa-plus"></i></a>
@@ -212,7 +212,7 @@
         <div class="section-body">
             <ol class="actions-list item-list">
                 {{#each actions.passive.actions as |action actionId|}}
-                    {{> "systems/pf2e/templates/actors/npc/partials/action.hbs" action=action isEditable=@root.options.editable}}
+                    {{> "systems/avant/templates/actors/npc/partials/action.hbs" action=action isEditable=@root.options.editable}}
                 {{/each}}
             </ol>
         </div>

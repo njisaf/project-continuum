@@ -364,10 +364,10 @@ class PredicateField<
     THasInitial extends boolean = true,
 > extends StrictArrayField<PredicateStatementField, RawPredicate, Predicate, TRequired, TNullable, THasInitial> {
     constructor(options: ArrayFieldOptions<RawPredicate, TRequired, TNullable, THasInitial> = {}) {
-        super(new PredicateStatementField(), { label: "PF2E.RuleEditor.General.Predicate", ...options });
+        super(new PredicateStatementField(), { label: "AVANT.RuleEditor.General.Predicate", ...options });
     }
 
-    /** Construct a `PredicatePF2e` from the initialized `PredicateStatement[]` */
+    /** Construct a `PredicateAvant` from the initialized `PredicateStatement[]` */
     override initialize(
         value: RawPredicate,
         model: ConstructorOf<foundry.abstract.DataModel>,

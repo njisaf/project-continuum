@@ -1,14 +1,14 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { AttributeString } from "@actor/types.ts";
-import { PhysicalItemPF2e } from "@item/physical/index.ts";
-import { SpellPF2e } from "@item/spell/document.ts";
+import { PhysicalItemAvant } from "@item/physical/index.ts";
+import { SpellAvant } from "@item/spell/document.ts";
 import { MagicTradition } from "@item/spell/types.ts";
 import { OneToTen } from "@module/data.ts";
 import { Statistic, StatisticChatData } from "@system/statistic/index.ts";
 import { SpellCollection, SpellCollectionData, SpellSlotGroupId } from "./collection.ts";
 import { SpellcastingEntrySystemData } from "./data.ts";
 
-interface BaseSpellcastingEntry<TActor extends ActorPF2e | null = ActorPF2e | null> {
+interface BaseSpellcastingEntry<TActor extends ActorAvant | null = ActorAvant | null> {
     id: string;
     name: string;
     actor: TActor;
@@ -28,23 +28,23 @@ interface BaseSpellcastingEntry<TActor extends ActorPF2e | null = ActorPF2e | nu
     getSheetData(options?: GetSheetDataOptions<NonNullable<TActor>>): Promise<SpellcastingSheetData>;
     getRollOptions?(prefix: "spellcasting"): string[];
 
-    canCast(spell: SpellPF2e, options?: { origin?: PhysicalItemPF2e }): boolean;
+    canCast(spell: SpellAvant, options?: { origin?: PhysicalItemAvant }): boolean;
 
-    cast(spell: SpellPF2e, options: CastOptions): Promise<void>;
+    cast(spell: SpellAvant, options: CastOptions): Promise<void>;
 }
 
-interface GetSheetDataOptions<TActor extends ActorPF2e> {
+interface GetSheetDataOptions<TActor extends ActorAvant> {
     spells?: Maybe<SpellCollection<TActor>>;
     prepList?: boolean;
 }
 
-interface SpellcastingEntry<TActor extends ActorPF2e | null> extends BaseSpellcastingEntry<TActor> {
+interface SpellcastingEntry<TActor extends ActorAvant | null> extends BaseSpellcastingEntry<TActor> {
     attribute: AttributeString;
     statistic: Statistic;
     counteraction: Statistic;
 }
 
-type SpellcastingCategory = keyof ConfigPF2e["PF2E"]["preparationType"];
+type SpellcastingCategory = keyof ConfigAvant["AVANT"]["preparationType"];
 
 interface CastOptions {
     slotId?: number;
@@ -60,7 +60,7 @@ type OptionalProperties = "isFlexible" | "isFocusPool" | "isInnate" | "isPrepare
 
 /** Spell list render data for a `BaseSpellcastingEntry` */
 interface SpellcastingSheetData
-    extends Omit<BaseSpellcastingEntry<ActorPF2e>, "statistic" | OptionalProperties | UnusedProperties>,
+    extends Omit<BaseSpellcastingEntry<ActorAvant>, "statistic" | OptionalProperties | UnusedProperties>,
         SpellCollectionData {
     statistic: StatisticChatData | null;
     hasCollection: boolean;
@@ -97,12 +97,12 @@ interface SpellcastingSlotGroup {
 }
 
 interface SpellPrepEntry {
-    spell: SpellPF2e<ActorPF2e>;
+    spell: SpellAvant<ActorAvant>;
     signature: boolean;
 }
 
 interface ActiveSpell {
-    spell: SpellPF2e<ActorPF2e>;
+    spell: SpellAvant<ActorAvant>;
     /** The rank at which a spell is cast (if prepared or automatically heighted) */
     castRank?: number;
     expended?: boolean;

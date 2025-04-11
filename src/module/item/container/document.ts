@@ -1,20 +1,20 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { InventoryBulk } from "@actor/inventory/index.ts";
 import { RawItemChatData } from "@item/base/data/index.ts";
 import { EquipmentTrait } from "@item/equipment/data.ts";
 import { Bulk } from "@item/physical/bulk.ts";
-import { PhysicalItemPF2e } from "@item/physical/document.ts";
-import type { UserPF2e } from "@module/user/index.ts";
+import { PhysicalItemAvant } from "@item/physical/document.ts";
+import type { UserAvant } from "@module/user/index.ts";
 import type { ContainerSource, ContainerSystemData } from "./data.ts";
 import { hasExtraDimensionalParent } from "./helpers.ts";
 
-class ContainerPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+class ContainerAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     static override get validTraits(): Record<EquipmentTrait, string> {
-        return CONFIG.PF2E.equipmentTraits;
+        return CONFIG.AVANT.equipmentTraits;
     }
 
     /** This container's contents, reloaded every data preparation cycle */
-    contents: Collection<PhysicalItemPF2e<NonNullable<TParent>>> = new Collection();
+    contents: Collection<PhysicalItemAvant<NonNullable<TParent>>> = new Collection();
 
     /** Is this an actual stowing container or merely one of the old pouches/quivers/etc.? */
     get stowsItems(): boolean {
@@ -61,7 +61,7 @@ class ContainerPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     }
 
     /** Reload this container's contents following Actor embedded-document preparation */
-    override prepareSiblingData(this: ContainerPF2e<ActorPF2e>): void {
+    override prepareSiblingData(this: ContainerAvant<ActorAvant>): void {
         super.prepareSiblingData();
 
         this.contents = new Collection(
@@ -78,17 +78,17 @@ class ContainerPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     }
 
     /** Containers never stack, otherwise their contents can have strange results */
-    override isStackableWith(_item: PhysicalItemPF2e): boolean {
+    override isStackableWith(_item: PhysicalItemAvant): boolean {
         return false;
     }
 
     override async getChatData(
-        this: ContainerPF2e<TParent>,
+        this: ContainerAvant<TParent>,
         htmlOptions: EnrichmentOptions = {},
     ): Promise<RawItemChatData> {
         return this.processChatData(htmlOptions, {
             ...(await super.getChatData()),
-            traits: this.traitChatData(CONFIG.PF2E.equipmentTraits),
+            traits: this.traitChatData(CONFIG.AVANT.equipmentTraits),
         });
     }
 
@@ -96,7 +96,7 @@ class ContainerPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     protected override _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system?.bulk) return super._preUpdate(changed, operation, user);
 
@@ -120,11 +120,11 @@ class ContainerPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends
     }
 }
 
-interface ContainerPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+interface ContainerAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     readonly _source: ContainerSource;
     system: ContainerSystemData;
 
     get traits(): Set<EquipmentTrait>;
 }
 
-export { ContainerPF2e };
+export { ContainerAvant };

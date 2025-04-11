@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString } from "@util";
 import { MigrationBase } from "../base.ts";
 
@@ -13,10 +13,10 @@ export class Migration924JiuHuanDoa extends MigrationBase {
 
     #jiuHuanDao = {
         slug: "jiu-huan-dao",
-        name: "game" in globalThis ? game.i18n.localize(CONFIG.PF2E.baseWeaponTypes["jiu-huan-dao"]) : "Jiu Huan Dao",
+        name: "game" in globalThis ? game.i18n.localize(CONFIG.AVANT.baseWeaponTypes["jiu-huan-dao"]) : "Jiu Huan Dao",
     };
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.rules = source.system.rules.map((r) =>
             recursiveReplaceString(r, (s) => s.replace(/^nine-ring-sword$/, this.#jiuHuanDao.slug)),
         );

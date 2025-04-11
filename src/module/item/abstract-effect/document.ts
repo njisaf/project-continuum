@@ -1,30 +1,30 @@
-import type { ActorPF2e } from "@actor";
-import { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import { ItemAvant } from "@item";
 import type { AfflictionSource, AfflictionSystemData } from "@item/affliction/data.ts";
 import type { ConditionSource, ConditionSystemData } from "@item/condition/data.ts";
 import type { EffectSource, EffectSystemData } from "@item/effect/data.ts";
 import type { ShowFloatyEffectParams } from "@module/canvas/token/object.ts";
-import type { UserPF2e } from "@module/user/document.ts";
-import { TokenDocumentPF2e } from "@scene";
-import { ErrorPF2e, sluggify } from "@util";
+import type { UserAvant } from "@module/user/document.ts";
+import { TokenDocumentAvant } from "@scene";
+import { ErrorAvant, sluggify } from "@util";
 import type { EffectBadge } from "./data.ts";
 import { calculateRemainingDuration } from "./helpers.ts";
 import type { EffectTrait } from "./types.ts";
 import { DURATION_UNITS } from "./values.ts";
 
-/** Base effect type for all PF2e effects including conditions and afflictions */
-abstract class AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+/** Base effect type for all Avant effects including conditions and afflictions */
+abstract class AbstractEffectAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     /** A normalized version of the slug that shows in roll options, removing certain prefixes */
     declare rollOptionSlug: string;
 
     static override get validTraits(): Record<EffectTrait, string> {
-        return CONFIG.PF2E.effectTraits;
+        return CONFIG.AVANT.effectTraits;
     }
 
     abstract get badge(): EffectBadge | null;
 
     /** Get the actor from which this effect originated */
-    get origin(): ActorPF2e | null {
+    get origin(): ActorAvant | null {
         const originUUID = this.system.context?.origin.actor;
         if (!originUUID || originUUID === this.actor?.uuid) return this.actor;
         if (originUUID.startsWith("Compendium.")) return null;
@@ -33,12 +33,12 @@ abstract class AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e |
         if (originUUID.startsWith("Scene.")) {
             const tokenUUID = originUUID.replace(/\.Actor\..+$/, "");
             const tokenDoc = fromUuidSync(tokenUUID);
-            if (!(tokenDoc instanceof TokenDocumentPF2e)) return null;
+            if (!(tokenDoc instanceof TokenDocumentAvant)) return null;
             const descriptor = Object.getOwnPropertyDescriptor(tokenDoc, "delta");
             return descriptor?.value instanceof ActorDelta ? (descriptor.value.syntheticActor ?? null) : null;
         }
 
-        return fromUuidSync<ActorPF2e>(originUUID);
+        return fromUuidSync<ActorAvant>(originUUID);
     }
 
     get traits(): Set<EffectTrait> {
@@ -83,7 +83,7 @@ abstract class AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e |
                 const origin = this.origin;
                 // Safety check: this effect's owning actor may be getting initialized during game setup and before its origin
                 // has been initialized
-                const originIsInitialized = !!origin?.flags?.pf2e?.rollOptions;
+                const originIsInitialized = !!origin?.flags?.avant?.rollOptions;
                 // If this effect came from another actor, get that actor's roll options as well
                 return originIsInitialized
                     ? (origin.getSelfRollOptions("origin").map((o) => `${prefix}:${o}`) ?? [])
@@ -130,7 +130,7 @@ abstract class AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e |
     /** Set a self roll option for this effect */
     override prepareActorData(): void {
         const actor = this.actor;
-        if (!actor) throw ErrorPF2e("prepareActorData called from unembedded item");
+        if (!actor) throw ErrorAvant("prepareActorData called from unembedded item");
 
         actor.rollOptions.all[`self:${this.type}:${this.rollOptionSlug}`] = true;
 
@@ -138,8 +138,8 @@ abstract class AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e |
         const badge = this.badge;
         if (typeof badge?.value === "number") {
             const otherEffects = actor.items.filter(
-                (i): i is AbstractEffectPF2e<ActorPF2e> =>
-                    i instanceof AbstractEffectPF2e && i.rollOptionSlug === this.rollOptionSlug,
+                (i): i is AbstractEffectAvant<ActorAvant> =>
+                    i instanceof AbstractEffectAvant && i.rollOptionSlug === this.rollOptionSlug,
             );
             const values = otherEffects
                 .map((effect) => effect.badge?.value)
@@ -154,14 +154,14 @@ abstract class AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e |
     protected override _preCreate(
         data: this["_source"],
         operation: DatabaseCreateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         data.system.fromSpell ??= ((): boolean => {
             const slug = this.slug ?? sluggify(this.name);
             if (slug.startsWith("spell-effect-")) return true;
             const originItem = fromUuidSync(this.system.context?.origin.item ?? "");
             return (
-                originItem instanceof ItemPF2e &&
+                originItem instanceof ItemAvant &&
                 (originItem.isOfType("spell") ||
                     (originItem.isOfType("affliction", "condition", "effect") && originItem.fromSpell))
             );
@@ -190,8 +190,8 @@ abstract class AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e |
             this.isOfType("condition") &&
             !game.user.isGM &&
             !this.actor?.hasPlayerOwner &&
-            game.settings.get("pf2e", "metagame_secretCondition");
-        const auraNotInCombat = this.flags.pf2e.aura && !game.combat?.started;
+            game.settings.get("avant", "metagame_secretCondition");
+        const auraNotInCombat = this.flags.avant.aura && !game.combat?.started;
         const identified = game.user.isGM || this.isIdentified;
 
         if (skipFloatyText || !identified || auraNotInCombat) return;
@@ -207,13 +207,13 @@ abstract class AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e |
             }
         }
 
-        game.pf2e.StatusEffects.refresh();
+        game.avant.StatusEffects.refresh();
     }
 }
 
-interface AbstractEffectPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface AbstractEffectAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: AfflictionSource | ConditionSource | EffectSource;
     system: AfflictionSystemData | ConditionSystemData | EffectSystemData;
 }
 
-export { AbstractEffectPF2e };
+export { AbstractEffectAvant };

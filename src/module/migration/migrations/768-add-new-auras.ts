@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Add the new Aura rule element to the Marshal Dedication feat */
@@ -10,7 +10,7 @@ export class Migration768AddNewAuras extends MigrationBase {
             {
                 affects: "allies",
                 events: ["enter"],
-                uuid: "Compendium.pf2e.feat-effects.FPuICuxBLiDaEbDX",
+                uuid: "Compendium.avant.feat-effects.FPuICuxBLiDaEbDX",
             },
         ],
         key: "Aura",
@@ -23,7 +23,7 @@ export class Migration768AddNewAuras extends MigrationBase {
             {
                 affects: "allies",
                 events: ["enter"],
-                uuid: "Compendium.pf2e.feat-effects.XM1AA8z5cHm8sJXM",
+                uuid: "Compendium.avant.feat-effects.XM1AA8z5cHm8sJXM",
             },
         ],
         key: "Aura",
@@ -45,7 +45,7 @@ export class Migration768AddNewAuras extends MigrationBase {
                 {
                     affects: "allies",
                     events: ["enter"],
-                    uuid: "Compendium.pf2e.spell-effects.Gqy7K6FnbLtwGpud",
+                    uuid: "Compendium.avant.spell-effects.Gqy7K6FnbLtwGpud",
                 },
             ],
             key: "Aura",
@@ -63,7 +63,7 @@ export class Migration768AddNewAuras extends MigrationBase {
             {
                 affects: "allies",
                 events: ["enter"],
-                uuid: "Compendium.pf2e.feat-effects.Ru4BNABCZ0hUbX7S",
+                uuid: "Compendium.avant.feat-effects.Ru4BNABCZ0hUbX7S",
             },
         ],
         key: "Aura",
@@ -72,7 +72,7 @@ export class Migration768AddNewAuras extends MigrationBase {
         traits: ["emotion", "mental", "visual"],
     };
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "feat" || source.system.rules.length > 0) return;
 
         switch (source.system.slug) {

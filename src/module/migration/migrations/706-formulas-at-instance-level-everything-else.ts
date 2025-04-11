@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { Migration702REFormulasAtInstanceLevel } from "./702-re-formulas-at-instance-level.ts";
 
 /** Change RE formula data replacement to operate at actor and item instance levels */
 export class Migration706FormulasAtInstanceLevelEverythingElse extends Migration702REFormulasAtInstanceLevel {
     static override version = 0.706;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.system.description.value) {
             source.system.description.value = this.replaceInlineRolls(source.system.description.value);
         }

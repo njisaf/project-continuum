@@ -1,0 +1,57 @@
+{
+    "_id": "Xxdwkt0EEDgP1LGc",
+    "folder": "wnvibtD90h7CStDC",
+    "img": "systems/avant/icons/spells/song-of-strength.webp",
+    "name": "Song of Strength",
+    "system": {
+        "area": {
+            "type": "emanation",
+            "value": 60
+        },
+        "cost": {
+            "value": ""
+        },
+        "counteraction": false,
+        "damage": {},
+        "defense": null,
+        "description": {
+            "value": "<p>You bolster your allies' physical strength with a hearty exhortation. You and your allies gain a +1 status bonus to Athletics checks and to their DCs against Athletics skill actions such as @UUID[Compendium.avant.actionsavant.Item.Disarm], @UUID[Compendium.avant.actionsavant.Item.Reposition], @UUID[Compendium.avant.actionsavant.Item.Shove], and @UUID[Compendium.avant.actionsavant.Item.Trip].</p>\n<p>@UUID[Compendium.avant.spell-effects.Item.Spell Effect: Song of Strength]</p>"
+        },
+        "duration": {
+            "sustained": false,
+            "value": "1 round"
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "range": {
+            "value": ""
+        },
+        "requirements": "",
+        "rules": [],
+        "target": {
+            "value": ""
+        },
+        "time": {
+            "value": "1"
+        },
+        "traits": {
+            "rarity": "uncommon",
+            "traditions": [],
+            "value": [
+                "bard",
+                "cantrip",
+                "composition",
+                "concentrate",
+                "emotion",
+                "mental"
+            ]
+        }
+    },
+    "type": "spell"
+}

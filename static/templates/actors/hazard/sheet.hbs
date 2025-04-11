@@ -1,12 +1,12 @@
-<form class="{{cssClass}}{{#if editing}} editing{{/if}}" autocomplete="off" spellcheck="false" data-tooltip-class="pf2e">
-    {{> "systems/pf2e/templates/actors/hazard/partials/header.hbs"}}
+<form class="{{cssClass}}{{#if editing}} editing{{/if}}" autocomplete="off" spellcheck="false" data-tooltip-class="avant">
+    {{> "systems/avant/templates/actors/hazard/partials/header.hbs"}}
     <div class="container">
-        {{> "systems/pf2e/templates/actors/hazard/partials/sidebar.hbs"}}
+        {{> "systems/avant/templates/actors/hazard/partials/sidebar.hbs"}}
         {{!-- BODY --}}
         <section class="content">
             {{#if toggles.actions}}
                 <section class="toggles section-container">
-                    {{> "systems/pf2e/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}
+                    {{> "systems/avant/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}
                 </section>
             {{/if}}
 
@@ -16,7 +16,7 @@
                         <h4>
                             <span
                                 {{#if (ne data.attributes.stealth.value null)}}data-tooltip="{{data.attributes.stealth.breakdown}}"{{/if}}
-                            >{{localize "PF2E.Check.DC.Specific.stealth"}}</span>
+                            >{{localize "AVANT.Check.DC.Specific.stealth"}}</span>
                             <input
                                 type="number"
                                 value="{{data.attributes.stealth.dc}}"
@@ -40,7 +40,7 @@
             {{#if (or hasDescription editing)}}
                 <div class="section-container">
                     <div class="section-header">
-                        <h4>{{localize "PF2E.HazardDescriptionLabel"}}</h4>
+                        <h4>{{localize "AVANT.HazardDescriptionLabel"}}</h4>
                         <div class="controls">
                             {{#if editing}}
                                 <a data-action="edit-section"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -56,7 +56,7 @@
             {{#if (or hasDisable editing)}}
                 <div class="section-container">
                     <div class="section-header">
-                        <h4>{{localize "PF2E.HazardDisableLabel"}}</h4>
+                        <h4>{{localize "AVANT.HazardDisableLabel"}}</h4>
                         <div class="controls">
                             {{#if editing}}
                                 <a data-action="edit-section"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -72,7 +72,7 @@
             {{#if (or hasRoutineDetails editing)}}
                 <div class="section-container">
                     <div class="section-header">
-                        <h4>{{localize "PF2E.HazardRoutineLabel"}}</h4>
+                        <h4>{{localize "AVANT.HazardRoutineLabel"}}</h4>
                         <div class="controls">
                             {{#if editing}}
                                 <a data-action="edit-section"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -88,7 +88,7 @@
             {{#if (or hasResetDetails editing)}}
                 <div class="section-container">
                     <div class="section-header">
-                        <h4>{{localize "PF2E.HazardResetLabel"}}</h4>
+                        <h4>{{localize "AVANT.HazardResetLabel"}}</h4>
                         <div class="controls">
                             {{#if editing}}
                                 <a data-action="edit-section"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -103,12 +103,12 @@
 
             <div class="section-container">
                 <div class="section-header">
-                    <h4>{{localize "PF2E.ActionActionsLabel"}}</h4>
+                    <h4>{{localize "AVANT.ActionActionsLabel"}}</h4>
                     <div class="controls">
                         {{#if editing}}
-                            <a data-action="create-item" data-tooltip="PF2E.CreateActionTitle" data-type="action" data-action-type="action"><i class="fa-solid fa-fw fa-plus"></i> {{localize "TYPES.Item.action"}}</a>
-                            <a data-action="create-item" data-type="melee" data-action-type="melee"><i class="fa-solid fa-fw fa-plus"></i> {{localize "PF2E.NPCAttackMelee"}}</a>
-                            <a data-action="create-item" data-type="melee" data-action-type="ranged"><i class="fa-solid fa-fw fa-plus"></i> {{localize "PF2E.NPCAttackRanged"}}</a>
+                            <a data-action="create-item" data-tooltip="AVANT.CreateActionTitle" data-type="action" data-action-type="action"><i class="fa-solid fa-fw fa-plus"></i> {{localize "TYPES.Item.action"}}</a>
+                            <a data-action="create-item" data-type="melee" data-action-type="melee"><i class="fa-solid fa-fw fa-plus"></i> {{localize "AVANT.NPCAttackMelee"}}</a>
+                            <a data-action="create-item" data-type="melee" data-action-type="ranged"><i class="fa-solid fa-fw fa-plus"></i> {{localize "AVANT.NPCAttackRanged"}}</a>
                         {{/if}}
                     </div>
                 </div>
@@ -127,11 +127,11 @@
                                             <a
                                                 class="chat"
                                                 data-action="item-to-chat"
-                                                title="{{localize "PF2E.NPC.SendToChat"}}"
+                                                title="{{localize "AVANT.NPC.SendToChat"}}"
                                             ><i class="fa-solid fa-fw fa-message"></i></a>
                                             {{#if @root.editing}}
-                                                <a data-action="edit-item" data-tooltip="PF2E.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
-                                                <a data-action="delete-item" data-tooltip="PF2E.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
+                                                <a data-action="edit-item" data-tooltip="AVANT.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
+                                                <a data-action="delete-item" data-tooltip="AVANT.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
                                             {{/if}}
                                         </div>
                                         <div class="item-summary" hidden></div>
@@ -175,7 +175,7 @@
                                         {{#if action.item.dealsDamage}}
                                             <div class="subsection damage">
                                                 <button type="button" class="damage-button" data-action="strike-damage">{{action.damageFormula}}</button>
-                                                <button type="button" class="critical-button" data-action="strike-critical">{{localize "PF2E.CriticalDamageLabel"}}</button>
+                                                <button type="button" class="critical-button" data-action="strike-critical">{{localize "AVANT.CriticalDamageLabel"}}</button>
                                             </div>
                                         {{/if}}
                                     </div>
@@ -191,10 +191,10 @@
 
             <div class="section-container publication">
                 <div class="section-header">
-                    <h4>{{localize "PF2E.Publication.Label"}}</h4>
+                    <h4>{{localize "AVANT.Publication.Label"}}</h4>
                 </div>
                 <div class="section-body">
-                    {{> "systems/pf2e/templates/partials/publication-data.hbs" path="system.details.publication" data=data.details.publication}}
+                    {{> "systems/avant/templates/partials/publication-data.hbs" path="system.details.publication" data=data.details.publication}}
                 </div>
             </div>
         </section>

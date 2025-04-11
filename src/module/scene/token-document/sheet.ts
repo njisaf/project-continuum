@@ -1,17 +1,17 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { SIZE_LINKABLE_ACTOR_TYPES } from "@actor/values.ts";
 import { computeSightAndDetectionForRBV } from "@scene/helpers.ts";
-import { ErrorPF2e, fontAwesomeIcon, htmlQuery } from "@util";
+import { ErrorAvant, fontAwesomeIcon, htmlQuery } from "@util";
 import * as R from "remeda";
-import type { TokenDocumentPF2e } from "./index.ts";
+import type { TokenDocumentAvant } from "./index.ts";
 
-class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<TDocument> {
+class TokenConfigAvant<TDocument extends TokenDocumentAvant> extends TokenConfig<TDocument> {
     #sightInputNames = ["angle", "brightness", "range", "saturation", "visionMode"].map((n) => `sight.${n}`);
 
     static override get defaultOptions(): DocumentSheetOptions {
         return {
             ...super.defaultOptions,
-            template: "systems/pf2e/templates/scene/token/sheet.hbs",
+            template: "systems/avant/templates/scene/token/sheet.hbs",
             sheetConfig: false,
         };
     }
@@ -31,10 +31,10 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
 
     get rulesBasedVision(): boolean {
         const isCreature = !!this.actor?.isOfType("creature");
-        return isCreature && (this.token.rulesBasedVision || (this.isPrototype && game.pf2e.settings.rbv));
+        return isCreature && (this.token.rulesBasedVision || (this.isPrototype && game.avant.settings.rbv));
     }
 
-    override async getData(options?: DocumentSheetOptions): Promise<TokenConfigDataPF2e<TDocument>> {
+    override async getData(options?: DocumentSheetOptions): Promise<TokenConfigDataAvant<TDocument>> {
         const data = await super.getData(options);
 
         // If RBV is enabled, override will-be-disabled inputs with prepared values for transparency.
@@ -51,15 +51,15 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
         return {
             ...data,
             sizeLinkable: !!this.actor && SIZE_LINKABLE_ACTOR_TYPES.has(this.actor.type),
-            linkToSizeTitle: this.token.flags.pf2e.linkToActorSize ? "Unlink" : "Link",
-            autoscaleTitle: this.token.flags.pf2e.autoscale ? "Unlink" : "Link",
+            linkToSizeTitle: this.token.flags.avant.linkToActorSize ? "Unlink" : "Link",
+            autoscaleTitle: this.token.flags.avant.autoscale ? "Unlink" : "Link",
         };
     }
 
     protected override _getFilePickerOptions(event: PointerEvent): FilePickerOptions {
         return {
             ...super._getFilePickerOptions(event),
-            redirectToRoot: this.actor ? [ActorPF2e.getDefaultArtwork(this.actor.toObject()).texture.src] : [],
+            redirectToRoot: this.actor ? [ActorAvant.getDefaultArtwork(this.actor.toObject()).texture.src] : [],
         };
     }
 
@@ -71,7 +71,7 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
 
         this.#disableVisionInputs(html);
 
-        if (this.token.flags.pf2e.autoscale) {
+        if (this.token.flags.avant.autoscale) {
             this.#disableScale(html);
         }
 
@@ -81,20 +81,20 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
             if (control && control.checked) {
                 control.disabled = true;
                 const typeLocalization = game.i18n.localize(`TYPES.Actor.${this.actor.type}`);
-                control.dataset.tooltip = game.i18n.format("PF2E.Token.ActorLinkForced", { type: typeLocalization });
+                control.dataset.tooltip = game.i18n.format("AVANT.Token.ActorLinkForced", { type: typeLocalization });
             }
         }
 
         const linkToSizeButton = htmlQuery(html, "a[data-action=toggle-link-to-size]");
         linkToSizeButton?.addEventListener("click", async () => {
-            await this.token.update({ "flags.pf2e.linkToActorSize": !this.token.flags.pf2e.linkToActorSize });
+            await this.token.update({ "flags.avant.linkToActorSize": !this.token.flags.avant.linkToActorSize });
             this.#reestablishPrototype();
             this.render();
         });
 
         const autoscaleButton = htmlQuery(html, "a[data-action=toggle-autoscale]");
         autoscaleButton?.addEventListener("click", async () => {
-            await this.token.update({ "flags.pf2e.autoscale": !this.token.flags.pf2e.autoscale });
+            await this.token.update({ "flags.avant.autoscale": !this.token.flags.avant.autoscale });
             this.#reestablishPrototype();
             this.render();
         });
@@ -103,10 +103,10 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
     /** Disable the range input for token scale and style to indicate as much */
     #disableScale(html: HTMLElement): void {
         // If autoscaling is globally disabled, keep form input enabled
-        if (!game.settings.get("pf2e", "tokens.autoscale")) return;
+        if (!game.settings.get("avant", "tokens.autoscale")) return;
 
         const scale = html.querySelector(".form-group.scale");
-        if (!scale) throw ErrorPF2e("Scale form group missing");
+        if (!scale) throw ErrorAvant("Scale form group missing");
         scale.classList.add("children-disabled");
 
         const constrainedScale = String(this.actor?.size === "sm" ? 0.8 : 1);
@@ -140,7 +140,7 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
         );
 
         const sightEnabledInput = html.querySelector<HTMLInputElement>('input[name="sight.enabled"]');
-        if (!sightEnabledInput) throw ErrorPF2e("sight.enabled input not found");
+        if (!sightEnabledInput) throw ErrorAvant("sight.enabled input not found");
         sightEnabledInput.addEventListener("change", () => {
             for (const input of sightInputs) {
                 input.disabled = !sightEnabledInput.checked;
@@ -173,14 +173,14 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
         if (!game.user.isGM) managedBy.classList.add("disabled");
         managedBy.append(fontAwesomeIcon("robot"));
         managedBy.dataset.tooltip = game.i18n
-            .localize("PF2E.SETTINGS.Automation.RulesBasedVision.ManagedBy")
+            .localize("AVANT.SETTINGS.Automation.RulesBasedVision.ManagedBy")
             .replace(/<\/?rbv>/g, "");
         for (const sightInput of sightInputs) {
             const anchor = managedBy.cloneNode(true);
             if (game.user.isGM) {
                 anchor.addEventListener("click", () => {
-                    const menu = game.settings.menus.get("pf2e.automation");
-                    if (!menu) throw ErrorPF2e("Automation Settings application not found");
+                    const menu = game.settings.menus.get("avant.automation");
+                    if (!menu) throw ErrorAvant("Automation Settings application not found");
                     const app = new menu.type();
                     app.render(true);
                 });
@@ -201,7 +201,7 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
     }
 
     protected override async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
-        if (formData["flags.pf2e.linkToActorSize"] === true) {
+        if (formData["flags.avant.linkToActorSize"] === true) {
             if (this.actor?.isOfType("vehicle")) {
                 const { dimensions } = this.actor;
                 const width = Math.max(Math.round(dimensions.width / 5), 1);
@@ -216,11 +216,11 @@ class TokenConfigPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfig<T
     }
 }
 
-interface TokenConfigDataPF2e<TDocument extends TokenDocumentPF2e> extends TokenConfigData<TDocument> {
+interface TokenConfigDataAvant<TDocument extends TokenDocumentAvant> extends TokenConfigData<TDocument> {
     /** Whether the token can be linked to its actor's size */
     sizeLinkable: boolean;
     linkToSizeTitle: string;
     autoscaleTitle: string;
 }
 
-export { TokenConfigPF2e };
+export { TokenConfigAvant };

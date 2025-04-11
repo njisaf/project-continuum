@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { AELikeChangeMode } from "@module/rules/rule-element/ae-like.ts";
 import { MigrationBase } from "../base.ts";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration852AbilityScoresToModifiers extends MigrationBase {
     static override version = 0.852;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type !== "character") return;
 
         if (source.system.abilities && Object.keys(source.system.abilities).length > 0) {
@@ -35,7 +35,7 @@ export class Migration852AbilityScoresToModifiers extends MigrationBase {
     }
 
     /** Convert AE-like rule elements (typically on apex items) to increase ability modifiers instead of scores */
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const apexRules = source.system.rules.filter(
             (r: MaybeAELikeSource): r is ApexRuleSource =>
                 r.key === "ActiveEffectLike" &&

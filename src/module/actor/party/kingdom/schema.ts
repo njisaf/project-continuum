@@ -226,13 +226,13 @@ function defineKingdomSchema(): KingdomSchema {
             required: true,
             nullable: false,
             blank: false,
-            initial: () => game.i18n.localize("PF2E.TraitKingdom"),
+            initial: () => game.i18n.localize("AVANT.TraitKingdom"),
         }),
         img: new fields.FilePathField<ImageFilePath, ImageFilePath, true, false>({
             categories: ["IMAGE"],
             required: true,
             nullable: false,
-            initial: "systems/pf2e/icons/default-icons/kingdom.svg",
+            initial: "systems/avant/icons/default-icons/kingdom.svg",
         }),
         capital: new fields.StringField({ initial: "", required: true }),
         size: new fields.NumberField<number, number, true, false>({

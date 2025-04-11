@@ -7,14 +7,14 @@ import {
     EffectBadgeSource,
     EffectContextData,
 } from "@item/abstract-effect/index.ts";
-import { BaseItemSourcePF2e, ItemFlagsPF2e } from "@item/base/data/system.ts";
+import { BaseItemSourceAvant, ItemFlagsAvant } from "@item/base/data/system.ts";
 
-type EffectSource = BaseItemSourcePF2e<"effect", EffectSystemSource> & {
+type EffectSource = BaseItemSourceAvant<"effect", EffectSystemSource> & {
     flags: DeepPartial<EffectFlags>;
 };
 
-type EffectFlags = ItemFlagsPF2e & {
-    pf2e: {
+type EffectFlags = ItemFlagsAvant & {
+    avant: {
         aura?: EffectAuraData;
     };
 };

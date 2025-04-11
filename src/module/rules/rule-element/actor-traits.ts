@@ -1,10 +1,10 @@
 import type { ActorType } from "@actor/types.ts";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 import { ModelPropsFromRESchema } from "./data.ts";
-import { RuleElementPF2e, RuleElementSchema } from "./index.ts";
+import { RuleElementAvant, RuleElementSchema } from "./index.ts";
 import fields = foundry.data.fields;
 
-class ActorTraitsRuleElement extends RuleElementPF2e<ActorTraitsRuleSchema> {
+class ActorTraitsRuleElement extends RuleElementAvant<ActorTraitsRuleSchema> {
     protected static override validActorTypes: ActorType[] = ["character", "npc", "familiar", "hazard", "vehicle"];
 
     static override defineSchema(): ActorTraitsRuleSchema {
@@ -21,13 +21,13 @@ class ActorTraitsRuleElement extends RuleElementPF2e<ActorTraitsRuleSchema> {
             case "character":
             case "familiar":
             case "npc":
-                return CONFIG.PF2E.creatureTraits;
+                return CONFIG.AVANT.creatureTraits;
             case "hazard":
-                return CONFIG.PF2E.hazardTraits;
+                return CONFIG.AVANT.hazardTraits;
             case "vehicle":
-                return CONFIG.PF2E.vehicleTraits;
+                return CONFIG.AVANT.vehicleTraits;
             default:
-                throw ErrorPF2e("unexpected actor type");
+                throw ErrorAvant("unexpected actor type");
         }
     }
 
@@ -73,7 +73,7 @@ type ActorTraitsRuleSchema = RuleElementSchema & {
 };
 
 interface ActorTraitsRuleElement
-    extends RuleElementPF2e<ActorTraitsRuleSchema>,
+    extends RuleElementAvant<ActorTraitsRuleSchema>,
         ModelPropsFromRESchema<ActorTraitsRuleSchema> {}
 
 export { ActorTraitsRuleElement };

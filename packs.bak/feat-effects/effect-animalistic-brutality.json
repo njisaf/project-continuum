@@ -1,0 +1,75 @@
+{
+    "_id": "wQy8QddWBtzXYjw3",
+    "img": "icons/creatures/abilities/bear-roar-bite-brown.webp",
+    "name": "Effect: Animalistic Brutality",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.feats-srd.Item.Animalistic Brutality]</p>\n<p>Your unarmed attack from bestial rage gains one of the following traits until you stop raging: backswing, forceful, parry, razing, or sweep.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "minutes",
+            "value": 1
+        },
+        "level": {
+            "value": 8
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.TraitBackswing",
+                        "value": "backswing"
+                    },
+                    {
+                        "label": "AVANT.TraitForceful",
+                        "value": "forceful"
+                    },
+                    {
+                        "label": "AVANT.TraitParry",
+                        "value": "parry"
+                    },
+                    {
+                        "label": "AVANT.TraitRazing",
+                        "value": "razing"
+                    },
+                    {
+                        "label": "AVANT.TraitSweep",
+                        "value": "sweep"
+                    }
+                ],
+                "flag": "trait",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Trait"
+            },
+            {
+                "itemType": "weapon",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "predicate": [
+                    "item:tag:instinct-unarmed-strike"
+                ],
+                "property": "traits",
+                "value": "{item|flags.avant.rulesSelections.trait}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

@@ -1,6 +1,6 @@
 <div class="content">
     <section class="leaders major">
-        <header>{{localize "PF2E.Kingmaker.Kingdom.Leaders"}}</header>
+        <header>{{localize "AVANT.Kingmaker.Kingdom.Leaders"}}</header>
         {{#each leadership as |leader|}}
             <section class="leader" data-role="{{leader.slug}}" {{#if leader.uuid}}data-uuid="{{leader.uuid}}"{{/if}}>
                 {{#if leader.uuid}}
@@ -16,12 +16,12 @@
                                 <a data-action="remove-leader"><i class="fa-solid fa-xmark"></i></a>
                             {{/if}}
                         </span>
-                        <label class="invested" data-tooltip="{{localize "PF2E.Kingmaker.Kingdom.InvestedBonus" ability=leader.abilityLabel}}">
+                        <label class="invested" data-tooltip="{{localize "AVANT.Kingmaker.Kingdom.InvestedBonus" ability=leader.abilityLabel}}">
                             <input type="checkbox" name="leadership.{{leader.slug}}.invested" {{checked leader.invested}} />
-                            <span>{{localize "PF2E.Kingmaker.Kingdom.Invested"}}</span>
+                            <span>{{localize "AVANT.Kingmaker.Kingdom.Invested"}}</span>
                         </label>
                     {{else}}
-                        {{localize "PF2E.Kingmaker.Kingdom.LeaderMissing"}}
+                        {{localize "AVANT.Kingmaker.Kingdom.LeaderMissing"}}
                     {{/if}}
                 </div>
                 <div class="details">
@@ -29,11 +29,11 @@
                     {{#if leader.actor.hasPlayerOwner}}
                         <label class="vacant" title="{{leader.penaltyLabel}}">
                             <input type="checkbox" name="leadership.{{leader.slug}}.vacant" {{checked leader.vacant}} />
-                            <span>{{localize "PF2E.Kingmaker.Kingdom.Vacant"}}</span>
+                            <span>{{localize "AVANT.Kingmaker.Kingdom.Vacant"}}</span>
                         </label>
                     {{else if leader.vacant}}
                         <label class="vacant" title="{{leader.penaltyLabel}}">
-                            {{localize "PF2E.Kingmaker.Kingdom.Vacant"}} <i class="fa-solid fa-info-circle"></i>
+                            {{localize "AVANT.Kingmaker.Kingdom.Vacant"}} <i class="fa-solid fa-info-circle"></i>
                         </label>
                     {{/if}}
                 </div>
@@ -42,21 +42,21 @@
     </section>
     <section class="resources major">
         <header>
-            {{localize "PF2E.Kingmaker.Kingdom.Resources.Header"}}
+            {{localize "AVANT.Kingmaker.Kingdom.Resources.Header"}}
             <button type="button" data-action="collect">
-                {{localize "PF2E.Kingmaker.Kingdom.Resources.Collect"}}
+                {{localize "AVANT.Kingmaker.Kingdom.Resources.Collect"}}
             </button>
         </header>
         <div class="resource-data">
             <section class="resource-dice">
-                {{localize "PF2E.Kingmaker.Kingdom.Resources.Dice"}}
+                {{localize "AVANT.Kingmaker.Kingdom.Resources.Dice"}}
                 <span class="rollable">{{{resourceDice.icon}}} {{resourceDice.number}}d{{resourceDice.faces}}</span>
                 <label>
-                    {{localize "PF2E.Bonus"}}
+                    {{localize "AVANT.Bonus"}}
                     <input type="number" class="{{resourceDice.bonusAdjustment}}" value="{{resourceDice.bonus}}" data-property="system.campaign.resources.dice.bonus"/>
                 </label>
                 <label>
-                    {{localize "PF2E.Kingmaker.Penalty"}}
+                    {{localize "AVANT.Kingmaker.Penalty"}}
                     <input type="number" class="{{resourceDice.penaltyAdjustment}}" value="{{resourceDice.penalty}}" data-property="system.campaign.resources.dice.penalty"/>
                 </label>
             </section>
@@ -73,11 +73,11 @@
             </section>
             <section class="stats">
                 <div data-tooltip="{{kingdom.consumption.breakdown}}">
-                    {{localize "PF2E.Kingmaker.Consumption.Label"}}
+                    {{localize "AVANT.Kingmaker.Consumption.Label"}}
                     <span class="number">{{kingdom.consumption.value}}</span>
                 </div>
                 <label>
-                    {{localize "PF2E.Kingmaker.Kingdom.Unrest"}}
+                    {{localize "AVANT.Kingmaker.Kingdom.Unrest"}}
                     <input type="number" name="unrest.value" value="{{kingdom.unrest.value}}"/>
                     /
                     <span class="number">{{kingdom.unrest.anarchyThreshold}}</span>
@@ -87,9 +87,9 @@
     </section>
     <section class="ability-scores major">
         <header>
-            {{localize "PF2E.Kingmaker.AbilityScores"}}
+            {{localize "AVANT.Kingmaker.AbilityScores"}}
             <button type="button" data-action="builder" data-tab="ability">
-                <i class="fa-solid fa-fw fa-crown"></i>{{localize "PF2E.Kingmaker.KingdomBuilder.Builder"}}
+                <i class="fa-solid fa-fw fa-crown"></i>{{localize "AVANT.Kingmaker.KingdomBuilder.Builder"}}
             </button>
         </header>
         {{#each abilities as |ability|}}
@@ -108,7 +108,7 @@
                         </span>
                     </div>
                     <label class="stat penalty">
-                        <span>{{localize "PF2E.Kingmaker.Penalty"}}</span>
+                        <span>{{localize "AVANT.Kingmaker.Penalty"}}</span>
                         <input type="number" name="abilities.{{ability.slug}}.penalty" value="{{numberFormat ability.penalty}}"/>
                     </label>
                     <div class="progress" style="--value:{{ability.ruin.value}}; --max:{{ability.ruin.max}};"></div>

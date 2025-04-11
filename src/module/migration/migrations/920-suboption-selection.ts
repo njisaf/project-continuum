@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import type { RuleElementSource } from "@module/rules/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration920SuboptionSelection extends MigrationBase {
     static override version = 0.92;
 
-    override async updateItem(source: ItemSourcePF2e, actorSource: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actorSource: ActorSourceAvant): Promise<void> {
         const suboptionREs = source.system.rules.filter(
             (r): r is RollOptionSource =>
                 "suboptions" in r &&

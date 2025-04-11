@@ -1,13 +1,13 @@
-<form class="{{cssClass}}" autocomplete="off" data-tooltip-class="pf2e">
+<form class="{{cssClass}}" autocomplete="off" data-tooltip-class="avant">
     <!-- SIDEBAR -->
-    {{> "systems/pf2e/templates/actors/loot/sidebar.hbs"}}
+    {{> "systems/avant/templates/actors/loot/sidebar.hbs"}}
 
     <section class="content">
         <!-- HEADER -->
         <div class="sheet-header">
             {{#if owner}}
                 <h1 class="charname">
-                    <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize "PF2E.loot.LootNamePlaceholder"}}" />
+                    <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize "AVANT.loot.LootNamePlaceholder"}}" />
                 </h1>
             {{else}}
                 <h1 class="charname">{{actor.name}}</h1>
@@ -16,7 +16,7 @@
                 {{#if owner}}
                     <i
                         class="fa-solid fa-circle-info"
-                        data-tooltip="<div>{{localize "PF2E.loot.LootLabel"}}: {{localize "PF2E.loot.LootDescription"}}</div><div>{{localize "PF2E.loot.MerchantLabel"}}: {{localize "PF2E.loot.MerchantDescription"}}</div>"
+                        data-tooltip="<div>{{localize "AVANT.loot.LootLabel"}}: {{localize "AVANT.loot.LootDescription"}}</div><div>{{localize "AVANT.loot.MerchantLabel"}}: {{localize "AVANT.loot.MerchantDescription"}}</div>"
                         data-tooltip-direction="LEFT"
                     ></i>
                     <select name="system.lootSheetType" class="type">
@@ -29,7 +29,7 @@
         </div>
 
         <!-- BODY -->
-        {{> "systems/pf2e/templates/actors/loot/inventory.hbs"}}
+        {{> "systems/avant/templates/actors/loot/inventory.hbs"}}
     </section>
 
 </form>

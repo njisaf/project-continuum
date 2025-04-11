@@ -1,5 +1,5 @@
 import { CreatureInitiativeSource } from "@actor/creature/index.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { objectHasKey } from "@util";
 import { MigrationBase } from "../base.ts";
 import { SKILL_DICTIONARY, SkillAbbreviation } from "./927-class-background-skill-longform.ts";
@@ -8,7 +8,7 @@ import { SKILL_DICTIONARY, SkillAbbreviation } from "./927-class-background-skil
 export class Migration835InitiativeLongform extends MigrationBase {
     static override version = 0.835;
 
-    override async updateActor(actor: ActorSourcePF2e): Promise<void> {
+    override async updateActor(actor: ActorSourceAvant): Promise<void> {
         const attributes: OldAttributesSource = actor.system.attributes ?? {};
         const initiative: OldInitiativeSource | undefined = attributes.initiative;
         if (!initiative?.ability) return;

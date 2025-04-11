@@ -1,18 +1,18 @@
-import type { CharacterPF2e } from "@actor";
+import type { CharacterAvant } from "@actor";
 import { CreatureSheetData } from "@actor/creature/index.ts";
-import { CreatureSheetPF2e } from "@actor/creature/sheet.ts";
+import { CreatureSheetAvant } from "@actor/creature/sheet.ts";
 import { SheetClickActionHandlers } from "@actor/sheet/base.ts";
 import { AbilityViewData } from "@actor/sheet/data-types.ts";
 import { createAbilityViewData } from "@actor/sheet/helpers.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
 import { StatisticTraceData } from "@system/statistic/index.ts";
 import * as R from "remeda";
-import type { FamiliarPF2e } from "./document.ts";
+import type { FamiliarAvant } from "./document.ts";
 
 /**
  * @category Actor
  */
-export class FamiliarSheetPF2e<TActor extends FamiliarPF2e> extends CreatureSheetPF2e<TActor> {
+export class FamiliarSheetAvant<TActor extends FamiliarAvant> extends CreatureSheetAvant<TActor> {
     /** There is currently no actor config for familiars */
     protected readonly actorConfigClass = null;
 
@@ -24,7 +24,7 @@ export class FamiliarSheetPF2e<TActor extends FamiliarPF2e> extends CreatureShee
             width: 650,
             height: 680,
             tabs: [{ navSelector: ".sheet-navigation", contentSelector: ".sheet-content", initial: "attributes" }],
-            template: "systems/pf2e/templates/actors/familiar/sheet.hbs",
+            template: "systems/avant/templates/actors/familiar/sheet.hbs",
         };
     }
 
@@ -34,18 +34,18 @@ export class FamiliarSheetPF2e<TActor extends FamiliarPF2e> extends CreatureShee
 
         // Get all potential masters of the familiar (always include current master regardless of User permissions)
         const masters = game.actors.filter(
-            (a): a is CharacterPF2e<null> => a.type === "character" && (a.isOwner || a.id === familiar.master?.id),
+            (a): a is CharacterAvant<null> => a.type === "character" && (a.isOwner || a.id === familiar.master?.id),
         );
 
         // list of abilities that can be selected as spellcasting ability
-        const size = CONFIG.PF2E.actorSizes[familiar.system.traits.size.value] ?? null;
+        const size = CONFIG.AVANT.actorSizes[familiar.system.traits.size.value] ?? null;
         const familiarAbilities = this.actor.master?.attributes?.familiarAbilities;
 
         // Update save labels
         if (sheetData.data.saves) {
             for (const key of ["fortitude", "reflex", "will"] as const) {
                 const save = sheetData.data.saves[key];
-                save.label = CONFIG.PF2E.saves[key];
+                save.label = CONFIG.AVANT.saves[key];
             }
         }
 
@@ -55,7 +55,7 @@ export class FamiliarSheetPF2e<TActor extends FamiliarPF2e> extends CreatureShee
 
         return {
             ...sheetData,
-            attributes: CONFIG.PF2E.abilities,
+            attributes: CONFIG.AVANT.abilities,
             familiarAbilities: {
                 value: familiarAbilities?.value ?? 0,
                 items: R.sortBy(
@@ -81,14 +81,14 @@ export class FamiliarSheetPF2e<TActor extends FamiliarPF2e> extends CreatureShee
     }
 }
 
-interface FamiliarSheetData<TActor extends FamiliarPF2e> extends CreatureSheetData<TActor> {
-    attributes: typeof CONFIG.PF2E.abilities;
+interface FamiliarSheetData<TActor extends FamiliarAvant> extends CreatureSheetData<TActor> {
+    attributes: typeof CONFIG.AVANT.abilities;
     familiarAbilities: {
         value: number;
         items: AbilityViewData[];
     };
-    master: CharacterPF2e | null;
-    masters: CharacterPF2e[];
+    master: CharacterAvant | null;
+    masters: CharacterAvant[];
     size: string;
     skills: StatisticTraceData[];
 }

@@ -1,10 +1,10 @@
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { CheckRoll } from "@system/check/roll.ts";
 import { htmlQuery } from "@util";
 
 /** Highlight critical success or failure on d20 rolls */
 export const DegreeOfSuccessHighlights = {
-    listen: (message: ChatMessagePF2e, html: HTMLElement): void => {
+    listen: (message: ChatMessageAvant, html: HTMLElement): void => {
         const firstRoll = message.rolls[0];
         const shouldHighlight =
             firstRoll instanceof CheckRoll &&

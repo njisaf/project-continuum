@@ -1,33 +1,33 @@
 <fieldset class="basics">
     {{#unless (or item.isRitual (and item.isFocusSpell (not item.isCantrip)))}}
         <div class="form-group">
-            <label>{{localize "PF2E.SpellTraditionsLabel"}}</label>
+            <label>{{localize "AVANT.SpellTraditionsLabel"}}</label>
             <tagify-tags class="tags paizo-style" name="system.traits.traditions" value="{{json data.traits.traditions}}" />
         </div>
     {{/unless}}
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}cast">{{localize "PF2E.Item.Spell.Cast"}}</label>
+        <label for="{{fieldIdPrefix}}cast">{{localize "AVANT.Item.Spell.Cast"}}</label>
         <input id="{{fieldIdPrefix}}cast" type="text" name="system.time.value" value="{{data.time.value}}" />
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}cost">{{localize "PF2E.Item.Spell.Cost"}}</label>
+        <label for="{{fieldIdPrefix}}cost">{{localize "AVANT.Item.Spell.Cost"}}</label>
         <input id="{{fieldIdPrefix}}cost" type="text" name="system.cost.value" value="{{data.cost.value}}" />
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}requirements">{{localize "PF2E.SpellRequirementsLabel"}}</label>
+        <label for="{{fieldIdPrefix}}requirements">{{localize "AVANT.SpellRequirementsLabel"}}</label>
         <input id="{{fieldIdPrefix}}requirements" type="text" name="system.requirements" value="{{data.requirements}}" />
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}range">{{localize "PF2E.TraitRange"}}</label>
+        <label for="{{fieldIdPrefix}}range">{{localize "AVANT.TraitRange"}}</label>
         <input id="{{fieldIdPrefix}}range" type="text" name="system.range.value" value="{{data.range.value}}" />
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}area-size">{{localize "PF2E.Area.InFeet"}}</label>
+        <label for="{{fieldIdPrefix}}area-size">{{localize "AVANT.Area.InFeet"}}</label>
         <div class="details-container-two-columns">
             <input
                 id="{{fieldIdPrefix}}area-size"
@@ -49,17 +49,17 @@
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}targets">{{localize "PF2E.SpellTargetLabel"}}</label>
+        <label for="{{fieldIdPrefix}}targets">{{localize "AVANT.SpellTargetLabel"}}</label>
         <input id="{{fieldIdPrefix}}targets" type="text" name="system.target.value" value="{{data.target.value}}" />
     </div>
 
     <div class="form-group duration">
-        <label for="{{fieldIdPrefix}}duration">{{localize "PF2E.Time.Duration"}}</label>
+        <label for="{{fieldIdPrefix}}duration">{{localize "AVANT.Time.Duration"}}</label>
         <div class="form-fields">
         <input id="{{fieldIdPrefix}}duration" type="text" name="system.duration.value" value="{{data.duration.value}}" />
             {{#unless item.isRitual}}
                 <label class="sustained">
-                    {{localize "PF2E.Item.Spell.Sustained.Label"}}
+                    {{localize "AVANT.Item.Spell.Sustained.Label"}}
                     <input id="{{fieldIdPrefix}}sustained" type="checkbox" name="system.duration.sustained" {{checked data.duration.sustained}} />
                 </label>
             {{/unless}}
@@ -69,42 +69,42 @@
 
 {{#if item.isRitual}}
     <fieldset>
-        <legend>{{localize "PF2E.Item.Spell.Ritual.Label"}}</legend>
+        <legend>{{localize "AVANT.Item.Spell.Ritual.Label"}}</legend>
 
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}primary-check">{{localize "PF2E.Item.Spell.Ritual.PrimaryCheck"}}</label>
+            <label for="{{fieldIdPrefix}}primary-check">{{localize "AVANT.Item.Spell.Ritual.PrimaryCheck"}}</label>
             <input for="{{fieldIdPrefix}}primary-check" type="text" name="system.ritual.primary.check" value="{{data.ritual.primary.check}}" />
         </div>
 
         <div class="form-group">
-            <label>{{localize "PF2E.Item.Spell.Ritual.SecondaryChecks"}}</label>
+            <label>{{localize "AVANT.Item.Spell.Ritual.SecondaryChecks"}}</label>
             <input type="text" name="system.ritual.secondary.checks" value="{{data.ritual.secondary.checks}}" />
         </div>
 
         <div class="form-group">
-            <label>{{localize "PF2E.Item.Spell.Ritual.SecondaryCasters"}}</label>
+            <label>{{localize "AVANT.Item.Spell.Ritual.SecondaryCasters"}}</label>
             <input type="number" name="system.ritual.secondary.casters" required min="0" max="100" value="{{data.ritual.secondary.casters}}" />
         </div>
     </fieldset>
 {{else}}
     <fieldset class="defense">
-        <legend>{{localize "PF2E.Item.Spell.Defense.Label"}}</legend>
+        <legend>{{localize "AVANT.Item.Spell.Defense.Label"}}</legend>
 
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}defense-passive">{{localize "PF2E.ActionTypePassive"}}</label>
+            <label for="{{fieldIdPrefix}}defense-passive">{{localize "AVANT.ActionTypePassive"}}</label>
             <select id="{{fieldIdPrefix}}defense-passive" data-property="system.defense.passive.statistic" data-nullable>
                 {{selectOptions defensePassiveOptions selected=item.system.defense.passive.statistic blank="" localize=true}}
             </select>
         </div>
 
         <div class="form-group save">
-            <label for="{{fieldIdPrefix}}save-statistic">{{localize "PF2E.SavingThrow"}}</label>
+            <label for="{{fieldIdPrefix}}save-statistic">{{localize "AVANT.SavingThrow"}}</label>
             <div class="form-fields">
                 <select id="{{fieldIdPrefix}}save-statistic" name="system.defense.save.statistic">
                     {{selectOptions defenseSaveOptions selected=data.defense.save.statistic blank="" localize=true}}
                 </select>
                 <label {{#unless data.defense.save.statistic}}class="disabled"{{/unless}}>
-                    {{localize "PF2E.Item.Spell.Defense.BasicSave"}}
+                    {{localize "AVANT.Item.Spell.Defense.BasicSave"}}
                     <input
                         type="checkbox"
                         name="system.defense.save.basic"
@@ -119,7 +119,7 @@
 
     <fieldset>
         <legend>
-            {{localize "PF2E.DamageLabel"}}
+            {{localize "AVANT.DamageLabel"}}
             {{#if editable}}<a data-action="add-damage-partial"><i class="fa-solid fa-fw fa-plus" ></i></a>{{/if}}
         </legend>
 
@@ -127,9 +127,9 @@
             {{#each data.damage as |partial id|}}
                 <div class="form-group">
                     <div class="form-fields">
-                        <input type="text" name="system.damage.{{id}}.formula" value="{{partial.formula}}" placeholder="{{localize "PF2E.Formula"}}" />
+                        <input type="text" name="system.damage.{{id}}.formula" value="{{partial.formula}}" placeholder="{{localize "AVANT.Formula"}}" />
                         <label class="apply-mod">
-                            {{localize "PF2E.SpellAbilityModLabel"}}
+                            {{localize "AVANT.SpellAbilityModLabel"}}
                             <input type="checkbox" name="system.damage.{{id}}.applyMod" {{checked partial.applyMod}} />
                         </label>
                         <select name="system.damage.{{id}}.category">
@@ -150,7 +150,7 @@
                             <a
                                 class="tag-selector"
                                 data-tag-selector="basic"
-                                data-title="PF2E.Item.MaterialEffects.Label"
+                                data-title="AVANT.Item.MaterialEffects.Label"
                                 data-config-types="materialDamageEffects"
                                 data-property="system.damage.{{id}}.materials"
                             ><i class="fa-solid fa-fw fa-edit"></i></a>
@@ -171,18 +171,18 @@
 {{/if}}
 
 <fieldset class="heightening">
-    <legend>{{localize "PF2E.Item.Spell.Heightening"}}</legend>
+    <legend>{{localize "AVANT.Item.Spell.Heightening"}}</legend>
 
     {{#if canHeighten}}
         <div class="form-group add">
             {{#if (not data.heightening)}}
                 <button type="button" data-action="add-interval-heightening">
-                    <i class="fa-solid fa-fw fa-plus"></i> {{localize "PF2E.SpellScalingInterval.Add"}}
+                    <i class="fa-solid fa-fw fa-plus"></i> {{localize "AVANT.SpellScalingInterval.Add"}}
                 </button>
             {{/if}}
             {{#if (or (eq data.heightening.type "fixed") (not data.heightening))}}
                 <button type="button"{{#if data.heightening}} class="only-option"{{/if}} data-action="add-fixed-heightening" data-overlay-type="heightening">
-                    <i class="fa-solid fa-fw fa-plus"></i> {{localize "PF2E.SpellScalingOverlay.Add"}}
+                    <i class="fa-solid fa-fw fa-plus"></i> {{localize "AVANT.SpellScalingOverlay.Add"}}
                 </button>
             {{/if}}
         </div>
@@ -190,7 +190,7 @@
 
     {{#if (eq data.heightening.type "interval")}}
         <div class="form-group">
-            <h3>{{localize "PF2E.SpellScalingInterval.Header"}}</h3>
+            <h3>{{localize "AVANT.SpellScalingInterval.Header"}}</h3>
             {{#if editable}}
                 <div class="item-controls">
                     <a data-action="delete-heightening"><i class="fa-solid fa-fw fa-trash" data-idx="{{idx}}"></i></a>
@@ -199,7 +199,7 @@
         </div>
 
         <div class="form-group">
-            <label>{{localize "PF2E.SpellScalingInterval.Label"}}</label>
+            <label>{{localize "AVANT.SpellScalingInterval.Label"}}</label>
             <select name="system.heightening.interval" data-dtype="Number">
                 {{selectOptions heightenIntervals selected=data.heightening.interval localize=true}}
             </select>
@@ -207,7 +207,7 @@
 
         {{#if item._source.system.area.value}}
             <div class="form-group">
-                <label>{{localize "PF2E.Area.InFeet"}}</label>
+                <label>{{localize "AVANT.Area.InFeet"}}</label>
                 <input type="number" name="system.heightening.area" value="{{data.heightening.area}}" />
             </div>
         {{/if}}
@@ -223,7 +223,7 @@
     {{!-- Spell heightening for fixed levels --}}
     {{#unless (eq data.heightening.type "interval")}}
         {{#each heightenOverlays}}
-            {{> systems/pf2e/templates/items/spell-overlay.hbs this=this}}
+            {{> systems/avant/templates/items/spell-overlay.hbs this=this}}
         {{/each}}
     {{/unless}}
 </fieldset>
@@ -231,7 +231,7 @@
 {{#if (nor item.isRitual isVariant)}}
     <fieldset class="variants" data-can-drop="true">
         <legend class="form-group">
-            {{localize "PF2E.Item.Spell.Variants.LabelPlural"}}
+            {{localize "AVANT.Item.Spell.Variants.LabelPlural"}}
             <a data-action="variant-create"><i class="fa-solid fa-fw fa-plus"></i></a>
         </legend>
 
@@ -250,14 +250,14 @@
     </fieldset>
 
     <div class="form-group">
-        <label class="large" for="{{fieldIdPrefix}}counteraction">{{localize "PF2E.Item.Spell.Counteract.Label"}}</label>
+        <label class="large" for="{{fieldIdPrefix}}counteraction">{{localize "AVANT.Item.Spell.Counteract.Label"}}</label>
         <input type="checkbox" name="system.counteraction" id="{{fieldIdPrefix}}counteraction" {{checked data.counteraction}} />
     </div>
 {{/if}}
 
 {{#unless isVariant}}
     <div class="form-group">
-        <label class="large" for="{{fieldIdPrefix}}toggle-ritual-data">{{localize "PF2E.Item.Spell.Ritual.Label"}}</label>
+        <label class="large" for="{{fieldIdPrefix}}toggle-ritual-data">{{localize "AVANT.Item.Spell.Ritual.Label"}}</label>
         <input type="checkbox" id="{{fieldIdPrefix}}toggle-ritual-data" data-action="toggle-ritual-data" {{checked item.isRitual}} />
     </div>
 {{/unless}}

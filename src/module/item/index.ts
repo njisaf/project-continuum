@@ -2,40 +2,40 @@
 export * from "./base/document.ts";
 
 // Abstract subclasses
-export { ABCItemPF2e } from "./abc/document.ts";
-export { AbstractEffectPF2e } from "./abstract-effect/document.ts";
-export { PhysicalItemPF2e } from "./physical/document.ts";
+export { ABCItemAvant } from "./abc/document.ts";
+export { AbstractEffectAvant } from "./abstract-effect/document.ts";
+export { PhysicalItemAvant } from "./physical/document.ts";
 
 // Effects
-export { AfflictionPF2e } from "./affliction/document.ts";
-export { ConditionPF2e } from "./condition/document.ts";
-export { EffectPF2e } from "./effect/document.ts";
+export { AfflictionAvant } from "./affliction/document.ts";
+export { ConditionAvant } from "./condition/document.ts";
+export { EffectAvant } from "./effect/document.ts";
 
 // Physical Items
-export { ArmorPF2e } from "./armor/document.ts";
-export { BookPF2e } from "./book/document.ts";
-export { ConsumablePF2e } from "./consumable/document.ts";
-export { ContainerPF2e } from "./container/document.ts";
-export { EquipmentPF2e } from "./equipment/document.ts";
-export { ShieldPF2e } from "./shield/document.ts";
-export { TreasurePF2e } from "./treasure/document.ts";
-export { WeaponPF2e } from "./weapon/document.ts";
+export { ArmorAvant } from "./armor/document.ts";
+export { BookAvant } from "./book/document.ts";
+export { ConsumableAvant } from "./consumable/document.ts";
+export { ContainerAvant } from "./container/document.ts";
+export { EquipmentAvant } from "./equipment/document.ts";
+export { ShieldAvant } from "./shield/document.ts";
+export { TreasureAvant } from "./treasure/document.ts";
+export { WeaponAvant } from "./weapon/document.ts";
 
 // ABC items
-export { AncestryPF2e } from "./ancestry/document.ts";
-export { BackgroundPF2e } from "./background/document.ts";
-export { ClassPF2e } from "./class/document.ts";
+export { AncestryAvant } from "./ancestry/document.ts";
+export { BackgroundAvant } from "./background/document.ts";
+export { ClassAvant } from "./class/document.ts";
 
 // Others
-export { AbilityItemPF2e } from "./ability/document.ts";
-export { CampaignFeaturePF2e } from "./campaign-feature/document.ts";
-export { DeityPF2e } from "./deity/document.ts";
-export { FeatPF2e } from "./feat/document.ts";
-export { HeritagePF2e } from "./heritage/document.ts";
-export { KitPF2e } from "./kit/document.ts";
-export { LorePF2e } from "./lore.ts";
-export { MeleePF2e } from "./melee/document.ts";
-export { SpellPF2e } from "./spell/document.ts";
-export { SpellcastingEntryPF2e } from "./spellcasting-entry/document.ts";
+export { AbilityItemAvant } from "./ability/document.ts";
+export { CampaignFeatureAvant } from "./campaign-feature/document.ts";
+export { DeityAvant } from "./deity/document.ts";
+export { FeatAvant } from "./feat/document.ts";
+export { HeritageAvant } from "./heritage/document.ts";
+export { KitAvant } from "./kit/document.ts";
+export { LoreAvant } from "./lore.ts";
+export { MeleeAvant } from "./melee/document.ts";
+export { SpellAvant } from "./spell/document.ts";
+export { SpellcastingEntryAvant } from "./spellcasting-entry/document.ts";
 
 export * from "./base/sheet/index.ts";

@@ -1,4 +1,4 @@
-import type { ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Refresh rule elements on mighty bulwark feat. */
@@ -29,7 +29,7 @@ export class Migration869RefreshMightyBulwark extends MigrationBase {
         ];
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "feat" && source.system.slug === "mighty-bulwark") {
             source.system.rules = this.#mightyBulwarkRules;
         } else {

@@ -6,7 +6,7 @@ import {
 } from "@actor/actions/index.ts";
 import { CheckResultCallback } from "@system/action-macros/types.ts";
 
-const PREFIX = "PF2E.Actions.IdentifyMagic";
+const PREFIX = "AVANT.Actions.IdentifyMagic";
 
 class IdentifyMagicActionVariant extends SingleCheckActionVariant {
     override async use(

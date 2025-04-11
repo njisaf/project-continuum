@@ -1,5 +1,5 @@
-import { TokenPF2e } from "@module/canvas/index.ts";
-import type { TokenDocumentPF2e } from "@scene";
+import { TokenAvant } from "@module/canvas/index.ts";
+import type { TokenDocumentAvant } from "@scene";
 import { Predicate } from "@system/predication.ts";
 
 /** Prompt the user to target a token */
@@ -8,16 +8,16 @@ class MarkTargetPrompt {
 
     requirements: TargetRequirements | null;
 
-    #target?: Maybe<TokenDocumentPF2e>;
+    #target?: Maybe<TokenDocumentAvant>;
 
-    #resolve?: (value: Maybe<TokenDocumentPF2e>) => void;
+    #resolve?: (value: Maybe<TokenDocumentAvant>) => void;
 
     constructor(params: PromptParameters) {
-        this.prompt = params.prompt ?? "PF2E.UI.RuleElements.TokenMark.TargetToken";
+        this.prompt = params.prompt ?? "AVANT.UI.RuleElements.TokenMark.TargetToken";
         this.requirements = params.requirements;
     }
 
-    async resolveTarget(): Promise<Maybe<TokenDocumentPF2e | null>> {
+    async resolveTarget(): Promise<Maybe<TokenDocumentAvant | null>> {
         game.user.targets.clear();
         this.activateListeners();
         ui.notifications.info(this.prompt, { localize: true });
@@ -35,7 +35,7 @@ class MarkTargetPrompt {
         const hookParams: HookParamsTargetToken = [
             "targetToken",
             (_user, token, targeted) => {
-                this.#target = targeted && token instanceof TokenPF2e ? token.document : null;
+                this.#target = targeted && token instanceof TokenAvant ? token.document : null;
                 this.#resolve?.(this.#target);
             },
         ];
@@ -58,7 +58,7 @@ class MarkTargetPrompt {
         const handler = (event: KeyboardEvent): void => {
             if (event.key !== "Escape") return;
             event.stopPropagation();
-            ui.notifications.info("PF2E.UI.RuleElements.TokenMark.Timeout", { localize: true });
+            ui.notifications.info("AVANT.UI.RuleElements.TokenMark.Timeout", { localize: true });
             Hooks.off(...hookParams);
             document.removeEventListener("keyup", handler);
         };

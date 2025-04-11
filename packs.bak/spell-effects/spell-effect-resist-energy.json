@@ -1,0 +1,70 @@
+{
+    "_id": "con2Hzt47JjpuUej",
+    "img": "icons/magic/defensive/shield-barrier-deflect-teal.webp",
+    "name": "Spell Effect: Resist Energy",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Resist Energy]</p>\n<p>Choose acid, cold, electricity, fire, or sonic damage. You gain resistance against the damage type you chose.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "minutes",
+            "value": 10
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    }
+                ],
+                "flag": "resistEnergyType",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.EnergyType"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.resistEnergyType}",
+                "value": "ternary(gte(@item.level,7),15,ternary(gte(@item.level,4),10,5))"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

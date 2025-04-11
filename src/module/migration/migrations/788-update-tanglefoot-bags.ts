@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { DegreeOfSuccessString } from "@system/degree-of-success.ts";
 import { MigrationBase } from "../base.ts";
@@ -7,7 +7,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration788UpdateTanglefootBags extends MigrationBase {
     static override version = 0.788;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!(source.type === "weapon" && source.system.slug?.startsWith("tanglefoot-bag-"))) {
             return;
         }
@@ -40,14 +40,14 @@ export class Migration788UpdateTanglefootBags extends MigrationBase {
                 key: "Note",
                 outcome: ["success"],
                 selector: "{item|_id}-attack",
-                text: `PF2E.BombNotes.TanglefootBag.${type}.success`,
+                text: `AVANT.BombNotes.TanglefootBag.${type}.success`,
                 title: "TYPES.Item.effect",
             },
             {
                 key: "Note",
                 outcome: ["criticalSuccess"],
                 selector: "{item|_id}-attack",
-                text: `PF2E.BombNotes.TanglefootBag.${type}.criticalSuccess`,
+                text: `AVANT.BombNotes.TanglefootBag.${type}.criticalSuccess`,
                 title: "TYPES.Item.effect",
             },
         ];

@@ -1,9 +1,9 @@
 <div class="content">
     <section class="feat-section major" data-group-id="{{section.id}}">
         <header>
-            {{localize "PF2E.Kingmaker.Kingdom.BuildHeader"}}
+            {{localize "AVANT.Kingmaker.Kingdom.BuildHeader"}}
             <button type="button" data-action="builder">
-                <i class="fa-solid fa-fw fa-crown"></i>{{localize "PF2E.Kingmaker.KingdomBuilder.Builder"}}
+                <i class="fa-solid fa-fw fa-crown"></i>{{localize "AVANT.Kingmaker.KingdomBuilder.Builder"}}
             </button>
         </header>
         <ol class="feats-list">
@@ -26,19 +26,19 @@
                 <div class="controls">
                     {{#if (eq section.id "bonus")}}
                         <button type="button" data-action="create-feat">
-                            <i class="fa-solid fa-fw fa-plus"></i>{{localize "PF2E.Actor.Character.CreateFeat"}}
+                            <i class="fa-solid fa-fw fa-plus"></i>{{localize "AVANT.Actor.Character.CreateFeat"}}
                         </button>
                     {{/if}}
                     {{#if section.featFilter}}
                         <button type="button" data-action="browse-feats">
-                            <i class="fa-solid fa-fw fa-search"></i>{{localize "PF2E.BrowseLabel"}}
+                            <i class="fa-solid fa-fw fa-search"></i>{{localize "AVANT.BrowseLabel"}}
                         </button>
                     {{/if}}
                 </div>
             </header>
             <ol class="feats-list" data-foundry-list>
                 {{#each section.feats as |featSlot|}}
-                    {{> "systems/pf2e/templates/actors/character/partials/feat-slot.hbs" featSlot=featSlot featFilter=section.featFilter}}
+                    {{> "systems/avant/templates/actors/character/partials/feat-slot.hbs" featSlot=featSlot featFilter=section.featFilter}}
                 {{/each}}
             </ol>
         </section>
@@ -57,12 +57,12 @@
         </div>
         <div class="item-controls">
             {{#if @root.editable}}
-                <a data-action="builder" data-tab="{{type}}" data-tooltip="PF2E.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
+                <a data-action="builder" data-tab="{{type}}" data-tooltip="AVANT.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
             {{/if}}
         </div>
         <div class="item-summary" hidden="hidden">
             {{{item.description}}}
-            {{> "systems/pf2e/templates/actors/party/kingdom/partials/build-entry-boosts.hbs" buildEntry=item}}
+            {{> "systems/avant/templates/actors/party/kingdom/partials/build-entry-boosts.hbs" buildEntry=item}}
         </div>
     </li>
 {{/inline}}

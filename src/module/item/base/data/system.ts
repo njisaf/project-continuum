@@ -5,14 +5,14 @@ import type * as fields from "types/foundry/common/data/fields.d.ts";
 import type { ItemTrait } from "../types.ts";
 import type { ItemType } from "./index.ts";
 
-type BaseItemSourcePF2e<
+type BaseItemSourceAvant<
     TType extends ItemType,
     TSystemSource extends ItemSystemSource = ItemSystemSource,
 > = foundry.documents.ItemSource<TType, TSystemSource> & {
-    flags: ItemSourceFlagsPF2e;
+    flags: ItemSourceFlagsAvant;
 };
 
-type ActionType = keyof typeof CONFIG.PF2E.actionTypes;
+type ActionType = keyof typeof CONFIG.AVANT.actionTypes;
 
 interface ActionCost {
     type: Exclude<ActionType, "passive">;
@@ -41,8 +41,8 @@ interface OtherTagsOnly {
     otherTags: string[];
 }
 
-interface ItemFlagsPF2e extends DocumentFlags {
-    pf2e: {
+interface ItemFlagsAvant extends DocumentFlags {
+    avant: {
         rulesSelections: Record<string, string | number | object | null>;
         itemGrants: Record<string, ItemGranterData>;
         grantedBy: ItemGrantData | null;
@@ -50,8 +50,8 @@ interface ItemFlagsPF2e extends DocumentFlags {
     };
 }
 
-interface ItemSourceFlagsPF2e extends DocumentFlags {
-    pf2e?: {
+interface ItemSourceFlagsAvant extends DocumentFlags {
+    avant?: {
         rulesSelections?: Record<string, string | number | object>;
         itemGrants?: Record<string, ItemGranterSource>;
         grantedBy?: ItemGrantSource | null;
@@ -121,7 +121,7 @@ interface AlteredDescriptionContent {
     predicate: Predicate;
 }
 
-type FrequencyInterval = keyof typeof CONFIG.PF2E.frequencies;
+type FrequencyInterval = keyof typeof CONFIG.AVANT.frequencies;
 
 interface FrequencySource {
     value: number | undefined;
@@ -130,7 +130,7 @@ interface FrequencySource {
     per: FrequencyInterval;
 }
 
-type ItemSchemaPF2e = Omit<foundry.documents.ItemSchema, "system"> & {
+type ItemSchemaAvant = Omit<foundry.documents.ItemSchema, "system"> & {
     system: fields.TypeDataField;
 };
 
@@ -141,18 +141,18 @@ interface Frequency extends FrequencySource {
 export type {
     ActionCost,
     ActionType,
-    BaseItemSourcePF2e,
+    BaseItemSourceAvant,
     Frequency,
     FrequencyInterval,
     FrequencySource,
     ItemDescriptionData,
-    ItemFlagsPF2e,
+    ItemFlagsAvant,
     ItemGrantData,
     ItemGrantDeleteAction,
     ItemGrantSource,
     ItemGranterSource,
-    ItemSchemaPF2e,
-    ItemSourceFlagsPF2e,
+    ItemSchemaAvant,
+    ItemSourceFlagsAvant,
     ItemSystemData,
     ItemSystemSource,
     ItemTrait,

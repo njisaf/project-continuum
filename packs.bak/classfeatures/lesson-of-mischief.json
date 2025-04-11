@@ -1,0 +1,39 @@
+{
+    "_id": "XBgBh3xZhgGQP7lF",
+    "img": "systems/avant/icons/spells/deceivers-cloak.webp",
+    "name": "Lesson of Mischief",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "classfeature",
+        "description": {
+            "value": "<p>You gain the @UUID[Compendium.avant.spells-srd.Item.Deceiver's Cloak] hex, and your familiar learns @UUID[Compendium.avant.spells-srd.Item.Mad Monkeys].</p>"
+        },
+        "level": {
+            "value": 6
+        },
+        "prerequisites": {
+            "value": []
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [],
+        "traits": {
+            "otherTags": [
+                "witch-lesson"
+            ],
+            "rarity": "common",
+            "value": [
+                "witch"
+            ]
+        }
+    },
+    "type": "feat"
+}

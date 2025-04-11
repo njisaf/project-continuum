@@ -1,4 +1,4 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { SenseAcuity, SenseType } from "@actor/creature/types.ts";
 import {
     SENSES_WITH_MANDATORY_ACUITIES,
@@ -6,21 +6,21 @@ import {
     SENSE_ACUITIES,
     SENSE_TYPES,
 } from "@actor/creature/values.ts";
-import { ErrorPF2e, htmlClosest, htmlQuery, htmlQueryAll, setHasElement, tupleHasValue } from "@util";
+import { ErrorAvant, htmlClosest, htmlQuery, htmlQueryAll, setHasElement, tupleHasValue } from "@util";
 import * as R from "remeda";
 import { BaseTagSelector, TagSelectorData, TagSelectorOptions } from "./base.ts";
 import { SelectableTagField } from "./index.ts";
 
-class SenseSelector<TActor extends ActorPF2e> extends BaseTagSelector<TActor> {
+class SenseSelector<TActor extends ActorAvant> extends BaseTagSelector<TActor> {
     protected objectProperty = "system.perception.senses";
 
     static override get defaultOptions(): TagSelectorOptions {
         return {
             ...super.defaultOptions,
             height: "auto",
-            template: "systems/pf2e/templates/system/tag-selector/senses.hbs",
+            template: "systems/avant/templates/system/tag-selector/senses.hbs",
             id: "sense-selector",
-            title: "PF2E.Actor.Creature.Sense.Plural",
+            title: "AVANT.Actor.Creature.Sense.Plural",
         };
     }
 
@@ -31,7 +31,7 @@ class SenseSelector<TActor extends ActorPF2e> extends BaseTagSelector<TActor> {
     override async getData(options?: Partial<TagSelectorOptions>): Promise<SenseSelectorData<TActor>> {
         const actor = this.document;
         if (!actor.isOfType("npc")) {
-            throw ErrorPF2e("The Sense selector is usable only with NPCs");
+            throw ErrorAvant("The Sense selector is usable only with NPCs");
         }
 
         const senses = actor.system.perception.senses;
@@ -55,7 +55,7 @@ class SenseSelector<TActor extends ActorPF2e> extends BaseTagSelector<TActor> {
             ...(await super.getData(options)),
             hasExceptions: false,
             choices,
-            senseAcuities: CONFIG.PF2E.senseAcuities,
+            senseAcuities: CONFIG.AVANT.senseAcuities,
             vision: {
                 value: actor.system.perception.vision,
                 editable: actor._source.system.perception.vision === actor.system.perception.vision,
@@ -122,14 +122,14 @@ class SenseSelector<TActor extends ActorPF2e> extends BaseTagSelector<TActor> {
     }
 }
 
-interface SenseSelector<TActor extends ActorPF2e> extends BaseTagSelector<TActor> {
+interface SenseSelector<TActor extends ActorAvant> extends BaseTagSelector<TActor> {
     choices: Record<SenseType, string>;
 }
 
-interface SenseSelectorData<TActor extends ActorPF2e> extends TagSelectorData<TActor> {
+interface SenseSelectorData<TActor extends ActorAvant> extends TagSelectorData<TActor> {
     hasExceptions: boolean;
     choices: Record<string, SenseChoiceData>;
-    senseAcuities: typeof CONFIG.PF2E.senseAcuities;
+    senseAcuities: typeof CONFIG.AVANT.senseAcuities;
     vision: { value: boolean; editable: boolean; source: string | null };
 }
 

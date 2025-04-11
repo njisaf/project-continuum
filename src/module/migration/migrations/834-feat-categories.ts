@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { FeatSystemSource } from "@item/feat/data.ts";
 import { FEAT_OR_FEATURE_CATEGORIES } from "@item/feat/values.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
@@ -41,7 +41,7 @@ export class Migration834FeatCategories extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "feat") {
             this.#updateCategoryData(source.system);
         }

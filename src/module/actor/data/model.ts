@@ -1,9 +1,9 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { MigrationDataField } from "@module/data.ts";
 import type { AutoChangeEntry } from "@module/rules/rule-element/ae-like.ts";
 import fields = foundry.data.fields;
 
-abstract class ActorSystemModel<TParent extends ActorPF2e, TSchema extends ActorSystemSchema> extends foundry.abstract
+abstract class ActorSystemModel<TParent extends ActorAvant, TSchema extends ActorSystemSchema> extends foundry.abstract
     .TypeDataModel<TParent, TSchema> {
     declare autoChanges: Record<string, AutoChangeEntry[] | undefined>;
 

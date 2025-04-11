@@ -1,0 +1,261 @@
+{
+    "_id": "kkP0tagXmAYuSH3u",
+    "img": "icons/magic/unholy/silhouette-robe-evil-glow.webp",
+    "name": "Effect: Impersonated Ability",
+    "system": {
+        "description": {
+            "value": "<p>The Noppera-Bo Impersonator selects from their impersonated abilities.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 6
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder #198: No Breath to Cry"
+        },
+        "rules": [
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.NPCAbility.NopperaBo.Impersonator.Armored",
+                        "predicate": [
+                            "noppera-bo-impersonator:martial"
+                        ],
+                        "value": "armored"
+                    },
+                    {
+                        "label": "AVANT.NPCAbility.NopperaBo.Impersonator.AttackOfOpportunity",
+                        "predicate": [
+                            "noppera-bo-impersonator:martial"
+                        ],
+                        "value": "attack-of-opportunity"
+                    },
+                    {
+                        "label": "AVANT.NPCAbility.NopperaBo.Impersonator.Commander",
+                        "predicate": [
+                            "noppera-bo-impersonator:skilled"
+                        ],
+                        "value": "commander"
+                    },
+                    {
+                        "label": "AVANT.NPCAbility.NopperaBo.Impersonator.ElementalAttack",
+                        "predicate": [
+                            "noppera-bo-impersonator:skilled"
+                        ],
+                        "value": "elemental-attack"
+                    },
+                    {
+                        "label": "AVANT.NPCAbility.NopperaBo.Impersonator.ShieldCarrier",
+                        "predicate": [
+                            "noppera-bo-impersonator:martial"
+                        ],
+                        "value": "shield-carrier"
+                    },
+                    {
+                        "label": "AVANT.NPCAbility.NopperaBo.Impersonator.SneakAttack",
+                        "predicate": [
+                            "noppera-bo-impersonator:skilled"
+                        ],
+                        "value": "sneak-attack"
+                    },
+                    {
+                        "label": "AVANT.NPCAbility.NopperaBo.Impersonator.WeaponPerk",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "noppera-bo-impersonator:martial",
+                                    "noppera-bo-impersonator:skilled"
+                                ]
+                            }
+                        ],
+                        "value": "weapon-perk"
+                    }
+                ],
+                "key": "ChoiceSet",
+                "prompt": "AVANT.NPCAbility.NopperaBo.Impersonator.AbilityPrompt",
+                "rollOption": "impersonated-ability"
+            },
+            {
+                "key": "FlatModifier",
+                "label": "AVANT.NPCAbility.NopperaBo.Impersonator.Armored",
+                "predicate": [
+                    "impersonated-ability:armored"
+                ],
+                "selector": "ac",
+                "value": 2
+            },
+            {
+                "allowDuplicate": false,
+                "key": "GrantItem",
+                "predicate": [
+                    "impersonated-ability:attack-of-opportunity"
+                ],
+                "uuid": "Compendium.avant.bestiary-ability-glossary-srd.Item.Attack of Opportunity"
+            },
+            {
+                "allowDuplicate": false,
+                "key": "GrantItem",
+                "predicate": [
+                    "impersonated-ability:shield-carrier"
+                ],
+                "uuid": "Compendium.avant.equipment-srd.Item.Sturdy Shield (Minor)"
+            },
+            {
+                "allowDuplicate": false,
+                "key": "GrantItem",
+                "predicate": [
+                    "impersonated-ability:shield-carrier"
+                ],
+                "uuid": "Compendium.avant.bestiary-ability-glossary-srd.Item.Shield Block"
+            },
+            {
+                "allowDuplicate": false,
+                "key": "GrantItem",
+                "predicate": [
+                    "impersonated-ability:elemental-attack"
+                ],
+                "uuid": "Compendium.avant.adventure-specific-actions.Item.Elemental Attack"
+            },
+            {
+                "allowDuplicate": false,
+                "key": "GrantItem",
+                "predicate": [
+                    "impersonated-ability:sneak-attack"
+                ],
+                "uuid": "Compendium.avant.bestiary-ability-glossary-srd.Item.Sneak Attack"
+            },
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAgile",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "noppera-bo-impersonator:martial",
+                                    "noppera-bo-impersonator:skilled"
+                                ]
+                            }
+                        ],
+                        "value": "agile"
+                    },
+                    {
+                        "label": "AVANT.TraitBackstabber",
+                        "predicate": [
+                            "noppera-bo-impersonator:skilled"
+                        ],
+                        "value": "backstabber"
+                    },
+                    {
+                        "label": "AVANT.TraitDeadlyD8",
+                        "predicate": [
+                            "noppera-bo-impersonator:martial"
+                        ],
+                        "value": "deadly-d8"
+                    },
+                    {
+                        "label": "AVANT.TraitDisarm",
+                        "predicate": [
+                            "noppera-bo-impersonator:skilled"
+                        ],
+                        "value": "disarm"
+                    },
+                    {
+                        "label": "AVANT.TraitFinesse",
+                        "predicate": [
+                            "noppera-bo-impersonator:skilled"
+                        ],
+                        "value": "finesse"
+                    },
+                    {
+                        "label": "AVANT.TraitForceful",
+                        "predicate": [
+                            "noppera-bo-impersonator:martial"
+                        ],
+                        "value": "forceful"
+                    },
+                    {
+                        "label": "AVANT.TraitParry",
+                        "predicate": [
+                            "noppera-bo-impersonator:martial"
+                        ],
+                        "value": "parry"
+                    },
+                    {
+                        "label": "AVANT.TraitReach",
+                        "predicate": [
+                            "noppera-bo-impersonator:martial"
+                        ],
+                        "value": "reach"
+                    },
+                    {
+                        "label": "AVANT.TraitShove",
+                        "predicate": [
+                            "noppera-bo-impersonator:martial"
+                        ],
+                        "value": "shove"
+                    },
+                    {
+                        "label": "AVANT.TraitSweep",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "noppera-bo-impersonator:martial",
+                                    "noppera-bo-impersonator:skilled"
+                                ]
+                            }
+                        ],
+                        "value": "sweep"
+                    },
+                    {
+                        "label": "AVANT.TraitTrip",
+                        "predicate": [
+                            {
+                                "or": [
+                                    "noppera-bo-impersonator:martial",
+                                    "noppera-bo-impersonator:skilled"
+                                ]
+                            }
+                        ],
+                        "value": "trip"
+                    }
+                ],
+                "flag": "perk",
+                "key": "ChoiceSet",
+                "predicate": [
+                    "impersonated-ability:weapon-perk"
+                ],
+                "prompt": "AVANT.NPCAbility.NopperaBo.Impersonator.WeaponPerkPrompt"
+            },
+            {
+                "itemType": "weapon",
+                "key": "ItemAlteration",
+                "mode": "add",
+                "predicate": [
+                    "impersonated-ability:weapon-perk"
+                ],
+                "property": "traits",
+                "value": "{item|flags.avant.rulesSelections.perk}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

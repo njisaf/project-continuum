@@ -1,23 +1,23 @@
 import { BaseWeaponProficiencyKey, WeaponGroupProficiencyKey } from "@actor/character/data.ts";
-import type { CharacterPF2e } from "@actor/character/document.ts";
+import type { CharacterAvant } from "@actor/character/document.ts";
 import { fontAwesomeIcon, htmlClosest, htmlQuery, localizer, objectHasKey } from "@util";
 
-async function add(actor: CharacterPF2e): Promise<void> {
-    const weaponGroups = CONFIG.PF2E.weaponGroups;
-    const baseWeapons = CONFIG.PF2E.baseWeaponTypes;
-    const template = await renderTemplate("systems/pf2e/templates/actors/add-combat-proficiency-dialog.hbs", {
-        message: game.i18n.localize("PF2E.AddCombatProficiency.Message"),
+async function add(actor: CharacterAvant): Promise<void> {
+    const weaponGroups = CONFIG.AVANT.weaponGroups;
+    const baseWeapons = CONFIG.AVANT.baseWeaponTypes;
+    const template = await renderTemplate("systems/avant/templates/actors/add-combat-proficiency-dialog.hbs", {
+        message: game.i18n.localize("AVANT.AddCombatProficiency.Message"),
         weaponGroups,
         baseWeapons,
     });
 
     const dialog = new Dialog({
-        title: game.i18n.localize("PF2E.AddCombatProficiency.Title"),
+        title: game.i18n.localize("AVANT.AddCombatProficiency.Title"),
         content: template,
         buttons: {
             add: {
                 icon: fontAwesomeIcon("check").outerHTML,
-                label: game.i18n.localize("PF2E.AddShortLabel"),
+                label: game.i18n.localize("AVANT.AddShortLabel"),
                 callback: async ($dialog) => {
                     const dialog = $dialog[0];
                     const selection = htmlQuery<HTMLSelectElement>(dialog, "select[name=proficiency]")?.value;
@@ -40,17 +40,17 @@ async function add(actor: CharacterPF2e): Promise<void> {
     dialog.render(true);
 }
 
-function remove(actor: CharacterPF2e, event: MouseEvent): void {
-    const weaponGroups = CONFIG.PF2E.weaponGroups;
-    const baseWeapons: Record<string, string | undefined> = CONFIG.PF2E.baseWeaponTypes;
-    const baseShields: Record<string, string | undefined> = CONFIG.PF2E.baseShieldTypes;
+function remove(actor: CharacterAvant, event: MouseEvent): void {
+    const weaponGroups = CONFIG.AVANT.weaponGroups;
+    const baseWeapons: Record<string, string | undefined> = CONFIG.AVANT.baseWeaponTypes;
+    const baseShields: Record<string, string | undefined> = CONFIG.AVANT.baseShieldTypes;
     const key = htmlClosest(event.target, "[data-slug]")?.dataset.slug ?? "";
     const translationKey = key?.replace(/^weapon-(?:base|group)-/, "") ?? "";
     const name = objectHasKey(weaponGroups, translationKey)
         ? game.i18n.localize(weaponGroups[translationKey])
         : (baseWeapons[translationKey] ?? baseShields[translationKey] ?? translationKey);
 
-    const localize = localizer("PF2E.RemoveCombatProficiency");
+    const localize = localizer("AVANT.RemoveCombatProficiency");
     const message = localize("Message", { proficiency: name });
     Dialog.confirm({
         title: localize("Title"),

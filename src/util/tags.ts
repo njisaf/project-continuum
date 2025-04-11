@@ -13,8 +13,8 @@ function traitSlugToObject(trait: string, dictionary: Record<string, string | un
         label: game.i18n.localize(dictionary[trait] ?? trait),
         description: null,
     };
-    if (objectHasKey(CONFIG.PF2E.traitsDescriptions, trait)) {
-        traitObject.description = CONFIG.PF2E.traitsDescriptions[trait];
+    if (objectHasKey(CONFIG.AVANT.traitsDescriptions, trait)) {
+        traitObject.description = CONFIG.AVANT.traitsDescriptions[trait];
     }
 
     return traitObject;
@@ -126,7 +126,7 @@ type WhitelistData = string[] | Record<string, string | { label: string }>;
 interface TagifyOptions {
     /** The maximum number of tags that may be added to the input */
     maxTags?: number;
-    /** A whitelist record, typically pulled from `CONFIG.PF2E` */
+    /** A whitelist record, typically pulled from `CONFIG.AVANT` */
     whitelist?: WhitelistData;
     /** Whether this whitelist is exhaustive */
     enforceWhitelist?: boolean;

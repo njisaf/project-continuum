@@ -1,15 +1,15 @@
-import type { ActorPF2e, CharacterPF2e, NPCPF2e } from "@actor";
+import type { ActorAvant, CharacterAvant, NPCAvant } from "@actor";
 import type { AttributeString } from "@actor/types.ts";
-import type { ItemPF2e } from "@item";
+import type { ItemAvant } from "@item";
 import { ZeroToFour } from "@module/data.ts";
-import type { RollNotePF2e } from "@module/notes.ts";
+import type { RollNoteAvant } from "@module/notes.ts";
 import { extractModifierAdjustments } from "@module/rules/helpers.ts";
-import type { RuleElementPF2e } from "@module/rules/index.ts";
+import type { RuleElementAvant } from "@module/rules/index.ts";
 import { DamageAlteration } from "@module/rules/rule-element/damage-alteration/alteration.ts";
 import { DamageCategorization } from "@system/damage/helpers.ts";
 import type { DamageCategoryUnique, DamageDiceFaces, DamageDieSize, DamageType } from "@system/damage/types.ts";
 import { Predicate, RawPredicate } from "@system/predication.ts";
-import { ErrorPF2e, objectHasKey, setHasElement, signedInteger, sluggify, tupleHasValue } from "@util";
+import { ErrorAvant, objectHasKey, setHasElement, signedInteger, sluggify, tupleHasValue } from "@util";
 import * as R from "remeda";
 
 const PROFICIENCY_RANK_OPTION = [
@@ -91,7 +91,7 @@ interface ModifierAdjustment {
 interface DeferredValueParams {
     /** An object to merge into roll data for `Roll.replaceFormulaData` */
     resolvables?: Record<string, unknown>;
-    /** An object to merge into standard options for `RuleElementPF2e#resolveInjectedProperties` */
+    /** An object to merge into standard options for `RuleElementAvant#resolveInjectedProperties` */
     injectables?: Record<string, unknown>;
     /** Roll Options to get against a predicate (if available) */
     test?: string[] | Set<string>;
@@ -109,7 +109,7 @@ type DeferredValue<T> = (options?: DeferredValueParams) => T | null;
 type DeferredPromise<T> = (options?: DeferredValueParams) => Promise<T | null>;
 
 /** Represents a discrete modifier, bonus, or penalty, to a statistic or check. */
-class ModifierPF2e implements RawModifier {
+class ModifierAvant implements RawModifier {
     slug: string;
     label: string;
     domains: string[];
@@ -126,7 +126,7 @@ class ModifierPF2e implements RawModifier {
     enabled: boolean;
     ignored: boolean;
     /** The originating rule element of this modifier, if any: used to retrieve "parent" item roll options */
-    rule: RuleElementPF2e | null;
+    rule: RuleElementAvant | null;
     source: string | null;
     custom: boolean;
     damageType: DamageType | null;
@@ -192,7 +192,7 @@ class ModifierPF2e implements RawModifier {
         // Prevent upstream from blindly diving into recursion loops
         Object.defineProperty(this, "rule", { enumerable: false });
 
-        this.damageType = objectHasKey(CONFIG.PF2E.damageTypes, params.damageType) ? params.damageType : null;
+        this.damageType = objectHasKey(CONFIG.AVANT.damageTypes, params.damageType) ? params.damageType : null;
         this.damageCategory = this.damageType === "bleed" ? "persistent" : (params.damageCategory ?? null);
         // Force splash damage into being critical-only or not doubling on critical hits
         this.critical = this.damageCategory === "splash" ? !!params.critical : (params.critical ?? null);
@@ -208,7 +208,7 @@ class ModifierPF2e implements RawModifier {
         })();
 
         if (this.force && this.type === "untyped") {
-            throw ErrorPF2e("A forced modifier must have a type");
+            throw ErrorAvant("A forced modifier must have a type");
         }
     }
 
@@ -231,18 +231,18 @@ class ModifierPF2e implements RawModifier {
      * @param options.item An item (typically a weapon or spell) producing damage as part of an action
      * @param options.test An `Array` or `Set` of roll options for use in predication testing
      */
-    applyDamageAlterations(options: { item: ItemPF2e<ActorPF2e>; test: string[] | Set<string> }): void {
+    applyDamageAlterations(options: { item: ItemAvant<ActorAvant>; test: string[] | Set<string> }): void {
         for (const alteration of this.alterations) {
             alteration.applyTo(this, options);
         }
     }
 
-    /** Return a copy of this ModifierPF2e instance */
+    /** Return a copy of this ModifierAvant instance */
     clone(
         data: Partial<ModifierObjectParams> = {},
         options: { test?: Set<string> | string[] | null } = {},
-    ): ModifierPF2e {
-        const clone = new ModifierPF2e({ ...this, modifier: this.#originalValue, rule: this.rule, ...data });
+    ): ModifierAvant {
+        const clone = new ModifierAvant({ ...this, modifier: this.#originalValue, rule: this.rule, ...data });
         if (options.test) clone.test(options.test);
 
         return clone;
@@ -311,7 +311,7 @@ class ModifierPF2e implements RawModifier {
 
 interface ModifierObjectParams extends RawModifier {
     name?: string;
-    rule?: RuleElementPF2e | null;
+    rule?: RuleElementAvant | null;
     alterations?: DamageAlteration[];
 }
 
@@ -329,14 +329,14 @@ type ModifierOrderedParams = [
  * Create a modifier for a given attribute type.
  * @returns The modifier of the given attribute
  */
-function createAttributeModifier({ actor, attribute, domains, max }: CreateAbilityModifierParams): ModifierPF2e {
+function createAttributeModifier({ actor, attribute, domains, max }: CreateAbilityModifierParams): ModifierAvant {
     const withAttributeBased = domains.includes(`${attribute}-based`) ? domains : [...domains, `${attribute}-based`];
     const modifierValue = actor.abilities[attribute].mod;
     const cappedValue = Math.min(modifierValue, max ?? modifierValue);
 
-    return new ModifierPF2e({
+    return new ModifierAvant({
         slug: attribute,
-        label: CONFIG.PF2E.abilities[attribute],
+        label: CONFIG.AVANT.abilities[attribute],
         modifier: cappedValue,
         type: "ability",
         ability: attribute,
@@ -345,7 +345,7 @@ function createAttributeModifier({ actor, attribute, domains, max }: CreateAbili
 }
 
 interface CreateAbilityModifierParams {
-    actor: CharacterPF2e | NPCPF2e;
+    actor: CharacterAvant | NPCAvant;
     attribute: AttributeString;
     domains: string[];
     /** An optional maximum for this ability modifier */
@@ -362,21 +362,21 @@ function createProficiencyModifier({
     domains,
     level,
     addLevel,
-}: CreateProficiencyModifierParams): ModifierPF2e {
+}: CreateProficiencyModifierParams): ModifierAvant {
     rank = Math.clamp(rank, 0, 4) as ZeroToFour;
     addLevel ??= rank > 0;
-    const pwolVariant = game.pf2e.settings.variants.pwol.enabled;
+    const pwolVariant = game.avant.settings.variants.pwol.enabled;
 
     const baseBonuses: [number, number, number, number, number] = pwolVariant
-        ? game.pf2e.settings.variants.pwol.modifiers
+        ? game.avant.settings.variants.pwol.modifiers
         : [0, 2, 4, 6, 8];
 
     const addedLevel = addLevel && !pwolVariant ? (level ?? actor.level) : 0;
     const bonus = baseBonuses[rank] + addedLevel;
 
-    return new ModifierPF2e({
+    return new ModifierAvant({
         slug: "proficiency",
-        label: `PF2E.ProficiencyLevel${rank}`,
+        label: `AVANT.ProficiencyLevel${rank}`,
         modifier: bonus,
         type: "proficiency",
         adjustments: extractModifierAdjustments(actor.synthetics.modifierAdjustments, domains, "proficiency"),
@@ -384,7 +384,7 @@ function createProficiencyModifier({
 }
 
 interface CreateProficiencyModifierParams {
-    actor: ActorPF2e;
+    actor: ActorAvant;
     rank: ZeroToFour;
     domains: string[];
     /** If given, use this value instead of actor.level */
@@ -393,9 +393,9 @@ interface CreateProficiencyModifierParams {
 }
 
 /** A comparison which rates the first modifier as better than the second if it's modifier is at least as large. */
-const HIGHER_BONUS = (a: ModifierPF2e, b: ModifierPF2e) => a.modifier >= b.modifier;
+const HIGHER_BONUS = (a: ModifierAvant, b: ModifierAvant) => a.modifier >= b.modifier;
 /** A comparison which rates the first modifier as better than the second if it's modifier is at least as small. */
-const LOWER_PENALTY = (a: ModifierPF2e, b: ModifierPF2e) => a.modifier <= b.modifier;
+const LOWER_PENALTY = (a: ModifierAvant, b: ModifierAvant) => a.modifier <= b.modifier;
 
 /**
  * Given a current map of damage type -> best modifier, compare the given modifier against the current best modifier
@@ -403,9 +403,9 @@ const LOWER_PENALTY = (a: ModifierPF2e, b: ModifierPF2e) => a.modifier <= b.modi
  * as a result of this update.
  */
 function applyStacking(
-    best: Record<string, ModifierPF2e>,
-    modifier: ModifierPF2e,
-    isBetter: (first: ModifierPF2e, second: ModifierPF2e) => boolean,
+    best: Record<string, ModifierAvant>,
+    modifier: ModifierAvant,
+    isBetter: (first: ModifierAvant, second: ModifierAvant) => boolean,
 ) {
     // If there is no existing bonus of this type, then add ourselves.
     const existing = best[modifier.type];
@@ -435,14 +435,14 @@ function applyStacking(
  * @param modifiers The list of modifiers to apply stacking rules for.
  * @returns The total modifier provided by the given list of modifiers.
  */
-function applyStackingRules(modifiers: ModifierPF2e[]): number {
+function applyStackingRules(modifiers: ModifierAvant[]): number {
     let total = 0;
-    const highestBonus: Record<string, ModifierPF2e> = {};
-    const lowestPenalty: Record<string, ModifierPF2e> = {};
+    const highestBonus: Record<string, ModifierAvant> = {};
+    const lowestPenalty: Record<string, ModifierAvant> = {};
 
     // There are no ability bonuses or penalties, so always take the highest ability modifier.
     const abilityModifiers = modifiers.filter((m) => m.type === "ability" && !m.ignored);
-    const bestAbility = abilityModifiers.reduce((best: ModifierPF2e | null, modifier): ModifierPF2e | null => {
+    const bestAbility = abilityModifiers.reduce((best: ModifierAvant | null, modifier): ModifierAvant | null => {
         if (best === null) {
             return modifier;
         } else {
@@ -489,13 +489,13 @@ class StatisticModifier {
     /** The display label of this statistic */
     declare label?: string;
     /** The list of modifiers which affect the statistic. */
-    protected _modifiers: ModifierPF2e[];
+    protected _modifiers: ModifierAvant[];
     /** The total modifier for the statistic, after applying stacking rules. */
     declare totalModifier: number;
     /** A textual breakdown of the modifiers factoring into this statistic */
     breakdown = "";
     /** Optional notes, which are often added to statistic modifiers */
-    notes?: RollNotePF2e[];
+    notes?: RollNoteAvant[];
     /** Roll-option domains associated with this statistic */
     declare domains?: string[];
 
@@ -504,14 +504,14 @@ class StatisticModifier {
      * @param modifiers All relevant modifiers for this statistic.
      * @param rollOptions Roll options used for initial total calculation
      */
-    constructor(slug: string, modifiers: ModifierPF2e[] = [], rollOptions: string[] | Set<string> = new Set()) {
+    constructor(slug: string, modifiers: ModifierAvant[] = [], rollOptions: string[] | Set<string> = new Set()) {
         rollOptions = rollOptions instanceof Set ? rollOptions : new Set(rollOptions);
         this.slug = slug;
 
         // De-duplication. Prefer higher valued, and deprioritize disabled ones
         // This behavior is used by kingmaker to create "custom modifier types" via slugs,
         // as well as special skill modifiers when rolling manually
-        const seen = modifiers.reduce((result: Record<string, ModifierPF2e>, modifier) => {
+        const seen = modifiers.reduce((result: Record<string, ModifierAvant>, modifier) => {
             const existing = result[modifier.slug];
             if (!existing?.enabled || Math.abs(modifier.modifier) > Math.abs(result[modifier.slug].modifier)) {
                 result[modifier.slug] = modifier;
@@ -524,12 +524,12 @@ class StatisticModifier {
     }
 
     /** Get the list of all modifiers in this collection */
-    get modifiers(): ModifierPF2e[] {
+    get modifiers(): ModifierAvant[] {
         return [...this._modifiers];
     }
 
     /** Add a modifier to the end of this collection. */
-    push(modifier: ModifierPF2e): number {
+    push(modifier: ModifierAvant): number {
         // de-duplication. If an existing one exists, replace if higher valued
         const existingIdx = this._modifiers.findIndex((o) => o.slug === modifier.slug);
         const existing = this._modifiers[existingIdx];
@@ -545,7 +545,7 @@ class StatisticModifier {
     }
 
     /** Add a modifier to the beginning of this collection. */
-    unshift(modifier: ModifierPF2e): number {
+    unshift(modifier: ModifierAvant): number {
         // de-duplication
         if (this._modifiers.find((o) => o.slug === modifier.slug) === undefined) {
             this._modifiers.unshift(modifier);
@@ -555,7 +555,7 @@ class StatisticModifier {
     }
 
     /** Delete a modifier from this collection by name or reference */
-    delete(modifierSlug: string | ModifierPF2e): boolean {
+    delete(modifierSlug: string | ModifierAvant): boolean {
         const toDelete =
             typeof modifierSlug === "object"
                 ? modifierSlug
@@ -585,7 +585,7 @@ class StatisticModifier {
     }
 }
 
-function adjustModifiers(modifiers: ModifierPF2e[], rollOptions: Set<string>): void {
+function adjustModifiers(modifiers: ModifierAvant[], rollOptions: Set<string>): void {
     for (const modifier of [...modifiers].sort((a, b) => Math.abs(b.value) - Math.abs(a.value))) {
         const allRollOptions = [...rollOptions, ...modifier.getRollOptions()];
         const adjustments = modifier.adjustments.filter((a) => a.test(allRollOptions));
@@ -632,13 +632,13 @@ class CheckModifier extends StatisticModifier {
      */
     constructor(
         slug: string,
-        statistic: { modifiers: readonly ModifierPF2e[] },
-        modifiers: ModifierPF2e[] = [],
+        statistic: { modifiers: readonly ModifierAvant[] },
+        modifiers: ModifierAvant[] = [],
         rollOptions: string[] | Set<string> = new Set(),
     ) {
         const baseModifiers = statistic.modifiers
             .filter((modifier: unknown) => {
-                if (modifier instanceof ModifierPF2e) return true;
+                if (modifier instanceof ModifierAvant) return true;
                 if (R.isObjectType(modifier) && "slug" in modifier && typeof modifier.slug === "string") {
                     ui.notifications.error(`Unsupported modifier object (slug: ${modifier.slug}) passed`);
                 }
@@ -666,12 +666,12 @@ interface DamageDiceOverride {
     diceNumber?: number;
 }
 
-type PartialParameters = Partial<Omit<DamageDicePF2e, "predicate">> & Pick<DamageDicePF2e, "selector" | "slug">;
+type PartialParameters = Partial<Omit<DamageDiceAvant, "predicate">> & Pick<DamageDiceAvant, "selector" | "slug">;
 interface DamageDiceParameters extends PartialParameters {
     predicate?: RawPredicate;
 }
 
-class DamageDicePF2e {
+class DamageDiceAvant {
     /** A selector of an actor's associated damaging statistic  */
     selector: string;
 
@@ -703,13 +703,13 @@ class DamageDicePF2e {
         if (params.selector) {
             this.selector = params.selector;
         } else {
-            throw ErrorPF2e("`selector` is mandatory");
+            throw ErrorAvant("`selector` is mandatory");
         }
 
         this.label = game.i18n.localize(params.label ?? "");
         this.slug = sluggify(params.slug ?? this.label);
         if (!this.slug) {
-            throw ErrorPF2e("A DiceModifier must have a slug");
+            throw ErrorAvant("A DiceModifier must have a slug");
         }
 
         this.diceNumber = params.diceNumber ?? 0;
@@ -774,14 +774,14 @@ class DamageDicePF2e {
      * @param options.item An item (typically a weapon or spell) producing damage as part of an action
      * @param options.test An `Array` or `Set` of roll options for use in predication testing
      */
-    applyAlterations(options: { item: ItemPF2e<ActorPF2e>; test: string[] | Set<string> }): void {
+    applyAlterations(options: { item: ItemAvant<ActorAvant>; test: string[] | Set<string> }): void {
         for (const alteration of this.alterations) {
             alteration.applyTo(this, options);
         }
     }
 
-    clone(): DamageDicePF2e {
-        return new DamageDicePF2e(this);
+    clone(): DamageDiceAvant {
+        return new DamageDiceAvant(this);
     }
 
     toObject(): RawDamageDice {
@@ -797,9 +797,9 @@ interface RawDamageDice extends Required<DamageDiceParameters> {}
 
 export {
     CheckModifier,
-    DamageDicePF2e,
+    DamageDiceAvant,
     MODIFIER_TYPES,
-    ModifierPF2e,
+    ModifierAvant,
     PROFICIENCY_RANK_OPTION,
     StatisticModifier,
     adjustModifiers,

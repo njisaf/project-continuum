@@ -1,14 +1,14 @@
 <fieldset class="basics">
-    {{> "systems/pf2e/templates/items/partials/apex.hbs"}}
+    {{> "systems/avant/templates/items/partials/apex.hbs"}}
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}base">{{localize "PF2E.Item.Physical.Base"}}</label>
+        <label for="{{fieldIdPrefix}}base">{{localize "AVANT.Item.Physical.Base"}}</label>
         <select id="{{fieldIdPrefix}}base" data-property="system.baseItem">
             {{selectOptions baseTypes selected=data.baseItem blank=""}}
         </select>
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}ac-bonus">{{localize "PF2E.ArmorArmorLabel"}}</label>
+        <label for="{{fieldIdPrefix}}ac-bonus">{{localize "AVANT.ArmorArmorLabel"}}</label>
         <input
             type="number"
             id="{{fieldIdPrefix}}ac-bonus"
@@ -23,7 +23,7 @@
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}hp">{{localize "PF2E.HitPointsHeader"}}</label>
+        <label for="{{fieldIdPrefix}}hp">{{localize "AVANT.HitPointsHeader"}}</label>
         <div class="form-fields">
             <input id="{{fieldIdPrefix}}hp" type="number" name="system.hp.value" value="{{data.hp.value}}" />
             /
@@ -38,7 +38,7 @@
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}hardness">{{localize "PF2E.HardnessLabel"}}</label>
+        <label for="{{fieldIdPrefix}}hardness">{{localize "AVANT.HardnessLabel"}}</label>
         <input
             type="number"{{#if (gt item.hardness baseHardness)}} class="adjusted-higher"{{else if (lt item.hardness baseHardness)}} class="adjusted-lower"{{/if}}
             id="{{fieldIdPrefix}}hardness"
@@ -48,7 +48,7 @@
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}speed-penalty">{{localize "PF2E.ArmorSpeedLabel"}}</label>
+        <label for="{{fieldIdPrefix}}speed-penalty">{{localize "AVANT.ArmorSpeedLabel"}}</label>
         <input
             type="number"
             id="{{fieldIdPrefix}}speed-penalty"
@@ -64,12 +64,12 @@
 </fieldset>
 
 <fieldset class="material-runes">
-    <legend>{{localize "PF2E.Item.Physical.MaterialRunes.Label"}}</legend>
+    <legend>{{localize "AVANT.Item.Physical.MaterialRunes.Label"}}</legend>
     <div class="form-group">
         <label
             for="{{fieldIdPrefix}}material"
             {{#unless canChangeMaterial}}class="disabled"{{/unless}}
-        >{{localize "PF2E.PreciousMaterialLabel"}}</label>
+        >{{localize "AVANT.PreciousMaterialLabel"}}</label>
         <select
             id="{{fieldIdPrefix}}material"
             data-property="system.material"
@@ -82,7 +82,7 @@
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}runes-reinforcing">{{localize "PF2E.Item.Shield.Rune.Reinforcing.Label"}}</label>
+        <label for="{{fieldIdPrefix}}runes-reinforcing">{{localize "AVANT.Item.Shield.Rune.Reinforcing.Label"}}</label>
         <select name="system.runes.reinforcing" id="{{fieldIdPrefix}}runes-reinforcing" data-dtype="Number">
             <option value="0"></option>
             {{selectOptions (omit reinforcing 0) selected=data.runes.reinforcing localize=true}}
@@ -91,7 +91,7 @@
 
     {{#if weaponRunes}}
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}integrated-potency">{{localize "PF2E.PotencyRuneLabel"}}</label>
+            <label for="{{fieldIdPrefix}}integrated-potency">{{localize "AVANT.PotencyRuneLabel"}}</label>
             <select name="system.traits.integrated.runes.potency" id="{{fieldIdPrefix}}integrated-potency" data-dtype="Number">
                 <option value="0"></option>
                 {{selectOptions (omit weaponRunes.potency 0) selected=data.traits.integrated.runes.potency labelAttr="name" localize=true}}
@@ -99,7 +99,7 @@
         </div>
 
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}integrated-runes-potency">{{localize "PF2E.StrikingRuneLabel"}}</label>
+            <label for="{{fieldIdPrefix}}integrated-runes-potency">{{localize "AVANT.StrikingRuneLabel"}}</label>
             <select name="system.traits.integrated.runes.striking" id="{{fieldIdPrefix}}integrated-runes-potency" data-dtype="Number">
                 <option value="0"></option>
                 {{selectOptions (omit weaponRunes.striking 0) selected=data.traits.integrated.runes.striking labelAttr="name" localize=true}}
@@ -112,7 +112,7 @@
                     for="{{../fieldIdPrefix}}integrated-runes-property-{{index}}"
                     {{#if slot.disabled}}class="disabled"{{/if}}
                 >
-                    {{localize (concat "PF2E.PropertyRuneLabel" (add index 1))}}
+                    {{localize (concat "AVANT.PropertyRuneLabel" (add index 1))}}
                 </label>
                 <select
                     name="system.traits.integrated.runes.property.{{index}}"
@@ -128,8 +128,8 @@
 
     <div class="form-group">
         <label for="{{fieldIdPrefix}}specific" class="large">
-            {{localize "PF2E.Item.Shield.Specific.Label"}}
-            <i class="fa-solid fa-circle-info" data-tooltip="PF2E.Item.Shield.Specific.Hint"></i>
+            {{localize "AVANT.Item.Shield.Specific.Label"}}
+            <i class="fa-solid fa-circle-info" data-tooltip="AVANT.Item.Shield.Specific.Hint"></i>
         </label>
         <input type="checkbox" id="{{fieldIdPrefix}}specific" data-action="toggle-specific" {{checked data.specific}} />
     </div>

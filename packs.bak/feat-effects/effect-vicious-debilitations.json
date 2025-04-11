@@ -1,0 +1,61 @@
+{
+    "_id": "Rgt9hH3W1oh9dvku",
+    "img": "icons/skills/melee/strike-dagger-white-orange.webp",
+    "name": "Effect: Vicious Debilitations",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.feats-srd.Item.Vicious Debilitations]</p>\n<p>You gain weakness 5 to your choice of bludgeoning, piercing, or slashing damage.</p>"
+        },
+        "duration": {
+            "expiry": "turn-end",
+            "sustained": false,
+            "unit": "rounds",
+            "value": 1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "value": "slashing"
+                    }
+                ],
+                "flag": "viciousDebilitations",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DamageType"
+            },
+            {
+                "key": "Weakness",
+                "type": "{item|flags.avant.rulesSelections.viciousDebilitations}",
+                "value": 5
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

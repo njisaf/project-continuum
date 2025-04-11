@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Rename references to retired compendiums */
@@ -15,7 +15,7 @@ export class Migration836EnergizingConsolidation extends MigrationBase {
             .replace("equipment-effects.4RnEUeYEzC919GZR", newEffectEnergizingRune);
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.system.description.value.includes("equipment-effects")) {
             source.system.description.value = this.#rename(source.system.description.value);
         }

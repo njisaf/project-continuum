@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Update rule elements on Double Shot, Triple Shot, and Stance: Multishot Stance */
 export class Migration761ShotRules extends MigrationBase {
     static override version = 0.761;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         switch (source.type) {
             case "effect":
                 this.#updateEffect(source);
@@ -16,7 +16,7 @@ export class Migration761ShotRules extends MigrationBase {
         }
     }
 
-    #updateEffect(source: ItemSourcePF2e): void {
+    #updateEffect(source: ItemSourceAvant): void {
         if (source.system.slug === "stance-multishot-stance") {
             const newRules = [
                 {
@@ -46,7 +46,7 @@ export class Migration761ShotRules extends MigrationBase {
         }
     }
 
-    #updateFeat(source: ItemSourcePF2e): void {
+    #updateFeat(source: ItemSourceAvant): void {
         switch (source.system.slug) {
             case "double-shot": {
                 const newRules = [

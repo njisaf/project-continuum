@@ -1,4 +1,4 @@
-import type { ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ItemSourceAvant } from "@item/base/data/index.ts";
 import type { EffectAreaShape } from "@item/spell/types.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -49,7 +49,7 @@ export class Migration803NormalizeSpellArea extends MigrationBase {
     }
 }
 
-type MaybeWithAreasize = ItemSourcePF2e & {
+type MaybeWithAreasize = ItemSourceAvant & {
     system: {
         areasize?: unknown;
         "-=areasize"?: unknown;

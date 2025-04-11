@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { sluggify } from "@util";
 import { MigrationBase } from "../base.ts";
@@ -7,7 +7,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration701ModifierNameToSlug extends MigrationBase {
     static override version = 0.701;
 
-    override async updateItem(itemSource: ItemSourcePF2e): Promise<void> {
+    override async updateItem(itemSource: ItemSourceAvant): Promise<void> {
         const rules: MaybeWithName[] = itemSource.system.rules.filter((r) =>
             ["FlatModifier", "DamageDice"].includes(String(r.key)),
         );
@@ -20,7 +20,7 @@ export class Migration701ModifierNameToSlug extends MigrationBase {
                 }
                 delete rule.name;
             }
-            if (rule.label === "Rage") rule.label = "PF2E.TraitRage";
+            if (rule.label === "Rage") rule.label = "AVANT.TraitRage";
         }
     }
 }

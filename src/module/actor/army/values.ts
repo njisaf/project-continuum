@@ -45,10 +45,10 @@ function getArmyGearData(): Record<ArmyGearType, ArmyGearData> {
                     type === "melee"
                         ? "icons/weapons/axes/axe-battle-black.webp"
                         : "icons/weapons/crossbows/crossbow-simple-brown.webp",
-                name: game.i18n.format("PF2E.Kingmaker.Army.Gear.AdditionalWeapon.Name", {
-                    type: game.i18n.format(`PF2E.Kingmaker.Army.Strikes.${type}`),
+                name: game.i18n.format("AVANT.Kingmaker.Army.Gear.AdditionalWeapon.Name", {
+                    type: game.i18n.format(`AVANT.Kingmaker.Army.Strikes.${type}`),
                 }),
-                description: "PF2E.Kingmaker.Army.Gear.AdditionalWeapon.Description",
+                description: "AVANT.Kingmaker.Army.Gear.AdditionalWeapon.Description",
                 traits: ["army"],
                 level: 1,
                 price: 10,
@@ -62,10 +62,10 @@ function getArmyGearData(): Record<ArmyGearType, ArmyGearData> {
                     type === "melee"
                         ? "icons/weapons/axes/axe-battle-black.webp"
                         : "icons/weapons/crossbows/crossbow-simple-brown.webp",
-                name: game.i18n.format("PF2E.Kingmaker.Army.Gear.MagicWeapons.Name", {
-                    type: game.i18n.format(`PF2E.Kingmaker.Army.Strikes.${type}`),
+                name: game.i18n.format("AVANT.Kingmaker.Army.Gear.MagicWeapons.Name", {
+                    type: game.i18n.format(`AVANT.Kingmaker.Army.Strikes.${type}`),
                 }),
-                description: "PF2E.Kingmaker.Army.Gear.MagicWeapons.Description",
+                description: "AVANT.Kingmaker.Army.Gear.MagicWeapons.Description",
                 traits: ["army", "magical"],
                 ranks: [
                     { price: 20, level: 2 },
@@ -73,23 +73,23 @@ function getArmyGearData(): Record<ArmyGearType, ArmyGearData> {
                     { price: 60, level: 16 },
                 ].map((d, idx) => ({
                     ...d,
-                    name: `PF2E.Kingmaker.Army.Gear.MagicWeapons.rank${idx + 1}.Name`,
-                    description: `PF2E.Kingmaker.Army.Gear.MagicWeapons.rank${idx + 1}.Description`,
+                    name: `AVANT.Kingmaker.Army.Gear.MagicWeapons.rank${idx + 1}.Name`,
+                    description: `AVANT.Kingmaker.Army.Gear.MagicWeapons.rank${idx + 1}.Description`,
                 })),
             },
         ]),
         potions: {
             img: "icons/consumables/potions/bottle-round-corked-orante-red.webp",
-            name: "PF2E.Kingmaker.Army.Gear.Potions.Name",
-            description: "PF2E.Kingmaker.Army.Gear.Potions.Description",
+            name: "AVANT.Kingmaker.Army.Gear.Potions.Name",
+            description: "AVANT.Kingmaker.Army.Gear.Potions.Description",
             traits: ["army", "consumable", "healing", "magical", "potion"],
             level: 1,
             price: 15,
         },
         armor: {
             img: "icons/equipment/shield/heater-wooden-brown-axe.webp",
-            name: game.i18n.localize("PF2E.Kingmaker.Army.Gear.Armor.Name"),
-            description: game.i18n.localize("PF2E.Kingmaker.Army.Gear.Armor.Description"),
+            name: game.i18n.localize("AVANT.Kingmaker.Army.Gear.Armor.Name"),
+            description: game.i18n.localize("AVANT.Kingmaker.Army.Gear.Armor.Description"),
             traits: ["army", "magical"],
             ranks: [
                 { price: 25, level: 5 },
@@ -97,8 +97,8 @@ function getArmyGearData(): Record<ArmyGearType, ArmyGearData> {
                 { price: 75, level: 18 },
             ].map((d, idx) => ({
                 ...d,
-                name: `PF2E.Kingmaker.Army.Gear.Armor.rank${idx + 1}.Name`,
-                description: `PF2E.Kingmaker.Army.Gear.Armor.rank${idx + 1}.Description`,
+                name: `AVANT.Kingmaker.Army.Gear.Armor.rank${idx + 1}.Name`,
+                description: `AVANT.Kingmaker.Army.Gear.Armor.rank${idx + 1}.Description`,
             })),
         },
     };

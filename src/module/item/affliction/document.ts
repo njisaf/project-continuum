@@ -1,16 +1,16 @@
-import { ActorPF2e } from "@actor";
-import { ConditionPF2e, ItemPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import { ConditionAvant, ItemAvant } from "@item";
 import { calculateRemainingDuration } from "@item/abstract-effect/helpers.ts";
-import { AbstractEffectPF2e, EffectBadgeCounter } from "@item/abstract-effect/index.ts";
+import { AbstractEffectAvant, EffectBadgeCounter } from "@item/abstract-effect/index.ts";
 import { DURATION_UNITS } from "@item/abstract-effect/values.ts";
 import { ConditionSlug } from "@item/condition/types.ts";
-import { UserPF2e } from "@module/user/index.ts";
+import { UserAvant } from "@module/user/index.ts";
 import { ConditionManager } from "@system/conditions/manager.ts";
 import { createDamageFormula, parseTermsFromSimpleFormula } from "@system/damage/formula.ts";
-import { AfflictionDamageTemplate, BaseDamageData, DamageDamageContext, DamagePF2e } from "@system/damage/index.ts";
+import { AfflictionDamageTemplate, BaseDamageData, DamageDamageContext, DamageAvant } from "@system/damage/index.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
 import { DegreeOfSuccess } from "@system/degree-of-success.ts";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 import * as R from "remeda";
 import { AfflictionFlags, AfflictionSource, AfflictionStageData, AfflictionSystemData } from "./data.ts";
 
@@ -24,11 +24,11 @@ const EXPIRING_CONDITIONS: Set<ConditionSlug> = new Set([
     "unconscious",
 ]);
 
-class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends AbstractEffectPF2e<TParent> {
+class AfflictionAvant<TParent extends ActorAvant | null = ActorAvant | null> extends AbstractEffectAvant<TParent> {
     constructor(source: object, context?: DocumentConstructionContext<TParent>) {
         super(source, context);
         if (BUILD_MODE === "production") {
-            throw ErrorPF2e("Affliction items are not available in production builds");
+            throw ErrorAvant("Affliction items are not available in production builds");
         }
     }
 
@@ -39,8 +39,8 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
             min: 1,
             max: this.maxStage,
             label: this.onset
-                ? game.i18n.localize("PF2E.Item.Affliction.OnsetLabel")
-                : game.i18n.format("PF2E.Item.Affliction.Stage", { stage: this.stage }),
+                ? game.i18n.localize("AVANT.Item.Affliction.OnsetLabel")
+                : game.i18n.format("AVANT.Item.Affliction.Stage", { stage: this.stage }),
         };
     }
 
@@ -126,7 +126,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
             });
 
             const roll = new DamageRoll(formula);
-            const stageLabel = game.i18n.format("PF2E.Item.Affliction.Stage", { stage: this.stage });
+            const stageLabel = game.i18n.format("AVANT.Item.Affliction.Stage", { stage: this.stage });
             const template: AfflictionDamageTemplate = {
                 name: `${this.name} - ${stageLabel}`,
                 damage: { roll, breakdown },
@@ -166,7 +166,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
         if (!currentStage) return;
 
         // Get all conditions we need to add or update
-        const conditionsToAdd: ConditionPF2e[] = [];
+        const conditionsToAdd: ConditionAvant[] = [];
         const conditionsToUpdate: Record<string, { value: number; linked: boolean }> = {};
         for (const data of Object.values(currentStage.conditions ?? {})) {
             const value = data.value ?? 1;
@@ -197,7 +197,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
 
             // This is a new condition, set some flags
             const condition = ConditionManager.getCondition(data.slug);
-            condition.updateSource({ "flags.pf2e.grantedBy.id": this.id });
+            condition.updateSource({ "flags.avant.grantedBy.id": this.id });
             if (data.linked) {
                 condition.updateSource({ "system.references.parent.id": this.id });
             }
@@ -217,7 +217,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
             Object.entries(conditionsToUpdate).map(([_id, data]) => ({
                 _id,
                 "system.value.value": data.value,
-                "flags.pf2e.grantedBy.id": this.id,
+                "flags.avant.grantedBy.id": this.id,
                 ...(data.linked ? { "system.references.parent.id": this.id } : {}),
             })),
         );
@@ -228,13 +228,13 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
         }
     }
 
-    override getLinkedItems(): ItemPF2e<ActorPF2e>[] {
+    override getLinkedItems(): ItemAvant<ActorAvant>[] {
         if (!this.actor) return [];
         return this.actor.items.filter(
             (i) =>
                 i.isOfType("condition") &&
                 !EXPIRING_CONDITIONS.has(i.slug) &&
-                i.flags.pf2e.grantedBy?.id === this.id &&
+                i.flags.avant.grantedBy?.id === this.id &&
                 i.system.references.parent?.id === this.id,
         );
     }
@@ -246,7 +246,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
         const damage = this.getStageDamage(this.stage);
         if (damage) {
             const { template, context } = damage;
-            await DamagePF2e.roll(template, context);
+            await DamageAvant.roll(template, context);
         }
     }
 
@@ -254,7 +254,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     protected override async _preCreate(
         data: this["_source"],
         operation: DatabaseCreateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (this.isOwned) {
             const initiative = this.origin?.combatant?.initiative ?? game.combat?.combatant?.initiative ?? null;
@@ -271,7 +271,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     protected override async _preUpdate(
         changed: DeepPartial<AfflictionSource>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         const duration = changed.system?.duration;
         if (typeof duration?.unit === "string" && !["unlimited", "encounter"].includes(duration.unit)) {
@@ -326,7 +326,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     override prepareActorData(): void {
         super.prepareActorData();
         const actor = this.actor;
-        if (!actor) throw ErrorPF2e("prepareActorData called from unembedded item");
+        if (!actor) throw ErrorAvant("prepareActorData called from unembedded item");
 
         if (this.onset) {
             actor.rollOptions.all[`self:${this.type}:${this.rollOptionSlug}:onset`] = true;
@@ -334,7 +334,7 @@ class AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     }
 }
 
-interface AfflictionPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends AbstractEffectPF2e<TParent> {
+interface AfflictionAvant<TParent extends ActorAvant | null = ActorAvant | null> extends AbstractEffectAvant<TParent> {
     flags: AfflictionFlags;
     readonly _source: AfflictionSource;
     system: AfflictionSystemData;
@@ -345,4 +345,4 @@ interface AfflictionDamage {
     context: DamageDamageContext;
 }
 
-export { AfflictionPF2e };
+export { AfflictionAvant };

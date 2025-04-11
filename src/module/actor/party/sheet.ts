@@ -1,16 +1,16 @@
-import { ActorPF2e, CreaturePF2e } from "@actor";
+import { ActorAvant, CreatureAvant } from "@actor";
 import { HitPointsSummary } from "@actor/base.ts";
 import { Language, ResourceData } from "@actor/creature/index.ts";
 import { isReallyPC } from "@actor/helpers.ts";
-import { ActorSheetPF2e } from "@actor/sheet/base.ts";
-import { ActorSheetDataPF2e, ActorSheetRenderOptionsPF2e } from "@actor/sheet/data-types.ts";
+import { ActorSheetAvant } from "@actor/sheet/base.ts";
+import { ActorSheetDataAvant, ActorSheetRenderOptionsAvant } from "@actor/sheet/data-types.ts";
 import { condenseSenses } from "@actor/sheet/helpers.ts";
 import { DistributeCoinsPopup } from "@actor/sheet/popups/distribute-coins-popup.ts";
-import { ItemPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { Bulk } from "@item/physical/index.ts";
 import { PHYSICAL_ITEM_TYPES } from "@item/physical/values.ts";
-import { DropCanvasItemDataPF2e } from "@module/canvas/drop-canvas-data.ts";
+import { DropCanvasItemDataAvant } from "@module/canvas/drop-canvas-data.ts";
 import { ZeroToFour } from "@module/data.ts";
 import { SheetOptions, createSheetTags, eventToRollParams } from "@module/sheet/helpers.ts";
 import { SocketMessage } from "@scripts/socket.ts";
@@ -18,13 +18,13 @@ import { SettingsMenuOptions } from "@system/settings/menu.ts";
 import { createHTMLElement, htmlClosest, htmlQuery, htmlQueryAll, signedInteger } from "@util";
 import { createTooltipster } from "@util/destroyables.ts";
 import * as R from "remeda";
-import { PartyPF2e } from "./document.ts";
+import { PartyAvant } from "./document.ts";
 
-interface PartySheetRenderOptions extends ActorSheetRenderOptionsPF2e {
+interface PartySheetRenderOptions extends ActorSheetRenderOptionsAvant {
     actors?: boolean;
 }
 
-class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
+class PartySheetAvant extends ActorSheetAvant<PartyAvant> {
     currentSummaryView = "languages";
 
     static override get defaultOptions(): ActorSheetOptions {
@@ -35,7 +35,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             classes: [...options.classes, "party"],
             width: 720,
             height: 720,
-            template: "systems/pf2e/templates/actors/party/sheet.hbs",
+            template: "systems/avant/templates/actors/party/sheet.hbs",
             scrollY: [...options.scrollY, ".tab.active", ".tab.active .content", ".sidebar"],
             tabs: [
                 {
@@ -63,7 +63,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                 icon: "fa-solid fa-eye",
                 onclick: () => {
                     const users = game.users.filter((u) => !u.isSelf);
-                    game.socket.emit("system.pf2e", {
+                    game.socket.emit("system.avant", {
                         request: "showSheet",
                         users: users.map((u) => u.uuid),
                         document: this.actor.uuid,
@@ -90,8 +90,8 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
 
         return {
             ...base,
-            playerRestricted: !game.pf2e.settings.metagame.partyStats,
-            restricted: !(game.user.isGM || game.pf2e.settings.metagame.partyStats),
+            playerRestricted: !game.avant.settings.metagame.partyStats,
+            restricted: !(game.user.isGM || game.avant.settings.metagame.partyStats),
             members: this.#prepareMembers(),
             overviewSummary: this.#prepareOverviewSummary(),
             inventorySummary: {
@@ -112,7 +112,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                 milesPerHour: travelSpeed / 10,
                 milesPerDay: travelSpeed * 0.8,
                 activities:
-                    Object.entries(CONFIG.PF2E.hexplorationActivities).find(
+                    Object.entries(CONFIG.AVANT.hexplorationActivities).find(
                         ([max]) => Number(max) >= this.actor.system.attributes.speed.total,
                     )?.[1] ?? 0,
             },
@@ -123,19 +123,19 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
     #prepareMembers(): MemberBreakdown[] {
         return this.actor.members.map((actor): MemberBreakdown => {
             const observer = actor.testUserPermission(game.user, "OBSERVER");
-            const restricted = !(game.pf2e.settings.metagame.partyStats || observer);
+            const restricted = !(game.avant.settings.metagame.partyStats || observer);
             const genderPronouns = actor.isOfType("character")
                 ? actor.system.details.gender.value.trim() || null
                 : null;
             const blurb =
                 actor.isOfType("character") && actor.ancestry && actor.class
-                    ? game.i18n.format("PF2E.Actor.Character.Blurb", {
+                    ? game.i18n.format("AVANT.Actor.Character.Blurb", {
                           level: actor.level,
                           ancestry: actor.ancestry.name,
                           class: actor.class.name,
                       })
                     : actor.isOfType("familiar") && actor.master
-                      ? game.i18n.format("PF2E.Actor.Familiar.Blurb", { master: actor.master.name })
+                      ? game.i18n.format("AVANT.Actor.Familiar.Blurb", { master: actor.master.name })
                       : actor.isOfType("npc")
                         ? actor.system.details.blurb.trim() || null
                         : null;
@@ -161,14 +161,14 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                 observer,
                 limited: observer || actor.limited,
                 speeds: [
-                    { label: "PF2E.Actor.Speed.Label", value: actor.attributes.speed.value },
+                    { label: "AVANT.Actor.Speed.Label", value: actor.attributes.speed.value },
                     ...actor.attributes.speed.otherSpeeds.map((s) => R.pick(s, ["label", "value"])),
                 ],
                 senses: (() => {
                     return condenseSenses(actor.perception.senses.contents).map((r) => ({
                         acuity: r.acuity,
                         labelFull: r.label ?? "",
-                        label: CONFIG.PF2E.senses[r.type] ?? r.type,
+                        label: CONFIG.AVANT.senses[r.type] ?? r.type,
                     }));
                 })(),
                 hp: actor.hitPoints,
@@ -176,7 +176,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                     uuid: action.uuid,
                     name: action.name,
                     img: action.img,
-                    traits: createSheetTags(CONFIG.PF2E.actionTraits, action.system.traits?.value ?? []),
+                    traits: createSheetTags(CONFIG.AVANT.actionTraits, action.system.traits?.value ?? []),
                 })),
                 restricted,
             };
@@ -188,7 +188,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
         if (members.length === 0) return null;
 
         // Get all member languages. If the common language is taken, replace with "common" explicitly
-        const commonLanguage = game.pf2e.settings.campaign.languages.commonLanguage;
+        const commonLanguage = game.avant.settings.campaign.languages.commonLanguage;
         const allLanguages = new Set(members.flatMap((m) => m.system.details.languages?.value ?? []));
         if (commonLanguage && allLanguages.delete(commonLanguage)) {
             allLanguages.add("common");
@@ -224,17 +224,17 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                         slug: language,
                         label:
                             language === "common" && commonLanguage
-                                ? game.i18n.format("PF2E.Actor.Creature.Language.CommonLanguage", {
-                                      language: game.i18n.localize(CONFIG.PF2E.languages[commonLanguage]),
+                                ? game.i18n.format("AVANT.Actor.Creature.Language.CommonLanguage", {
+                                      language: game.i18n.localize(CONFIG.AVANT.languages[commonLanguage]),
                                   })
-                                : game.i18n.localize(CONFIG.PF2E.languages[language]),
+                                : game.i18n.localize(CONFIG.AVANT.languages[language]),
                         actors: this.#getActorsThatUnderstand(language),
                     }),
                 ),
                 (l) => (l.slug === "common" ? "" : l.label),
             ),
             skills: R.sortBy(
-                Object.entries(CONFIG.PF2E.skills).map(([slug, { label }]): SkillData => {
+                Object.entries(CONFIG.AVANT.skills).map(([slug, { label }]): SkillData => {
                     const best = getBestSkill(slug);
                     return best ?? { mod: 0, label, slug, rank: 0 };
                 }),
@@ -248,7 +248,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
     }
 
     #getActorsThatUnderstand(slug: Language) {
-        return this.actor.members.filter((m): m is CreaturePF2e => !!m?.system.details.languages?.value.includes(slug));
+        return this.actor.members.filter((m): m is CreatureAvant => !!m?.system.details.languages?.value.includes(slug));
     }
 
     protected setSummaryView(view: string): void {
@@ -278,7 +278,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
 
         // Show metagame option if clicked
         htmlQuery(html, "a[data-action=open-meta-setting]")?.addEventListener("click", () => {
-            const menu = game.settings.menus.get("pf2e.metagame");
+            const menu = game.settings.menus.get("avant.metagame");
             if (menu) {
                 const options: Partial<SettingsMenuOptions> = { highlightSetting: "showPartyStats" };
                 const app = new menu.type(undefined, options);
@@ -290,7 +290,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
         for (const rollLink of htmlQueryAll(html, "[data-action=roll]")) {
             const actorUUID = htmlClosest(rollLink, "[data-actor-uuid]")?.dataset.actorUuid;
             const actor = fromUuidSync(actorUUID ?? "");
-            if (!(actor instanceof ActorPF2e)) continue;
+            if (!(actor instanceof ActorAvant)) continue;
 
             rollLink.addEventListener("click", (event) => {
                 const rollMode = rollLink.dataset.secret ? (game.user.isGM ? "gmroll" : "blindroll") : undefined;
@@ -325,8 +325,8 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
                     const confirmed = event.ctrlKey
                         ? true
                         : await Dialog.confirm({
-                              title: game.i18n.localize("PF2E.Actor.Party.RemoveMember.Title"),
-                              content: game.i18n.localize("PF2E.Actor.Party.RemoveMember.Content"),
+                              title: game.i18n.localize("AVANT.Actor.Party.RemoveMember.Title"),
+                              content: game.i18n.localize("AVANT.Actor.Party.RemoveMember.Content"),
                           });
                     if (confirmed && actor) {
                         this.document.removeMembers(actor);
@@ -357,7 +357,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             const slug = languageTag.dataset.language as Language;
             const actors = this.#getActorsThatUnderstand(slug);
             const members = actors.map((m) => m.name).join(", ");
-            const titleLabel = game.i18n.localize("PF2E.Actor.Party.MembersLabel");
+            const titleLabel = game.i18n.localize("AVANT.Actor.Party.MembersLabel");
             const title = createHTMLElement("strong", { children: [titleLabel] });
             const content = createHTMLElement("span", { children: [title, members] });
             createTooltipster(languageTag, { content });
@@ -369,7 +369,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             const statistics = this.actor.members.map((m) => m.skills[slug]).filter(R.isTruthy);
             const labels = R.sortBy(statistics, (s) => s.mod).map((statistic) => {
                 const rank = statistic.rank ?? (statistic.proficient ? 1 : 0);
-                const prof = game.i18n.localize(CONFIG.PF2E.proficiencyLevels[rank]);
+                const prof = game.i18n.localize(CONFIG.AVANT.proficiencyLevels[rank]);
                 const label = `${statistic.actor.name} (${prof}) ${signedInteger(statistic.mod)}`;
                 const row = createHTMLElement("div", { children: [label] });
                 row.style.textAlign = "right";
@@ -382,7 +382,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
         // Mouseover tooltip for exploration activities
         for (const activityElem of htmlQueryAll(html, ".activity[data-activity-uuid]")) {
             const document = fromUuidSync(activityElem.dataset.activityUuid ?? "");
-            if (!(document instanceof ItemPF2e)) continue;
+            if (!(document instanceof ItemAvant)) continue;
 
             const rollData = document.getRollData();
             (async () => {
@@ -407,29 +407,29 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
 
         htmlQuery(html, "[data-action=clear-exploration]")?.addEventListener("click", async () => {
             await Promise.all(this.actor.members.map((m) => m.update({ "system.exploration": [] })));
-            ui.notifications.info("PF2E.Actor.Party.ClearActivities.Complete", { localize: true });
+            ui.notifications.info("AVANT.Actor.Party.ClearActivities.Complete", { localize: true });
         });
 
         htmlQuery(html, "[data-action=rest]")?.addEventListener("click", (event) => {
-            game.pf2e.actions.restForTheNight({ event, actors: this.actor.members });
+            game.avant.actions.restForTheNight({ event, actors: this.actor.members });
         });
 
         htmlQuery(html, "[data-action=prompt]")?.addEventListener("click", () => {
-            game.pf2e.gm.checkPrompt({ actors: this.actor.members });
+            game.avant.gm.checkPrompt({ actors: this.actor.members });
         });
     }
 
     /** Overriden to prevent inclusion of campaign-only item types. Those should get added to their own sheet */
     protected override async _onDropItemCreate(
-        itemData: ItemSourcePF2e | ItemSourcePF2e[],
-    ): Promise<Item<PartyPF2e>[]> {
+        itemData: ItemSourceAvant | ItemSourceAvant[],
+    ): Promise<Item<PartyAvant>[]> {
         const toTest = Array.isArray(itemData) ? itemData : [itemData];
         const supported = [...PHYSICAL_ITEM_TYPES, ...this.actor.baseAllowedItemTypes];
         const invalid = toTest.filter((i) => !supported.includes(i.type));
         if (invalid.length) {
             for (const source of invalid) {
                 const type = game.i18n.localize(CONFIG.Item.typeLabels[source.type] ?? source.type.titleCase());
-                ui.notifications.error(game.i18n.format("PF2E.Item.CannotAddType", { type }));
+                ui.notifications.error(game.i18n.format("AVANT.Item.CannotAddType", { type }));
             }
             return [];
         }
@@ -440,14 +440,14 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
     /** Override to allow divvying/outward transfer of items via party member blocks in inventory members sidebar. */
     protected override async _onDropItem(
         event: DragEvent,
-        data: DropCanvasItemDataPF2e & { fromInventory?: boolean },
-    ): Promise<ItemPF2e[]> {
+        data: DropCanvasItemDataAvant & { fromInventory?: boolean },
+    ): Promise<ItemAvant[]> {
         const droppedRegion = htmlClosest(event.target, "[data-region]")?.dataset.region;
         const targetActorUUID = htmlClosest(event.target, "[data-actor-uuid]")?.dataset.actorUuid;
         if (droppedRegion === "inventoryMembers" && targetActorUUID) {
-            const item = await ItemPF2e.fromDropData(data);
+            const item = await ItemAvant.fromDropData(data);
             const targetActor = await fromUuid(targetActorUUID);
-            if (item?.isOfType("physical") && item.actor && targetActor instanceof ActorPF2e) {
+            if (item?.isOfType("physical") && item.actor && targetActor instanceof ActorAvant) {
                 await this.moveItemBetweenActors(event, item, targetActor);
                 return [item];
             } else if (!item) {
@@ -468,7 +468,7 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
             const templateName = this.regionTemplates[regionId];
             if (!templateName) continue;
 
-            const template = `systems/pf2e/templates/actors/party/regions/${templateName}`;
+            const template = `systems/avant/templates/actors/party/regions/${templateName}`;
             const result = await renderTemplate(template, data);
 
             region.innerHTML = result;
@@ -505,18 +505,18 @@ class PartySheetPF2e extends ActorSheetPF2e<PartyPF2e> {
 
     protected override async _onDropActor(
         event: DragEvent,
-        data: DropCanvasData<"Actor", PartyPF2e>,
+        data: DropCanvasData<"Actor", PartyAvant>,
     ): Promise<false | void> {
         await super._onDropActor(event, data);
 
         const actor = fromUuidSync(data.uuid as ActorUUID);
-        if (actor instanceof CreaturePF2e) {
+        if (actor instanceof CreatureAvant) {
             this.document.addMembers(actor);
         }
     }
 }
 
-interface PartySheetData extends ActorSheetDataPF2e<PartyPF2e> {
+interface PartySheetData extends ActorSheetDataAvant<PartyAvant> {
     /** Is the sheet restricted to players? */
     playerRestricted: boolean;
     /** Is the sheet restricted to the current user? */
@@ -543,7 +543,7 @@ interface PartySheetData extends ActorSheetDataPF2e<PartyPF2e> {
         activities: number;
     };
     /** Unsupported items on the sheet, may occur due to disabled campaign data */
-    orphaned: ItemPF2e[];
+    orphaned: ItemAvant[];
 }
 
 interface SkillData {
@@ -554,7 +554,7 @@ interface SkillData {
 }
 
 interface MemberBreakdown {
-    actor: ActorPF2e;
+    actor: ActorAvant;
     genderPronouns: string | null;
     blurb: string | null;
     resource: ResourceData | null;
@@ -586,7 +586,7 @@ interface MemberBreakdown {
 interface LanguageSheetData {
     slug: string;
     label: string;
-    actors: ActorPF2e[];
+    actors: ActorAvant[];
 }
 
-export { PartySheetPF2e, type PartySheetRenderOptions };
+export { PartySheetAvant, type PartySheetRenderOptions };

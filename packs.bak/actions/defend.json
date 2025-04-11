@@ -1,0 +1,30 @@
+{
+    "_id": "cYtYKa1gDEl7y2N0",
+    "img": "systems/avant/icons/actions/Passive.webp",
+    "name": "Defend",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "defensive",
+        "description": {
+            "value": "<p>You move at half your travel speed with your shield raised. If combat breaks out, you gain the benefits of @UUID[Compendium.avant.actionsavant.Item.Raise a Shield]{Raising a Shield} before your first turn begins.</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "exploration"
+            ]
+        }
+    },
+    "type": "action"
+}

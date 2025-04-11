@@ -1,0 +1,155 @@
+{
+    "_id": "1RsScTvNdGD9zGWe",
+    "img": "icons/magic/fire/barrier-shield-explosion-yellow.webp",
+    "name": "Spell Effect: Fire Shield",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Fire Shield]</p>\n<p>You gain resistance to cold damage. You can Raise a Shield with the fire shield as a normal shield to gain a +1 circumstance bonus to AC.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "minutes",
+            "value": 1
+        },
+        "level": {
+            "value": 4
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "flags.avant.fireShield.resistance",
+                "value": "cold"
+            },
+            {
+                "key": "Resistance",
+                "type": "{actor|flags.avant.fireShield.resistance}",
+                "value": "5 + 5*floor((@item.level -4)/2)"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "system.attributes.shield",
+                "predicate": [
+                    {
+                        "or": [
+                            "self:type:character",
+                            "self:type:npc"
+                        ]
+                    }
+                ],
+                "value": {
+                    "brackets": [
+                        {
+                            "end": 5,
+                            "value": {
+                                "ac": 1,
+                                "broken": false,
+                                "brokenThreshold": 0,
+                                "destroyed": false,
+                                "hardness": 10,
+                                "hp": {
+                                    "max": 40,
+                                    "value": 40
+                                }
+                            }
+                        },
+                        {
+                            "end": 7,
+                            "start": 6,
+                            "value": {
+                                "ac": 1,
+                                "broken": false,
+                                "brokenThreshold": 0,
+                                "destroyed": false,
+                                "hardness": 10,
+                                "hp": {
+                                    "max": 50,
+                                    "value": 50
+                                }
+                            }
+                        },
+                        {
+                            "end": 9,
+                            "start": 8,
+                            "value": {
+                                "ac": 1,
+                                "broken": false,
+                                "brokenThreshold": 0,
+                                "destroyed": false,
+                                "hardness": 10,
+                                "hp": {
+                                    "max": 60,
+                                    "value": 60
+                                }
+                            }
+                        },
+                        {
+                            "start": 10,
+                            "value": {
+                                "ac": 1,
+                                "broken": false,
+                                "brokenThreshold": 0,
+                                "destroyed": false,
+                                "hardness": 10,
+                                "hp": {
+                                    "max": 70,
+                                    "value": 70
+                                }
+                            }
+                        }
+                    ],
+                    "field": "item|system.level.value"
+                }
+            },
+            {
+                "domain": "all",
+                "key": "RollOption",
+                "label": "AVANT.SpecificRule.FireShield.DefendingAgainstWaterLabel",
+                "option": "fire-shield-against-water",
+                "toggleable": true
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "multiply",
+                "path": "system.attributes.shield.hardness",
+                "predicate": [
+                    "fire-shield-against-water"
+                ],
+                "priority": 60,
+                "value": 0.5
+            },
+            {
+                "domain": "all",
+                "key": "RollOption",
+                "option": "self:shield:equipped",
+                "predicate": [
+                    {
+                        "or": [
+                            "self:type:character",
+                            "self:type:npc"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

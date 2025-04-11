@@ -1,0 +1,151 @@
+{
+    "_id": "VCSpuc3Tf3XWMkd3",
+    "img": "systems/avant/icons/spells/favorable-review.webp",
+    "name": "Effect: Follow The Expert",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.actionsavant.Item.Follow the Expert]</p>\n<p>You can add your level as a proficiency bonus to the associated skill check, even if you're untrained. Additionally, you gain a circumstance bonus to your skill check based on your ally's proficiency.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Skill.Acrobatics",
+                        "value": "acrobatics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Arcana",
+                        "value": "arcana"
+                    },
+                    {
+                        "label": "AVANT.Skill.Athletics",
+                        "value": "athletics"
+                    },
+                    {
+                        "label": "AVANT.Skill.Crafting",
+                        "value": "crafting"
+                    },
+                    {
+                        "label": "AVANT.Skill.Deception",
+                        "value": "deception"
+                    },
+                    {
+                        "label": "AVANT.Skill.Diplomacy",
+                        "value": "diplomacy"
+                    },
+                    {
+                        "label": "AVANT.Skill.Intimidation",
+                        "value": "intimidation"
+                    },
+                    {
+                        "label": "AVANT.Skill.Medicine",
+                        "value": "medicine"
+                    },
+                    {
+                        "label": "AVANT.Skill.Nature",
+                        "value": "nature"
+                    },
+                    {
+                        "label": "AVANT.Skill.Occultism",
+                        "value": "occultism"
+                    },
+                    {
+                        "label": "AVANT.Skill.Performance",
+                        "value": "performance"
+                    },
+                    {
+                        "label": "AVANT.Skill.Religion",
+                        "value": "religion"
+                    },
+                    {
+                        "label": "AVANT.Skill.Society",
+                        "value": "society"
+                    },
+                    {
+                        "label": "AVANT.Skill.Stealth",
+                        "value": "stealth"
+                    },
+                    {
+                        "label": "AVANT.Skill.Survival",
+                        "value": "survival"
+                    },
+                    {
+                        "label": "AVANT.Skill.Thievery",
+                        "value": "thievery"
+                    },
+                    {
+                        "label": "AVANT.SkillLore",
+                        "value": "lore"
+                    }
+                ],
+                "flag": "followTheExpertSkill",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Skill"
+            },
+            {
+                "actorFlag": true,
+                "choices": [
+                    {
+                        "label": "AVANT.ProficiencyLevel2",
+                        "sort": 1,
+                        "value": 2
+                    },
+                    {
+                        "label": "AVANT.ProficiencyLevel3",
+                        "sort": 2,
+                        "value": 3
+                    },
+                    {
+                        "label": "AVANT.ProficiencyLevel4",
+                        "sort": 3,
+                        "value": 4
+                    }
+                ],
+                "flag": "followTheExpertProficiency",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.FollowTheExpert.Prompt",
+                "rollOption": "follow-the-expert:proficiency:rank"
+            },
+            {
+                "key": "FlatModifier",
+                "selector": "{item|flags.avant.rulesSelections.followTheExpertSkill}",
+                "slug": "follow-the-expert-proficiency",
+                "type": "proficiency",
+                "value": "@actor.level"
+            },
+            {
+                "key": "FlatModifier",
+                "selector": "{item|flags.avant.rulesSelections.followTheExpertSkill}",
+                "slug": "follow-the-expert-circumstance",
+                "type": "circumstance",
+                "value": "{item|flags.avant.rulesSelections.followTheExpertProficiency}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": false
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

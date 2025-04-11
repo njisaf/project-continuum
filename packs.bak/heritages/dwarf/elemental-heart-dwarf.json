@@ -1,0 +1,61 @@
+{
+    "_id": "MeMAAtUlZmFgKSMF",
+    "folder": "Z6Ve0qYfgLQLbcOs",
+    "img": "systems/avant/icons/features/ancestry/elemental-heat-dwarf.webp",
+    "name": "Elemental Heart Dwarf",
+    "system": {
+        "ancestry": {
+            "name": "Dwarf",
+            "slug": "dwarf",
+            "uuid": "Compendium.avant.ancestries.Item.BYj5ZvlXZdpaEgA6"
+        },
+        "description": {
+            "value": "<p>Whether through a connection to @UUID[Compendium.avant.deities.Item.Torag]{Torag's} forge, the azers of the Plane of Fire, or another source, you can exude a burst of energy. Mbe'ke and Taralu dwarves of the Mwangi Expanse believe this heritage is a gift from dragons or elemental spirits. Choose one of the following damage types: acid, cold, electricity, or fire. Once chosen, this can't be changed. You gain the @UUID[Compendium.avant.actionsavant.Item.Energy Emanation] activity.</p>"
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Character Guide"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    }
+                ],
+                "flag": "elementalHeartDwarf",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Dwarf.ElementalHeart.Prompt"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "flags.avant.elementalHeartDwarf.damageType",
+                "value": "{item|flags.avant.rulesSelections.elementalHeartDwarf}"
+            },
+            {
+                "key": "GrantItem",
+                "uuid": "Compendium.avant.actionsavant.Item.Energy Emanation"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "heritage"
+}

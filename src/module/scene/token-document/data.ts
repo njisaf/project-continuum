@@ -1,7 +1,7 @@
 import type { TokenSchema } from "types/foundry/common/documents/token.d.ts";
 
-type TokenFlagsPF2e = DocumentFlags & {
-    pf2e: {
+type TokenFlagsAvant = DocumentFlags & {
+    avant: {
         [key: string]: unknown;
         linkToActorSize: boolean;
         autoscale: boolean;
@@ -11,4 +11,4 @@ type TokenFlagsPF2e = DocumentFlags & {
 
 type DetectionModeEntry = ModelPropsFromSchema<TokenSchema>["detectionModes"][number];
 
-export type { DetectionModeEntry, TokenFlagsPF2e };
+export type { DetectionModeEntry, TokenFlagsAvant };

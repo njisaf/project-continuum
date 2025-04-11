@@ -1,4 +1,4 @@
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
@@ -6,7 +6,7 @@ import fields = foundry.data.fields;
  * Change the name representing an actor's token
  * @category RuleElement
  */
-class TokenNameRuleElement extends RuleElementPF2e<TokenNameRuleSchema> {
+class TokenNameRuleElement extends RuleElementAvant<TokenNameRuleSchema> {
     static override defineSchema(): TokenNameRuleSchema {
         return {
             ...super.defineSchema(),
@@ -21,7 +21,7 @@ class TokenNameRuleElement extends RuleElementPF2e<TokenNameRuleSchema> {
 }
 
 interface TokenNameRuleElement
-    extends RuleElementPF2e<TokenNameRuleSchema>,
+    extends RuleElementAvant<TokenNameRuleSchema>,
         ModelPropsFromRESchema<TokenNameRuleSchema> {}
 
 type TokenNameRuleSchema = RuleElementSchema & {

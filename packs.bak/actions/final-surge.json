@@ -1,0 +1,28 @@
+{
+    "_id": "EHa0owz6mccnmSBf",
+    "img": "systems/avant/icons/actions/OneAction.webp",
+    "name": "Final Surge",
+    "system": {
+        "actionType": {
+            "value": "action"
+        },
+        "actions": {
+            "value": 1
+        },
+        "category": "offensive",
+        "description": {
+            "value": "<p>You Stride twice. The @UUID[Compendium.avant.equipment-srd.Item.Drakeheart Mutagen (Lesser)]{Drakeheart Mutagen}'s duration ends.</p>"
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Advanced Player's Guide"
+        },
+        "rules": [],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "action"
+}

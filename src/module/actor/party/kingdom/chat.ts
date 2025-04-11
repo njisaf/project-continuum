@@ -1,4 +1,4 @@
-import type { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import type { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { createHTMLElement, fontAwesomeIcon, htmlClosest, htmlQuery } from "@util";
 import { Kingdom } from "./model.ts";
 
@@ -28,6 +28,6 @@ export async function handleKingdomChatMessageEvents(options: KingdomChatMessage
 
 interface KingdomChatMessageParams {
     event: MouseEvent;
-    message: ChatMessagePF2e;
+    message: ChatMessageAvant;
     messageEl: HTMLElement;
 }

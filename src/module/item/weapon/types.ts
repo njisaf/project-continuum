@@ -13,9 +13,9 @@ type WeaponCategory = (typeof WEAPON_CATEGORIES)[number];
 type MeleeWeaponGroup = SetElement<typeof MELEE_WEAPON_GROUPS>;
 
 type WeaponGroup = SetElement<typeof WEAPON_GROUPS>;
-type BaseWeaponType = keyof typeof CONFIG.PF2E.baseWeaponTypes | keyof typeof CONFIG.PF2E.baseShieldTypes;
+type BaseWeaponType = keyof typeof CONFIG.AVANT.baseWeaponTypes | keyof typeof CONFIG.AVANT.baseShieldTypes;
 
-type WeaponTrait = keyof typeof CONFIG.PF2E.weaponTraits;
+type WeaponTrait = keyof typeof CONFIG.AVANT.weaponTraits;
 type OtherWeaponTag = "improvised" | "shoddy" | "handwraps-of-mighty-blows";
 
 type WeaponRangeIncrement = SetElement<typeof WEAPON_RANGES>;

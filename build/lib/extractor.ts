@@ -1,6 +1,6 @@
-import type { ActorSourcePF2e } from "@actor/data/index.ts";
+import type { ActorSourceAvant } from "@actor/data/index.ts";
 import type { NPCAttributesSource, NPCSystemSource } from "@actor/npc/data.ts";
-import type { AbilitySource, ItemSourcePF2e, ItemType, SpellcastingEntrySource } from "@item/base/data/index.ts";
+import type { AbilitySource, ItemSourceAvant, ItemType, SpellcastingEntrySource } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import type { ItemInstances } from "@item/types.ts";
 import type { PublicationData } from "@module/data.ts";
@@ -47,7 +47,7 @@ class PackExtractor {
     readonly packsMetadata: CompendiumMetadata[];
 
     /** The last actor inspected in `pruneTree` */
-    #lastActor: ActorSourcePF2e | null = null;
+    #lastActor: ActorSourceAvant | null = null;
     readonly #newDocIdMap: Record<string, string> = {};
 
     readonly #idsToNames: {
@@ -291,9 +291,9 @@ class PackExtractor {
     }
 
     #sanitizeDocument<T extends PackEntry>(docSource: T, { isEmbedded } = { isEmbedded: false }): T {
-        // Clear non-core/pf2e flags
+        // Clear non-core/avant flags
         for (const flagScope in docSource.flags) {
-            if (!["core", "pf2e"].includes(flagScope) || !isEmbedded) {
+            if (!["core", "avant"].includes(flagScope) || !isEmbedded) {
                 delete docSource.flags[flagScope];
             }
         }
@@ -437,13 +437,13 @@ class PackExtractor {
 
                 if ("img" in docSource && typeof docSource.img === "string") {
                     docSource.img = docSource.img.replace(
-                        "https://assets.forge-vtt.com/bazaar/systems/pf2e/assets/",
-                        "systems/pf2e/",
+                        "https://assets.forge-vtt.com/bazaar/systems/avant/assets/",
+                        "systems/avant/",
                     ) as ImageFilePath;
                 }
 
-                if (R.isPlainObject(docSource.flags?.pf2e) && Object.keys(docSource.flags.pf2e).length === 0) {
-                    delete docSource.flags.pf2e;
+                if (R.isPlainObject(docSource.flags?.avant) && Object.keys(docSource.flags.avant).length === 0) {
+                    delete docSource.flags.avant;
                 }
                 if (Object.keys(docSource.flags ?? {}).length === 0) {
                     delete (docSource as { flags?: object }).flags;
@@ -517,7 +517,7 @@ class PackExtractor {
     }
 
     /**  Prune several common item data defaults */
-    #pruneItem(source: ItemSourcePF2e): void {
+    #pruneItem(source: ItemSourceAvant): void {
         source.system.description = {
             gm: source.system.description.gm ?? "",
             value: source.system.description.value,
@@ -578,8 +578,8 @@ class PackExtractor {
             const isFeat = !["ancestryfeature", "classfeature", "pfsboon", "deityboon", "curse"].includes(
                 source.system.category,
             );
-            if (isFeat && source.img === "systems/pf2e/icons/default-icons/feat.svg") {
-                source.img = "systems/pf2e/icons/features/feats/feats.webp";
+            if (isFeat && source.img === "systems/avant/icons/default-icons/feat.svg") {
+                source.img = "systems/avant/icons/features/feats/feats.webp";
             }
 
             if (source.system.maxTakable === 1) {
@@ -626,7 +626,7 @@ class PackExtractor {
         }
     }
 
-    #sortEmbeddedItems(docSource: PackEntry): ItemSourcePF2e[] {
+    #sortEmbeddedItems(docSource: PackEntry): ItemSourceAvant[] {
         if (!("items" in docSource) || !Array.isArray(docSource.items) || docSource.items.length === 0) {
             return [];
         }
@@ -650,7 +650,7 @@ class PackExtractor {
         type ItemSourcesByType = { [T in ItemType]?: ItemInstances<null>[T]["_source"][] };
         const itemsByType = R.groupBy(docSource.items, (i) => i.type) as ItemSourcesByType;
 
-        const sortedItems = itemTypes.flatMap((itemType): ItemSourcePF2e[] => {
+        const sortedItems = itemTypes.flatMap((itemType): ItemSourceAvant[] => {
             switch (itemType) {
                 case "action":
                     return this.#sortAbilities(docSource.name, itemsByType.action);
@@ -775,7 +775,7 @@ class PackExtractor {
         return sortedInteractions.concat(sortedDefensive, sortedOffensive, abilitiesMap.get("other")!);
     }
 
-    #sortItemsWithOverrides<TSource extends ItemSourcePF2e>(
+    #sortItemsWithOverrides<TSource extends ItemSourceAvant>(
         docName: string,
         actions: TSource[],
         overrides: Map<RegExp, "top" | "bottom">,

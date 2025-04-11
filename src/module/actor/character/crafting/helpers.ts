@@ -1,9 +1,9 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
-import type { ConsumablePF2e, PhysicalItemPF2e, SpellPF2e } from "@item";
-import { ItemProxyPF2e } from "@item";
+import type { ActorAvant, CharacterAvant } from "@actor";
+import type { ConsumableAvant, PhysicalItemAvant, SpellAvant } from "@item";
+import { ItemProxyAvant } from "@item";
 import { createConsumableFromSpell } from "@item/consumable/spell-consumables.ts";
-import { CoinsPF2e } from "@item/physical/helpers.ts";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import { CoinsAvant } from "@item/physical/helpers.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { OneToTen } from "@module/data.ts";
 import { getIncomeForLevel } from "@scripts/macros/earn-income/calculate.ts";
 import { CheckRoll } from "@system/check/index.ts";
@@ -13,28 +13,28 @@ import { fontAwesomeIcon } from "@util";
 /** Implementation of Crafting rules on https://2e.aonprd.com/Actions.aspx?ID=43 */
 
 interface Costs {
-    reductionPerDay: CoinsPF2e;
-    materials: CoinsPF2e;
-    itemPrice: CoinsPF2e;
-    lostMaterials: CoinsPF2e;
+    reductionPerDay: CoinsAvant;
+    materials: CoinsAvant;
+    itemPrice: CoinsAvant;
+    lostMaterials: CoinsAvant;
 }
 
 function calculateDaysToNoCost(costs: Costs): number {
     return Math.ceil((costs.itemPrice.copperValue - costs.materials.copperValue) / costs.reductionPerDay.copperValue);
 }
 
-async function prepStrings(costs: Costs, item: PhysicalItemPF2e) {
+async function prepStrings(costs: Costs, item: PhysicalItemAvant) {
     const rollData = item.getRollData();
 
     return {
         reductionPerDay: costs.reductionPerDay.toString(),
-        materialCost: game.i18n.format("PF2E.Actions.Craft.Details.PayMaterials", {
+        materialCost: game.i18n.format("AVANT.Actions.Craft.Details.PayMaterials", {
             cost: costs.materials.toString(),
         }),
-        itemCost: game.i18n.format("PF2E.Actions.Craft.Details.PayFull", {
+        itemCost: game.i18n.format("AVANT.Actions.Craft.Details.PayFull", {
             cost: costs.itemPrice.toString(),
         }),
-        lostMaterials: game.i18n.format("PF2E.Actions.Craft.Details.LostMaterials", {
+        lostMaterials: game.i18n.format("AVANT.Actions.Craft.Details.LostMaterials", {
             cost: costs.lostMaterials.toString(),
         }),
         itemLink: await TextEditor.enrichHTML(item.link, { rollData }),
@@ -42,16 +42,16 @@ async function prepStrings(costs: Costs, item: PhysicalItemPF2e) {
 }
 
 function calculateCosts(
-    item: PhysicalItemPF2e,
+    item: PhysicalItemAvant,
     quantity: number,
-    actor: CharacterPF2e,
+    actor: CharacterAvant,
     degreeOfSuccess: number,
     skill: string = "crafting",
 ): Costs | null {
-    const itemPrice = CoinsPF2e.fromPrice(item.price, quantity);
+    const itemPrice = CoinsAvant.fromPrice(item.price, quantity);
     const materialCosts = itemPrice.scale(0.5);
-    const lostMaterials = new CoinsPF2e();
-    const reductionPerDay = new CoinsPF2e();
+    const lostMaterials = new CoinsAvant();
+    const reductionPerDay = new CoinsAvant();
 
     const proficiency = actor.skills[skill]?.rank;
     if (!proficiency) return null;
@@ -73,9 +73,9 @@ function calculateCosts(
 }
 
 export async function craftItem(
-    item: PhysicalItemPF2e,
+    item: PhysicalItemAvant,
     itemQuantity: number,
-    actor: ActorPF2e,
+    actor: ActorAvant,
     infused?: boolean,
 ): Promise<void> {
     const itemSource = item.toObject();
@@ -89,13 +89,13 @@ export async function craftItem(
     }
     const result = await actor.addToInventory(itemSource);
     if (!result) {
-        ui.notifications.warn(game.i18n.localize("PF2E.Actions.Craft.Warning.CantAddItem"));
+        ui.notifications.warn(game.i18n.localize("AVANT.Actions.Craft.Warning.CantAddItem"));
         return;
     }
 
-    await ChatMessagePF2e.create({
+    await ChatMessageAvant.create({
         author: game.user.id,
-        content: game.i18n.format("PF2E.Actions.Craft.Information.ReceiveItem", {
+        content: game.i18n.format("AVANT.Actions.Craft.Information.ReceiveItem", {
             actorName: actor.name,
             quantity: itemQuantity,
             itemName: item.name,
@@ -105,9 +105,9 @@ export async function craftItem(
 }
 
 export async function craftSpellConsumable(
-    item: ConsumablePF2e,
+    item: ConsumableAvant,
     itemQuantity: number,
-    actor: ActorPF2e,
+    actor: ActorAvant,
 ): Promise<void> {
     const consumableType = item.category;
     if (!(consumableType === "scroll" || consumableType === "wand")) return;
@@ -121,14 +121,14 @@ export async function craftSpellConsumable(
                 result[spell.baseRank] = [...(result[spell.baseRank] || []), spell];
                 return result;
             },
-            {} as Record<number, SpellPF2e<ActorPF2e>[]>,
+            {} as Record<number, SpellAvant<ActorAvant>[]>,
         );
-    const content = await renderTemplate("systems/pf2e/templates/actors/crafting-select-spell-dialog.hbs", {
+    const content = await renderTemplate("systems/avant/templates/actors/crafting-select-spell-dialog.hbs", {
         spells: validSpells,
     });
 
     new Dialog({
-        title: game.i18n.localize("PF2E.Actions.Craft.SelectSpellDialog.Title"),
+        title: game.i18n.localize("AVANT.Actions.Craft.SelectSpellDialog.Title"),
         content,
         buttons: {
             cancel: {
@@ -137,7 +137,7 @@ export async function craftSpellConsumable(
             },
             craft: {
                 icon: fontAwesomeIcon("hammer").outerHTML,
-                label: game.i18n.localize("PF2E.Actions.Craft.SelectSpellDialog.CraftButtonLabel"),
+                label: game.i18n.localize("AVANT.Actions.Craft.SelectSpellDialog.CraftButtonLabel"),
                 callback: async ($dialog) => {
                     const spellId = String($dialog.find("select[name=spell]").val());
                     const spell = actor.items.get(spellId);
@@ -146,7 +146,7 @@ export async function craftSpellConsumable(
                         type: consumableType,
                         heightenedLevel: spellLevel,
                     });
-                    return craftItem(new ItemProxyPF2e(data) as PhysicalItemPF2e, itemQuantity, actor);
+                    return craftItem(new ItemProxyAvant(data) as PhysicalItemAvant, itemQuantity, actor);
                 },
             },
         },
@@ -155,10 +155,10 @@ export async function craftSpellConsumable(
 }
 
 export async function renderCraftingInline(
-    item: PhysicalItemPF2e,
+    item: PhysicalItemAvant,
     roll: Rolled<CheckRoll>,
     quantity: number,
-    actor: ActorPF2e,
+    actor: ActorAvant,
     free: boolean,
     skill: string = "crafting",
 ): Promise<string | null> {
@@ -170,7 +170,7 @@ export async function renderCraftingInline(
 
     const daysForZeroCost = degreeOfSuccess > 1 ? calculateDaysToNoCost(costs) : 0;
 
-    return await renderTemplate("systems/pf2e/templates/chat/crafting-result.hbs", {
+    return await renderTemplate("systems/avant/templates/chat/crafting-result.hbs", {
         daysForZeroCost: daysForZeroCost,
         strings: await prepStrings(costs, item),
         item,

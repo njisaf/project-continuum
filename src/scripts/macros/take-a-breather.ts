@@ -1,16 +1,16 @@
-import type { CharacterPF2e } from "@actor";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import type { CharacterAvant } from "@actor";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { fontAwesomeIcon } from "@util";
 import * as R from "remeda";
 
 function takeABreather(): void {
     let applyChanges = false;
     const actors = R.unique(game.user.getActiveTokens().map((t) => t.actor)).filter(R.isTruthy);
-    const pcs = actors.filter((a): a is CharacterPF2e => a.isOfType("character"));
-    if (!game.pf2e.settings.variants.stamina) {
+    const pcs = actors.filter((a): a is CharacterAvant => a.isOfType("character"));
+    if (!game.avant.settings.variants.stamina) {
         return;
     } else if (pcs.length === 0) {
-        ui.notifications.error("PF2E.ErrorMessage.NoPCTokenSelected", { localize: true });
+        ui.notifications.error("AVANT.ErrorMessage.NoPCTokenSelected", { localize: true });
         return;
     }
 
@@ -41,19 +41,19 @@ function takeABreather(): void {
                 const resolve = actor.system.resources.resolve;
                 if (!(sp && resolve)) continue;
 
-                const speaker = ChatMessagePF2e.getSpeaker({ token, actor });
+                const speaker = ChatMessageAvant.getSpeaker({ token, actor });
 
                 if (resolve.value > 0) {
                     actor.update({
                         "system.attributes.hp.sp.value": sp.max,
                         "system.resources.resolve.value": resolve.value - 1,
                     });
-                    ChatMessagePF2e.create({
+                    ChatMessageAvant.create({
                         speaker,
                         content: `${name} has ${sp.value}/${sp.max} SP and spends a resolve point, taking a 10 minute breather. Stamina refreshed.`,
                     });
                 } else {
-                    ChatMessagePF2e.create({
+                    ChatMessageAvant.create({
                         speaker,
                         content: `${name} is tired and needs to go to bed! No resolve points remaining.`,
                     });

@@ -1,6 +1,6 @@
 import { SkillSlug } from "@actor/types.ts";
 import { CORE_SKILL_SLUGS } from "@actor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { SIZES } from "@module/data.ts";
 import { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { BattleFormSource } from "@module/rules/rule-element/battle-form/types.ts";
@@ -17,7 +17,7 @@ export class Migration929RemoveSkillAbbreviations extends MigrationBase {
 
     #SKILL_LOCALIZATION = ((): RegExp => {
         const skillSlugs = [...CORE_SKILL_SLUGS, ...SKILL_ABBREVIATIONS].map(capitalize).join("|");
-        return new RegExp(String.raw`PF2E.Skill(${skillSlugs})\b`, "g");
+        return new RegExp(String.raw`AVANT.Skill(${skillSlugs})\b`, "g");
     })();
 
     #SKILL_SHORT_FORM_OPTION_PATH = ((): RegExp => {
@@ -25,11 +25,11 @@ export class Migration929RemoveSkillAbbreviations extends MigrationBase {
         return new RegExp(String.raw`\b([\w-]+):(${skillShortForms})(?=:|$)`, "g");
     })();
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.rules = recursiveReplaceString(source.system.rules, (s) => {
             return s.replace(
                 this.#SKILL_LOCALIZATION,
-                (_match, group) => `PF2E.Skill.${capitalize(resolveLongForm(group.toLowerCase()))}`,
+                (_match, group) => `AVANT.Skill.${capitalize(resolveLongForm(group.toLowerCase()))}`,
             );
         });
 
@@ -131,7 +131,7 @@ export function isSizeChoice(rule: ChoiceSetSource): boolean {
             if (choice.value !== "med" && tupleHasValue(SIZES, choice.value)) {
                 return true;
             }
-            if (choice.label?.startsWith("PF2E.ActorSize")) {
+            if (choice.label?.startsWith("AVANT.ActorSize")) {
                 return true;
             }
 

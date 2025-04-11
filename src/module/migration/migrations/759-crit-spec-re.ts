@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Replace critical specialization roll notes with CritSpec RE */
 export class Migration759CritSpecRE extends MigrationBase {
     static override version = 0.759;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!["feat", "weapon"].includes(source.type)) return;
 
         const critSpecKey = "CriticalSpecialization";
@@ -334,7 +334,7 @@ export class Migration759CritSpecRE extends MigrationBase {
                     predicate: {
                         all: ["weapon:id:{item|_id}"],
                     },
-                    text: "PF2E.Item.Weapon.CriticalSpecialization.bow",
+                    text: "AVANT.Item.Weapon.CriticalSpecialization.bow",
                 };
                 source.system.rules.push(rule);
                 return;

@@ -1,6 +1,6 @@
-import { MODIFIER_TYPES, ModifierPF2e, RawModifier, StatisticModifier } from "@actor/modifiers.ts";
+import { MODIFIER_TYPES, ModifierAvant, RawModifier, StatisticModifier } from "@actor/modifiers.ts";
 import { RollSubstitution } from "@module/rules/synthetics.ts";
-import { ErrorPF2e, htmlQuery, htmlQueryAll, setHasElement, tupleHasValue } from "@util";
+import { ErrorAvant, htmlQuery, htmlQueryAll, setHasElement, tupleHasValue } from "@util";
 import * as R from "remeda";
 import { RollTwiceOption } from "../rolls.ts";
 import { CheckCheckContext } from "./types.ts";
@@ -20,7 +20,7 @@ export class CheckModifiersDialog extends Application {
     isResolved = false;
 
     /** A set of originally enabled modifiers to circumvent hideIfDisabled for manual disables */
-    #originallyEnabled: Set<ModifierPF2e>;
+    #originallyEnabled: Set<ModifierAvant>;
 
     constructor(
         check: StatisticModifier,
@@ -51,7 +51,7 @@ export class CheckModifiersDialog extends Application {
     static override get defaultOptions(): ApplicationOptions {
         return {
             ...super.defaultOptions,
-            template: "systems/pf2e/templates/chat/check-modifiers-dialog.hbs",
+            template: "systems/avant/templates/chat/check-modifiers-dialog.hbs",
             classes: ["roll-modifiers-dialog", "dice-checks", "dialog"],
             popOut: true,
             width: 380,
@@ -154,15 +154,15 @@ export class CheckModifiersDialog extends Application {
             }
             if (!setHasElement(MODIFIER_TYPES, type)) {
                 // Select menu should make this impossible
-                throw ErrorPF2e("Unexpected invalid modifier type");
+                throw ErrorAvant("Unexpected invalid modifier type");
             }
             if (!name || !name.trim()) {
-                name = game.i18n.localize(value < 0 ? `PF2E.PenaltyLabel.${type}` : `PF2E.BonusLabel.${type}`);
+                name = game.i18n.localize(value < 0 ? `AVANT.PenaltyLabel.${type}` : `AVANT.BonusLabel.${type}`);
             }
             if (errors.length > 0) {
                 ui.notifications.error(errors.join(" "));
             } else {
-                this.check.push(new ModifierPF2e(name, value, type));
+                this.check.push(new ModifierAvant(name, value, type));
                 this.render();
             }
         });
@@ -177,7 +177,7 @@ export class CheckModifiersDialog extends Application {
         rollModeInput?.addEventListener("change", () => {
             const rollMode = rollModeInput.value;
             if (!tupleHasValue(Object.values(CONST.DICE_ROLL_MODES), rollMode)) {
-                throw ErrorPF2e("Unexpected roll mode");
+                throw ErrorAvant("Unexpected roll mode");
             }
             this.context.rollMode = rollMode;
         });
@@ -185,7 +185,7 @@ export class CheckModifiersDialog extends Application {
         // Toggle show dialog default
         const toggle = htmlQuery<HTMLInputElement>(html, "input[data-action=change-show-default]");
         toggle?.addEventListener("click", async () => {
-            await game.user.update({ "flags.pf2e.settings.showCheckDialogs": toggle.checked });
+            await game.user.update({ "flags.avant.settings.showCheckDialogs": toggle.checked });
         });
     }
 

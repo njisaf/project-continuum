@@ -1,6 +1,6 @@
 import * as R from "remeda";
 
-class EnvironmentCanvasGroupPF2e extends EnvironmentCanvasGroup {
+class EnvironmentCanvasGroupAvant extends EnvironmentCanvasGroup {
     /** Ensure prepared values are passed in initialization (upstream retrieves source values). */
     override initialize(config: EnvironmentInitializeConfig = {}): void {
         const scene = canvas.scene;
@@ -14,4 +14,4 @@ class EnvironmentCanvasGroupPF2e extends EnvironmentCanvasGroup {
     }
 }
 
-export { EnvironmentCanvasGroupPF2e };
+export { EnvironmentCanvasGroupAvant };

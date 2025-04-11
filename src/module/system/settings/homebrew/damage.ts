@@ -19,15 +19,15 @@ import { HomebrewElements } from "./menu.ts";
 export class DamageTypeManager {
     // All collections that homebrew damage must be updated in
     collections = {
-        physicalConfig: CONFIG.PF2E.physicalDamageTypes as Record<string, string>,
-        energyConfig: CONFIG.PF2E.energyDamageTypes as Record<string, string>,
+        physicalConfig: CONFIG.AVANT.physicalDamageTypes as Record<string, string>,
+        energyConfig: CONFIG.AVANT.energyDamageTypes as Record<string, string>,
         physical: PHYSICAL_DAMAGE_TYPES as unknown as string[],
         energy: ENERGY_DAMAGE_TYPES as unknown as string[],
         DAMAGE_TYPES,
         BASE_DAMAGE_TYPES_TO_CATEGORIES,
         DAMAGE_TYPE_ICONS,
-        damageTypesLocalization: CONFIG.PF2E.damageTypes,
-        damageRollFlavorsLocalization: CONFIG.PF2E.damageRollFlavors,
+        damageTypesLocalization: CONFIG.AVANT.damageTypes,
+        damageRollFlavorsLocalization: CONFIG.AVANT.damageRollFlavors,
         immunityTypes: immunityTypes as Record<string, string>,
         weaknessTypes: weaknessTypes as Record<string, string>,
         resistanceTypes: resistanceTypes as Record<string, string>,
@@ -45,9 +45,9 @@ export class DamageTypeManager {
         collections.DAMAGE_TYPE_ICONS[slug] = data.icon?.substring(3) ?? null; // icons registered do not include the fa-
         collections.damageTypesLocalization[slug] = data.label;
 
-        const versatileLabel = game.i18n.format("PF2E.TraitVersatileX", { x: data.label });
-        CONFIG.PF2E.weaponTraits[`versatile-${slug}` as WeaponTrait] = versatileLabel;
-        CONFIG.PF2E.npcAttackTraits[`versatile-${slug}` as WeaponTrait] = versatileLabel;
+        const versatileLabel = game.i18n.format("AVANT.TraitVersatileX", { x: data.label });
+        CONFIG.AVANT.weaponTraits[`versatile-${slug}` as WeaponTrait] = versatileLabel;
+        CONFIG.AVANT.npcAttackTraits[`versatile-${slug}` as WeaponTrait] = versatileLabel;
 
         const damageFlavor = game.i18n.localize(data.label).toLocaleLowerCase(game.i18n.lang);
         collections.damageRollFlavorsLocalization[slug] = damageFlavor;
@@ -73,8 +73,8 @@ export class DamageTypeManager {
 
         // Delete versatile damage traits
         for (const type of typesToDelete) {
-            const weaponTraits: Record<string, string> = CONFIG.PF2E.weaponTraits;
-            const npcAttackTraits: Record<string, string> = CONFIG.PF2E.npcAttackTraits;
+            const weaponTraits: Record<string, string> = CONFIG.AVANT.weaponTraits;
+            const npcAttackTraits: Record<string, string> = CONFIG.AVANT.npcAttackTraits;
             delete weaponTraits[`versatile-${type}`];
             delete npcAttackTraits[`versatile-${type}`];
         }
@@ -88,7 +88,7 @@ export class DamageTypeManager {
 
         // Read setting damage types
         const customTypes = game.settings
-            .get("pf2e", "homebrew.damageTypes")
+            .get("avant", "homebrew.damageTypes")
             .filter((t) => !reservedTerms.damageTypes.has(sluggify(t.label)));
         for (const data of customTypes) {
             this.addCustomDamage(data);

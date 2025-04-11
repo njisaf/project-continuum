@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { PredicateStatement } from "@system/predication.ts";
 import { sluggify } from "@util";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration704MartialProficiencyRE extends MigrationBase {
     static override version = 0.704;
 
-    override async updateItem(itemSource: ItemSourcePF2e): Promise<void> {
+    override async updateItem(itemSource: ItemSourceAvant): Promise<void> {
         const rules: MaybeLinkedProficiency[] = itemSource.system.rules.filter(
             (r): r is MaybeLinkedProficiency => r.key === "LinkedProficiency",
         );
@@ -22,7 +22,7 @@ export class Migration704MartialProficiencyRE extends MigrationBase {
                 !rule.label
             ) {
                 const key = sluggify(rule.slug, { camel: "bactrian" });
-                rule.label = `PF2E.SpecificRule.MartialProficiency.${key}`;
+                rule.label = `AVANT.SpecificRule.MartialProficiency.${key}`;
             }
         }
 
@@ -35,7 +35,7 @@ export class Migration704MartialProficiencyRE extends MigrationBase {
                             any: ["weapon:group:firearm", "weapon:tag:crossbow"],
                         },
                         key: "MartialProficiency",
-                        label: "PF2E.SpecificRule.MartialProficiency.SimpleFirearmsCrossbows",
+                        label: "AVANT.SpecificRule.MartialProficiency.SimpleFirearmsCrossbows",
                         slug: "simple-firearms-crossbows",
                         value: 2,
                     },
@@ -45,7 +45,7 @@ export class Migration704MartialProficiencyRE extends MigrationBase {
                             any: ["weapon:group:firearm", "weapon:tag:crossbow"],
                         },
                         key: "MartialProficiency",
-                        label: "PF2E.SpecificRule.MartialProficiency.MartialFirearmsCrossbows",
+                        label: "AVANT.SpecificRule.MartialProficiency.MartialFirearmsCrossbows",
                         slug: "martial-firearms-crossbows",
                         value: 2,
                     },
@@ -55,7 +55,7 @@ export class Migration704MartialProficiencyRE extends MigrationBase {
                             any: ["weapon:group:firearm", "weapon:tag:crossbow"],
                         },
                         key: "MartialProficiency",
-                        label: "PF2E.SpecificRule.MartialProficiency.AdvancedFirearmsCrossbows",
+                        label: "AVANT.SpecificRule.MartialProficiency.AdvancedFirearmsCrossbows",
                         slug: "advanced-firearms-crossbows",
                         value: 1,
                     },

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Suppress the "no-crowbar" penalty applied to the Force Open action */
@@ -14,7 +14,7 @@ export class Migration781SuppressNoCrowbar extends MigrationBase {
         };
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!source.system.slug) return;
         const isCrowbar = source.type === "equipment" && /^crowbar(?:-levered)?$/.test(source.system.slug);
         const isForcedEntry = source.type === "feat" && source.system.slug === "forced-entry";

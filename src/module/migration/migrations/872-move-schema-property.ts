@@ -1,6 +1,6 @@
 import { ActorSystemSource } from "@actor/data/base.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { ItemSystemSource } from "@item/base/data/system.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -19,11 +19,11 @@ export class Migration872MoveSchemaProperty extends MigrationBase {
         }
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         this.#mvSchema(source.system);
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         this.#mvSchema(source.system);
     }
 }

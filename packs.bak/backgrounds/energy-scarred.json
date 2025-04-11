@@ -1,0 +1,89 @@
+{
+    "_id": "xbyQ1RAF6x4ceXLf",
+    "img": "systems/avant/icons/default-icons/background.svg",
+    "name": "Energy Scarred",
+    "system": {
+        "boosts": {
+            "0": {
+                "value": [
+                    "con"
+                ]
+            },
+            "1": {
+                "value": [
+                    "cha",
+                    "con",
+                    "dex",
+                    "int",
+                    "str",
+                    "wis"
+                ]
+            }
+        },
+        "description": {
+            "value": "<p>Exposure to a significant magical event overloaded you with magical energy. Perhaps you were exposed to dangerous levels of magical energy that left you near death, or it built up over long-term exposure to a powerful source of magic.</p>\n<p>Choose two attribute boosts. One must be <strong>Constitution</strong> and one is a free attribute boost.</p>\n<p>Your innate magical trait is primal. Choose acid, cold, electricity, fire, force, sonic, vitality, or void. You are trained in a Lore skill associated with the chosen energy (such as Fire Lore) and you gain resistance to that energy type equal to half your level (minimum 1).</p>"
+        },
+        "items": {},
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Secrets of Magic"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitForce",
+                        "value": "force"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    },
+                    {
+                        "label": "AVANT.TraitVitality",
+                        "value": "vitality"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    }
+                ],
+                "flag": "backgroundEnergyScarred",
+                "key": "ChoiceSet"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.backgroundEnergyScarred}",
+                "value": "max(1,floor(@actor.level/2))"
+            }
+        ],
+        "trainedSkills": {
+            "lore": [
+                "Lore associated with the chosen energy"
+            ],
+            "value": []
+        },
+        "traits": {
+            "rarity": "rare",
+            "value": []
+        }
+    },
+    "type": "background"
+}

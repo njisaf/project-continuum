@@ -5,12 +5,12 @@
             name="name"
             type="text"
             value="{{actor.name}}"
-            placeholder="{{localize "PF2E.CharacterNamePlaceholder"}}"
+            placeholder="{{localize "AVANT.CharacterNamePlaceholder"}}"
             autocomplete="off"
             spellcheck="false"
-            area-label="{{localize "PF2E.CharacterNamePlaceholder"}}"
+            area-label="{{localize "AVANT.CharacterNamePlaceholder"}}"
         />
-        <label class="level-label" for="{{document.uuid}}-level">{{localize "PF2E.NPC.Creature"}}</label>
+        <label class="level-label" for="{{document.uuid}}-level">{{localize "AVANT.NPC.Creature"}}</label>
         {{#with data.details.level as |level|}}
             <input
                 class="level adjustable{{#if level.adjustedHigher}} adjusted-higher{{else if level.adjustedLower}} adjusted-lower{{/if}}"
@@ -36,17 +36,17 @@
         {{#if editable}}
             <div class="adjustments">
                 <a class="adjustment elite trait{{#if isElite}} active{{/if}}" data-action="adjust-elite-weak" data-adjustment="elite">
-                    {{localize "PF2E.NPC.Adjustment.EliteLabel"}}
+                    {{localize "AVANT.NPC.Adjustment.EliteLabel"}}
                 </a>
                 <a class="adjustment weak trait{{#if isWeak}} active{{/if}}" data-action="adjust-elite-weak" data-adjustment="weak">
-                    {{localize "PF2E.NPC.Adjustment.WeakLabel"}}
+                    {{localize "AVANT.NPC.Adjustment.WeakLabel"}}
                 </a>
             </div>
         {{/if}}
     </div>
     <div class="flexrow">
         <tagify-tags class="tags paizo-style" name="system.traits.value" value="{{json traitTagifyData}}"
-            {{#if (eq data.traits.value.length 0)}}placeholder="{{localize "PF2E.Traits"}}"{{/if}} />
+            {{#if (eq data.traits.value.length 0)}}placeholder="{{localize "AVANT.Traits"}}"{{/if}} />
     </div>
     <div class="flexrow">
         <input name="system.details.blurb" type="text" value="{{data.details.blurb}}" />

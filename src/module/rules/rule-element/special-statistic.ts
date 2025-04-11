@@ -1,5 +1,5 @@
-import type { CreaturePF2e } from "@actor";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import type { CreatureAvant } from "@actor";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { AttributeString } from "@actor/types.ts";
 import { ATTRIBUTE_ABBREVIATIONS, SAVE_TYPES } from "@actor/values.ts";
 import { MagicTradition } from "@item/spell/types.ts";
@@ -9,12 +9,12 @@ import { PredicateField, SlugField } from "@system/schema-data-fields.ts";
 import { Statistic, StatisticData } from "@system/statistic/index.ts";
 import { tupleHasValue } from "@util";
 import * as R from "remeda";
-import { RuleElementPF2e } from "../index.ts";
+import { RuleElementAvant } from "../index.ts";
 import type { RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
 /** Create a special-purpose statistic for use in checks and as a DC */
-class SpecialStatisticRuleElement extends RuleElementPF2e<SpecialStatisticSchema> {
+class SpecialStatisticRuleElement extends RuleElementAvant<SpecialStatisticSchema> {
     static override validActorTypes = ["character", "npc"] satisfies ("character" | "npc")[];
 
     static override defineSchema(): SpecialStatisticSchema {
@@ -27,9 +27,9 @@ class SpecialStatisticRuleElement extends RuleElementPF2e<SpecialStatisticSchema
                 validate: (v) =>
                     typeof v === "string" &&
                     !(
-                        v in CONFIG.PF2E.magicTraditions ||
-                        v in CONFIG.PF2E.classTraits ||
-                        v in CONFIG.PF2E.skills ||
+                        v in CONFIG.AVANT.magicTraditions ||
+                        v in CONFIG.AVANT.classTraits ||
+                        v in CONFIG.AVANT.skills ||
                         tupleHasValue(SAVE_TYPES, v) ||
                         ["perception", "initiative"].includes(v)
                     ),
@@ -60,7 +60,7 @@ class SpecialStatisticRuleElement extends RuleElementPF2e<SpecialStatisticSchema
                     tradition: new fields.StringField({
                         required: false,
                         nullable: true,
-                        choices: () => CONFIG.PF2E.magicTraditions,
+                        choices: () => CONFIG.AVANT.magicTraditions,
                         initial: null,
                     }),
                 },
@@ -87,9 +87,9 @@ class SpecialStatisticRuleElement extends RuleElementPF2e<SpecialStatisticSchema
             this.baseModifier && actor.type === "npc"
                 ? R.mapValues(this.baseModifier, (value, key) => {
                       const slug = typeof this.baseModifier?.mod === "number" && key !== "mod" ? `base-${key}` : "base";
-                      const label = "PF2E.ModifierTitle";
+                      const label = "AVANT.ModifierTitle";
                       const modifier = typeof value === "number" && key === "dc" ? value - 10 : value;
-                      return typeof modifier === "number" ? [new ModifierPF2e({ slug, label, modifier })] : [];
+                      return typeof modifier === "number" ? [new ModifierAvant({ slug, label, modifier })] : [];
                   })
                 : { mod: [], check: [], dc: [] };
 
@@ -126,11 +126,11 @@ class SpecialStatisticRuleElement extends RuleElementPF2e<SpecialStatisticSchema
 }
 
 interface SpecialStatisticRuleElement
-    extends RuleElementPF2e<SpecialStatisticSchema>,
+    extends RuleElementAvant<SpecialStatisticSchema>,
         Omit<ModelPropsFromSchema<SpecialStatisticSchema>, "label"> {
     slug: string;
 
-    get actor(): CreaturePF2e;
+    get actor(): CreatureAvant;
 }
 
 type SpecialStatisticSchema = RuleElementSchema & {

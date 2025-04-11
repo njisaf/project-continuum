@@ -125,7 +125,7 @@ function sluggify(text: string, { camel = null }: { camel?: SlugCamel } = {}): s
                 )
                 .replace(/\s+/g, "");
         default:
-            throw ErrorPF2e("I don't think that's a real camel.");
+            throw ErrorAvant("I don't think that's a real camel.");
     }
 }
 
@@ -136,7 +136,7 @@ function parseHTML(unparsed: string): HTMLElement {
     const fragment = document.createElement("template");
     fragment.innerHTML = unparsed;
     const element = fragment.content.firstElementChild;
-    if (!(element instanceof HTMLElement)) throw ErrorPF2e("Unexpected error parsing HTML");
+    if (!(element instanceof HTMLElement)) throw ErrorAvant("Unexpected error parsing HTML");
 
     return element;
 }
@@ -147,27 +147,27 @@ function getActionTypeLabel(
 ): string | null {
     switch (type) {
         case "action":
-            return cost === 1 ? "PF2E.Item.Ability.Type.Single" : "PF2E.Item.Ability.Type.Activity";
+            return cost === 1 ? "AVANT.Item.Ability.Type.Single" : "AVANT.Item.Ability.Type.Activity";
         case "free":
-            return "PF2E.Item.Ability.Type.Free";
+            return "AVANT.Item.Ability.Type.Free";
         case "reaction":
-            return "PF2E.Item.Ability.Type.Reaction";
+            return "AVANT.Item.Ability.Type.Reaction";
         default:
             return null;
     }
 }
 
 const actionImgMap: Record<string, ImageFilePath> = {
-    0: "systems/pf2e/icons/actions/FreeAction.webp",
-    free: "systems/pf2e/icons/actions/FreeAction.webp",
-    1: "systems/pf2e/icons/actions/OneAction.webp",
-    2: "systems/pf2e/icons/actions/TwoActions.webp",
-    3: "systems/pf2e/icons/actions/ThreeActions.webp",
-    "1 or 2": "systems/pf2e/icons/actions/OneTwoActions.webp",
-    "1 to 3": "systems/pf2e/icons/actions/OneThreeActions.webp",
-    "2 or 3": "systems/pf2e/icons/actions/TwoThreeActions.webp",
-    reaction: "systems/pf2e/icons/actions/Reaction.webp",
-    passive: "systems/pf2e/icons/actions/Passive.webp",
+    0: "systems/avant/icons/actions/FreeAction.webp",
+    free: "systems/avant/icons/actions/FreeAction.webp",
+    1: "systems/avant/icons/actions/OneAction.webp",
+    2: "systems/avant/icons/actions/TwoActions.webp",
+    3: "systems/avant/icons/actions/ThreeActions.webp",
+    "1 or 2": "systems/avant/icons/actions/OneTwoActions.webp",
+    "1 to 3": "systems/avant/icons/actions/OneThreeActions.webp",
+    "2 or 3": "systems/avant/icons/actions/TwoThreeActions.webp",
+    reaction: "systems/avant/icons/actions/Reaction.webp",
+    passive: "systems/avant/icons/actions/Passive.webp",
 };
 
 function getActionIcon(actionType: string | ActionCost | null, fallback: ImageFilePath): ImageFilePath;
@@ -175,7 +175,7 @@ function getActionIcon(actionType: string | ActionCost | null, fallback: ImageFi
 function getActionIcon(actionType: string | ActionCost | null): ImageFilePath;
 function getActionIcon(
     action: string | ActionCost | null,
-    fallback: ImageFilePath | null = "systems/pf2e/icons/actions/Empty.webp",
+    fallback: ImageFilePath | null = "systems/avant/icons/actions/Empty.webp",
 ): ImageFilePath | null {
     if (action === null) return actionImgMap.passive;
     const value = typeof action !== "object" ? action : action.type === "action" ? action.value : action.type;
@@ -213,8 +213,13 @@ function getActionGlyph(action: string | number | null | ActionCost): string {
     return actionGlyphMap[sanitized]?.replace("-", "–") ?? "";
 }
 
+function ErrorAvant(message: string): Error {
+    return Error(`Avant System | ${message}`);
+}
+
+/** For backward compatibility with PF2e */
 function ErrorPF2e(message: string): Error {
-    return Error(`PF2e System | ${message}`);
+    return ErrorAvant(message);
 }
 
 let pluralRules: Intl.PluralRules;
@@ -222,14 +227,14 @@ let pluralRules: Intl.PluralRules;
 /** Returns the number in an ordinal format, like 1st, 2nd, 3rd, 4th, etc. */
 function ordinalString(value: number): string {
     pluralRules ??= new Intl.PluralRules(game.i18n.lang, { type: "ordinal" });
-    const suffix = game.i18n.localize(`PF2E.OrdinalSuffixes.${pluralRules.select(value)}`);
-    return game.i18n.format("PF2E.OrdinalNumber", { value, suffix });
+    const suffix = game.i18n.localize(`AVANT.OrdinalSuffixes.${pluralRules.select(value)}`);
+    return game.i18n.format("AVANT.OrdinalNumber", { value, suffix });
 }
 
 /** Localizes a list of strings into a (possibly comma-delimited) list for the current language */
 function localizeList(items: string[], { conjunction = "or" }: { conjunction?: "and" | "or" } = {}): string {
     items = [...items].sort((a, b) => a.localeCompare(b, game.i18n.lang));
-    const parts = conjunction === "or" ? "PF2E.ListPartsOr" : "PF2E.ListPartsAnd";
+    const parts = conjunction === "or" ? "AVANT.ListPartsOr" : "AVANT.ListPartsAnd";
 
     if (items.length === 0) return "";
     if (items.length === 1) return items[0];
@@ -400,6 +405,7 @@ const SORTABLE_BASE_OPTIONS: Sortable.Options = {
 };
 
 export {
+    ErrorAvant,
     ErrorPF2e,
     SORTABLE_BASE_OPTIONS,
     applyNTimes,

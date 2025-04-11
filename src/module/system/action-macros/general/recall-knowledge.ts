@@ -1,16 +1,16 @@
-import { ActorPF2e, NPCPF2e } from "@actor";
+import { ActorAvant, NPCAvant } from "@actor";
 import {
     SingleCheckAction,
     SingleCheckActionUseOptions,
     SingleCheckActionVariant,
     SingleCheckActionVariantData,
 } from "@actor/actions/index.ts";
-import { TokenPF2e } from "@module/canvas/index.ts";
+import { TokenAvant } from "@module/canvas/index.ts";
 import { ActionMacroHelpers } from "@system/action-macros/index.ts";
 import { CheckResultCallback } from "@system/action-macros/types.ts";
 import { objectHasKey } from "@util/misc.ts";
 
-const PREFIX = "PF2E.Actions.RecallKnowledge";
+const PREFIX = "AVANT.Actions.RecallKnowledge";
 
 interface RecallKnowledgeActionUseOptions extends Partial<SingleCheckActionUseOptions> {
     statistic: string;
@@ -31,12 +31,12 @@ class RecallKnowledgeActionVariant extends SingleCheckActionVariant {
         // default to creature identification if difficulty class is omitted and an NPC is targeted
         if (!options.difficultyClass) {
             const target =
-                options.target instanceof ActorPF2e
+                options.target instanceof ActorAvant
                     ? options.target
-                    : options.target instanceof TokenPF2e
+                    : options.target instanceof TokenAvant
                       ? options.target.actor
                       : ActionMacroHelpers.target()?.actor;
-            if (target instanceof NPCPF2e && objectHasKey(CONFIG.PF2E.skills, options.statistic)) {
+            if (target instanceof NPCAvant && objectHasKey(CONFIG.AVANT.skills, options.statistic)) {
                 const identification = target.identificationDCs;
                 if (identification.skills.includes(options.statistic)) {
                     options.difficultyClass = {

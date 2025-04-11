@@ -2,8 +2,8 @@ import { SimpleAction } from "@actor/actions/index.ts";
 
 const ready = new SimpleAction({
     cost: 2,
-    description: "PF2E.Actions.Ready.Description",
-    name: "PF2E.Actions.Ready.Title",
+    description: "AVANT.Actions.Ready.Description",
+    name: "AVANT.Actions.Ready.Title",
     section: "basic",
     slug: "ready",
     traits: ["concentrate"],

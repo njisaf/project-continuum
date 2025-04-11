@@ -1,10 +1,10 @@
 import { combatantAndTokenDoc } from "@module/doc-helpers.ts";
-import type { CombatantPF2e, EncounterPF2e, RolledCombatant } from "@module/encounter/index.ts";
+import type { CombatantAvant, EncounterAvant, RolledCombatant } from "@module/encounter/index.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
-import type { TokenDocumentPF2e } from "@scene/index.ts";
-import { TextEditorPF2e } from "@system/text-editor.ts";
+import type { TokenDocumentAvant } from "@scene/index.ts";
+import { TextEditorAvant } from "@system/text-editor.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     createHTMLElement,
     fontAwesomeIcon,
     htmlQuery,
@@ -15,7 +15,7 @@ import {
 } from "@util";
 import Sortable from "sortablejs";
 
-export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> extends CombatTracker<TEncounter> {
+export class EncounterTrackerAvant<TEncounter extends EncounterAvant | null> extends CombatTracker<TEncounter> {
     #sortable: Sortable | null = null;
 
     /** Show encounter analysis data if obtainable */
@@ -25,12 +25,12 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
         const metrics = this.viewed?.metrics;
         if (!metrics) return $html;
 
-        const localize = localizer("PF2E.Encounter.Metrics");
+        const localize = localizer("AVANT.Encounter.Metrics");
         const threat = ((): { label: string; tooltip: string } => {
-            const label = game.i18n.localize(`PF2E.Encounter.Budget.Threats.${metrics.threat}`);
+            const label = game.i18n.localize(`AVANT.Encounter.Budget.Threats.${metrics.threat}`);
             const tooltip = localize("Budget", metrics.budget);
             const tempContainer = createHTMLElement("div", { innerHTML: localize("Threat", { threat: label }) });
-            TextEditorPF2e.convertXMLNode(tempContainer, "threat", { classes: ["value", metrics.threat] });
+            TextEditorAvant.convertXMLNode(tempContainer, "threat", { classes: ["value", metrics.threat] });
             return { label: tempContainer.innerHTML, tooltip };
         })();
 
@@ -49,7 +49,7 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
         })();
 
         const threatAward = parseHTML(
-            await renderTemplate("systems/pf2e/templates/sidebar/encounter-tracker/threat-award.hbs", {
+            await renderTemplate("systems/avant/templates/sidebar/encounter-tracker/threat-award.hbs", {
                 threat,
                 award,
             }),
@@ -64,15 +64,15 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
     override activateListeners($html: JQuery): void {
         const html = $html[0];
         const tracker = htmlQuery(html, "#combat-tracker");
-        if (!tracker) throw ErrorPF2e("No tracker found");
+        if (!tracker) throw ErrorAvant("No tracker found");
 
         const encounter = this.viewed;
         if (!encounter) return super.activateListeners($html);
         const trackerPlaceholder = document.createElement("div");
         tracker.replaceWith(trackerPlaceholder);
 
-        const tokenSetsNameVisibility = game.pf2e.settings.tokens.nameVisibility;
-        const allyColor = (c: CombatantPF2e<EncounterPF2e>) =>
+        const tokenSetsNameVisibility = game.avant.settings.tokens.nameVisibility;
+        const allyColor = (c: CombatantAvant<EncounterAvant>) =>
             c.actor?.hasPlayerOwner ? CONFIG.Canvas.dispositionColors.PARTY : CONFIG.Canvas.dispositionColors.FRIENDLY;
 
         const combatantRows = htmlQueryAll(tracker, "li.combatant");
@@ -147,7 +147,7 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
                     toggleNameVisibility.classList.add(...["combatant-control", isActive ? "active" : []].flat());
                     toggleNameVisibility.dataset.control = "toggleNameVisibility";
                     toggleNameVisibility.dataset.tooltip = game.i18n.localize(
-                        isActive ? "PF2E.Encounter.HideName" : "PF2E.Encounter.RevealName",
+                        isActive ? "AVANT.Encounter.HideName" : "AVANT.Encounter.RevealName",
                     );
                     const icon = fontAwesomeIcon("signature", { fixedWidth: true });
                     toggleNameVisibility.append(icon);
@@ -188,7 +188,7 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
     }
 
     /** Refresh the list of users targeting a combatant's token as well as the active state of the target toggle */
-    refreshTargetDisplay(combatantOrToken: CombatantPF2e | TokenDocumentPF2e, trackers?: HTMLElement[]): void {
+    refreshTargetDisplay(combatantOrToken: CombatantAvant | TokenDocumentAvant, trackers?: HTMLElement[]): void {
         if (!this.viewed || !canvas.ready) return;
 
         const { combatant, tokenDoc } = combatantAndTokenDoc(combatantOrToken);
@@ -277,11 +277,11 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
     }
 
     /** Replace parent method with system-specific procedure */
-    protected override _onToggleDefeatedStatus(combatant: CombatantPF2e<TEncounter>): Promise<void> {
+    protected override _onToggleDefeatedStatus(combatant: CombatantAvant<TEncounter>): Promise<void> {
         return combatant.toggleDefeated();
     }
 
-    async #onToggleTarget(tokenDoc: TokenDocumentPF2e | null, event: MouseEvent | undefined): Promise<void> {
+    async #onToggleTarget(tokenDoc: TokenDocumentAvant | null, event: MouseEvent | undefined): Promise<void> {
         if (!tokenDoc) return;
 
         const isTargeted = Array.from(game.user.targets).some((t) => t.document === tokenDoc);
@@ -305,7 +305,7 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
             NonNullable<TEncounter>
         >;
         if (typeof dropped.initiative !== "number") {
-            ui.notifications.error(game.i18n.format("PF2E.Encounter.HasNoInitiativeScore", { actor: dropped.name }));
+            ui.notifications.error(game.i18n.format("AVANT.Encounter.HasNoInitiativeScore", { actor: dropped.name }));
             return;
         }
 
@@ -349,7 +349,7 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
         const withSameInitiative = newOrder.filter((c) => c.initiative === dropped.initiative);
         if (withSameInitiative.length > 1) {
             for (let priority = 0; priority < withSameInitiative.length; priority++) {
-                withSameInitiative[priority].flags.pf2e.overridePriority[dropped.initiative] = priority;
+                withSameInitiative[priority].flags.avant.overridePriority[dropped.initiative] = priority;
             }
         }
     }
@@ -369,7 +369,7 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
     #adjustFinalOrder(event: Sortable.SortableEvent): void {
         const row = event.item;
         const tracker = this.element[0].querySelector<HTMLOListElement>("#combat-tracker");
-        if (!tracker) throw ErrorPF2e("Unexpected failure to retriever tracker DOM element");
+        if (!tracker) throw ErrorAvant("Unexpected failure to retriever tracker DOM element");
         const rows = Array.from(tracker.querySelectorAll<HTMLElement>("li.combatant"));
 
         const [oldIndex, newIndex] = [event.oldIndex ?? 0, event.newIndex ?? 0];
@@ -390,21 +390,21 @@ export class EncounterTrackerPF2e<TEncounter extends EncounterPF2e | null> exten
 
     #validateDrop(event: Sortable.SortableEvent): void {
         const { combat } = game;
-        if (!combat) throw ErrorPF2e("Unexpected error retrieving combat");
+        if (!combat) throw ErrorAvant("Unexpected error retrieving combat");
 
         const { oldIndex, newIndex } = event;
         if (!(typeof oldIndex === "number" && typeof newIndex === "number")) {
-            throw ErrorPF2e("Unexpected error retrieving new index");
+            throw ErrorAvant("Unexpected error retrieving new index");
         }
     }
 
     /** Retrieve the (rolled) combatants in the real-time order as seen in the DOM */
     #getCombatantsFromDOM(): RolledCombatant<NonNullable<TEncounter>>[] {
         const { combat } = game;
-        if (!combat) throw ErrorPF2e("Unexpected error retrieving combat");
+        if (!combat) throw ErrorAvant("Unexpected error retrieving combat");
 
         const tracker = this.element[0].querySelector<HTMLOListElement>("#combat-tracker");
-        if (!tracker) throw ErrorPF2e("Unexpected failure to retriever tracker DOM element");
+        if (!tracker) throw ErrorAvant("Unexpected failure to retriever tracker DOM element");
 
         return Array.from(tracker.querySelectorAll<HTMLLIElement>("li.combatant"))
             .map((row) => row.getAttribute("data-combatant-id") ?? "")

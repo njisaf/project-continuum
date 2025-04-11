@@ -1,18 +1,18 @@
 <section class="tab effects actions-pane major" data-group="primary" data-tab="effects">
-    <header>{{localize "PF2E.ConditionsLabel"}}</header>
+    <header>{{localize "AVANT.ConditionsLabel"}}</header>
     <ol class="effects-list directory-list item-list">
-        {{> "systems/pf2e/templates/actors/partials/effects.hbs" effects=document.conditions.active}}
+        {{> "systems/avant/templates/actors/partials/effects.hbs" effects=document.conditions.active}}
     </ol>
 
-    <header>{{localize "PF2E.EffectsLabel"}}</header>
+    <header>{{localize "AVANT.EffectsLabel"}}</header>
     <ol class="effects-list directory-list item-list">
-        {{> "systems/pf2e/templates/actors/partials/effects.hbs" effects=document.itemTypes.effect}}
+        {{> "systems/avant/templates/actors/partials/effects.hbs" effects=document.itemTypes.effect}}
     </ol>
 
     <header data-group-id="intercession">
-        {{localize "PF2E.Actor.Character.FeatSlot.DivineIntercessions"}}
+        {{localize "AVANT.Actor.Character.FeatSlot.DivineIntercessions"}}
         {{#if options.editable}}
-            <button type="button" data-action="browse-feats" data-type="feat"><i class="fa-solid fa-fw fa-search"></i>{{localize "PF2E.BrowseLabel"}}</button>
+            <button type="button" data-action="browse-feats" data-type="feat"><i class="fa-solid fa-fw fa-search"></i>{{localize "AVANT.BrowseLabel"}}</button>
         {{/if}}
     </header>
     <ol class="effects-list directory-list item-list">
@@ -28,8 +28,8 @@
                 </div>
                 {{#if @root.options.editable}}
                     <div class="item-controls">
-                        <a data-action="edit-item" data-tooltip="PF2E.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
-                        <a data-action="delete-item" data-tooltip="PF2E.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
+                        <a data-action="edit-item" data-tooltip="AVANT.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
+                        <a data-action="delete-item" data-tooltip="AVANT.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
                     </div>
                 {{/if}}
 

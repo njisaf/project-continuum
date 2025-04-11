@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -78,8 +78,8 @@ export class Migration714RangeIncrementREs extends MigrationBase {
         {
             default: true,
             key: "ToggleProperty",
-            label: "PF2E.SpecificRule.ToggleProperty.Triangulate",
-            property: "flags.pf2e.rollOptions.all.triangulate",
+            label: "AVANT.SpecificRule.ToggleProperty.Triangulate",
+            property: "flags.avant.rollOptions.all.triangulate",
         },
         {
             domain: "ranged-attack-roll",
@@ -119,7 +119,7 @@ export class Migration714RangeIncrementREs extends MigrationBase {
         };
     })();
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const { rules } = source.system;
         if (source.type === "feat") {
             switch (source.system.slug) {

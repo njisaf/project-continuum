@@ -1,12 +1,12 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { SingleCheckAction, SingleCheckActionVariant, SingleCheckActionVariantData } from "@actor/actions/index.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
-import { ItemPF2e, WeaponPF2e } from "@item";
+import { ModifierAvant } from "@actor/modifiers.ts";
+import { ItemAvant, WeaponAvant } from "@item";
 import { extractModifierAdjustments } from "@module/rules/helpers.ts";
 import { CheckContextData, CheckContextOptions, CheckMacroContext } from "@system/action-macros/types.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-function tripCheckContext<ItemType extends ItemPF2e<ActorPF2e>>(
+function tripCheckContext<ItemType extends ItemAvant<ActorAvant>>(
     opts: CheckContextOptions<ItemType>,
     data: CheckContextData<ItemType>,
 ): CheckMacroContext<ItemType> | undefined {
@@ -35,7 +35,7 @@ function tripCheckContext<ItemType extends ItemPF2e<ActorPF2e>>(
         }
         if (item.traits.has("ranged-trip")) {
             modifiers.push(
-                new ModifierPF2e({
+                new ModifierAvant({
                     slug: "ranged-trip",
                     adjustments: extractModifierAdjustments(
                         opts.actor.synthetics.modifierAdjustments,
@@ -43,7 +43,7 @@ function tripCheckContext<ItemType extends ItemPF2e<ActorPF2e>>(
                         "ranged-trip",
                     ),
                     type: "circumstance",
-                    label: CONFIG.PF2E.weaponTraits["ranged-trip"],
+                    label: CONFIG.AVANT.weaponTraits["ranged-trip"],
                     modifier: -2,
                 }),
             );
@@ -58,19 +58,19 @@ function trip(options: SkillActionOptions): void {
     const slug = options?.skill ?? "athletics";
     const modifiers = options?.modifiers;
     const rollOptions = ["action:trip"];
-    ActionMacroHelpers.simpleRollActionCheck<WeaponPF2e<ActorPF2e>>({
+    ActionMacroHelpers.simpleRollActionCheck<WeaponAvant<ActorAvant>>({
         actors: options.actors,
         actionGlyph: options.glyph ?? "A",
-        title: "PF2E.Actions.Trip.Title",
+        title: "AVANT.Actions.Trip.Title",
         checkContext: (opts) => tripCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["attack"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass ?? "reflex",
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Trip", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Trip", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Trip", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Trip", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Trip", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Trip", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -79,7 +79,7 @@ function trip(options: SkillActionOptions): void {
 }
 
 class TripActionVariant extends SingleCheckActionVariant {
-    protected override checkContext<ItemType extends ItemPF2e<ActorPF2e>>(
+    protected override checkContext<ItemType extends ItemAvant<ActorAvant>>(
         opts: CheckContextOptions<ItemType>,
         data: CheckContextData<ItemType>,
     ): CheckMacroContext<ItemType> | undefined {
@@ -91,14 +91,14 @@ class TripAction extends SingleCheckAction {
     constructor() {
         super({
             cost: 1,
-            description: "PF2E.Actions.Trip.Description",
+            description: "AVANT.Actions.Trip.Description",
             difficultyClass: "reflex",
             img: "icons/skills/melee/unarmed-punch-fist-white.webp",
-            name: "PF2E.Actions.Trip.Title",
+            name: "AVANT.Actions.Trip.Title",
             notes: [
-                { outcome: ["criticalSuccess"], text: "PF2E.Actions.Trip.Notes.criticalSuccess" },
-                { outcome: ["success"], text: "PF2E.Actions.Trip.Notes.success" },
-                { outcome: ["criticalFailure"], text: "PF2E.Actions.Trip.Notes.criticalFailure" },
+                { outcome: ["criticalSuccess"], text: "AVANT.Actions.Trip.Notes.criticalSuccess" },
+                { outcome: ["success"], text: "AVANT.Actions.Trip.Notes.success" },
+                { outcome: ["criticalFailure"], text: "AVANT.Actions.Trip.Notes.criticalFailure" },
             ],
             rollOptions: ["action:trip"],
             section: "skill",

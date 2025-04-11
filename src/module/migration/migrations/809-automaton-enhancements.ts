@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -10,16 +10,16 @@ export class Migration809AutomatonEnhancements extends MigrationBase {
         return {
             key: "ActiveEffectLike",
             mode: "override",
-            path: "flags.pf2e.automaton.enhancements",
+            path: "flags.avant.automaton.enhancements",
             priority: 10,
             value: { greater: [], lesser: [] },
         };
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const isAutomaton = source.type === "ancestry" && source.system.slug === "automaton";
         const rules: Record<string, unknown>[] = source.system.rules;
-        if (isAutomaton && !rules.some((r) => r.path === "flags.pf2e.automaton.enhancements")) {
+        if (isAutomaton && !rules.some((r) => r.path === "flags.avant.automaton.enhancements")) {
             source.system.rules.push(this.#automatonEnhancements);
         }
     }

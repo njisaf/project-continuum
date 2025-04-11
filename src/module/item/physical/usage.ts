@@ -77,8 +77,8 @@ function getUsageDetails(usage: string): UsageDetails {
                 return { value: usage, type: "worn", where: usage.substring(4) };
             }
 
-            if (BUILD_MODE === "development" && !(usage in CONFIG.PF2E.usages)) {
-                console.warn(`PF2E System | Unknown usage: [${usage}]`);
+            if (BUILD_MODE === "development" && !(usage in CONFIG.AVANT.usages)) {
+                console.warn(`AVANT System | Unknown usage: [${usage}]`);
             }
 
             return { value: usage, type: "worn" };

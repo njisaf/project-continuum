@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { weaponTraits } from "@scripts/config/traits.ts";
 import { objectHasKey } from "@util";
@@ -11,7 +11,7 @@ export class Migration752StrikeVsWeaponTraits extends MigrationBase {
     /** These actually change the traits on the Strike actions rather than the weapons */
     #toSkip = new Set(["ghost-hunter", "stance-arcane-cascade", "spirit-strikes"]);
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (this.#toSkip.has(source.system.slug ?? "")) return;
 
         const rules = source.system.rules.filter(

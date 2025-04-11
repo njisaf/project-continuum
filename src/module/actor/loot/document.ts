@@ -1,12 +1,12 @@
-import { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import { ItemType } from "@item/base/data/index.ts";
-import { ActiveEffectPF2e } from "@module/active-effect.ts";
-import { UserPF2e } from "@module/user/document.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene/index.ts";
+import { ActiveEffectAvant } from "@module/active-effect.ts";
+import { UserAvant } from "@module/user/document.ts";
+import type { SceneAvant, TokenDocumentAvant } from "@scene/index.ts";
 import { LootSource, LootSystemData } from "./data.ts";
 
-class LootPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends ActorPF2e<TParent> {
+class LootAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends ActorAvant<TParent> {
     override armorClass = null;
 
     override get allowedItemTypes(): (ItemType | "physical")[] {
@@ -47,7 +47,7 @@ class LootPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
     }
 
     /** Anyone with Limited ownership can update a loot actor. */
-    override canUserModify(user: UserPF2e, action: UserAction): boolean {
+    override canUserModify(user: UserAvant, action: UserAction): boolean {
         return (
             super.canUserModify(user, action) ||
             (action === "update" && this.permission >= CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED)
@@ -58,7 +58,7 @@ class LootPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
     async toggleTokenHiding(): Promise<void> {
         if (!this.hiddenWhenEmpty || !this.isOwner) return;
         const hiddenStatus = this.items.size === 0;
-        const scenesAndTokens: [ScenePF2e, TokenDocumentPF2e<ScenePF2e>[]][] = game.scenes.map((s) => [
+        const scenesAndTokens: [SceneAvant, TokenDocumentAvant<SceneAvant>[]][] = game.scenes.map((s) => [
             s,
             s.tokens.filter((t) => t.actor === this),
         ]);
@@ -109,8 +109,8 @@ class LootPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
     protected override _onCreateDescendantDocuments(
         parent: this,
         collection: "effects" | "items",
-        documents: ActiveEffectPF2e<this>[] | ItemPF2e<this>[],
-        result: ActiveEffectPF2e<this>["_source"][] | ItemPF2e<this>["_source"][],
+        documents: ActiveEffectAvant<this>[] | ItemAvant<this>[],
+        result: ActiveEffectAvant<this>["_source"][] | ItemAvant<this>["_source"][],
         operation: DatabaseCreateOperation<this>,
         userId: string,
     ): void {
@@ -123,7 +123,7 @@ class LootPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
     protected override _onDeleteDescendantDocuments(
         parent: this,
         collection: "items" | "effects",
-        documents: ActiveEffectPF2e<this>[] | ItemPF2e<this>[],
+        documents: ActiveEffectAvant<this>[] | ItemAvant<this>[],
         ids: string[],
         operation: DatabaseDeleteOperation<this>,
         userId: string,
@@ -135,7 +135,7 @@ class LootPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
     }
 }
 
-interface LootPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends ActorPF2e<TParent> {
+interface LootAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends ActorAvant<TParent> {
     readonly _source: LootSource;
     system: LootSystemData;
 
@@ -144,4 +144,4 @@ interface LootPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
     get hitPoints(): null;
 }
 
-export { LootPF2e };
+export { LootAvant };

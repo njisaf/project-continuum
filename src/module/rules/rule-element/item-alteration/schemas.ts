@@ -1,5 +1,5 @@
-import type { ItemPF2e } from "@item";
-import type { ItemSourcePF2e, ItemType } from "@item/base/data/index.ts";
+import type { ItemAvant } from "@item";
+import type { ItemSourceAvant, ItemType } from "@item/base/data/index.ts";
 import type { ItemTrait } from "@item/base/types.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { PHYSICAL_ITEM_TYPES, PRECIOUS_MATERIAL_TYPES } from "@item/physical/values.ts";
@@ -29,7 +29,7 @@ const { fields, validation } = foundry.data;
 /** A `SchemaField` reappropriated for validation of specific item alterations */
 class ItemAlterationValidator<TSchema extends AlterationSchema> extends fields.SchemaField<TSchema> {
     #validateForItem?: (
-        item: ItemPF2e | ItemSourcePF2e,
+        item: ItemAvant | ItemSourceAvant,
         alteration: MaybeAlterationData,
     ) => DataModelValidationFailure | void;
 
@@ -48,7 +48,7 @@ class ItemAlterationValidator<TSchema extends AlterationSchema> extends fields.S
      * A type-safe affirmation of full validity of an alteration _and_ its applicable to a particular item
      * Errors will bubble all the way up to the originating parent rule element
      */
-    isValid(data: { item: ItemPF2e | ItemSourcePF2e; alteration: MaybeAlterationData }): data is {
+    isValid(data: { item: ItemAvant | ItemSourceAvant; alteration: MaybeAlterationData }): data is {
         item: ItemOrSource<SourceFromSchema<TSchema>["itemType"]>;
         alteration: SourceFromSchema<TSchema>;
     } {
@@ -74,12 +74,12 @@ class ItemAlterationValidator<TSchema extends AlterationSchema> extends fields.S
 }
 
 type ItemOrSource<TItemType extends ItemType> =
-    | InstanceType<ConfigPF2e["PF2E"]["Item"]["documentClasses"][TItemType]>
-    | InstanceType<ConfigPF2e["PF2E"]["Item"]["documentClasses"][TItemType]>["_source"];
+    | InstanceType<ConfigAvant["AVANT"]["Item"]["documentClasses"][TItemType]>
+    | InstanceType<ConfigAvant["AVANT"]["Item"]["documentClasses"][TItemType]>["_source"];
 
 type MaybeAlterationData = { mode: string; itemType: string; value: unknown };
 
-const itemHasCounterBadge = (item: ItemPF2e | ItemSourcePF2e): DataModelValidationFailure | void => {
+const itemHasCounterBadge = (item: ItemAvant | ItemSourceAvant): DataModelValidationFailure | void => {
     const hasBadge = itemIsOfType(item, "condition")
         ? typeof item.system.value.value === "number"
         : itemIsOfType(item, "effect")
@@ -237,7 +237,7 @@ const ITEM_ALTERATION_VALIDATORS = {
         value: new fields.StringField({
             required: true,
             nullable: false,
-            choices: () => CONFIG.PF2E.damageTypes,
+            choices: () => CONFIG.AVANT.damageTypes,
         } as const),
     }),
     /** The passive defense targeted by an attack spell */
@@ -254,7 +254,7 @@ const ITEM_ALTERATION_VALIDATORS = {
         itemType: new fields.StringField({
             required: true,
             nullable: false,
-            choices: () => R.keys(CONFIG.PF2E.Item.documentClasses),
+            choices: () => R.keys(CONFIG.AVANT.Item.documentClasses),
             initial: undefined,
         }),
         mode: new fields.StringField({
@@ -384,7 +384,7 @@ const ITEM_ALTERATION_VALIDATORS = {
                     }),
                     damageType: new fields.StringField({
                         required: true,
-                        choices: () => CONFIG.PF2E.damageTypes,
+                        choices: () => CONFIG.AVANT.damageTypes,
                     }),
                     dc: new fields.NumberField({
                         required: true,
@@ -457,14 +457,14 @@ const ITEM_ALTERATION_VALIDATORS = {
         value: new fields.StringField({
             required: true,
             nullable: false,
-            choices: () => Object.keys(CONFIG.PF2E.frequencies),
+            choices: () => Object.keys(CONFIG.AVANT.frequencies),
             initial: undefined,
         } as const),
     }),
     "other-tags": new ItemAlterationValidator({
         itemType: new fields.StringField({
             required: true,
-            choices: () => R.keys(CONFIG.PF2E.Item.documentClasses),
+            choices: () => R.keys(CONFIG.AVANT.Item.documentClasses),
         }),
         mode: new fields.StringField({
             required: true,
@@ -515,7 +515,7 @@ const ITEM_ALTERATION_VALIDATORS = {
             itemType: new fields.StringField({
                 required: true,
                 choices: () =>
-                    Object.entries(CONFIG.PF2E.Item.documentClasses)
+                    Object.entries(CONFIG.AVANT.Item.documentClasses)
                         .filter(([, I]) => !R.isEmpty(I.validTraits))
                         .map(([t]) => t as Exclude<ItemType, "deity" | "lore" | "spellcastingEntry">),
             }),
@@ -531,7 +531,7 @@ const ITEM_ALTERATION_VALIDATORS = {
         },
         {
             validateForItem: (item, alteration): DataModelValidationFailure | void => {
-                const documentClasses: Record<string, typeof ItemPF2e> = CONFIG.PF2E.Item.documentClasses;
+                const documentClasses: Record<string, typeof ItemAvant> = CONFIG.AVANT.Item.documentClasses;
                 const validTraits = documentClasses[item.type].validTraits;
                 const value = alteration.value;
                 if (typeof value !== "string" || !(value in validTraits)) {
@@ -547,10 +547,10 @@ const ITEM_ALTERATION_VALIDATORS = {
 interface AlterationFieldOptions<TSourceProp extends SourceFromSchema<AlterationSchema>>
     extends DataFieldOptions<TSourceProp, true, false, false> {
     validateForItem?: (
-        item: ItemPF2e | ItemSourcePF2e,
+        item: ItemAvant | ItemSourceAvant,
         alteration: MaybeAlterationData,
     ) => DataModelValidationFailure | void;
-    /** Whether this alteration can be used with an `ItemPF2e` instance */
+    /** Whether this alteration can be used with an `ItemAvant` instance */
     operableOnInstances?: boolean;
     /** Whether this alteration can be used with item source data */
     operableOnSource?: boolean;

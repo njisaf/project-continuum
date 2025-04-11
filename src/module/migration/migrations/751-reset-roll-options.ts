@@ -1,4 +1,4 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -6,9 +6,9 @@ import { MigrationBase } from "../base.ts";
 export class Migration751ResetRollOptions extends MigrationBase {
     static override version = 0.751;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
-        if (R.isPlainObject(source.flags.pf2e) && "rollOptions" in source.flags.pf2e) {
-            source.flags.pf2e["-=rollOptions"] = null;
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
+        if (R.isPlainObject(source.flags.avant) && "rollOptions" in source.flags.avant) {
+            source.flags.avant["-=rollOptions"] = null;
         }
     }
 }

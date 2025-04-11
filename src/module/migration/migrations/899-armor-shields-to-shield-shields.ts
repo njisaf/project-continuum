@@ -1,5 +1,5 @@
 import { ArmorSystemSource } from "@item/armor/data.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { IntegratedWeaponSource, SpecificShieldData } from "@item/shield/data.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
@@ -116,7 +116,7 @@ export class Migration899ArmorShieldToShieldShield extends MigrationBase {
         "wovenwood-shield-true": "wooden-shield",
     };
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (itemIsOfType(source, "physical") && source.type !== "backpack") {
             // This only belongs in container items
             const system: { slug: string | null; "-=negateBulk"?: null } = source.system;
@@ -160,7 +160,7 @@ export class Migration899ArmorShieldToShieldShield extends MigrationBase {
         }
     }
 
-    #migrateRules(source: ItemSourcePF2e): void {
+    #migrateRules(source: ItemSourceAvant): void {
         const shieldAlterations = source.system.rules.filter(
             (r: MaybeShieldAlteration): r is { key: string; predicate: JSONValue[]; itemType: string } =>
                 r.key === "ItemAlteration" &&

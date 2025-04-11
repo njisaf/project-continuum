@@ -1,10 +1,10 @@
-import { ItemPF2e } from "@item";
+import { ItemAvant } from "@item";
 import { fontAwesomeIcon, htmlQuery, htmlQueryAll } from "@util";
 import { ItemAttacher } from "../item-attacher.ts";
 
 /** Extend ItemDirectory to show more information */
-export class ItemDirectoryPF2e<TItem extends ItemPF2e<null>> extends ItemDirectory<TItem> {
-    static override entryPartial = "systems/pf2e/templates/sidebar/item-document-partial.hbs";
+export class ItemDirectoryAvant<TItem extends ItemAvant<null>> extends ItemDirectory<TItem> {
+    static override entryPartial = "systems/avant/templates/sidebar/item-document-partial.hbs";
 
     static override get defaultOptions(): SidebarDirectoryOptions {
         const options = super.defaultOptions;
@@ -31,7 +31,7 @@ export class ItemDirectoryPF2e<TItem extends ItemPF2e<null>> extends ItemDirecto
         const options = super._getEntryContextOptions();
 
         options.push({
-            name: "PF2E.Item.Physical.Attach.SidebarContextMenuOption",
+            name: "AVANT.Item.Physical.Attach.SidebarContextMenuOption",
             icon: fontAwesomeIcon("paperclip").outerHTML,
             condition: ($li) => {
                 const row = $li[0];
@@ -65,10 +65,10 @@ export class ItemDirectoryPF2e<TItem extends ItemPF2e<null>> extends ItemDirecto
         browseButton.append(
             fontAwesomeIcon("search", { fixedWidth: true }),
             " ",
-            game.i18n.localize("PF2E.CompendiumBrowser.Title"),
+            game.i18n.localize("AVANT.CompendiumBrowser.Title"),
         );
         browseButton.addEventListener("click", () => {
-            game.pf2e.compendiumBrowser.render({ force: true });
+            game.avant.compendiumBrowser.render({ force: true });
         });
         htmlQuery(html, "footer.directory-footer")?.append(browseButton);
     }

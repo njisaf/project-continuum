@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="{{fieldIdPrefix}}action-type">{{localize "PF2E.ActionActionsLabel"}}</label>
+    <label for="{{fieldIdPrefix}}action-type">{{localize "AVANT.ActionActionsLabel"}}</label>
     <div class="form-fields">
         <select name="system.actionType.value" id="{{fieldIdPrefix}}action-type">
             {{selectOptions actionTypes selected=data.actionType.value localize=true}}
@@ -15,12 +15,12 @@
 </div>
 
 <div class="form-group">
-    <label for="{{fieldIdPrefix}}frequency">{{localize "PF2E.Frequency.Label"}}</label>
+    <label for="{{fieldIdPrefix}}frequency">{{localize "AVANT.Frequency.Label"}}</label>
     <div class="form-fields">
         {{#if data.frequency}}
             <div class="frequency">
                 <input type="number" name="system.frequency.max" id="{{fieldIdPrefix}}frequency" min="1" max="99" value="{{data.frequency.max}}" />
-                <span>{{localize "PF2E.Frequency.per"}}</span>
+                <span>{{localize "AVANT.Frequency.per"}}</span>
                 <select name="system.frequency.per">
                     {{selectOptions @root.frequencies selected=data.frequency.per localize=true}}
                 </select>
@@ -28,8 +28,8 @@
             </div>
         {{else}}
             <span class="frequency empty">
-                {{localize "PF2E.Frequency.AtWill"}}
-                <a data-action="frequency-add">({{localize "PF2E.AddShortLabel"}})</a>
+                {{localize "AVANT.Frequency.AtWill"}}
+                <a data-action="frequency-add">({{localize "AVANT.AddShortLabel"}})</a>
             </span>
         {{/if}}
     </div>

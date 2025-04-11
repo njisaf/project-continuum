@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { PredicateStatement, RawPredicate } from "@system/predication.ts";
 import { isObject } from "@util";
@@ -33,7 +33,7 @@ export class Migration793MakePredicatesArrays extends MigrationBase {
     }
 
     /** Clear predicates in custom modifiers */
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if ("customModifiers" in source.system) {
             if (!isObject(source.system.customModifiers)) {
                 source.system.customModifiers = {};
@@ -44,7 +44,7 @@ export class Migration793MakePredicatesArrays extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const rules: MaybeWithOldPredicates[] = source.system.rules;
         for (const rule of rules) {
             if (this.#isOldRawPredicate(rule.predicate)) {

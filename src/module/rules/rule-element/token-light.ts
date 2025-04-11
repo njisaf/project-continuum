@@ -1,6 +1,6 @@
 import type { LightDataSchema } from "types/foundry/common/data/data.d.ts";
 import type { SchemaField } from "types/foundry/common/data/fields.d.ts";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
@@ -8,7 +8,7 @@ import fields = foundry.data.fields;
  * Add or change the light emitted by a token
  * @category RuleElement
  */
-class TokenLightRuleElement extends RuleElementPF2e<TokenLightRuleSchema> {
+class TokenLightRuleElement extends RuleElementAvant<TokenLightRuleSchema> {
     static override defineSchema(): TokenLightRuleSchema {
         return {
             ...super.defineSchema(),
@@ -57,7 +57,7 @@ class TokenLightRuleElement extends RuleElementPF2e<TokenLightRuleSchema> {
 }
 
 interface TokenLightRuleElement
-    extends RuleElementPF2e<TokenLightRuleSchema>,
+    extends RuleElementAvant<TokenLightRuleSchema>,
         ModelPropsFromRESchema<TokenLightRuleSchema> {}
 
 type TokenLightValueSchema = Omit<LightDataSchema, "bright" | "color" | "dim"> & {

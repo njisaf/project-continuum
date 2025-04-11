@@ -2,7 +2,7 @@
     <div class="item-name">
         {{#if settlement.editing}}
             <h4 class="drag-handle" data-drag-handle><i class="fa-solid fa-bars"></i></h4>
-            <input class="name" type="text" value="{{settlement.name}}" name="settlements.{{settlement.id}}.name" placeholder="{{localize "PF2E.Kingmaker.Settlement.Name"}}" />
+            <input class="name" type="text" value="{{settlement.name}}" name="settlements.{{settlement.id}}.name" placeholder="{{localize "AVANT.Kingmaker.Settlement.Name"}}" />
             <select class="type" name="settlements.{{settlement.id}}.type" data-dtype="String">
                 {{selectOptions @root.settlementTypes selected=settlement.type localize=true}}
             </select>
@@ -11,7 +11,7 @@
             <span class="type">{{localize settlement.typeLabel}}</span>
         {{/if}}
         <label class="level">
-            {{localize "PF2E.LevelLabel"}}
+            {{localize "AVANT.LevelLabel"}}
             {{#if settlement.editing}}
                 <input type="number" value="{{settlement.level}}" name="settlements.{{settlement.id}}.level" />
             {{else}}
@@ -34,14 +34,14 @@
     <div class="item-summary" hidden="hidden">
         <section class="settlement-data">
             <section class="stats">
-                <div>{{settlement.blocks}} {{localize "PF2E.Kingmaker.Settlement.Blocks"}}</div>
-                <div>{{localize "PF2E.Kingmaker.Settlement.LevelRange"}}: {{settlement.levelRange}}</div>
-                <div>{{localize "PF2E.Kingmaker.Settlement.Population"}}: {{settlement.populationRange}}</div>
-                <label>{{localize "PF2E.Kingmaker.Settlement.Overcrowded"}} <input type="checkbox" name="settlements.{{settlement.id}}.overcrowded" {{checked settlement.overcrowded}}/></label>
+                <div>{{settlement.blocks}} {{localize "AVANT.Kingmaker.Settlement.Blocks"}}</div>
+                <div>{{localize "AVANT.Kingmaker.Settlement.LevelRange"}}: {{settlement.levelRange}}</div>
+                <div>{{localize "AVANT.Kingmaker.Settlement.Population"}}: {{settlement.populationRange}}</div>
+                <label>{{localize "AVANT.Kingmaker.Settlement.Overcrowded"}} <input type="checkbox" name="settlements.{{settlement.id}}.overcrowded" {{checked settlement.overcrowded}}/></label>
             </section>
 
             <section class="storage">
-                <h4>{{localize "PF2E.Kingmaker.Kingdom.Storage"}}</h4>
+                <h4>{{localize "AVANT.Kingmaker.Kingdom.Storage"}}</h4>
                 <div class="storage-items">
                     {{#each settlement.storage as |storage|}}
                         <label class="value">
@@ -53,12 +53,12 @@
             </section>
 
             <section>
-                <h4>{{localize "PF2E.Kingmaker.Consumption.Label"}}</h4>
+                <h4>{{localize "AVANT.Kingmaker.Consumption.Label"}}</h4>
                 <div class="value">
-                    {{localize "PF2E.Kingmaker.Consumption.Base"}}: {{settlement.consumption.base}}
+                    {{localize "AVANT.Kingmaker.Consumption.Base"}}: {{settlement.consumption.base}}
                 </div>
                 <label>
-                    {{localize "PF2E.Kingmaker.Consumption.Reduction"}}:
+                    {{localize "AVANT.Kingmaker.Consumption.Reduction"}}:
                     <input type="number" value="{{settlement.consumption.reduction}}" name="settlements.{{settlement.id}}.consumption.reduction"/>
                 </label>
                 <div class="value">Total: {{settlement.consumption.total}}</div>

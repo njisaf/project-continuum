@@ -106,7 +106,7 @@ interface DCOptions {
 
 /** Level-based DCs */
 function calculateDC(level: number, { pwol, rarity = "common" }: DCOptions = {}): number {
-    pwol ??= game.pf2e.settings.variants.pwol.enabled;
+    pwol ??= game.avant.settings.variants.pwol.enabled;
 
     // assume level 0 if garbage comes in. We cast level to number because the backing data may actually have it
     // stored as a string, which we can't catch at compile time

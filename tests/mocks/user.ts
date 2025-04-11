@@ -1,9 +1,9 @@
-import { UserSourcePF2e } from "@module/user/data.js";
+import { UserSourceAvant } from "@module/user/data.js";
 
 export class MockUser {
-    readonly _source: UserSourcePF2e;
+    readonly _source: UserSourceAvant;
 
-    constructor(data: UserSourcePF2e) {
+    constructor(data: UserSourceAvant) {
         this._source = fu.duplicate(data);
     }
 

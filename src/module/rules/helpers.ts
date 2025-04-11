@@ -1,22 +1,22 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import {
-    DamageDicePF2e,
+    DamageDiceAvant,
     DeferredDamageDiceOptions,
     DeferredValueParams,
     ModifierAdjustment,
-    ModifierPF2e,
+    ModifierAvant,
     StatisticModifier,
 } from "@actor/modifiers.ts";
-import { ItemPF2e } from "@item";
-import { ConditionSource, EffectSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemAvant } from "@item";
+import { ConditionSource, EffectSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { PickableThing } from "@module/apps/pick-a-thing-prompt.ts";
-import { RollNotePF2e } from "@module/notes.ts";
+import { RollNoteAvant } from "@module/notes.ts";
 import { BaseDamageData } from "@system/damage/index.ts";
 import { DegreeOfSuccessAdjustment } from "@system/degree-of-success.ts";
 import { RollTwiceOption } from "@system/rolls.ts";
 import * as R from "remeda";
 import { DamageAlteration } from "./rule-element/damage-alteration/alteration.ts";
-import { BracketedValue, RuleElementPF2e, RuleElementSource } from "./rule-element/index.ts";
+import { BracketedValue, RuleElementAvant, RuleElementSource } from "./rule-element/index.ts";
 import { DamageDiceSynthetics, RollSubstitution, RollTwiceSynthetic, RuleElementSynthetics } from "./synthetics.ts";
 
 /** Extracts a list of all cloned modifiers across all given keys in a single list. */
@@ -24,7 +24,7 @@ function extractModifiers(
     synthetics: RuleElementSynthetics,
     domains: string[],
     options: DeferredValueParams = {},
-): ModifierPF2e[] {
+): ModifierAvant[] {
     domains = R.unique(domains);
     const modifiers = domains.flatMap((s) => synthetics.modifiers[s] ?? []).flatMap((d) => d(options) ?? []);
     for (const modifier of modifiers) {
@@ -57,18 +57,18 @@ function extractDamageAlterations(
 }
 
 /** Extracts a list of all cloned notes across all given keys in a single list. */
-function extractNotes(rollNotes: Record<string, RollNotePF2e[]>, selectors: string[]): RollNotePF2e[] {
+function extractNotes(rollNotes: Record<string, RollNoteAvant[]>, selectors: string[]): RollNoteAvant[] {
     return selectors.flatMap((s) => (rollNotes[s] ?? []).map((n) => n.clone()));
 }
 
-function extractDamageDice(synthetics: DamageDiceSynthetics, options: DeferredDamageDiceOptions): DamageDicePF2e[] {
+function extractDamageDice(synthetics: DamageDiceSynthetics, options: DeferredDamageDiceOptions): DamageDiceAvant[] {
     return options.selectors.flatMap((s) => synthetics[s] ?? []).flatMap((d) => d(options) ?? []);
 }
 
 function processDamageCategoryStacking(
     base: BaseDamageData[],
-    options: { modifiers: ModifierPF2e[]; dice: DamageDicePF2e[]; test: Set<string> },
-): { modifiers: ModifierPF2e[]; dice: DamageDicePF2e[] } {
+    options: { modifiers: ModifierAvant[]; dice: DamageDiceAvant[]; test: Set<string> },
+): { modifiers: ModifierAvant[]; dice: DamageDiceAvant[] } {
     const dice = options.dice;
     const groupedModifiers = R.groupBy(options.modifiers, (m) => (m.category === "persistent" ? "persistent" : "main"));
 
@@ -126,9 +126,9 @@ async function extractEphemeralEffects({
 
 interface ExtractEphemeralEffectsParams {
     affects: "target" | "origin";
-    origin: ActorPF2e | null;
-    target: ActorPF2e | null;
-    item: ItemPF2e | null;
+    origin: ActorAvant | null;
+    target: ActorAvant | null;
+    item: ItemAvant | null;
     domains: string[];
     options: Set<string> | string[];
 }
@@ -182,20 +182,20 @@ async function processPreUpdateActorHooks(
 ): Promise<void> {
     const actorId = String(changed._id);
     const actor = pack ? await game.packs.get(pack)?.getDocument(actorId) : game.actors.get(actorId);
-    if (!(actor instanceof ActorPF2e)) return;
+    if (!(actor instanceof ActorAvant)) return;
 
     // Run preUpdateActor rule element callbacks
-    type WithPreUpdateActor = RuleElementPF2e & {
-        preUpdateActor: NonNullable<RuleElementPF2e["preUpdateActor"]>;
+    type WithPreUpdateActor = RuleElementAvant & {
+        preUpdateActor: NonNullable<RuleElementAvant["preUpdateActor"]>;
     };
     const rules = actor.rules.filter((r): r is WithPreUpdateActor => !!r.preUpdateActor);
     if (rules.length === 0) return;
 
-    actor.flags.pf2e.rollOptions = actor.clone(changed, { keepId: true }).flags.pf2e.rollOptions;
+    actor.flags.avant.rollOptions = actor.clone(changed, { keepId: true }).flags.avant.rollOptions;
     const createDeletes = (
         await Promise.all(
             rules.map(
-                (r): Promise<{ create: ItemSourcePF2e[]; delete: string[] }> =>
+                (r): Promise<{ create: ItemSourceAvant[]; delete: string[] }> =>
                     actor.items.has(r.item.id) ? r.preUpdateActor() : Promise.resolve({ create: [], delete: [] }),
             ),
         )
@@ -219,7 +219,7 @@ async function processPreUpdateActorHooks(
 
 /** Gets the item update info that applies an update to all given rules */
 function createBatchRuleElementUpdate(
-    rules: RuleElementPF2e[],
+    rules: RuleElementAvant[],
     update: Record<string, unknown>,
 ): EmbeddedDocumentUpdateData[] {
     const itemUpdates: EmbeddedDocumentUpdateData[] = [];

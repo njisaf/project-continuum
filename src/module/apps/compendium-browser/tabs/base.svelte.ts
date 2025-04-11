@@ -1,5 +1,5 @@
-import { CompendiumDirectoryPF2e } from "@module/apps/sidebar/compendium-directory.ts";
-import { ErrorPF2e, htmlQuery, sluggify } from "@util";
+import { CompendiumDirectoryAvant } from "@module/apps/sidebar/compendium-directory.ts";
+import { ErrorAvant, htmlQuery, sluggify } from "@util";
 import MiniSearch from "minisearch";
 import * as R from "remeda";
 import type { TableResultSource } from "types/foundry/common/documents/table-result.d.ts";
@@ -85,7 +85,7 @@ export abstract class CompendiumBrowserTab {
             fields: this.searchFields,
             idField: "uuid",
             processTerm: (term): string[] | null => {
-                if (term.length <= 1 || CompendiumDirectoryPF2e.STOP_WORDS.has(term)) {
+                if (term.length <= 1 || CompendiumDirectoryAvant.STOP_WORDS.has(term)) {
                     return null;
                 }
                 return Array.from(wordSegmenter.segment(term))
@@ -110,7 +110,7 @@ export abstract class CompendiumBrowserTab {
      */
     async open(options?: CompendiumBrowserOpenTabOptions): Promise<void> {
         if (options?.filter && !this.isInitialized) {
-            throw ErrorPF2e("Tried to pass filter data to an uninitialized tab!");
+            throw ErrorAvant("Tried to pass filter data to an uninitialized tab!");
         }
         return this.browser.openTab(this.tabName, options);
     }
@@ -250,7 +250,7 @@ export abstract class CompendiumBrowserTab {
         );
     }
 
-    /** Provide a best-effort sort of an object (e.g. CONFIG.PF2E.monsterTraits) */
+    /** Provide a best-effort sort of an object (e.g. CONFIG.AVANT.monsterTraits) */
     protected sortedConfig(obj: Record<string, string>): Record<string, string> {
         return Object.fromEntries(
             [...Object.entries(obj)].sort((entryA, entryB) => entryA[1].localeCompare(entryB[1], game.i18n.lang)),
@@ -295,12 +295,12 @@ export abstract class CompendiumBrowserTab {
 
     async createRollTable(): Promise<void> {
         if (!this.isInitialized) {
-            throw ErrorPF2e(`Compendium Browser Tab "${this.tabName}" is not initialized!`);
+            throw ErrorAvant(`Compendium Browser Tab "${this.tabName}" is not initialized!`);
         }
 
         if (this.results.length > this.#MAX_TABLE_SIZE) {
             ui.notifications.warn(
-                game.i18n.format("PF2E.CompendiumBrowser.RollTable.TooManyResults", {
+                game.i18n.format("AVANT.CompendiumBrowser.RollTable.TooManyResults", {
                     size: this.results.length,
                     maxSize: this.#MAX_TABLE_SIZE,
                 }),
@@ -308,17 +308,17 @@ export abstract class CompendiumBrowserTab {
             return;
         }
 
-        const content = await renderTemplate("systems/pf2e/templates/compendium-browser/roll-table-dialog.hbs", {
+        const content = await renderTemplate("systems/avant/templates/compendium-browser/roll-table-dialog.hbs", {
             count: this.results.length,
         });
         Dialog.confirm({
             content,
-            title: game.i18n.localize("PF2E.CompendiumBrowser.RollTable.CreateLabel"),
+            title: game.i18n.localize("AVANT.CompendiumBrowser.RollTable.CreateLabel"),
             yes: async ($html) => {
                 const html = $html[0];
                 const name =
                     htmlQuery<HTMLInputElement>(html, "input[name=name]")?.value ||
-                    game.i18n.localize("PF2E.CompendiumBrowser.Title");
+                    game.i18n.localize("AVANT.CompendiumBrowser.Title");
                 const weight = Number(htmlQuery<HTMLInputElement>(html, "input[name=weight]")?.value) || 1;
                 const results = this.#getRollTableResults({ weight });
                 const table = await RollTable.create({
@@ -333,12 +333,12 @@ export abstract class CompendiumBrowserTab {
 
     async addToRollTable(): Promise<void> {
         if (!this.isInitialized) {
-            throw ErrorPF2e(`Compendium Browser Tab "${this.tabName}" is not initialized!`);
+            throw ErrorAvant(`Compendium Browser Tab "${this.tabName}" is not initialized!`);
         }
 
         if (this.results.length > this.#MAX_TABLE_SIZE) {
             ui.notifications.warn(
-                game.i18n.format("PF2E.CompendiumBrowser.RollTable.TooManyResults", {
+                game.i18n.format("AVANT.CompendiumBrowser.RollTable.TooManyResults", {
                     size: this.results.length,
                     maxSize: this.#MAX_TABLE_SIZE,
                 }),
@@ -346,12 +346,12 @@ export abstract class CompendiumBrowserTab {
             return;
         }
 
-        const content = await renderTemplate("systems/pf2e/templates/compendium-browser/roll-table-dialog.hbs", {
+        const content = await renderTemplate("systems/avant/templates/compendium-browser/roll-table-dialog.hbs", {
             count: this.results.length,
             rollTables: game.tables.contents,
         });
         Dialog.confirm({
-            title: game.i18n.localize("PF2E.CompendiumBrowser.RollTable.SelectTableTitle"),
+            title: game.i18n.localize("AVANT.CompendiumBrowser.RollTable.SelectTableTitle"),
             content,
             yes: async ($html) => {
                 const html = $html[0];

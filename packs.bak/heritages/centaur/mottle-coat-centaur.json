@@ -1,0 +1,78 @@
+{
+    "_id": "3aKeX3q9hRdxgP1J",
+    "folder": "MORwBv0P0zPrX27k",
+    "img": "systems/avant/icons/default-icons/heritage.svg",
+    "name": "Mottle-Coat Centaur",
+    "system": {
+        "ancestry": {
+            "name": "Centaur",
+            "slug": "centaur",
+            "uuid": "Compendium.avant.ancestries.Item.pJkQlFTvpQ5GjZ5e"
+        },
+        "description": {
+            "value": "<p>Your coat is mottled or striped, granting you natural camouflage in your home environment. Select a terrain from the following: arctic, desert, forest, mountain, plains, or swamp. In your selected terrain, you gain a +1 circumstance bonus to Stealth checks to @UUID[Compendium.avant.actionsavant.Item.Hide] or @UUID[Compendium.avant.actionsavant.Item.Sneak] and to Deception checks to @UUID[Compendium.avant.actionsavant.Item.Feint].</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Howl of the Wild"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Terrain.Arctic",
+                        "value": "arctic"
+                    },
+                    {
+                        "label": "AVANT.Terrain.Desert",
+                        "value": "desert"
+                    },
+                    {
+                        "label": "AVANT.Terrain.Forest",
+                        "value": "forest"
+                    },
+                    {
+                        "label": "AVANT.Terrain.Mountain",
+                        "value": "mountain"
+                    },
+                    {
+                        "label": "AVANT.Terrain.Plains",
+                        "value": "plain"
+                    },
+                    {
+                        "label": "AVANT.Terrain.Swamp",
+                        "value": "swamp"
+                    }
+                ],
+                "flag": "terrain",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.TerrainExpertise.Prompt"
+            },
+            {
+                "key": "FlatModifier",
+                "predicate": [
+                    "terrain:{item|flags.avant.rulesSelections.terrain}",
+                    {
+                        "or": [
+                            "action:hide",
+                            "action:sneak",
+                            "action:feint"
+                        ]
+                    }
+                ],
+                "selector": [
+                    "stealth",
+                    "deception"
+                ],
+                "type": "circumstance",
+                "value": 1
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "heritage"
+}

@@ -1,7 +1,7 @@
-import type { MeasuredTemplatePF2e } from "../measured-template.ts";
+import type { MeasuredTemplateAvant } from "../measured-template.ts";
 
-export class TemplateLayerPF2e<
-    TObject extends MeasuredTemplatePF2e = MeasuredTemplatePF2e,
+export class TemplateLayerAvant<
+    TObject extends MeasuredTemplateAvant = MeasuredTemplateAvant,
 > extends TemplateLayer<TObject> {
     /** Preview event listeners that can be referenced across methods */
     #previewListeners: TemplatePreviewEventListeners | null = null;

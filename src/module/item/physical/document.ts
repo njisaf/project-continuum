@@ -1,12 +1,12 @@
-import type { ActorPF2e } from "@actor";
-import { ItemPF2e, ItemProxyPF2e, type ContainerPF2e } from "@item";
-import type { ItemSourcePF2e, PhysicalItemSource, RawItemChatData, TraitChatData } from "@item/base/data/index.ts";
+import type { ActorAvant } from "@actor";
+import { ItemAvant, ItemProxyAvant, type ContainerAvant } from "@item";
+import type { ItemSourceAvant, PhysicalItemSource, RawItemChatData, TraitChatData } from "@item/base/data/index.ts";
 import { MystifiedTraits } from "@item/base/data/values.ts";
 import { isContainerCycle } from "@item/container/helpers.ts";
 import type { Rarity, Size, ZeroToTwo } from "@module/data.ts";
 import type { EffectSpinoff } from "@module/rules/rule-element/effect-spinoff/spinoff.ts";
-import type { UserPF2e } from "@module/user/document.ts";
-import { ErrorPF2e, isObject, tupleHasValue } from "@util";
+import type { UserAvant } from "@module/user/document.ts";
+import { ErrorAvant, isObject, tupleHasValue } from "@util";
 import * as R from "remeda";
 import { getUnidentifiedPlaceholderImage } from "../identification.ts";
 import { Bulk } from "./bulk.ts";
@@ -22,7 +22,7 @@ import type {
     Price,
 } from "./data.ts";
 import {
-    CoinsPF2e,
+    CoinsAvant,
     computeLevelRarityPrice,
     getDefaultEquipStatus,
     handleHPChange,
@@ -31,23 +31,23 @@ import {
 import { getUsageDetails, isEquipped } from "./usage.ts";
 import { DENOMINATIONS } from "./values.ts";
 
-abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+abstract class PhysicalItemAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     /** The item in which this item is embedded */
-    parentItem: PhysicalItemPF2e | null;
+    parentItem: PhysicalItemAvant | null;
 
     /**
      * The cached container of this item, if in a container, or null
      * @ignore
      */
-    declare private _container?: ContainerPF2e<ActorPF2e> | null;
+    declare private _container?: ContainerAvant<ActorAvant> | null;
 
     /** Doubly-embedded adjustments, attachments, talismans etc. */
-    declare subitems: Collection<PhysicalItemPF2e<TParent>>;
+    declare subitems: Collection<PhysicalItemAvant<TParent>>;
 
     /** A map of effect spinoff objects, which can be used to create new effects from using certain items */
     effectSpinoffs: Map<string, EffectSpinoff>;
 
-    constructor(data: PreCreate<ItemSourcePF2e>, context: PhysicalItemConstructionContext<TParent> = {}) {
+    constructor(data: PreCreate<ItemSourceAvant>, context: PhysicalItemConstructionContext<TParent> = {}) {
         super(data, context);
         this.parentItem = context.parentItem ?? null;
         this.effectSpinoffs = new Map();
@@ -115,11 +115,11 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     }
 
     /** The monetary value of the entire item stack */
-    get assetValue(): CoinsPF2e {
-        const baseValue = CoinsPF2e.fromPrice(this.price, this.quantity);
+    get assetValue(): CoinsAvant {
+        const baseValue = CoinsAvant.fromPrice(this.price, this.quantity);
         return this.isSpecific
             ? baseValue
-            : this.subitems.reduce((total, i) => total.plus(CoinsPF2e.fromPrice(i.price, i.quantity)), baseValue);
+            : this.subitems.reduce((total, i) => total.plus(CoinsAvant.fromPrice(i.price, i.quantity)), baseValue);
     }
 
     get identificationStatus(): IdentificationStatus {
@@ -197,7 +197,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     }
 
     /** Get this item's container, returning null if it is not in a container */
-    get container(): ContainerPF2e<ActorPF2e> | null {
+    get container(): ContainerAvant<ActorAvant> | null {
         this.updateContainerCache();
         return this._container ?? null;
     }
@@ -218,10 +218,10 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     get activations(): (ItemActivation & { componentsLabel: string })[] {
         return Object.values(this.system.activations ?? {}).map((action) => {
             const components: string[] = [];
-            if (action.components.cast) components.push(game.i18n.localize("PF2E.Item.Activation.Cast"));
-            if (action.components.command) components.push(game.i18n.localize("PF2E.Item.Activation.Command"));
-            if (action.components.envision) components.push(game.i18n.localize("PF2E.Item.Activation.Envision"));
-            if (action.components.interact) components.push(game.i18n.localize("PF2E.Item.Activation.Interact"));
+            if (action.components.cast) components.push(game.i18n.localize("AVANT.Item.Activation.Cast"));
+            if (action.components.command) components.push(game.i18n.localize("AVANT.Item.Activation.Command"));
+            if (action.components.envision) components.push(game.i18n.localize("AVANT.Item.Activation.Envision"));
+            if (action.components.interact) components.push(game.i18n.localize("AVANT.Item.Activation.Interact"));
 
             return {
                 componentsLabel: components.join(", "),
@@ -235,7 +235,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     }
 
     /** Whether other items can be attached (or affixed, applied, etc.) to this item */
-    acceptsSubitem(candidate: PhysicalItemPF2e): boolean;
+    acceptsSubitem(candidate: PhysicalItemAvant): boolean;
     acceptsSubitem(): boolean {
         return false;
     }
@@ -277,7 +277,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
 
         // Temporary: prevent noise from items pre migration 746
         if (typeof this.system.price.value === "string") {
-            this.system.price.value = CoinsPF2e.fromString(this.system.price.value);
+            this.system.price.value = CoinsAvant.fromString(this.system.price.value);
         }
 
         // Ensure infused items are always temporary
@@ -285,7 +285,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
         if (traits.includes("infused")) this.system.temporary = true;
 
         // Normalize and fill price data
-        this.system.price.value = new CoinsPF2e(this.system.temporary ? {} : this.system.price.value);
+        this.system.price.value = new CoinsAvant(this.system.temporary ? {} : this.system.price.value);
         this.system.price.per = Math.max(1, this.system.price.per ?? 1);
         this.system.price.sizeSensitive ??= true;
 
@@ -313,10 +313,10 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
             subitemSource.system.equipped = R.pick(this.system.equipped, ["carryType", "handsHeld"]);
             const item =
                 this.subitems.get(subitemSource._id ?? "") ??
-                (new ItemProxyPF2e(subitemSource, {
+                (new ItemProxyAvant(subitemSource, {
                     parent: this.parent,
                     parentItem: this,
-                }) as PhysicalItemPF2e<TParent>);
+                }) as PhysicalItemAvant<TParent>);
             item.updateSource(subitemSource);
             this.subitems.set(item.id, item);
         }
@@ -346,7 +346,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     override prepareDerivedData(): void {
         super.prepareDerivedData();
 
-        this.name = game.pf2e.system.generateItemName(this);
+        this.name = game.avant.system.generateItemName(this);
 
         this.system.identification.identified ??= {
             name: this.name,
@@ -468,7 +468,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
      * Can the provided item stack with this item?
      * @param item an item we are trying to add to the inventory
      */
-    isStackableWith(item: PhysicalItemPF2e): boolean {
+    isStackableWith(item: PhysicalItemAvant): boolean {
         const preCheck =
             this !== item &&
             this.type === item.type &&
@@ -490,7 +490,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     }
 
     /** Combine this item with a target item if possible */
-    async stackWith(targetItem: PhysicalItemPF2e): Promise<void> {
+    async stackWith(targetItem: PhysicalItemAvant): Promise<void> {
         if (this.isStackableWith(targetItem)) {
             const stackQuantity = this.quantity + targetItem.quantity;
             if (await this.delete({ render: false })) {
@@ -516,14 +516,14 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
         toStack,
         render = true,
     }: {
-        relativeTo?: PhysicalItemPF2e;
+        relativeTo?: PhysicalItemAvant;
         sortBefore?: boolean;
-        toContainer?: ContainerPF2e<ActorPF2e> | null;
-        toStack?: PhysicalItemPF2e;
+        toContainer?: ContainerAvant<ActorAvant> | null;
+        toStack?: PhysicalItemAvant;
         render?: boolean;
     }): Promise<void> {
         if (!this.actor) {
-            throw ErrorPF2e(`Tried to move an unonwned item!`);
+            throw ErrorAvant(`Tried to move an unonwned item!`);
         }
         if (toStack) {
             return this.stackWith(toStack);
@@ -586,7 +586,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
                 const itemType = this.generateUnidentifiedName({ typeOnly: true });
                 const caseCorrect = (noun: string) =>
                     game.i18n.lang.toLowerCase() === "de" ? noun : noun.toLowerCase();
-                return game.i18n.format("PF2E.identification.UnidentifiedDescription", { item: caseCorrect(itemType) });
+                return game.i18n.format("AVANT.identification.UnidentifiedDescription", { item: caseCorrect(itemType) });
             })();
 
         return {
@@ -600,9 +600,9 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
         const { type, grade } = this.system.material;
         const material =
             type && grade
-                ? game.i18n.format("PF2E.Item.Weapon.MaterialAndRunes.MaterialOption", {
-                      type: game.i18n.localize(CONFIG.PF2E.preciousMaterials[type]),
-                      grade: game.i18n.localize(CONFIG.PF2E.preciousMaterialGrades[grade]),
+                ? game.i18n.format("AVANT.Item.Weapon.MaterialAndRunes.MaterialOption", {
+                      type: game.i18n.localize(CONFIG.AVANT.preciousMaterials[type]),
+                      grade: game.i18n.localize(CONFIG.AVANT.preciousMaterialGrades[grade]),
                   })
                 : null;
         const rarity =
@@ -610,8 +610,8 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
                 ? null
                 : {
                       slug: this.rarity,
-                      label: CONFIG.PF2E.rarityTraits[this.rarity],
-                      description: CONFIG.PF2E.traitsDescriptions[this.rarity],
+                      label: CONFIG.AVANT.rarityTraits[this.rarity],
+                      description: CONFIG.AVANT.traitsDescriptions[this.rarity],
                   };
 
         return {
@@ -634,7 +634,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
         const itemType = game.i18n.localize(`TYPES.Item.${this.type}`);
         if (typeOnly) return itemType;
 
-        return game.i18n.format("PF2E.identification.UnidentifiedItem", { item: itemType });
+        return game.i18n.format("AVANT.identification.UnidentifiedItem", { item: itemType });
     }
 
     /** Updates this container's cache while also resolving cyclical references. Skips if already cached */
@@ -663,7 +663,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
             if (trait.excluded) {
                 delete trait.description;
             } else if (trait.mystified) {
-                const gmNote = game.i18n.localize("PF2E.identification.TraitGMNote");
+                const gmNote = game.i18n.localize("AVANT.identification.TraitGMNote");
                 trait.description = trait.description
                     ? `${gmNote}\n\n${game.i18n.localize(trait.description)}`
                     : gmNote;
@@ -723,7 +723,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     protected override async _preCreate(
         data: this["_source"],
         options: DatabaseCreateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!this.actor || this._source.system.containerId?.length !== 16) {
             this._source.system.containerId = null;
@@ -743,7 +743,7 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     protected override async _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: PhysicalItemUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) return super._preUpdate(changed, operation, user);
 
@@ -808,18 +808,18 @@ abstract class PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | n
     }
 }
 
-interface PhysicalItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface PhysicalItemAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: PhysicalItemSource;
     system: PhysicalSystemData;
 }
 
-interface PhysicalItemConstructionContext<TParent extends ActorPF2e | null>
+interface PhysicalItemConstructionContext<TParent extends ActorAvant | null>
     extends DocumentConstructionContext<TParent> {
-    parentItem?: PhysicalItemPF2e<TParent>;
+    parentItem?: PhysicalItemAvant<TParent>;
 }
 
-interface PhysicalItemUpdateOperation<TParent extends ActorPF2e | null> extends DatabaseUpdateOperation<TParent> {
+interface PhysicalItemUpdateOperation<TParent extends ActorAvant | null> extends DatabaseUpdateOperation<TParent> {
     checkHP?: boolean;
 }
 
-export { PhysicalItemPF2e, type PhysicalItemConstructionContext };
+export { PhysicalItemAvant, type PhysicalItemConstructionContext };

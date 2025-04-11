@@ -1,17 +1,17 @@
-import { ActorPF2e } from "@actor";
-import { ItemPF2e } from "@item";
-import { ErrorPF2e, fontAwesomeIcon, htmlQuery } from "@util";
+import { ActorAvant } from "@actor";
+import { ItemAvant } from "@item";
+import { ErrorAvant, fontAwesomeIcon, htmlQuery } from "@util";
 import MiniSearch from "minisearch";
 import { CompendiumMigrationStatus } from "../compendium-migration-status.ts";
 
 /** Extend CompendiumDirectory to support a search bar */
-class CompendiumDirectoryPF2e extends CompendiumDirectory {
+class CompendiumDirectoryAvant extends CompendiumDirectory {
     static readonly STOP_WORDS = new Set(["of", "th", "the"]);
 
     static #searchEngine: MiniSearch<CompendiumIndexData> | null = null;
 
     get searchEngine(): MiniSearch<CompendiumIndexData> {
-        if (!CompendiumDirectoryPF2e.#searchEngine) {
+        if (!CompendiumDirectoryAvant.#searchEngine) {
             const wordSegmenter =
                 "Segmenter" in Intl
                     ? new Intl.Segmenter(game.i18n.lang, { granularity: "word" })
@@ -21,11 +21,11 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
                               return [{ segment: term }];
                           },
                       };
-            CompendiumDirectoryPF2e.#searchEngine = new MiniSearch({
+            CompendiumDirectoryAvant.#searchEngine = new MiniSearch({
                 fields: ["name", "originalName"],
                 idField: "uuid",
                 processTerm: (term): string[] | null => {
-                    if (term.length <= 1 || CompendiumDirectoryPF2e.STOP_WORDS.has(term)) {
+                    if (term.length <= 1 || CompendiumDirectoryAvant.STOP_WORDS.has(term)) {
                         return null;
                     }
                     return Array.from(wordSegmenter.segment(term))
@@ -39,7 +39,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
             });
         }
 
-        return CompendiumDirectoryPF2e.#searchEngine;
+        return CompendiumDirectoryAvant.#searchEngine;
     }
 
     /** Include ability to search and drag document search results */
@@ -50,7 +50,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
         return {
             ...options,
             filters: [{ inputSelector: "input[type=search]", contentSelector: "ol.directory-list" }],
-            template: "systems/pf2e/templates/sidebar/compendium-directory.hbs",
+            template: "systems/avant/templates/sidebar/compendium-directory.hbs",
         };
     }
 
@@ -66,7 +66,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
         return preview;
     }
 
-    override async getData(options?: Partial<ApplicationOptions>): Promise<CompendiumDirectoryDataPF2e> {
+    override async getData(options?: Partial<ApplicationOptions>): Promise<CompendiumDirectoryDataAvant> {
         return {
             ...(await super.getData(options)),
             searchContents: game.user.settings.searchPackContents,
@@ -83,7 +83,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
 
         // Hook in the compendium browser
         $html[0].querySelector("footer > button")?.addEventListener("click", () => {
-            game.pf2e.compendiumBrowser.render(true);
+            game.avant.compendiumBrowser.render(true);
         });
     }
 
@@ -103,7 +103,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
             },
             callback: async ($li) => {
                 const compendium = game.packs.get($li.data("pack"), { strict: true }) as CompendiumCollection<
-                    ActorPF2e<null> | ItemPF2e<null>
+                    ActorAvant<null> | ItemAvant<null>
                 >;
                 new CompendiumMigrationStatus(compendium).render(true);
             },
@@ -122,7 +122,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
                 icon: fontAwesomeIcon("download").outerHTML,
                 condition: ($li) => {
                     const { uuid } = $li.get(0)?.dataset ?? {};
-                    if (!uuid) throw ErrorPF2e("Unexpected missing uuid");
+                    if (!uuid) throw ErrorAvant("Unexpected missing uuid");
                     const collection = game.packs.get(fromUuidSync(uuid)?.pack ?? "", { strict: true });
                     const documentClass = collection.documentClass as unknown as typeof foundry.abstract.Document;
 
@@ -130,12 +130,12 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
                 },
                 callback: ($li) => {
                     const { uuid } = $li.get(0)?.dataset ?? {};
-                    if (!uuid) throw ErrorPF2e("Unexpected missing uuid");
+                    if (!uuid) throw ErrorAvant("Unexpected missing uuid");
                     const packCollection = game.packs.get(fromUuidSync(uuid)?.pack ?? "", { strict: true });
                     const worldCollection = game.collections.get(packCollection.documentName, { strict: true });
                     const indexData = fromUuidSync(uuid) ?? { _id: "" };
                     if (!("_id" in indexData && typeof indexData._id === "string")) {
-                        throw ErrorPF2e("Unexpected missing document _id");
+                        throw ErrorAvant("Unexpected missing document _id");
                     }
 
                     return worldCollection.importFromCompendium(
@@ -164,7 +164,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
 
         // Create a list of document matches
         const matchTemplate = htmlQuery<HTMLTemplateElement>(html, ".compendium-search-match");
-        if (!matchTemplate) throw ErrorPF2e("Match template not found");
+        if (!matchTemplate) throw ErrorAvant("Match template not found");
 
         const listElements = filteredMatches.map((match): HTMLLIElement => {
             const li = matchTemplate.content.firstElementChild?.cloneNode(true) as HTMLLIElement;
@@ -175,7 +175,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
             const thumbnail = li.querySelector<HTMLImageElement>("img");
             if (thumbnail) {
                 if (typeof match.img === "string") {
-                    thumbnail.src = game.pf2e.system.moduleArt.map.get(match.uuid)?.img ?? match.img;
+                    thumbnail.src = game.avant.system.moduleArt.map.get(match.uuid)?.img ?? match.img;
                 } else if (match.documentType === "JournalEntry") {
                     thumbnail.src = "icons/svg/book.svg";
                 }
@@ -223,7 +223,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
         if (!uuid) return super._onDragStart(event);
 
         const indexEntry = fromUuidSync(uuid);
-        if (!indexEntry) throw ErrorPF2e("Unexpected error retrieving index data");
+        if (!indexEntry) throw ErrorAvant("Unexpected error retrieving index data");
 
         // Clean up old drag preview
         document.querySelector("#pack-search-drag-preview")?.remove();
@@ -248,7 +248,7 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
 
     /** Called by a "ready" hook */
     compileSearchIndex(): void {
-        console.debug("PF2e System | compiling search index");
+        console.debug("Avant System | compiling search index");
         const packs = game.packs.filter((p) => p.index.size > 0 && p.testUserPermission(game.user, "OBSERVER"));
         this.searchEngine.removeAll();
 
@@ -260,17 +260,17 @@ class CompendiumDirectoryPF2e extends CompendiumDirectory {
             }));
             this.searchEngine.addAll(contents);
         }
-        console.debug("PF2e System | Finished compiling search index");
+        console.debug("Avant System | Finished compiling search index");
     }
 }
 
-interface CompendiumDirectoryPF2e extends CompendiumDirectory {
-    constructor: typeof CompendiumDirectoryPF2e;
+interface CompendiumDirectoryAvant extends CompendiumDirectory {
+    constructor: typeof CompendiumDirectoryAvant;
 }
 
-interface CompendiumDirectoryDataPF2e extends CompendiumDirectoryData {
+interface CompendiumDirectoryDataAvant extends CompendiumDirectoryData {
     searchContents: boolean;
     isV13: boolean;
 }
 
-export { CompendiumDirectoryPF2e };
+export { CompendiumDirectoryAvant };

@@ -1,14 +1,14 @@
-import type { ActorPF2e } from "@actor";
-import type { ScenePF2e } from "@scene";
+import type { ActorAvant } from "@actor";
+import type { SceneAvant } from "@scene";
 
 export class MockToken {
-    actor: ActorPF2e | null;
-    readonly parent: ScenePF2e | null;
+    actor: ActorAvant | null;
+    readonly parent: SceneAvant | null;
     readonly _source: foundry.documents.TokenSource;
 
     constructor(
         data: foundry.documents.TokenSource,
-        context: { parent?: ScenePF2e | null; actor?: ActorPF2e | null } = {},
+        context: { parent?: SceneAvant | null; actor?: ActorAvant | null } = {},
     ) {
         this._source = fu.duplicate(data);
         this.parent = context.parent ?? null;

@@ -1,21 +1,21 @@
-import type { ActorPF2e } from "@actor";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import type { ActorAvant } from "@actor";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { AttributeString } from "@actor/types.ts";
-import { ItemPF2e, PhysicalItemPF2e, type SpellPF2e } from "@item";
+import { ItemAvant, PhysicalItemAvant, type SpellAvant } from "@item";
 import { MagicTradition } from "@item/spell/types.ts";
 import { MAGIC_TRADITIONS } from "@item/spell/values.ts";
 import { OneToTen, ZeroToFour, ZeroToTen } from "@module/data.ts";
-import type { UserPF2e } from "@module/user/index.ts";
+import type { UserAvant } from "@module/user/index.ts";
 import { Statistic } from "@system/statistic/index.ts";
-import { ErrorPF2e, ordinalString, setHasElement, sluggify } from "@util";
+import { ErrorAvant, ordinalString, setHasElement, sluggify } from "@util";
 import * as R from "remeda";
 import { SpellCollection, type SpellSlotGroupId } from "./collection.ts";
 import { SpellcastingEntrySource, SpellcastingEntrySystemData } from "./data.ts";
 import { createCounteractStatistic } from "./helpers.ts";
 import { CastOptions, SpellcastingCategory, SpellcastingEntry, SpellcastingSheetData } from "./types.ts";
 
-class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
-    extends ItemPF2e<TParent>
+class SpellcastingEntryAvant<TParent extends ActorAvant | null = ActorAvant | null>
+    extends ItemAvant<TParent>
     implements SpellcastingEntry<TParent>
 {
     declare spells: SpellCollection<NonNullable<TParent>> | null;
@@ -28,8 +28,8 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
     }
 
     get counteraction(): Statistic {
-        if (!this.actor) throw ErrorPF2e("Unexpected missing actor");
-        return createCounteractStatistic(this as SpellcastingEntryPF2e<ActorPF2e>);
+        if (!this.actor) throw ErrorAvant("Unexpected missing actor");
+        return createCounteractStatistic(this as SpellcastingEntryAvant<ActorAvant>);
     }
 
     /** This entry's magic tradition, null if the spell's tradition should be used instead */
@@ -115,17 +115,17 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
         if (actor) {
             this.statistic = new Statistic(actor, {
                 slug: this.slug ?? sluggify(this.name),
-                label: "PF2E.Actor.Creature.Spellcasting.InvalidProficiency",
+                label: "AVANT.Actor.Creature.Spellcasting.InvalidProficiency",
                 check: { type: "check" },
             });
         }
     }
 
-    override prepareSiblingData(this: SpellcastingEntryPF2e<ActorPF2e>): void {
+    override prepareSiblingData(this: SpellcastingEntryAvant<ActorAvant>): void {
         const actor = this.actor;
         this.spells = new SpellCollection(this) as SpellCollection<NonNullable<TParent>>;
         const spells = actor.itemTypes.spell.filter(
-            (s): s is SpellPF2e<NonNullable<TParent>> => s.system.location.value === this.id,
+            (s): s is SpellAvant<NonNullable<TParent>> => s.system.location.value === this.id,
         );
         for (const spell of spells) {
             this.spells.set(spell.id, spell);
@@ -134,9 +134,9 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
         actor.spellcasting?.collections.set(this.spells.id, this.spells);
     }
 
-    override prepareActorData(this: SpellcastingEntryPF2e<ActorPF2e>): void {
+    override prepareActorData(this: SpellcastingEntryAvant<ActorAvant>): void {
         if ((this.spells?.size ?? 0) > 0) {
-            const rollOptions = this.actor.flags.pf2e.rollOptions;
+            const rollOptions = this.actor.flags.avant.rollOptions;
             rollOptions.all["self:caster"] = true;
             rollOptions.all[`self:caster:tradition:${this.tradition}`] = true;
         }
@@ -173,7 +173,7 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
                 slug,
                 label:
                     baseStat.slug === "base-spellcasting" && tradition
-                        ? CONFIG.PF2E.magicTraditions[tradition]
+                        ? CONFIG.AVANT.magicTraditions[tradition]
                         : baseStat.label,
                 attribute: this.attribute,
                 rank: this.rank,
@@ -192,24 +192,24 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
             const baseDC = Number(this.system?.spelldc?.dc ?? 0) + adjustment;
 
             // Assign statistic data to the spellcasting entry
-            this.statistic = new Statistic(actor as ActorPF2e, {
+            this.statistic = new Statistic(actor as ActorAvant, {
                 slug,
                 attribute: this.attribute,
-                label: CONFIG.PF2E.magicTraditions[tradition ?? "arcane"],
+                label: CONFIG.AVANT.magicTraditions[tradition ?? "arcane"],
                 domains: baseDomains,
                 rollOptions: this.getRollOptions("spellcasting"),
                 check: {
                     type: "attack-roll",
                     domains: checkDomains,
-                    modifiers: [new ModifierPF2e({ slug: "base", label: "PF2E.ModifierTitle", modifier: baseMod })],
+                    modifiers: [new ModifierAvant({ slug: "base", label: "AVANT.ModifierTitle", modifier: baseMod })],
                 },
                 dc: {
                     domains: dcDomains,
-                    modifiers: [new ModifierPF2e({ slug: "base", label: "PF2E.ModifierTitle", modifier: baseDC - 10 })],
+                    modifiers: [new ModifierAvant({ slug: "base", label: "AVANT.ModifierTitle", modifier: baseDC - 10 })],
                 },
             });
         } else {
-            throw ErrorPF2e(`Actor type ${actor.type} does not support spellcasting entries`);
+            throw ErrorAvant(`Actor type ${actor.type} does not support spellcasting entries`);
         }
 
         // Check if the new statistic exceeds the current actor best spell dc
@@ -226,12 +226,12 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
     }
 
     /** All spells associated with this spellcasting entry on the actor that should also be deleted */
-    override getLinkedItems(): SpellPF2e<ActorPF2e>[] {
+    override getLinkedItems(): SpellAvant<ActorAvant>[] {
         return this.actor?.itemTypes.spell.filter((i) => i.system.location.value === this.id) ?? [];
     }
 
     /** Whether the spell is valid to cast by this spellcasting entry */
-    canCast(spell: SpellPF2e, { origin }: { origin?: PhysicalItemPF2e } = {}): boolean {
+    canCast(spell: SpellAvant, { origin }: { origin?: PhysicalItemAvant } = {}): boolean {
         // For certain collection-less modes, the spell must come from an item
         if (this.system.prepared.value === "items") {
             if (!origin) return false;
@@ -256,7 +256,7 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
     }
 
     /** Cast the given spell as if it was part of this spellcasting entry. */
-    async cast(spell: SpellPF2e<ActorPF2e>, options: CastOptions = {}): Promise<void> {
+    async cast(spell: SpellAvant<ActorAvant>, options: CastOptions = {}): Promise<void> {
         const consume = options.consume ?? true;
         const message = options.message ?? true;
         const rank = options.rank ?? spell.rank;
@@ -268,10 +268,10 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
         }
     }
 
-    async consume(spell: SpellPF2e<ActorPF2e>, rank: number, slotIndex?: number): Promise<boolean> {
+    async consume(spell: SpellAvant<ActorAvant>, rank: number, slotIndex?: number): Promise<boolean> {
         const actor = this.actor;
         if (!actor?.isOfType("character", "npc")) {
-            throw ErrorPF2e("Spellcasting entries require an actor");
+            throw ErrorAvant("Spellcasting entries require an actor");
         }
         const fpCost = spell.system.cast.focusPoints;
         if (this.isRitual || ((spell.isFocusSpell || spell.isCantrip) && fpCost === 0)) {
@@ -285,12 +285,12 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
                 await actor.update({ "system.resources.focus.value": currentPoints - fpCost });
                 return true;
             } else {
-                ui.notifications.warn(game.i18n.localize("PF2E.Focus.NotEnoughFocusPointsError"));
+                ui.notifications.warn(game.i18n.localize("AVANT.Focus.NotEnoughFocusPointsError"));
                 return false;
             }
         }
 
-        const rankLabel = game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) });
+        const rankLabel = game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) });
         const slotKey = rank.between(1, 10) ? (`slot${rank}` as `slot${OneToTen}`) : "slot0";
         if (this.system.slots === null || !this.spells) {
             return false;
@@ -309,10 +309,10 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
                 return expendedIndex > -1 ? expendedIndex : null;
             })();
             if (resolvedIndex === null) {
-                throw ErrorPF2e("Slot not given for prepared spell, and no alternative slot was found");
+                throw ErrorAvant("Slot not given for prepared spell, and no alternative slot was found");
             }
             if (slots[resolvedIndex].expended) {
-                ui.notifications.warn(game.i18n.format("PF2E.SpellSlotExpendedError", { spell: spell.name }));
+                ui.notifications.warn(game.i18n.format("AVANT.SpellSlotExpendedError", { spell: spell.name }));
                 return false;
             }
 
@@ -325,7 +325,7 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
         if (this.isInnate) {
             const remainingUses = spell.system.location.uses?.value || 0;
             if (remainingUses <= 0) {
-                ui.notifications.warn(game.i18n.format("PF2E.SpellSlotExpendedError", { spell: spell.name }));
+                ui.notifications.warn(game.i18n.format("AVANT.SpellSlotExpendedError", { spell: spell.name }));
                 return false;
             }
             await spell.update({ "system.location.uses.value": remainingUses - 1 });
@@ -338,7 +338,7 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
             return true;
         } else {
             const rank = game.i18n.lang === "de" ? rankLabel : rankLabel.toLocaleLowerCase(game.i18n.lang);
-            ui.notifications.warn(game.i18n.format("PF2E.SpellSlotNotEnoughError", { spell: spell.name, rank }));
+            ui.notifications.warn(game.i18n.format("AVANT.SpellSlotNotEnoughError", { spell: spell.name, rank }));
             return false;
         }
     }
@@ -348,15 +348,15 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
      * or creating a new spell if its not.
      */
     async addSpell(
-        spell: SpellPF2e<NonNullable<TParent>>,
+        spell: SpellAvant<NonNullable<TParent>>,
         { groupId }: { groupId: Maybe<SpellSlotGroupId> },
-    ): Promise<SpellPF2e<NonNullable<TParent>> | null> {
+    ): Promise<SpellAvant<NonNullable<TParent>> | null> {
         const result = this.spells?.addSpell(spell, { groupId });
         return result ? spell : null;
     }
 
     /** Saves the prepared spell slot data to the spellcasting entry  */
-    async prepareSpell(spell: SpellPF2e, groupId: SpellSlotGroupId, spellSlot: number): Promise<Maybe<this>> {
+    async prepareSpell(spell: SpellAvant, groupId: SpellSlotGroupId, spellSlot: number): Promise<Maybe<this>> {
         const result = this.spells?.prepareSpell(spell, groupId, spellSlot);
         return result ? this : null;
     }
@@ -376,7 +376,7 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
     /** Returns rendering data to display the spellcasting entry in the sheet */
     async getSheetData({ prepList = false } = {}): Promise<SpellcastingSheetData> {
         if (!this.actor?.isOfType("character", "npc")) {
-            throw ErrorPF2e("Spellcasting entries can only exist on characters and npcs");
+            throw ErrorAvant("Spellcasting entries can only exist on characters and npcs");
         }
 
         const defaultData = { groups: [], prepList: null };
@@ -422,7 +422,7 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
     protected override async _preUpdate(
         changed: DeepPartial<this["_source"]>,
         options: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         // Clamp slot updates
         if (changed.system?.slots) {
@@ -453,16 +453,16 @@ class SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null>
      */
     getSpellData(): Promise<SpellcastingSheetData> {
         foundry.utils.logCompatibilityWarning(
-            "SpellcastingEntryPF2e#getSpellData() is deprecated. Use SpellcastingEntryPF2e#getSheetData() instead.",
+            "SpellcastingEntryAvant#getSpellData() is deprecated. Use SpellcastingEntryAvant#getSheetData() instead.",
             { since: "6.7.1", until: "7.0.0" },
         );
         return this.getSheetData();
     }
 }
 
-interface SpellcastingEntryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface SpellcastingEntryAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: SpellcastingEntrySource;
     system: SpellcastingEntrySystemData;
 }
 
-export { SpellcastingEntryPF2e };
+export { SpellcastingEntryAvant };

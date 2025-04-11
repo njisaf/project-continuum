@@ -1,8 +1,8 @@
 import { EffectAreaSquare } from "@module/canvas/effect-area-square.ts";
 import { measureDistanceCuboid } from "@module/canvas/helpers.ts";
-import { TokenDocumentPF2e } from "@scene";
+import { TokenDocumentAvant } from "@scene";
 import type BaseEffectSource from "types/foundry/client-esm/canvas/sources/base-effect-source.d.ts";
-import type { TokenPF2e } from "../index.ts";
+import type { TokenAvant } from "../index.ts";
 
 export function getAreaSquares(data: GetAreaSquaresParams): EffectAreaSquare[] {
     if (!canvas.ready) return [];
@@ -52,12 +52,12 @@ export function getAreaSquares(data: GetAreaSquaresParams): EffectAreaSquare[] {
 
     const pointSource = (() => {
         const sources = foundry.canvas.sources;
-        const PointSource: ConstructorOf<BaseEffectSource<TokenPF2e>> = {
+        const PointSource: ConstructorOf<BaseEffectSource<TokenAvant>> = {
             sight: sources.PointVisionSource,
             sound: sources.PointSoundSource,
             move: sources.PointMovementSource,
         }[collisionType];
-        const tokenObject = data.token instanceof TokenDocumentPF2e ? data.token.object : data.token;
+        const tokenObject = data.token instanceof TokenDocumentAvant ? data.token.object : data.token;
         return new PointSource({ object: tokenObject });
     })();
 
@@ -92,6 +92,6 @@ export function getAreaSquares(data: GetAreaSquaresParams): EffectAreaSquare[] {
 interface GetAreaSquaresParams {
     bounds: PIXI.Rectangle;
     radius: number;
-    token: TokenPF2e | TokenDocumentPF2e;
+    token: TokenAvant | TokenDocumentAvant;
     traits?: string[];
 }

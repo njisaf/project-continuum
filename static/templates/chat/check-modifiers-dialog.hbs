@@ -1,9 +1,9 @@
-<form class="check-modifiers-content" autocomplete="off" spellcheck="off" data-tooltip-class="pf2e">
+<form class="check-modifiers-content" autocomplete="off" spellcheck="off" data-tooltip-class="avant">
     {{#if substitutions}}
         <div class="dialog-row header">
-            <span class="mod">{{localize "PF2E.Roll.Dialog.Check.Substitution"}}</span>
-            <span class="type">{{localize "PF2E.Roll.Roll"}}</span>
-            <span class="exclude">{{localize "PF2E.Roll.Dialog.Check.Utilize"}}</span>
+            <span class="mod">{{localize "AVANT.Roll.Dialog.Check.Substitution"}}</span>
+            <span class="type">{{localize "AVANT.Roll.Roll"}}</span>
+            <span class="exclude">{{localize "AVANT.Roll.Dialog.Check.Utilize"}}</span>
         </div>
         <div class="substitutions">
             {{#each substitutions as |sub index|}}
@@ -22,8 +22,8 @@
         <hr />
     {{/if}}
     <div class="dialog-row header">
-        <span class="mod">{{localize "PF2E.Roll.Modifier"}}</span>
-        <span class="type">{{localize "PF2E.Roll.Type"}}</span>
+        <span class="mod">{{localize "AVANT.Roll.Modifier"}}</span>
+        <span class="type">{{localize "AVANT.Roll.Type"}}</span>
         <span class="value"></span>
         <span class="exclude"></span>
     </div>
@@ -31,7 +31,7 @@
         {{#each modifiers as |modifier idx|}}
             <div class="dialog-row{{#unless modifier.enabled}} disabled{{#if modifier.hideIfDisabled}} hidden{{/if}}{{/unless}}">
                 <span class="mod">{{modifier.label}}</span>
-                <span class="type"><span class="tag">{{localize (concat "PF2E.ModifierType." modifier.type)}}</span></span>
+                <span class="type"><span class="tag">{{localize (concat "AVANT.ModifierType." modifier.type)}}</span></span>
                 <span class="value">{{numberFormat modifier.modifier decimals=0 sign=true}}</span>
                 <div class="exclude">
                     <label class="toggle">
@@ -44,49 +44,49 @@
     </div>
     <hr />
     <section class="add-entry-row add-modifier-panel">
-        <input type="text" class="add-modifier-name" placeholder={{localize "PF2E.ModifierTitle"}}>
+        <input type="text" class="add-modifier-name" placeholder={{localize "AVANT.ModifierTitle"}}>
         <input type="number" class="add-modifier-value" placeholder="+1" />
         <select class="add-modifier-type">
-            <option value="circumstance" selected>{{localize "PF2E.ModifierType.circumstance"}}</option>
-            <option value="item">{{localize "PF2E.ModifierType.item"}}</option>
-            <option value="status">{{localize "PF2E.ModifierType.status"}}</option>
-            <option value="untyped">{{localize "PF2E.ModifierType.untyped"}}</option>
-            <option value="ability">{{localize "PF2E.ModifierType.ability"}}</option>
-            <option value="proficiency">{{localize "PF2E.ModifierType.proficiency"}}</option>
+            <option value="circumstance" selected>{{localize "AVANT.ModifierType.circumstance"}}</option>
+            <option value="item">{{localize "AVANT.ModifierType.item"}}</option>
+            <option value="status">{{localize "AVANT.ModifierType.status"}}</option>
+            <option value="untyped">{{localize "AVANT.ModifierType.untyped"}}</option>
+            <option value="ability">{{localize "AVANT.ModifierType.ability"}}</option>
+            <option value="proficiency">{{localize "AVANT.ModifierType.proficiency"}}</option>
         </select>
-        <button type="button" class="add-modifier">+{{localize "PF2E.Roll.Add"}}</button>
+        <button type="button" class="add-modifier">+{{localize "AVANT.Roll.Add"}}</button>
     </section>
     <hr/>
 
     <div class="fate">
         <label>
             <input type="radio" name="rollTwice" value="keep-higher" {{checked fortune}} />
-            {{localize "PF2E.Roll.KeepHigher"}}
+            {{localize "AVANT.Roll.KeepHigher"}}
         </label>
         <label>
             <input type="radio" name="rollTwice" value="" {{checked none}} />
-            {{localize "PF2E.Roll.Normal"}}
+            {{localize "AVANT.Roll.Normal"}}
         </label>
         <label>
             <input type="radio" name="rollTwice" value="keep-lower" {{checked misfortune}} />
-            {{localize "PF2E.Roll.KeepLower"}}
+            {{localize "AVANT.Roll.KeepLower"}}
         </label>
     </div>
     <hr/>
 
     <div class="roll-mode-panel">
         <label class="roll-mode">
-            {{localize "PF2E.RollModeLabel"}}
+            {{localize "AVANT.RollModeLabel"}}
             <select name="rollmode">
                 {{selectOptions rollModes selected=rollMode localize=true}}
             </select>
         </label>
-        <label data-tooltip="PF2E.Roll.Dialog.ShowDefaultHint">
-            {{localize "PF2E.Roll.Dialog.ShowDefault"}}
+        <label data-tooltip="AVANT.Roll.Dialog.ShowDefaultHint">
+            {{localize "AVANT.Roll.Dialog.ShowDefault"}}
             <input data-action="change-show-default" type="checkbox" {{checked showCheckDialogs}} />
         </label>
     </div>
     <hr/>
 
-    <button type="button" class="roll">{{localize "PF2E.Roll.Roll"}} ({{numberFormat totalModifier decimals=0 sign=true}})</button>
+    <button type="button" class="roll">{{localize "AVANT.Roll.Roll"}} ({{numberFormat totalModifier decimals=0 sign=true}})</button>
 </form>

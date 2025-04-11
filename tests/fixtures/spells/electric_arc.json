@@ -133,7 +133,7 @@
   "flags": {
     "_sheetTab": "details"
   },
-  "img": "systems/pf2e/icons/spells/electric-arc.jpg",
+  "img": "systems/avant/icons/spells/electric-arc.jpg",
   "name": "Electric Arc",
   "permission": {
     "default": 0

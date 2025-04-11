@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.GatherInformation";
+const PREFIX = "AVANT.Actions.GatherInformation";
 
 function gatherInformation(options: SkillActionOptions): void {
     const slug = options?.skill ?? "diplomacy";

@@ -1,0 +1,91 @@
+{
+    "_id": "DHYWmMGmKOpRSqza",
+    "img": "systems/avant/icons/spells/chromatic-armor.webp",
+    "name": "Spell Effect: Chromatic Armor",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Chromatic Armor]</p>\n<p>You gain resistance to the indicated damage and shed bright light for 20 feet (and dim light for the next 20 feet).</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "minutes",
+            "value": 1
+        },
+        "level": {
+            "value": 4
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Secrets of Magic"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.SpecificRule.ChromaticArmor.Fire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.ChromaticArmor.Acid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.ChromaticArmor.Electricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.ChromaticArmor.Poison",
+                        "value": "poison"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.ChromaticArmor.Sonic",
+                        "value": "sonic"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.ChromaticArmor.Mental",
+                        "value": "mental"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.ChromaticArmor.Force",
+                        "value": "force"
+                    }
+                ],
+                "flag": "chromaticArmor",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.ChromaticArmor.Prompt"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.chromaticArmor}",
+                "value": "5+5*floor((@item.level - 4) / 3)"
+            },
+            {
+                "key": "TokenLight",
+                "value": {
+                    "animation": {
+                        "intensity": 1,
+                        "speed": 3,
+                        "type": "pulse"
+                    },
+                    "bright": 20,
+                    "color": "#343434",
+                    "dim": 40
+                }
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

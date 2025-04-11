@@ -1,13 +1,13 @@
-import { ActorPF2e, type ArmyPF2e, type PartyPF2e } from "@actor";
+import { ActorAvant, type ArmyAvant, type PartyAvant } from "@actor";
 import { FeatGroup } from "@actor/character/feats/index.ts";
-import { MODIFIER_TYPES, ModifierPF2e, RawModifier, createProficiencyModifier } from "@actor/modifiers.ts";
-import { CampaignFeaturePF2e, ItemPF2e } from "@item";
+import { MODIFIER_TYPES, ModifierAvant, RawModifier, createProficiencyModifier } from "@actor/modifiers.ts";
+import { CampaignFeatureAvant, ItemAvant } from "@item";
 import type { ItemType } from "@item/base/data/index.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import type { ZeroToFour } from "@module/data.ts";
 import { extractModifierAdjustments } from "@module/rules/helpers.ts";
 import { Statistic } from "@system/statistic/index.ts";
-import { ErrorPF2e, createHTMLElement, fontAwesomeIcon, objectHasKey, setHasElement } from "@util";
+import { ErrorAvant, createHTMLElement, fontAwesomeIcon, objectHasKey, setHasElement } from "@util";
 import * as R from "remeda";
 import { PartySystemData } from "../data.ts";
 import { PartyCampaign } from "../types.ts";
@@ -22,7 +22,7 @@ import {
     KingdomSource,
     defineKingdomSchema,
 } from "./schema.ts";
-import { KingdomSheetPF2e } from "./sheet.ts";
+import { KingdomSheetAvant } from "./sheet.ts";
 import type { KingdomNationType, KingdomSkill } from "./types.ts";
 import {
     CONTROL_DC_BY_LEVEL,
@@ -43,18 +43,18 @@ import DataModel = foundry.abstract.DataModel;
 /** Model for the Kingmaker campaign data type, which represents a Kingdom */
 class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements PartyCampaign {
     declare nationType: KingdomNationType;
-    declare features: FeatGroup<PartyPF2e, CampaignFeaturePF2e>;
-    declare feats: FeatGroup<PartyPF2e, CampaignFeaturePF2e>;
-    declare bonusFeats: FeatGroup<PartyPF2e, CampaignFeaturePF2e>;
+    declare features: FeatGroup<PartyAvant, CampaignFeatureAvant>;
+    declare feats: FeatGroup<PartyAvant, CampaignFeatureAvant>;
+    declare bonusFeats: FeatGroup<PartyAvant, CampaignFeatureAvant>;
     declare skills: Record<KingdomSkill, Statistic>;
     declare control: Statistic;
-    declare armies: ArmyPF2e[];
+    declare armies: ArmyAvant[];
 
     static override defineSchema(): KingdomSchema {
         return defineKingdomSchema();
     }
 
-    get actor(): PartyPF2e {
+    get actor(): PartyAvant {
         return this.parent.parent;
     }
 
@@ -62,7 +62,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         return ["campaignFeature", "effect"];
     }
 
-    get activities(): CampaignFeaturePF2e[] {
+    get activities(): CampaignFeatureAvant[] {
         return this.actor.itemTypes.campaignFeature.filter((k) => k.category === "kingdom-activity");
     }
 
@@ -81,7 +81,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
     /** Creates sidebar buttons to inject into the chat message sidebar */
     createSidebarButtons(): HTMLElement[] {
         // Do not show kingdom to party members until building starts or it becomes activated.
-        if (!(this.active || game.user.isGM) || game.pf2e.settings.campaign.type !== "kingmaker") return [];
+        if (!(this.active || game.user.isGM) || game.avant.settings.campaign.type !== "kingmaker") return [];
 
         const hoverIcon = this.active === "building" ? "wrench" : !this.active ? "plus" : null;
         const icon = createHTMLElement("a", {
@@ -89,7 +89,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
             children: [fontAwesomeIcon("crown"), hoverIcon ? fontAwesomeIcon(hoverIcon) : null].filter(R.isNonNull),
             dataset: {
                 tooltip: game.i18n.localize(
-                    `PF2E.Kingmaker.SIDEBAR.${this.active === true ? "OpenSheet" : "CreateKingdom"}`,
+                    `AVANT.Kingmaker.SIDEBAR.${this.active === true ? "OpenSheet" : "CreateKingdom"}`,
                 ),
             },
         });
@@ -99,8 +99,8 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
 
             if (!this.active) {
                 const startBuilding = await Dialog.confirm({
-                    title: game.i18n.localize("PF2E.Kingmaker.KingdomBuilder.Title"),
-                    content: `<p>${game.i18n.localize("PF2E.Kingmaker.KingdomBuilder.ActivationMessage")}</p>`,
+                    title: game.i18n.localize("AVANT.Kingmaker.KingdomBuilder.Title"),
+                    content: `<p>${game.i18n.localize("AVANT.Kingmaker.KingdomBuilder.ActivationMessage")}</p>`,
                 });
                 if (startBuilding) {
                     await this.update({ active: "building" });
@@ -122,9 +122,9 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         const roll = await new Roll(formula).evaluate();
         await roll.toMessage(
             {
-                flavor: game.i18n.localize("PF2E.Kingmaker.Kingdom.Resources.Points"),
+                flavor: game.i18n.localize("AVANT.Kingmaker.Kingdom.Resources.Points"),
                 speaker: {
-                    ...ChatMessagePF2e.getSpeaker(this.actor),
+                    ...ChatMessageAvant.getSpeaker(this.actor),
                     alias: this.name,
                 },
             },
@@ -147,21 +147,21 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
      * the name parameter must be unique for the custom modifiers for the specified stat, or it will be ignored.
      */
     async addCustomModifier(stat: string, data: RawModifier): Promise<void> {
-        if (stat.length === 0) throw ErrorPF2e("A custom modifier's statistic must be a non-empty string");
-        if (data.label.length === 0) throw ErrorPF2e("A custom modifier's label must be a non-empty string");
+        if (stat.length === 0) throw ErrorAvant("A custom modifier's statistic must be a non-empty string");
+        if (data.label.length === 0) throw ErrorAvant("A custom modifier's label must be a non-empty string");
 
         const customModifiers = this.toObject().customModifiers ?? {};
         const modifiers = customModifiers[stat] ?? [];
         if (!modifiers.some((m) => m.label === data.label)) {
             data.type = setHasElement(MODIFIER_TYPES, data.type) ? data.type : "untyped";
-            const modifier = new ModifierPF2e({ ...data, custom: true }).toObject();
+            const modifier = new ModifierAvant({ ...data, custom: true }).toObject();
             await this.update({ [`customModifiers.${stat}`]: [...modifiers, modifier] });
         }
     }
 
     /** Removes a custom modifier by slug */
     async removeCustomModifier(stat: string, slug: string): Promise<void> {
-        if (stat.length === 0) throw ErrorPF2e("A custom modifier's statistic must be a non-empty string");
+        if (stat.length === 0) throw ErrorAvant("A custom modifier's statistic must be a non-empty string");
 
         const customModifiers = this.toObject().customModifiers ?? {};
         const modifiers = customModifiers[stat] ?? [];
@@ -171,7 +171,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
             const withRemoved = modifiers.filter((m) => m.slug !== slug);
             await this.update({ [`customModifiers.${stat}`]: withRemoved });
         } else {
-            throw ErrorPF2e("Custom modifiers can only be removed by slug (string) or index (number)");
+            throw ErrorAvant("Custom modifiers can only be removed by slug (string) or index (number)");
         }
     }
 
@@ -205,7 +205,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         const { build } = this;
 
         // All friendly armies are gathered to determine consumption
-        this.armies = game.actors.filter((a): a is ArmyPF2e<null> => a.isOfType("army") && a.alliance === "party");
+        this.armies = game.actors.filter((a): a is ArmyAvant<null> => a.isOfType("army") && a.alliance === "party");
         this.consumption.army = R.sumBy(this.armies, (a) => a.system.consumption);
 
         // Calculate Ability Boosts (if calculated automatically)
@@ -247,11 +247,11 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
             }
         }
 
-        // Bless raw custom modifiers as `ModifierPF2e`s
+        // Bless raw custom modifiers as `ModifierAvant`s
         const customModifiers = (this.customModifiers ??= {});
         for (const selector of Object.keys(customModifiers)) {
             const modifiers = (customModifiers[selector] = customModifiers[selector].map(
-                (rawModifier: RawModifier) => new ModifierPF2e(rawModifier),
+                (rawModifier: RawModifier) => new ModifierAvant(rawModifier),
             ));
             (synthetics.modifiers[selector] ??= []).push(...modifiers.map((m) => () => m));
         }
@@ -268,7 +268,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
             const modifiers = (synthetics.modifiers["control-dc"] ??= []);
             modifiers.push(
                 () =>
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "size",
                         label: "Size Modifier",
                         modifier: sizeData.controlMod,
@@ -283,7 +283,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
                 const modifiers = (synthetics.modifiers[`${ability}-based`] ??= []);
                 modifiers.push(
                     () =>
-                        new ModifierPF2e({
+                        new ModifierAvant({
                             slug: "ruin",
                             type: "item",
                             label: KINGDOM_RUIN_LABELS[ability],
@@ -297,7 +297,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         for (const role of KINGDOM_LEADERSHIP) {
             const data = this.leadership[role];
             const actor = fromUuidSync(data.uuid ?? "");
-            if (actor instanceof ActorPF2e) {
+            if (actor instanceof ActorAvant) {
                 if (!actor.hasPlayerOwner) data.vacant = false;
             } else {
                 data.vacant = true;
@@ -311,7 +311,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
                 }
                 for (const [selector, entries] of Object.entries(penalties.modifiers ?? {})) {
                     const modifiers = (synthetics.modifiers[selector] ??= []);
-                    modifiers.push(...entries.map((e) => () => new ModifierPF2e(e)));
+                    modifiers.push(...entries.map((e) => () => new ModifierAvant(e)));
                 }
             }
 
@@ -320,9 +320,9 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
                 const modifiers = (synthetics.modifiers[`${ability}-skill-check`] ??= []);
                 modifiers.push(
                     () =>
-                        new ModifierPF2e({
+                        new ModifierAvant({
                             slug: "invested",
-                            label: "PF2E.Kingmaker.Kingdom.Invested",
+                            label: "AVANT.Kingmaker.Kingdom.Invested",
                             type: "status",
                             modifier: 1,
                         }),
@@ -337,9 +337,9 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
             const modifiers = (synthetics.modifiers["kingdom-check"] ??= []);
             modifiers.push(
                 () =>
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "unrest",
-                        label: "PF2E.Kingmaker.Kingdom.Unrest",
+                        label: "AVANT.Kingmaker.Kingdom.Unrest",
                         type: "status",
                         modifier,
                     }),
@@ -383,25 +383,25 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         // This allows rule elements to apply specific consumption modifiers
         const consumptionStatistic = new Statistic(this.actor, {
             slug: "consumption",
-            label: "PF2E.Kingmaker.Consumption.Label",
+            label: "AVANT.Kingmaker.Consumption.Label",
             domains: ["consumption"],
             modifiers: [
                 consumption.settlement &&
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "settlements",
-                        label: "PF2E.Kingmaker.Settlement.Label",
+                        label: "AVANT.Kingmaker.Settlement.Label",
                         modifier: consumption.settlement,
                     }),
                 consumption.army &&
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "army",
-                        label: "PF2E.Kingmaker.Army.Label",
+                        label: "AVANT.Kingmaker.Army.Label",
                         modifier: consumption.army,
                     }),
                 this.resources.workSites.food.value &&
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "farmland",
-                        label: "PF2E.Kingmaker.WorkSites.food.Name",
+                        label: "AVANT.Kingmaker.WorkSites.food.Name",
                         modifier: -this.resources.workSites.food.value,
                     }),
             ].filter(R.isTruthy),
@@ -413,9 +413,9 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         const controlMod = CONTROL_DC_BY_LEVEL[Math.clamp(this.level - 1, 0, 19)] - 10;
         this.control = new Statistic(this.actor, {
             slug: "control",
-            label: "PF2E.Kingmaker.Kingdom.ControlDC",
+            label: "AVANT.Kingmaker.Kingdom.ControlDC",
             domains: ["control-dc"],
-            modifiers: [new ModifierPF2e({ slug: "base", label: "PF2E.ModifierTitle", modifier: controlMod })],
+            modifiers: [new ModifierAvant({ slug: "base", label: "AVANT.ModifierTitle", modifier: controlMod })],
         });
 
         // Calculate all kingdom skills
@@ -430,7 +430,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
                 label: KINGDOM_SKILL_LABELS[skill],
                 domains,
                 modifiers: [
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: ability,
                         label: KINGDOM_ABILITY_LABELS[ability],
                         modifier: abilityMod,
@@ -454,7 +454,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
             this.actor,
             {
                 id: "features",
-                label: "PF2E.Kingmaker.Kingdom.FeatSlot.Features",
+                label: "AVANT.Kingmaker.Kingdom.FeatSlot.Features",
             },
             { limit: this.level },
         );
@@ -462,7 +462,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
             this.actor,
             {
                 id: "kingdom",
-                label: "PF2E.Kingmaker.Kingdom.FeatSlot.Feats",
+                label: "AVANT.Kingmaker.Kingdom.FeatSlot.Feats",
                 slots: [{ id: "government", label: "G" }, ...evenLevels],
                 filter: {
                     traits: ["kingdom"],
@@ -474,7 +474,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
             this.actor,
             {
                 id: "bonus",
-                label: "PF2E.Kingmaker.Kingdom.FeatSlot.Bonus",
+                label: "AVANT.Kingmaker.Kingdom.FeatSlot.Bonus",
                 filter: {
                     traits: ["kingdom"],
                 },
@@ -513,16 +513,16 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
     }
 
     async importActivities({ skipDialog = false }: { skipDialog?: boolean } = {}): Promise<void> {
-        const pack = game.packs.get("pf2e.kingmaker-features");
+        const pack = game.packs.get("avant.kingmaker-features");
         if (!pack) {
-            throw ErrorPF2e("Could not load kingdom features compendium");
+            throw ErrorAvant("Could not load kingdom features compendium");
         }
 
         // Add any relevant kingdom features first
         await this.updateFeatures(this.level);
 
         const documents = (await pack.getDocuments({ type: "campaignFeature" }))
-            .filter((d): d is CampaignFeaturePF2e<null> => d instanceof ItemPF2e && d.isOfType("campaignFeature"))
+            .filter((d): d is CampaignFeatureAvant<null> => d instanceof ItemAvant && d.isOfType("campaignFeature"))
             .filter((d) => d.system.category === "kingdom-activity");
 
         await importDocuments(this.actor, documents, skipDialog);
@@ -534,14 +534,14 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         const featuresToDelete = existingFeatures.filter((f) => (f.level ?? 0) > level).map((f) => f.id);
 
         const featuresToAdd = await (async () => {
-            const pack = game.packs.get("pf2e.kingmaker-features");
+            const pack = game.packs.get("avant.kingmaker-features");
             if (!pack) {
-                console.error("PF2E System | Could not load kingdom features compendium");
+                console.error("AVANT System | Could not load kingdom features compendium");
                 return [];
             }
 
             const documents = (await pack.getDocuments({ type: "campaignFeature" }))
-                .filter((d): d is CampaignFeaturePF2e<null> => d instanceof ItemPF2e && d.isOfType("campaignFeature"))
+                .filter((d): d is CampaignFeatureAvant<null> => d instanceof ItemAvant && d.isOfType("campaignFeature"))
                 .filter((d) => d.system.category === "kingdom-feature")
                 .filter((d) => level >= (d.level ?? 0));
             return documents
@@ -565,7 +565,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         if (options.type === "builder") {
             new KingdomBuilder(this).render(true);
         } else {
-            new KingdomSheetPF2e(this.actor).render(true, { tab: options.tab });
+            new KingdomSheetAvant(this.actor).render(true, { tab: options.tab });
         }
     }
 
@@ -575,7 +575,7 @@ class Kingdom extends DataModel<PartySystemData, KingdomSchema> implements Party
         if (feat) {
             console.log("Replacing feat");
             fromUuid(feat).then(async (f) => {
-                if (!(f instanceof CampaignFeaturePF2e)) return;
+                if (!(f instanceof CampaignFeatureAvant)) return;
                 const currentGovernmentFeat = actor.itemTypes.campaignFeature.find(
                     (f) => f.system.location === "government",
                 );

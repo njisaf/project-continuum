@@ -4,7 +4,7 @@
     {{#each activations}}
         <div class="activation form-list" data-activation-id="{{id}}">
             <header>
-                <strong>{{localize "PF2E.Item.Activation.Label"}}</strong>
+                <strong>{{localize "AVANT.Item.Activation.Label"}}</strong>
                 {{#unless action.components.cast}}
                     {{{actionGlyph action.actionCost}}}
                 {{/unless}}
@@ -17,19 +17,19 @@
             <div class="form-fields spell-components">
                 <label>
                     <input type="checkbox" name="{{base}}.components.command" {{checked action.components.command}} data-dtype="Boolean"/>
-                    <span>{{localize "PF2E.Item.Activation.CommandSheetLabel"}}</span>
+                    <span>{{localize "AVANT.Item.Activation.CommandSheetLabel"}}</span>
                 </label>
                 <label>
                     <input type="checkbox" name="{{base}}.components.envision" {{checked action.components.envision}} data-dtype="Boolean"/>
-                    <span>{{localize "PF2E.Item.Activation.EnvisionSheetLabel"}}</span>
+                    <span>{{localize "AVANT.Item.Activation.EnvisionSheetLabel"}}</span>
                 </label>
                 <label>
                     <input type="checkbox" name="{{base}}.components.interact" {{checked action.components.interact}} data-dtype="Boolean"/>
-                    <span>{{localize "PF2E.Item.Activation.Interact"}}</span>
+                    <span>{{localize "AVANT.Item.Activation.Interact"}}</span>
                 </label>
                 <label>
                     <input type="checkbox" name="{{base}}.components.cast" {{checked action.components.cast}} data-dtype="Boolean"/>
-                    <span>{{localize "PF2E.Item.Activation.Cast"}}</span>
+                    <span>{{localize "AVANT.Item.Activation.Cast"}}</span>
                 </label>
             </div>
 
@@ -48,7 +48,7 @@
                 {{#if action.frequency}}
                     <div class="form-fields frequency">
                         <input type="number" name="{{base}}.frequency.max" value="{{action.frequency.max}}" data-dtype="Number"/>
-                        <span>{{localize "PF2E.Frequency.per"}}</span>
+                        <span>{{localize "AVANT.Frequency.per"}}</span>
                         <select name="{{base}}.frequency.per" data-dtype="String">
                             {{selectOptions@root.frequencies selected=action.frequency.per localize=true}}
                         </select>
@@ -56,15 +56,15 @@
                     </div>
                 {{else}}
                     <span class="frequency empty">
-                        {{localize "PF2E.Frequency.AtWill"}}
-                        <a data-action="activation-frequency-add">({{localize "PF2E.AddShortLabel"}})</a>
+                        {{localize "AVANT.Frequency.AtWill"}}
+                        <a data-action="activation-frequency-add">({{localize "AVANT.AddShortLabel"}})</a>
                     </span>
                 {{/if}}
             </div>
 
             <div class="tags">
                 <label>
-                    {{localize "PF2E.TraitsLabel"}}
+                    {{localize "AVANT.TraitsLabel"}}
                     <a class="tag-selector" data-tag-selector="basic" data-config-types="actionTraits" data-property="{{base}}.traits"><i class="fa-solid fa-edit"></i></a>
                 </label>
                 {{#each traits as |trait|}}
@@ -76,5 +76,5 @@
             <input type="hidden" name="{{base}}.description.value" value="{{action.description.value}}"/>
         </div>
     {{/each}}
-    <button type="button" data-action="activation-add"><i class="fa-solid fa-plus"></i>{{localize "PF2E.Item.Activation.Add"}}</button>
+    <button type="button" data-action="activation-add"><i class="fa-solid fa-plus"></i>{{localize "AVANT.Item.Activation.Add"}}</button>
 </section>

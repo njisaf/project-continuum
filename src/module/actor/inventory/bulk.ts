@@ -1,17 +1,17 @@
-import { ActorPF2e } from "@actor";
-import { PhysicalItemPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import { PhysicalItemAvant } from "@item";
 import { Bulk } from "@item/physical/bulk.ts";
 import { groupBy } from "@util";
 
 export class InventoryBulk {
-    actor: ActorPF2e;
+    actor: ActorAvant;
 
     #value: Bulk | null = null;
 
     encumberedAfterAddend = 0;
     maxAddend = 0;
 
-    constructor(actor: ActorPF2e) {
+    constructor(actor: ActorAvant) {
         this.actor = actor;
     }
 
@@ -25,7 +25,7 @@ export class InventoryBulk {
 
     get encumberedAfterBreakdown(): string {
         const addend = this.encumberedAfterAddend;
-        const stat = game.i18n.localize(CONFIG.PF2E.abilities.str);
+        const stat = game.i18n.localize(CONFIG.AVANT.abilities.str);
         return `5 + ${this.#actorStrength} (${stat})` + (addend ? ` + ${addend}` : "");
     }
 
@@ -35,7 +35,7 @@ export class InventoryBulk {
 
     get maxBreakdown(): string {
         const addend = this.maxAddend;
-        const stat = game.i18n.localize(CONFIG.PF2E.abilities.str);
+        const stat = game.i18n.localize(CONFIG.AVANT.abilities.str);
         return `10 + ${this.#actorStrength} (${stat})` + (addend ? ` + ${addend}` : "");
     }
 
@@ -79,7 +79,7 @@ export class InventoryBulk {
         return this.value.normal;
     }
 
-    static computeTotalBulk(items: PhysicalItemPF2e[], actor: ActorPF2e | null): Bulk {
+    static computeTotalBulk(items: PhysicalItemAvant[], actor: ActorAvant | null): Bulk {
         items = this.#flattenNonStowing(items);
 
         // Figure out which items have stack groups and which don't
@@ -90,7 +90,7 @@ export class InventoryBulk {
         const stackingItems = items.filter((i) => !nonStackingIds.has(i.id));
 
         // Compute non-stacking bulks
-        const withSubitems = (i: PhysicalItemPF2e) =>
+        const withSubitems = (i: PhysicalItemAvant) =>
             i.subitems.reduce((total, subitem) => total.plus(subitem.bulk), i.bulk);
         const baseBulk = nonStackingItems
             .map((i) => withSubitems(i))
@@ -120,7 +120,7 @@ export class InventoryBulk {
     }
 
     /** Non-stowing containers are not "real" and thus shouldn't split stack groups */
-    static #flattenNonStowing(items: PhysicalItemPF2e[]): PhysicalItemPF2e[] {
+    static #flattenNonStowing(items: PhysicalItemAvant[]): PhysicalItemAvant[] {
         return items
             .map((item) => {
                 if (item.isOfType("backpack") && !item.stowsItems) {

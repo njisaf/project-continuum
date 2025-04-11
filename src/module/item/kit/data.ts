@@ -1,6 +1,6 @@
-import type { KitPF2e } from "@item";
+import type { KitAvant } from "@item";
 import { ItemSystemModel, ItemSystemSchema } from "@item/base/data/model.ts";
-import type { BaseItemSourcePF2e, ItemSystemSource } from "@item/base/data/system.ts";
+import type { BaseItemSourceAvant, ItemSystemSource } from "@item/base/data/system.ts";
 import type { ClassTrait } from "@item/class/types.ts";
 import { PriceField } from "@item/physical/schema.ts";
 import { NullField, RecordField, SlugField } from "@system/schema-data-fields.ts";
@@ -67,12 +67,12 @@ class KitEntriesField extends RecordField<
     }
 }
 
-class KitSystemData extends ItemSystemModel<KitPF2e, KitSystemSchema> {
+class KitSystemData extends ItemSystemModel<KitAvant, KitSystemSchema> {
     static override defineSchema(): KitSystemSchema {
         const fields = foundry.data.fields;
 
         const traitChoices: Record<ClassTrait, string> = {
-            ...CONFIG.PF2E.classTraits,
+            ...CONFIG.AVANT.classTraits,
         };
 
         return {
@@ -97,7 +97,7 @@ class KitSystemData extends ItemSystemModel<KitPF2e, KitSystemSchema> {
 }
 
 interface KitSystemData
-    extends ItemSystemModel<KitPF2e, KitSystemSchema>,
+    extends ItemSystemModel<KitAvant, KitSystemSchema>,
         Omit<ModelPropsFromSchema<KitSystemSchema>, "description"> {}
 
 type KitEntryData = NonNullable<KitSystemData["items"][string]>;
@@ -132,7 +132,7 @@ type KitSystemSource = SourceFromSchema<KitSystemSchema> & {
     schema?: ItemSystemSource["schema"];
 };
 
-type KitSource = BaseItemSourcePF2e<"kit", KitSystemSource>;
+type KitSource = BaseItemSourceAvant<"kit", KitSystemSource>;
 
 export { KitSystemData };
 export type { KitEntryData, KitSource };

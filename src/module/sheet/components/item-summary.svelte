@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { AbstractEffectPF2e, ItemPF2e } from "@item";
+    import { AbstractEffectAvant, ItemAvant } from "@item";
     import type { RawItemChatData } from "@item/base/data/index.ts";
     import { slide } from "svelte/transition";
     import ItemTraits from "./item-traits.svelte";
@@ -17,8 +17,8 @@
     let priceString = $state("");
 
     async function loadItemData(): Promise<void> {
-        const document = await fromUuid<ItemPF2e>(uuid);
-        const isEffect = document instanceof AbstractEffectPF2e;
+        const document = await fromUuid<ItemAvant>(uuid);
+        const isEffect = document instanceof AbstractEffectAvant;
         const price = document?.isOfType("physical") ? document.price : null;
 
         // Load and assign to state

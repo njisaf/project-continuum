@@ -1,0 +1,58 @@
+{
+    "_id": "wEFRo8enunRLFsVE",
+    "img": "systems/avant/icons/spells/daze.webp",
+    "name": "Effect: Psychic Daze",
+    "system": {
+        "description": {
+            "value": ""
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "minutes",
+            "value": 1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder #194: Cult of the Cave Worm"
+        },
+        "rules": [
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.Check.Result.Degree.Check.failure",
+                        "value": 1
+                    },
+                    {
+                        "label": "AVANT.Check.Result.Degree.Check.criticalFailure",
+                        "value": 2
+                    }
+                ],
+                "flag": "outcome",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DegreeOfSuccess"
+            },
+            {
+                "key": "Weakness",
+                "type": "mental",
+                "value": "@item.flags.avant.rulesSelections.outcome"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

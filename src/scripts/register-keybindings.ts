@@ -1,20 +1,20 @@
-import type { PartyPF2e } from "@actor";
-import { RulerPF2e } from "@module/canvas/ruler.ts";
+import type { PartyAvant } from "@actor";
+import { RulerAvant } from "@module/canvas/ruler.ts";
 
 export function registerKeybindings(): void {
-    game.keybindings.register("pf2e", "cycle-token-stack", {
-        name: "PF2E.Keybinding.CycleTokenStack.Label",
-        hint: "PF2E.Keybinding.CycleTokenStack.Hint",
+    game.keybindings.register("avant", "cycle-token-stack", {
+        name: "AVANT.Keybinding.CycleTokenStack.Label",
+        hint: "AVANT.Keybinding.CycleTokenStack.Hint",
         editable: [{ key: "KeyZ", modifiers: [] }],
         onUp: (): boolean => canvas.tokens.cycleStack(),
     });
 
-    game.keybindings.register("pf2e", "toggle-party-sheet", {
-        name: "PF2E.Keybinding.TogglePartySheet.Label",
-        hint: "PF2E.Keybinding.TogglePartySheet.Hint",
+    game.keybindings.register("avant", "toggle-party-sheet", {
+        name: "AVANT.Keybinding.TogglePartySheet.Label",
+        hint: "AVANT.Keybinding.TogglePartySheet.Hint",
         editable: [{ key: "KeyP", modifiers: [] }],
         onDown: (): boolean | null => {
-            const party = ((): PartyPF2e | null => {
+            const party = ((): PartyAvant | null => {
                 if (game.user.isGM) {
                     const token =
                         canvas.ready && canvas.tokens.controlled.length === 1 ? canvas.tokens.controlled[0] : null;
@@ -42,13 +42,13 @@ export function registerKeybindings(): void {
         },
     });
 
-    if (!RulerPF2e.hasModuleConflict) {
-        game.keybindings.register("pf2e", "placeWaypoint", {
-            name: "PF2E.Keybinding.PlaceWaypoint.Label",
-            hint: "PF2E.Keybinding.PlaceWaypoint.Hint",
+    if (!RulerAvant.hasModuleConflict) {
+        game.keybindings.register("avant", "placeWaypoint", {
+            name: "AVANT.Keybinding.PlaceWaypoint.Label",
+            hint: "AVANT.Keybinding.PlaceWaypoint.Hint",
             editable: [{ key: "KeyX", modifiers: [] }],
             onUp: (): boolean | null => {
-                if (canvas.ready && canvas.controls.ruler.isMeasuring && game.pf2e.settings.dragMeasurement) {
+                if (canvas.ready && canvas.controls.ruler.isMeasuring && game.avant.settings.dragMeasurement) {
                     canvas.controls.ruler.saveWaypoint();
                     return true;
                 } else {
@@ -60,9 +60,9 @@ export function registerKeybindings(): void {
 
     // Defer to the GM Vision module if enabled
     if (!game.modules.get("gm-vision")?.active) {
-        game.keybindings.register("pf2e", "gm-vision", {
-            name: "PF2E.Keybinding.GMVision.Label",
-            hint: "PF2E.Keybinding.GMVision.Hint",
+        game.keybindings.register("avant", "gm-vision", {
+            name: "AVANT.Keybinding.GMVision.Label",
+            hint: "AVANT.Keybinding.GMVision.Hint",
             editable: [{ key: "KeyG", modifiers: ["Control"] }],
             restricted: true,
             onDown: (): boolean => {
@@ -71,7 +71,7 @@ export function registerKeybindings(): void {
                     const toggle = ui.controls.control.tools.find((t) => t.name === "gm-vision");
                     toggle?.onClick?.(); // Does the same as below
                 } else {
-                    game.settings.set("pf2e", "gmVision", !game.settings.get("pf2e", "gmVision"));
+                    game.settings.set("avant", "gmVision", !game.settings.get("avant", "gmVision"));
                 }
                 return true;
             },

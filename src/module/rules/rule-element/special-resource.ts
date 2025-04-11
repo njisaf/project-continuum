@@ -1,20 +1,20 @@
-import type { ActorType, CreaturePF2e } from "@actor";
+import type { ActorType, CreatureAvant } from "@actor";
 import type { CharacterResources } from "@actor/character/data.ts";
 import { CORE_RESOURCES } from "@actor/character/values.ts";
 import { applyActorUpdate } from "@actor/helpers.ts";
 import type { ActorCommitData } from "@actor/types.ts";
-import { ItemProxyPF2e, PhysicalItemPF2e } from "@item";
+import { ItemProxyAvant, PhysicalItemAvant } from "@item";
 import type { PhysicalItemSource } from "@item/base/data/index.ts";
 import { AnyChoiceField } from "@system/schema-data-fields.ts";
 import { sluggify } from "@util";
 import { createBatchRuleElementUpdate } from "../helpers.ts";
-import { RuleElementPF2e, type RuleElementOptions } from "./base.ts";
+import { RuleElementAvant, type RuleElementOptions } from "./base.ts";
 import { ResolvableValueField, type RuleElementSchema, type RuleElementSource } from "./data.ts";
 import fields = foundry.data.fields;
 
 const INVALID_RESOURCES: (keyof CharacterResources)[] = [...CORE_RESOURCES, "crafting", "infusedReagents"];
 
-class SpecialResourceRuleElement extends RuleElementPF2e<SpecialResourceSchema> {
+class SpecialResourceRuleElement extends RuleElementAvant<SpecialResourceSchema> {
     protected static override validActorTypes: ActorType[] = ["character"];
 
     constructor(source: SpecialResourceSource, options: RuleElementOptions) {
@@ -42,7 +42,7 @@ class SpecialResourceRuleElement extends RuleElementPF2e<SpecialResourceSchema> 
                 blank: false,
                 initial: undefined,
                 type: "Item",
-                label: "PF2E.UUID.Label",
+                label: "AVANT.UUID.Label",
             }),
             level: new ResolvableValueField({ required: false, nullable: true, initial: null }),
             renew: new AnyChoiceField({
@@ -61,7 +61,7 @@ class SpecialResourceRuleElement extends RuleElementPF2e<SpecialResourceSchema> 
         value: number,
         { save = true, render = true, checkLevel = false }: SpecialResourceUpdateOptions = {},
     ): Promise<void | ActorCommitData> {
-        const data: ActorCommitData<CreaturePF2e> = {
+        const data: ActorCommitData<CreatureAvant> = {
             actorUpdates: null,
             itemCreates: [],
             itemUpdates: [],
@@ -112,7 +112,7 @@ class SpecialResourceRuleElement extends RuleElementPF2e<SpecialResourceSchema> 
     }
 
     /** If an item uuid is specified, create it when this resource is first attached */
-    override async preCreate({ tempItems, pendingItems }: RuleElementPF2e.PreCreateParams): Promise<void> {
+    override async preCreate({ tempItems, pendingItems }: RuleElementAvant.PreCreateParams): Promise<void> {
         if (!this.test()) return;
 
         if (this.itemUUID) {
@@ -133,7 +133,7 @@ class SpecialResourceRuleElement extends RuleElementPF2e<SpecialResourceSchema> 
             } else if (!existingItem && uuid) {
                 const source = await this.#createItem(uuid, level);
                 if (source) {
-                    const item = new ItemProxyPF2e(fu.deepClone(source), { parent: this.actor });
+                    const item = new ItemProxyAvant(fu.deepClone(source), { parent: this.actor });
                     tempItems.push(item);
                     pendingItems.push(source);
                 }
@@ -196,7 +196,7 @@ class SpecialResourceRuleElement extends RuleElementPF2e<SpecialResourceSchema> 
         })();
 
         // todo: set grant item flags
-        if (grantedItem instanceof PhysicalItemPF2e) {
+        if (grantedItem instanceof PhysicalItemAvant) {
             const grantedSource = grantedItem.toObject();
             grantedSource._id = fu.randomID();
             grantedSource.system.quantity = this.max;
@@ -212,11 +212,11 @@ class SpecialResourceRuleElement extends RuleElementPF2e<SpecialResourceSchema> 
 }
 
 interface SpecialResourceRuleElement
-    extends RuleElementPF2e<SpecialResourceSchema>,
+    extends RuleElementAvant<SpecialResourceSchema>,
         Omit<ModelPropsFromSchema<SpecialResourceSchema>, "label"> {
     slug: string;
     max: number;
-    get actor(): CreaturePF2e;
+    get actor(): CreatureAvant;
 }
 
 type SpecialResourceSource = RuleElementSource & {

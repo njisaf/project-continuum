@@ -1,11 +1,11 @@
-import { ActorPF2e, CreaturePF2e, PartyPF2e } from "@actor";
+import { ActorAvant, CreatureAvant, PartyAvant } from "@actor";
 import { CREATURE_ACTOR_TYPES } from "@actor/values.ts";
 import { fontAwesomeIcon, htmlClosest, htmlQuery, htmlQueryAll } from "@util";
 import * as R from "remeda";
 
 /** Extend ActorDirectory to show more information */
-class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
-    static override entryPartial = "systems/pf2e/templates/sidebar/actor-document-partial.hbs";
+class ActorDirectoryAvant extends ActorDirectory<ActorAvant<null>> {
+    static override entryPartial = "systems/avant/templates/sidebar/actor-document-partial.hbs";
 
     /** Any additional "folder like" elements (such as parties) that are maintained separately */
     #extraFolders: Record<string, boolean> = {};
@@ -31,14 +31,14 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
         const activeParty = game.actors.party;
 
         if (!this.#renderedOnce) {
-            if (activeParty && game.settings.get("pf2e", "activePartyFolderState")) {
+            if (activeParty && game.settings.get("avant", "activePartyFolderState")) {
                 this.#extraFolders[activeParty.id] = true;
             }
             this.#renderedOnce = true;
         }
 
         const parties = R.sortBy(
-            this.documents.filter((a): a is PartyPF2e<null> => a.isOfType("party") && a !== activeParty),
+            this.documents.filter((a): a is PartyAvant<null> => a.isOfType("party") && a !== activeParty),
             (p) => p.sort,
         );
 
@@ -52,7 +52,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
     }
 
     saveActivePartyFolderState(): void {
-        game.settings.set("pf2e", "activePartyFolderState", this.#extraFolders[game.actors.party?.id ?? ""] ?? true);
+        game.settings.set("avant", "activePartyFolderState", this.#extraFolders[game.actors.party?.id ?? ""] ?? true);
     }
 
     override activateListeners($html: JQuery<HTMLElement>): void {
@@ -110,7 +110,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
                 if (!party?.isOfType("party")) return;
 
                 const button = event.currentTarget as HTMLElement;
-                const actor = await ActorPF2e.createDialog(
+                const actor = await ActorAvant.createDialog(
                     {},
                     {
                         width: 320,
@@ -131,7 +131,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
             const createPartyLink = htmlQuery(header, "a[data-action=create-party]");
             createPartyLink?.addEventListener("click", async (event) => {
                 event.stopPropagation();
-                const actor = await ActorPF2e.create({ type: "party", name: "New Party" });
+                const actor = await ActorAvant.create({ type: "party", name: "New Party" });
                 actor?.sheet.render(true);
 
                 const header = htmlClosest(createPartyLink, ".folder-like");
@@ -147,7 +147,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
                 event.stopPropagation();
                 const documentId = htmlClosest(activatePartyLink, "[data-document-id]")?.dataset.documentId ?? "";
                 if (game.actors.has(documentId)) {
-                    game.settings.set("pf2e", "activeParty", documentId);
+                    game.settings.set("avant", "activeParty", documentId);
                     this.saveActivePartyFolderState();
                 }
             });
@@ -194,7 +194,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
         if (fromParty) {
             const data: ActorSidebarDropData = JSON.parse(event.dataTransfer.getData("text/plain"));
             data.fromParty = fromParty;
-            this.#draggingParty = fromUuidSync(data.uuid as ActorUUID) instanceof PartyPF2e;
+            this.#draggingParty = fromUuidSync(data.uuid as ActorUUID) instanceof PartyAvant;
             event.dataTransfer.setData("text/plain", JSON.stringify(data));
         } else {
             this.#draggingParty = false;
@@ -232,10 +232,10 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
             const toParty = game.actors.get(toPartyId ?? "");
             const fromParty = game.actors.get(data.fromParty ?? "");
             const actor = fromUuidSync(data.uuid);
-            if (fromParty instanceof PartyPF2e) {
+            if (fromParty instanceof PartyAvant) {
                 await fromParty.removeMembers(data.uuid as ActorUUID);
             }
-            if (toParty instanceof PartyPF2e && actor instanceof CreaturePF2e) {
+            if (toParty instanceof PartyAvant && actor instanceof CreatureAvant) {
                 await toParty.addMembers(actor);
             }
         }
@@ -247,7 +247,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
 
         // Add parties to sidebar (if any exist)
         if (game.actors.some((a) => a.isOfType("party"))) {
-            const partyHTML = await renderTemplate("systems/pf2e/templates/sidebar/party-document-partial.hbs", data);
+            const partyHTML = await renderTemplate("systems/avant/templates/sidebar/party-document-partial.hbs", data);
             $element.find(".directory-list").prepend(partyHTML);
 
             // Inject any additional data for specific party implementations
@@ -269,7 +269,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
     protected override _getEntryContextOptions(): EntryContextOption[] {
         const options = super._getEntryContextOptions();
         options.push({
-            name: "PF2E.Actor.Party.Sidebar.RemoveMember",
+            name: "AVANT.Actor.Party.Sidebar.RemoveMember",
             icon: fontAwesomeIcon("bus").outerHTML,
             condition: ($li) => $li.closest(".party").length > 0 && !$li.closest(".party-header").length,
             callback: ($li) => {
@@ -277,7 +277,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
                 const partyId = $li.closest(".party").data("document-id");
                 const actor = game.actors.get(actorId ?? "");
                 const party = game.actors.get(partyId ?? "");
-                if (actor && party instanceof PartyPF2e) {
+                if (actor && party instanceof PartyAvant) {
                     party.removeMembers(actor.uuid);
                 }
             },
@@ -291,7 +291,7 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
         const relevantNames = ["SIDEBAR.CharArt", "SIDEBAR.TokenArt", "OWNERSHIP.Configure", "SIDEBAR.Delete"];
         const relevantOptions = allOptions.filter((o) => relevantNames.includes(o.name));
         if (relevantOptions.length !== relevantNames.length) {
-            console.error("PF2E System | Failed to extract all sidebar options from the base options");
+            console.error("AVANT System | Failed to extract all sidebar options from the base options");
         }
         return relevantOptions;
     }
@@ -305,17 +305,17 @@ class ActorDirectoryPF2e extends ActorDirectory<ActorPF2e<null>> {
         browseButton.append(
             fontAwesomeIcon("search", { fixedWidth: true }),
             " ",
-            game.i18n.localize("PF2E.CompendiumBrowser.BestiaryBrowser"),
+            game.i18n.localize("AVANT.CompendiumBrowser.BestiaryBrowser"),
         );
         browseButton.addEventListener("click", () => {
-            game.pf2e.compendiumBrowser.openTab("bestiary");
+            game.avant.compendiumBrowser.openTab("bestiary");
         });
         htmlQuery(html, "footer.directory-footer")?.append(browseButton);
     }
 }
 
-interface ActorSidebarDropData extends DropCanvasData<"actor", ActorPF2e> {
+interface ActorSidebarDropData extends DropCanvasData<"actor", ActorAvant> {
     fromParty?: string;
 }
 
-export { ActorDirectoryPF2e };
+export { ActorDirectoryAvant };

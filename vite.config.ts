@@ -10,9 +10,9 @@ import * as Vite from "vite";
 import checker from "vite-plugin-checker";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import tsconfigPaths from "vite-tsconfig-paths";
-import packageJSON from "./package.json";
+import packageJSON from "./package.json" with { type: "json" };
 import { sluggify } from "./src/util/misc.ts";
-import systemJSON from "./static/system.json";
+import systemJSON from "./static/system.json" with { type: "json" };
 
 const CONDITION_SOURCES = ((): ConditionSource[] => {
     const output = execSync("npm run build:conditions", { encoding: "utf-8" });
@@ -30,23 +30,63 @@ console.log(`Connecting to foundry hosted at http://localhost:${foundryPort}/`);
 
 /** Get UUID redirects from JSON file, converting names to IDs. */
 function getUuidRedirects(): Record<CompendiumUUID, CompendiumUUID> {
-    const redirectJSON = JSON.parse(fs.readFileSync(path.resolve(__dirname, "build/uuid-redirects.json"), "utf-8"));
-    for (const [from, to] of Object.entries<string>(redirectJSON)) {
-        const [, , pack, documentType, name] = to.split(".", 5);
-        const packDir = systemJSON.packs.find((p) => p.type === documentType && p.name === pack)?.path;
-        const dirPath = path.resolve(__dirname, packDir ?? "");
-        const filename = `${sluggify(name)}.json`;
-        const jsonPath = fs.existsSync(path.resolve(dirPath, filename))
-            ? path.resolve(dirPath, filename)
-            : Glob.sync(path.resolve(dirPath, "**", filename)).at(0);
-        if (!jsonPath) throw new Error(`Failure looking up pack JSON for ${to}`);
-        const docJSON = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
-        const id = docJSON._id;
-        if (!id) throw new Error(`No UUID redirect match found for ${documentType} ${name} in ${pack}`);
-        redirectJSON[from] = `Compendium.pf2e.${pack}.${documentType}.${id}`;
-    }
+    try {
+        const redirectJSON = JSON.parse(fs.readFileSync(path.resolve(__dirname, "build/uuid-redirects.json"), "utf-8"));
+        for (const [from, to] of Object.entries<string>(redirectJSON)) {
+            try {
+                const [, , pack, documentType, name] = to.split(".", 5);
+                const packInfo = systemJSON.packs.find((p) => p.type === documentType && p.name === pack);
+                
+                // Skip if pack doesn't exist (removed in Avant)
+                if (!packInfo) {
+                    console.warn(`Pack ${pack} not found, skipping UUID redirect for ${to}`);
+                    delete redirectJSON[from];
+                    continue;
+                }
+                
+                const packDir = packInfo.path;
+                const dirPath = path.resolve(__dirname, packDir ?? "");
+                
+                // Skip if directory doesn't exist
+                if (!fs.existsSync(dirPath)) {
+                    console.warn(`Directory for pack ${pack} not found at ${dirPath}, skipping UUID redirect for ${to}`);
+                    delete redirectJSON[from];
+                    continue;
+                }
+                
+                const filename = `${sluggify(name)}.json`;
+                const jsonPath = fs.existsSync(path.resolve(dirPath, filename))
+                    ? path.resolve(dirPath, filename)
+                    : Glob.sync(path.resolve(dirPath, "**", filename)).at(0);
+                
+                if (!jsonPath) {
+                    console.warn(`Failure looking up pack JSON for ${to}, skipping this redirect`);
+                    delete redirectJSON[from];
+                    continue;
+                }
+                
+                const docJSON = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
+                const id = docJSON._id;
+                if (!id) {
+                    console.warn(`No UUID redirect match found for ${documentType} ${name} in ${pack}, skipping`);
+                    delete redirectJSON[from];
+                    continue;
+                }
+                
+                redirectJSON[from] = `Compendium.avant.${pack}.${documentType}.${id}`;
+            } catch (error: unknown) {
+                const errorMessage = error instanceof Error ? error.message : String(error);
+                console.warn(`Error processing UUID redirect ${from} -> ${to}: ${errorMessage}`);
+                delete redirectJSON[from];
+            }
+        }
 
-    return redirectJSON;
+        return redirectJSON;
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.error(`Failed to load UUID redirects: ${errorMessage}`);
+        return {};
+    }
 }
 
 const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
@@ -115,7 +155,7 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
                             context.server.ws.send({
                                 type: "custom",
                                 event: "lang-update",
-                                data: { path: `systems/pf2e/${basePath}` },
+                                data: { path: `systems/avant/${basePath}` },
                             });
                         });
                     } else if (context.file.endsWith(".hbs")) {
@@ -125,7 +165,7 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
                             context.server.ws.send({
                                 type: "custom",
                                 event: "template-update",
-                                data: { path: `systems/pf2e/${basePath}` },
+                                data: { path: `systems/avant/${basePath}` },
                             });
                         });
                     }
@@ -139,15 +179,15 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
         const message = "This file is for a running vite dev server and is not copied to a build";
         fs.writeFileSync("./index.html", `<h1>${message}</h1>\n`);
         if (!fs.existsSync("./styles")) fs.mkdirSync("./styles");
-        fs.writeFileSync("./styles/pf2e.css", `/** ${message} */\n`);
-        fs.writeFileSync("./pf2e.mjs", `/** ${message} */\n\nimport "./src/pf2e.ts";\n`);
+        fs.writeFileSync("./styles/avant.css", `/** ${message} */\n`);
+        fs.writeFileSync("./avant.mjs", `/** ${message} */\n\nimport "./src/avant.ts";\n`);
         fs.writeFileSync("./vendor.mjs", `/** ${message} */\n`);
     }
 
     const reEscape = (s: string) => s.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 
     return {
-        base: command === "build" ? "./" : "/systems/pf2e/",
+        base: command === "build" ? "./" : "/systems/avant/",
         publicDir: "static",
         define: {
             BUILD_MODE: JSON.stringify(buildMode),
@@ -164,10 +204,10 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
             minify: false,
             sourcemap: buildMode === "development",
             lib: {
-                name: "pf2e",
-                entry: "src/pf2e.ts",
+                name: "avant",
+                entry: "src/avant.ts",
                 formats: ["es"],
-                fileName: "pf2e",
+                fileName: "avant",
             },
             rollupOptions: {
                 external: new RegExp(
@@ -182,9 +222,9 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
                     ].join(""),
                 ),
                 output: {
-                    assetFileNames: "styles/pf2e.css",
+                    assetFileNames: "styles/avant.css",
                     chunkFileNames: "[name].mjs",
-                    entryFileNames: "pf2e.mjs",
+                    entryFileNames: "avant.mjs",
                     manualChunks: {
                         vendor: buildMode === "production" ? Object.keys(packageJSON.dependencies) : [],
                     },
@@ -197,7 +237,7 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
             port,
             open: "/game",
             proxy: {
-                "^(?!/systems/pf2e/)": `http://localhost:${foundryPort}/`,
+                "^(?!/systems/avant/)": `http://localhost:${foundryPort}/`,
                 "/socket.io": {
                     target: `ws://localhost:${foundryPort}`,
                     ws: true,

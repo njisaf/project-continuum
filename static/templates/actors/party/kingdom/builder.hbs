@@ -1,18 +1,18 @@
 <form autocomplete="off">
     <nav>
         <a data-tab="charter">
-            {{localize "PF2E.Kingmaker.KingdomBuilder.Tabs.Charter"}}
+            {{localize "AVANT.Kingmaker.KingdomBuilder.Tabs.Charter"}}
             {{#if kingdom.build.charter}}<i class="complete fa-solid fa-check"></i>{{/if}}
         </a>
         <a data-tab="heartland">
-            {{localize "PF2E.Kingmaker.KingdomBuilder.Tabs.Heartland"}}
+            {{localize "AVANT.Kingmaker.KingdomBuilder.Tabs.Heartland"}}
             {{#if kingdom.build.heartland}}<i class="complete fa-solid fa-check"></i>{{/if}}
         </a>
         <a data-tab="government">
-            {{localize "PF2E.Kingmaker.KingdomBuilder.Tabs.Government"}}
+            {{localize "AVANT.Kingmaker.KingdomBuilder.Tabs.Government"}}
             {{#if kingdom.build.government}}<i class="complete fa-solid fa-check"></i>{{/if}}
         </a>
-        <a data-tab="ability">{{localize "PF2E.Kingmaker.KingdomBuilder.Tabs.AbilityScores"}}</a>
+        <a data-tab="ability">{{localize "AVANT.Kingmaker.KingdomBuilder.Tabs.AbilityScores"}}</a>
     </nav>
     <div class="container">
         <section class="tab" data-category="charter" data-tab="charter">
@@ -28,7 +28,7 @@
             <div class="ability-builder">
                 <header class="row">
                     <div class="row-heading">
-                        <h3>{{localize "PF2E.Kingmaker.KingdomBuilder.AssignBoostsHeader"}}</h3>
+                        <h3>{{localize "AVANT.Kingmaker.KingdomBuilder.AssignBoostsHeader"}}</h3>
                     </div>
                     <div class="abilities">
                         {{#each abilityLabels as |ability|}}
@@ -43,22 +43,22 @@
                     data=build.charter
                     object=kingdom.charter
                     section="charter"
-                    title="PF2E.Kingmaker.Kingdom.BuildElement.Charter"
-                    missingText="PF2E.Kingmaker.KingdomBuilder.Missing.Charter"
+                    title="AVANT.Kingmaker.Kingdom.BuildElement.Charter"
+                    missingText="AVANT.Kingmaker.KingdomBuilder.Missing.Charter"
                 }}
                 {{> buildRow
                     data=build.heartland
                     object=kingdom.heartland
                     section="heartland"
-                    title="PF2E.Kingmaker.Kingdom.BuildElement.Heartland"
-                    missingText="PF2E.Kingmaker.KingdomBuilder.Missing.Heartland"
+                    title="AVANT.Kingmaker.Kingdom.BuildElement.Heartland"
+                    missingText="AVANT.Kingmaker.KingdomBuilder.Missing.Heartland"
                 }}
                 {{> buildRow
                     data=build.government
                     object=kingdom.government
                     section="government"
-                    title="PF2E.Kingmaker.Kingdom.BuildElement.Government"
-                    missingText="PF2E.Kingmaker.KingdomBuilder.Missing.Government"
+                    title="AVANT.Kingmaker.Kingdom.BuildElement.Government"
+                    missingText="AVANT.Kingmaker.KingdomBuilder.Missing.Government"
                 }}
 
                 <hr/>
@@ -70,9 +70,9 @@
                             <div class="label">
                                 <div class="description">
                                     {{#if (eq boosts.minLevel boosts.level)}}
-                                        {{localize "PF2E.LevelN" level=level}}
+                                        {{localize "AVANT.LevelN" level=level}}
                                     {{else}}
-                                        {{localize "PF2E.LevelRange" minLevel=boosts.minLevel level=boosts.level}}
+                                        {{localize "AVANT.LevelRange" minLevel=boosts.minLevel level=boosts.level}}
                                     {{/if}}
                                 </div>
                             </div>
@@ -88,16 +88,16 @@
                 <div class="row summary-row">
                     <div class="row-heading">
                         <div class="hint-container">
-                            <h3>{{localize "PF2E.Kingmaker.KingdomBuilder.FinalizeHeader"}}</h3>
+                            <h3>{{localize "AVANT.Kingmaker.KingdomBuilder.FinalizeHeader"}}</h3>
                             <label class="aspiration">
-                                {{localize "PF2E.Kingmaker.KingdomBuilder.Aspiration"}}
+                                {{localize "AVANT.Kingmaker.KingdomBuilder.Aspiration"}}
                                 <select name="aspiration">
                                     {{selectOptions @root.aspirationOptions selected=kingdom.aspiration localize=true}}
                                 </select>
                             </label>
                             <label>
                                 <input type="checkbox" name="build.manual" {{checked kingdom.build.manual}}>
-                                {{localize "PF2E.Kingmaker.KingdomBuilder.ManualToggle"}}
+                                {{localize "AVANT.Kingmaker.KingdomBuilder.ManualToggle"}}
                             </label>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                         {{/each}}
                         <div class="complete">
                             <button class="complete" type="button" data-action="complete" {{disabled (not finished)}}>
-                                {{localize "PF2E.Kingmaker.KingdomBuilder.Complete"}}
+                                {{localize "AVANT.Kingmaker.KingdomBuilder.Complete"}}
                             </button>
                         </div>
                     </div>
@@ -152,9 +152,9 @@
                 <div class="description"><div class="content">{{buildEntry.description}}</div></div>
             </div>
             <footer>
-                {{> "systems/pf2e/templates/actors/party/kingdom/partials/build-entry-boosts.hbs"}}
+                {{> "systems/avant/templates/actors/party/kingdom/partials/build-entry-boosts.hbs"}}
                 <button class="complete" data-action="save-and-continue" type="button">
-                    {{localize "PF2E.Kingmaker.KingdomBuilder.SaveAndContinue"}}
+                    {{localize "AVANT.Kingmaker.KingdomBuilder.SaveAndContinue"}}
                 </button>
             </footer>
         </section>
@@ -174,7 +174,7 @@
                     {{#if object}}
                         {{object.name}}
                     {{else}}
-                        {{localize "PF2E.Kingmaker.KingdomBuilder.NotSelected"}}
+                        {{localize "AVANT.Kingmaker.KingdomBuilder.NotSelected"}}
                     {{/if}}
                 </div>
             </div>
@@ -218,9 +218,9 @@
             {{#if (eq number "second")}}
                 x2
             {{else if (eq type "flaw")}}
-                {{localize "PF2E.Kingmaker.KingdomBuilder.Flaw"}}
+                {{localize "AVANT.Kingmaker.KingdomBuilder.Flaw"}}
             {{else}}
-                {{localize "PF2E.Kingmaker.KingdomBuilder.Boost"}}
+                {{localize "AVANT.Kingmaker.KingdomBuilder.Boost"}}
             {{/if}}
         </button>
     {{/inline}}

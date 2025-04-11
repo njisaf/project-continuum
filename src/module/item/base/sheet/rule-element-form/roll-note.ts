@@ -7,7 +7,7 @@ import { RuleElementForm, RuleElementFormSheetData } from "./base.ts";
 
 /** Form handler for the RollNote rule element */
 class RollNoteForm extends RuleElementForm<NoteRESource, RollNoteRuleElement> {
-    override template = "systems/pf2e/templates/items/rules/note.hbs";
+    override template = "systems/avant/templates/items/rules/note.hbs";
 
     override async getData(): Promise<RollNoteFormSheetData> {
         return {

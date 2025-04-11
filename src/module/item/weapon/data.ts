@@ -1,6 +1,6 @@
 import { AttributeString } from "@actor/types.ts";
 import type { PhysicalItemSource } from "@item/base/data/index.ts";
-import { ItemFlagsPF2e } from "@item/base/data/system.ts";
+import { ItemFlagsAvant } from "@item/base/data/system.ts";
 import type {
     BasePhysicalItemSource,
     Investable,
@@ -31,8 +31,8 @@ type WeaponSource = BasePhysicalItemSource<"weapon", WeaponSystemSource> & {
     flags: DeepPartial<WeaponFlags>;
 };
 
-type WeaponFlags = ItemFlagsPF2e & {
-    pf2e: {
+type WeaponFlags = ItemFlagsAvant & {
+    avant: {
         /** Whether this attack is compatible with a battle form */
         battleForm?: boolean;
         /** Whether the weapon is a combination weapon in its melee form */

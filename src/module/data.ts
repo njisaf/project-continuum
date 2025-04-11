@@ -1,5 +1,5 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import type * as fields from "types/foundry/common/data/fields.d.ts";
 
 /** The size property of creatures and equipment */
@@ -143,14 +143,14 @@ export const MATH_FUNCTION_NAMES: Set<MathFunctionName> = new Set([
     "trunc",
 ] as const);
 
-type EnfolderableDocumentPF2e =
-    | ActorPF2e<null>
-    | ItemPF2e<null>
+type EnfolderableDocumentAvant =
+    | ActorAvant<null>
+    | ItemAvant<null>
     | Exclude<EnfolderableDocument, Actor<null> | Item<null>>;
 
 export { RARITIES, SIZES, SIZE_SLUGS, goesToEleven };
 export type {
-    EnfolderableDocumentPF2e,
+    EnfolderableDocumentAvant,
     LabeledNumber,
     LabeledValueAndMax,
     MigrationDataField,

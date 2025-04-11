@@ -1,0 +1,76 @@
+{
+    "_id": "qRLRrHf0kzaJ7xt0",
+    "img": "systems/avant/icons/features/classes/way-of-the-pistolero.webp",
+    "name": "Way of the Pistolero",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "classfeature",
+        "description": {
+            "value": "<p>Whether you're a professional duelist or a pistol-twirling entertainer, you have quick feet and quicker hands that never seem to let you down, and an equally sharp wit and tongue that jab your foes. You might leave a hand free or cultivate the ambidexterity for twin weapons. Either way, you stay close enough to your enemies to leverage your superior reflexes while leaving enough space to safely fire.</p>\n<p><strong>Slinger's Reload</strong> @UUID[Compendium.avant.actionsavant.Item.Raconteur's Reload]</p>\n<p><strong>Deeds</strong> <em>Initial</em> @UUID[Compendium.avant.actionsavant.Item.Ten Paces]; <em>Advanced</em> @UUID[Compendium.avant.actionsavant.Item.Pistolero's Retort]; <em>Greater</em> @UUID[Compendium.avant.actionsavant.Item.Grim Swagger]</p>\n<p><strong>Way Skill</strong> choose Deception or Intimidation</p>"
+        },
+        "level": {
+            "value": 1
+        },
+        "prerequisites": {
+            "value": []
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Guns & Gears"
+        },
+        "rules": [
+            {
+                "key": "GrantItem",
+                "predicate": [
+                    "class:gunslinger"
+                ],
+                "uuid": "Compendium.avant.actionsavant.Item.Raconteur's Reload"
+            },
+            {
+                "key": "GrantItem",
+                "predicate": [
+                    "class:gunslinger"
+                ],
+                "uuid": "Compendium.avant.actionsavant.Item.Ten Paces"
+            },
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.Skill.Deception",
+                        "value": "deception"
+                    },
+                    {
+                        "label": "AVANT.Skill.Intimidation",
+                        "value": "intimidation"
+                    }
+                ],
+                "flag": "skill",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Skill"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "upgrade",
+                "path": "system.skills.{item|flags.avant.rulesSelections.skill}.rank",
+                "value": 1
+            }
+        ],
+        "traits": {
+            "otherTags": [
+                "gunslinger-way"
+            ],
+            "rarity": "common",
+            "value": [
+                "gunslinger"
+            ]
+        }
+    },
+    "type": "feat"
+}

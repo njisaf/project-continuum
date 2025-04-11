@@ -1,10 +1,10 @@
-import { ActorPF2e } from "@actor";
-import { ModifierPF2e, RawModifier, StatisticModifier } from "@actor/modifiers.ts";
+import { ActorAvant } from "@actor";
+import { ModifierAvant, RawModifier, StatisticModifier } from "@actor/modifiers.ts";
 import { DCSlug } from "@actor/types.ts";
 import { SAVE_TYPES } from "@actor/values.ts";
-import type { ItemPF2e } from "@item";
-import { TokenPF2e } from "@module/canvas/index.ts";
-import { RollNotePF2e, RollNoteSource } from "@module/notes.ts";
+import type { ItemAvant } from "@item";
+import { TokenAvant } from "@module/canvas/index.ts";
+import { RollNoteAvant, RollNoteSource } from "@module/notes.ts";
 import { ActionMacroHelpers } from "@system/action-macros/index.ts";
 import {
     ActionGlyph,
@@ -31,7 +31,7 @@ function isValidDifficultyClass(dc: unknown): dc is CheckDC | DCSlug {
 
     const slug = String(dc);
     return (
-        ["ac", "armor", "perception"].includes(slug) || tupleHasValue(SAVE_TYPES, slug) || slug in CONFIG.PF2E.skills
+        ["ac", "armor", "perception"].includes(slug) || tupleHasValue(SAVE_TYPES, slug) || slug in CONFIG.AVANT.skills
     );
 }
 
@@ -52,7 +52,7 @@ interface SingleCheckActionData extends BaseActionData<SingleCheckActionVariantD
 }
 
 interface ActionVariantCheckPreviewOptions {
-    actor: ActorPF2e;
+    actor: ActorAvant;
 }
 
 interface ActionCheckPreviewOptions extends ActionVariantCheckPreviewOptions {
@@ -67,7 +67,7 @@ interface ActionCheckPreview {
 
 interface SingleCheckActionUseOptions extends ActionUseOptions {
     difficultyClass: CheckDC | DCSlug | number;
-    modifiers: ModifierPF2e[];
+    modifiers: ModifierAvant[];
     multipleAttackPenalty: number;
     notes: SingleCheckActionRollNoteData[];
     rollOptions: string[];
@@ -128,16 +128,16 @@ class SingleCheckActionVariant extends BaseActionVariant {
     }
 
     override async use(options: Partial<SingleCheckActionUseOptions> = {}): Promise<CheckResultCallback[]> {
-        const modifiers = this.modifiers.map((raw) => new ModifierPF2e(raw)).concat(options.modifiers ?? []);
+        const modifiers = this.modifiers.map((raw) => new ModifierAvant(raw)).concat(options.modifiers ?? []);
         if (options.multipleAttackPenalty) {
             const map = options.multipleAttackPenalty;
             const modifier = map > 0 ? Math.min(2, map) * -5 : map;
-            modifiers.push(new ModifierPF2e({ label: "PF2E.MultipleAttackPenalty", modifier }));
+            modifiers.push(new ModifierAvant({ label: "AVANT.MultipleAttackPenalty", modifier }));
         }
         const notes = (this.notes as SingleCheckActionRollNoteData[])
             .concat(options.notes ?? [])
             .map(toRollNoteSource)
-            .map((note) => new RollNotePF2e(note));
+            .map((note) => new RollNoteAvant(note));
         const rollOptions = this.rollOptions.concat(options.rollOptions ?? []);
         const slug = options.statistic?.trim() || (Array.isArray(this.statistic) ? this.statistic[0] : this.statistic);
         const title = this.name
@@ -165,9 +165,9 @@ class SingleCheckActionVariant extends BaseActionVariant {
                     return note;
                 }),
             target: () => {
-                if (options.target instanceof ActorPF2e) {
+                if (options.target instanceof ActorAvant) {
                     return { token: null, actor: options.target };
-                } else if (options.target instanceof TokenPF2e) {
+                } else if (options.target instanceof TokenAvant) {
                     return options.target.actor
                         ? { token: options.target.document, actor: options.target.actor }
                         : null;
@@ -180,7 +180,7 @@ class SingleCheckActionVariant extends BaseActionVariant {
         return results;
     }
 
-    protected checkContext<ItemType extends ItemPF2e<ActorPF2e>>(
+    protected checkContext<ItemType extends ItemAvant<ActorAvant>>(
         opts: CheckContextOptions<ItemType>,
         data: CheckContextData<ItemType>,
     ): CheckMacroContext<ItemType> | undefined {
@@ -188,7 +188,7 @@ class SingleCheckActionVariant extends BaseActionVariant {
     }
 
     protected toActionCheckPreview(args: {
-        actor?: ActorPF2e;
+        actor?: ActorAvant;
         rollOptions: string[];
         slug: string;
     }): ActionCheckPreview | null {
@@ -197,7 +197,7 @@ class SingleCheckActionVariant extends BaseActionVariant {
             if (statistic) {
                 const modifiers = [
                     ...statistic.modifiers,
-                    ...this.modifiers.map((modifier) => new ModifierPF2e(modifier)),
+                    ...this.modifiers.map((modifier) => new ModifierAvant(modifier)),
                 ];
                 const modifier = new StatisticModifier(args.slug, modifiers, args.rollOptions);
                 return { label: statistic.label, modifier: modifier.totalModifier, slug: args.slug };

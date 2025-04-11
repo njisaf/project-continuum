@@ -1,19 +1,19 @@
-import { ActorPF2e, ActorProxyPF2e } from "@actor";
-import { ActorSizePF2e } from "@actor/data/size.ts";
-import type { ContainerPF2e, PhysicalItemPF2e } from "@item";
+import { ActorAvant, ActorProxyAvant } from "@actor";
+import { ActorSizeAvant } from "@actor/data/size.ts";
+import type { ContainerAvant, PhysicalItemAvant } from "@item";
 import { PhysicalItemSource } from "@item/base/data/index.ts";
 import { ContainerBulkData } from "@item/container/data.ts";
 import { REINFORCING_RUNE_LOC_PATHS } from "@item/shield/values.ts";
 import { Rarity } from "@module/data.ts";
-import { ErrorPF2e, createHTMLElement, localizer } from "@util";
+import { ErrorAvant, createHTMLElement, localizer } from "@util";
 import * as R from "remeda";
 import { Bulk, STACK_DEFINITIONS } from "./bulk.ts";
-import { CoinsPF2e } from "./coins.ts";
+import { CoinsAvant } from "./coins.ts";
 import { BulkData, EquippedData } from "./data.ts";
 import { getMaterialValuationData } from "./materials.ts";
 import { RUNE_DATA, getRuneValuationData } from "./runes.ts";
 
-function computePrice(item: PhysicalItemPF2e): CoinsPF2e {
+function computePrice(item: PhysicalItemAvant): CoinsAvant {
     if (item.isOfType("treasure")) return item.price.value;
 
     // Adjust the item price according to precious material and runes
@@ -34,19 +34,19 @@ function computePrice(item: PhysicalItemPF2e): CoinsPF2e {
             : (RUNE_DATA.shield.reinforcing[item.system.runes.reinforcing]?.price ?? 0);
     const runeValue = item.isSpecific ? 0 : runesData.reduce((sum, rune) => sum + rune.price, 0) - reinforcingRuneValue;
 
-    const basePrice = materialValue > 0 || runeValue > 0 ? new CoinsPF2e() : item.price.value;
+    const basePrice = materialValue > 0 || runeValue > 0 ? new CoinsAvant() : item.price.value;
     const afterMaterialAndRunes = runeValue
-        ? new CoinsPF2e({ gp: runeValue + materialValue })
+        ? new CoinsAvant({ gp: runeValue + materialValue })
         : basePrice.plus({ gp: materialValue });
     const higher = afterMaterialAndRunes.copperValue > basePrice.copperValue ? afterMaterialAndRunes : basePrice;
-    const afterReinforcingRune = higher.plus(new CoinsPF2e({ gp: reinforcingRuneValue }));
+    const afterReinforcingRune = higher.plus(new CoinsAvant({ gp: reinforcingRuneValue }));
     const afterShoddy = item.isShoddy ? afterReinforcingRune.scale(0.5) : afterReinforcingRune;
 
     /** Increase the price if it is larger than medium and not magical. */
     return item.system.price.sizeSensitive ? afterShoddy.adjustForSize(item.size) : afterShoddy;
 }
 
-function computeLevelRarityPrice(item: PhysicalItemPF2e): { level: number; rarity: Rarity; price: CoinsPF2e } {
+function computeLevelRarityPrice(item: PhysicalItemAvant): { level: number; rarity: Rarity; price: CoinsAvant } {
     // Stop here if this weapon is not a magical or precious-material item, or if it is a specific magic weapon
     const materialData = getMaterialValuationData(item);
     const price = computePrice(item);
@@ -79,7 +79,7 @@ function computeLevelRarityPrice(item: PhysicalItemPF2e): { level: number; rarit
  * Generate a modified item name based on precious materials and runes. Currently only armor and weapon documents
  * have significant implementations.
  */
-function generateItemName(item: PhysicalItemPF2e): string {
+function generateItemName(item: PhysicalItemAvant): string {
     if (!item.isOfType("armor", "shield", "weapon")) {
         return item.name;
     }
@@ -92,11 +92,11 @@ function generateItemName(item: PhysicalItemPF2e): string {
 
     // Acquire base-type and rune dictionaries, with "fundamental 2" being either resilient or striking
     const [baseItemDictionary, propertyDictionary, fundamentalTwoDictionary]: Dictionaries = item.isOfType("armor")
-        ? [CONFIG.PF2E.baseArmorTypes, RUNE_DATA.armor.property, RUNE_DATA.armor.resilient]
+        ? [CONFIG.AVANT.baseArmorTypes, RUNE_DATA.armor.property, RUNE_DATA.armor.resilient]
         : item.isOfType("shield")
-          ? [CONFIG.PF2E.baseShieldTypes, null, null]
+          ? [CONFIG.AVANT.baseShieldTypes, null, null]
           : [
-                { ...CONFIG.PF2E.baseWeaponTypes, ...CONFIG.PF2E.baseShieldTypes },
+                { ...CONFIG.AVANT.baseWeaponTypes, ...CONFIG.AVANT.baseShieldTypes },
                 RUNE_DATA.weapon.property,
                 RUNE_DATA.weapon.striking,
             ];
@@ -124,7 +124,7 @@ function generateItemName(item: PhysicalItemPF2e): string {
                 ? game.i18n.localize(`TYPES.Item.${item.type}`)
                 : game.i18n.localize(baseItemDictionary[baseType] ?? "")
             : item.name,
-        material: material.type && game.i18n.localize(CONFIG.PF2E.preciousMaterials[material.type]),
+        material: material.type && game.i18n.localize(CONFIG.AVANT.preciousMaterials[material.type]),
         potency,
         reinforcing,
         fundamental2:
@@ -158,11 +158,11 @@ function generateItemName(item: PhysicalItemPF2e): string {
         return key && game.i18n.localize(key);
     })();
 
-    return formatString ? game.i18n.format(`PF2E.Item.Physical.GeneratedName.${formatString}`, params) : item.name;
+    return formatString ? game.i18n.format(`AVANT.Item.Physical.GeneratedName.${formatString}`, params) : item.name;
 }
 
 /** Validate HP changes to a physical item and also adjust current HP when max HP changes */
-function handleHPChange(item: PhysicalItemPF2e, changed: DeepPartial<PhysicalItemSource>): void {
+function handleHPChange(item: PhysicalItemAvant, changed: DeepPartial<PhysicalItemSource>): void {
     // Basic validity: integer greater than or equal to zero
     for (const property of ["value", "max"] as const) {
         if (changed.system?.hp && changed.system.hp[property] !== undefined) {
@@ -176,7 +176,7 @@ function handleHPChange(item: PhysicalItemPF2e, changed: DeepPartial<PhysicalIte
     const itemIndex = actorSource?.items.findIndex((i) => i._id === item._id);
     if (itemIndex === -1) return;
     actorSource?.items.splice(itemIndex ?? 0, 1, changedSource);
-    const actorClone = actorSource ? new ActorProxyPF2e(actorSource) : null;
+    const actorClone = actorSource ? new ActorProxyAvant(actorSource) : null;
     const itemClone = actorClone?.inventory.get(item.id, { strict: true }) ?? item.clone(changed, { keepId: true });
 
     // Adjust current HP proportionally if max HP changed
@@ -195,10 +195,10 @@ function handleHPChange(item: PhysicalItemPF2e, changed: DeepPartial<PhysicalIte
 }
 
 /** Add and adjust properties on an item's bulk data object */
-function prepareBulkData<TItem extends PhysicalItemPF2e>(
+function prepareBulkData<TItem extends PhysicalItemAvant>(
     item: TItem,
-): TItem extends ContainerPF2e ? ContainerBulkData : BulkData;
-function prepareBulkData(item: PhysicalItemPF2e): BulkData | ContainerBulkData {
+): TItem extends ContainerAvant ? ContainerBulkData : BulkData;
+function prepareBulkData(item: PhysicalItemAvant): BulkData | ContainerBulkData {
     const stackData = STACK_DEFINITIONS[item.system.stackGroup ?? ""] ?? null;
     const per = stackData?.size ?? 1;
 
@@ -221,11 +221,11 @@ function prepareBulkData(item: PhysicalItemPF2e): BulkData | ContainerBulkData {
  * Detach a subitem from another physical item, either creating it as a new, independent item or incrementing the
  * quantity of aan existing stack.
  */
-async function detachSubitem(subitem: PhysicalItemPF2e, skipConfirm: boolean): Promise<void> {
+async function detachSubitem(subitem: PhysicalItemAvant, skipConfirm: boolean): Promise<void> {
     const parentItem = subitem.parentItem;
-    if (!parentItem) throw ErrorPF2e("Subitem has no parent item");
+    if (!parentItem) throw ErrorAvant("Subitem has no parent item");
 
-    const localize = localizer("PF2E.Item.Physical.Attach.Detach");
+    const localize = localizer("AVANT.Item.Physical.Attach.Detach");
     const confirmed =
         skipConfirm ||
         (await Dialog.confirm({
@@ -255,9 +255,9 @@ async function detachSubitem(subitem: PhysicalItemPF2e, skipConfirm: boolean): P
 }
 
 /** Clone an item, sizing it appropriately for the actor. For larger PCs, set the price's sensitity to false.  */
-function sizeItemForActor<TItem extends PhysicalItemPF2e>(item: TItem, actor: ActorPF2e): TItem {
+function sizeItemForActor<TItem extends PhysicalItemAvant>(item: TItem, actor: ActorAvant): TItem {
     if (item.isOfType("treasure") || !actor.isOfType("creature")) return item.clone();
-    const actorSize = new ActorSizePF2e({
+    const actorSize = new ActorSizeAvant({
         value: actor.system.traits.naturalSize ?? actor.size,
         smallIsMedium: true,
     });
@@ -268,7 +268,7 @@ function sizeItemForActor<TItem extends PhysicalItemPF2e>(item: TItem, actor: Ac
 }
 
 /** Returns the default equip status for this item, called in order to "reset" the equip status */
-function getDefaultEquipStatus(item: PhysicalItemPF2e): EquippedData {
+function getDefaultEquipStatus(item: PhysicalItemAvant): EquippedData {
     const equipStatus: EquippedData = { carryType: "worn" };
     const isSlottedItem = item.system.usage.type === "worn" && !!item.system.usage.where;
     if (isSlottedItem && item.actor?.isOfType("character")) {
@@ -279,7 +279,7 @@ function getDefaultEquipStatus(item: PhysicalItemPF2e): EquippedData {
 
 export { coinCompendiumIds } from "./coins.ts";
 export {
-    CoinsPF2e,
+    CoinsAvant,
     computeLevelRarityPrice,
     detachSubitem,
     generateItemName,

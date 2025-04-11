@@ -1,0 +1,79 @@
+{
+    "_id": "dWkf6LhYBfBkeyOA",
+    "folder": "zjri0dFVocwnHJcJ",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Spellmaster's Resilience",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "class",
+        "description": {
+            "value": "<p>Your experience with a specific type of harmful magic makes you more resistant to it. Choose a magical tradition (arcane, divine, occult, or primal). You gain a +1 circumstance bonus to saving throws against spells and effects with that tradition's trait and resistance 5 to all damage from spells and effects with that tradition's trait. The effect must have actually been cast or created with that tradition, rather than simply being on that tradition's spell list.</p>"
+        },
+        "level": {
+            "value": 12
+        },
+        "prerequisites": {
+            "value": [
+                {
+                    "value": "Spellmaster Dedication"
+                }
+            ]
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Character Guide"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitArcane",
+                        "value": "arcane"
+                    },
+                    {
+                        "label": "AVANT.TraitDivine",
+                        "value": "divine"
+                    },
+                    {
+                        "label": "AVANT.TraitPrimal",
+                        "value": "primal"
+                    },
+                    {
+                        "label": "AVANT.TraitOccult",
+                        "value": "occult"
+                    }
+                ],
+                "flag": "featSpellmastersResilience",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.SpellmastersResilience.Prompt"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.featSpellmastersResilience}",
+                "value": 5
+            },
+            {
+                "key": "FlatModifier",
+                "predicate": [
+                    "{item|flags.avant.rulesSelections.featSpellmastersResilience}"
+                ],
+                "selector": "saving-throw",
+                "type": "circumstance",
+                "value": 1
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "archetype"
+            ]
+        }
+    },
+    "type": "feat"
+}

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { sluggify } from "@util/misc.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration922SwashbucklerFinishers extends MigrationBase {
     static override version = 0.922;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const slug = source.system.slug;
 
         if (!slug) return;
@@ -54,12 +54,12 @@ export class Migration922SwashbucklerFinishers extends MigrationBase {
             disabledValue: false,
             domain: "all",
             key: "RollOption",
-            label: "PF2E.SpecificRule.Swashbuckler.Finisher.Label",
+            label: "AVANT.SpecificRule.Swashbuckler.Finisher.Label",
             mergeable: true,
             option: "finisher",
             suboptions: [
                 {
-                    label: `PF2E.SpecificRule.Swashbuckler.Finisher.${name}`,
+                    label: `AVANT.SpecificRule.Swashbuckler.Finisher.${name}`,
                     value: `${slug.replace("-finisher", "")}`,
                 },
             ],

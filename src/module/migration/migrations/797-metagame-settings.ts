@@ -17,13 +17,13 @@ export class Migration797MetagameSetting extends MigrationBase {
         for (const setting of this.settings) {
             const storage = game.settings.storage.get("world");
             const newKey = `metagame_${setting}`;
-            const oldValue = storage.getItem(`pf2e.metagame.${setting}`) ?? null;
-            const existingValueRaw = storage.getItem(`pf2e.${newKey}`) ?? null;
+            const oldValue = storage.getItem(`avant.metagame.${setting}`) ?? null;
+            const existingValueRaw = storage.getItem(`avant.${newKey}`) ?? null;
             if (oldValue !== null && existingValueRaw !== null) {
                 const newValue = this.visibilitySettings.includes(setting)
                     ? !["gm", "owner"].includes(oldValue)
                     : oldValue;
-                game.settings.set("pf2e", newKey, newValue);
+                game.settings.set("avant", newKey, newValue);
             }
         }
     }

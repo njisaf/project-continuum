@@ -1,0 +1,69 @@
+{
+    "_id": "li52UFA2ErqRLeer",
+    "img": "systems/avant/icons/equipment/alchemical-items/alchemical-bombs/acid-flask.webp",
+    "name": "Effect: Inflammation Flask",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.equipment-srd.Item.Inflammation Flask (Lesser)], @UUID[Compendium.avant.equipment-srd.Item.Inflammation Flask (Moderate)], @UUID[Compendium.avant.equipment-srd.Item.Inflammation Flask (Greater)], @UUID[Compendium.avant.equipment-srd.Item.Inflammation Flask (Major)]</p>\n<p>You gain weakness to acid, fire, and slashing damage.</p>"
+        },
+        "duration": {
+            "expiry": "turn-end",
+            "sustained": false,
+            "unit": "rounds",
+            "value": 3
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder #203: Shepherd of Decay"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.SpecificRule.Equipment.Bomb.Type.Lesser",
+                        "value": 1
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.Equipment.Bomb.Type.Moderate",
+                        "value": 2
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.Equipment.Bomb.Type.Greater",
+                        "value": 3
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.Equipment.Bomb.Type.Major",
+                        "value": 4
+                    }
+                ],
+                "flag": "weakness",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Equipment.Bomb.Choice"
+            },
+            {
+                "key": "Weakness",
+                "type": [
+                    "acid",
+                    "fire",
+                    "slashing"
+                ],
+                "value": "{item|flags.avant.rulesSelections.weakness}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

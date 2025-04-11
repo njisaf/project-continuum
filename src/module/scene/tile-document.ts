@@ -1,3 +1,3 @@
-import type { ScenePF2e } from "./document.ts";
+import type { SceneAvant } from "./document.ts";
 
-export class TileDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null> extends TileDocument<TParent> {}
+export class TileDocumentAvant<TParent extends SceneAvant | null = SceneAvant | null> extends TileDocument<TParent> {}

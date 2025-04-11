@@ -1,10 +1,10 @@
-import { ConsumablePF2e, type SpellPF2e } from "@item";
+import { ConsumableAvant, type SpellAvant } from "@item";
 import { ConsumableSource } from "@item/base/data/index.ts";
 import { MagicTradition } from "@item/spell/types.ts";
 import { MAGIC_TRADITIONS } from "@item/spell/values.ts";
 import { traditionSkills } from "@item/spellcasting-entry/trick.ts";
 import { DCOptions, calculateDC } from "@module/dc.ts";
-import { ErrorPF2e, setHasElement } from "@util";
+import { ErrorAvant, setHasElement } from "@util";
 import * as R from "remeda";
 
 const CANTRIP_DECK_ID = "tLa4bewBhyqzi6Ow";
@@ -24,9 +24,9 @@ const scrollCompendiumIds: Record<number, string | undefined> = {
 
 type SpellConsumableItemType = "cantripDeck5" | "scroll" | "wand";
 const SPELL_CONSUMABLE_NAME_TEMPLATES = {
-    cantripDeck5: "PF2E.Item.Physical.FromSpell.CantripDeck5",
-    scroll: "PF2E.Item.Physical.FromSpell.Scroll",
-    wand: "PF2E.Item.Physical.FromSpell.Wand",
+    cantripDeck5: "AVANT.Item.Physical.FromSpell.CantripDeck5",
+    scroll: "AVANT.Item.Physical.FromSpell.Scroll",
+    wand: "AVANT.Item.Physical.FromSpell.Wand",
 };
 
 const wandCompendiumIds: Record<number, string | undefined> = {
@@ -66,7 +66,7 @@ function isSpellConsumable(itemId: string): boolean {
 }
 
 async function createConsumableFromSpell(
-    spell: SpellPF2e,
+    spell: SpellAvant,
     {
         type,
         heightenedLevel = spell.baseRank,
@@ -77,11 +77,11 @@ async function createConsumableFromSpell(
         mystified?: boolean;
     },
 ): Promise<ConsumableSource> {
-    const pack = game.packs.find((p) => p.collection === "pf2e.equipment-srd");
+    const pack = game.packs.find((p) => p.collection === "avant.equipment-srd");
     const itemId = getIdForSpellConsumable(type, heightenedLevel);
     const consumable = await pack?.getDocument(itemId ?? "");
-    if (!(consumable instanceof ConsumablePF2e)) {
-        throw ErrorPF2e("Failed to retrieve consumable item");
+    if (!(consumable instanceof ConsumableAvant)) {
+        throw ErrorAvant("Failed to retrieve consumable item");
     }
 
     const consumableSource = { ...consumable.toObject(), _id: null }; // Clear _id
@@ -133,7 +133,7 @@ interface TrickMagicItemDifficultyData {
 }
 
 function calculateTrickMagicItemCheckDC(
-    item: ConsumablePF2e,
+    item: ConsumableAvant,
     options: DCOptions = { pwol: false },
 ): TrickMagicItemDifficultyData {
     const level = Number(item.level);

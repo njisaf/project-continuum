@@ -3,7 +3,7 @@ import { Coins, PartialPrice } from "./data.ts";
 import { DENOMINATIONS } from "./values.ts";
 
 /** Coins class that exposes methods to perform operations on coins without side effects */
-class CoinsPF2e implements Coins {
+class CoinsAvant implements Coins {
     declare cp: number;
     declare sp: number;
     declare gp: number;
@@ -26,9 +26,9 @@ class CoinsPF2e implements Coins {
         return this.copperValue / 100;
     }
 
-    plus(coins: Coins): CoinsPF2e {
-        const other = new CoinsPF2e(coins);
-        return new CoinsPF2e({
+    plus(coins: Coins): CoinsAvant {
+        const other = new CoinsAvant(coins);
+        return new CoinsAvant({
             pp: this.pp + other.pp,
             gp: this.gp + other.gp,
             sp: this.sp + other.sp,
@@ -37,8 +37,8 @@ class CoinsPF2e implements Coins {
     }
 
     /** Multiply by a number and clean up result */
-    scale(factor: number): CoinsPF2e {
-        const result = new CoinsPF2e(this);
+    scale(factor: number): CoinsAvant {
+        const result = new CoinsAvant(this);
         result.pp *= factor;
         result.gp *= factor;
         result.sp *= factor;
@@ -60,8 +60,8 @@ class CoinsPF2e implements Coins {
     }
 
     /** Increase a price for larger physical-item sizes */
-    adjustForSize(size: Size): CoinsPF2e {
-        const basePrice = new CoinsPF2e(this);
+    adjustForSize(size: Size): CoinsAvant {
+        const basePrice = new CoinsAvant(this);
 
         switch (size) {
             case "lg": {
@@ -88,12 +88,12 @@ class CoinsPF2e implements Coins {
         }, {});
     }
 
-    /** Parses a price string such as "5 gp" and returns a new CoinsPF2e object */
-    static fromString(coinString: string, quantity = 1): CoinsPF2e {
+    /** Parses a price string such as "5 gp" and returns a new CoinsAvant object */
+    static fromString(coinString: string, quantity = 1): CoinsAvant {
         // This requires preprocessing, as large gold values contain , for their value
         const priceTag = DENOMINATIONS.reduce(
             (s, denomination) => {
-                const localizedDenomination = game.i18n.localize(`PF2E.CurrencyAbbreviations.${denomination}`);
+                const localizedDenomination = game.i18n.localize(`AVANT.CurrencyAbbreviations.${denomination}`);
                 if (localizedDenomination === denomination) return s;
                 // This matches localized denomination if it's not followed or preceeded by an unicode letter character
                 const pattern = new RegExp(`(?!<\\p{L})${localizedDenomination}(?!\\p{L})`, "u");
@@ -107,25 +107,25 @@ class CoinsPF2e implements Coins {
                 const computedValue = (Number(value) || 0) * quantity;
                 return { [denomination]: computedValue };
             })
-            .reduce((first, second) => first.plus(second), new CoinsPF2e());
+            .reduce((first, second) => first.plus(second), new CoinsAvant());
     }
 
-    static fromPrice(price: PartialPrice, factor: number): CoinsPF2e {
+    static fromPrice(price: PartialPrice, factor: number): CoinsAvant {
         const per = Math.max(1, price.per ?? 1);
-        return new CoinsPF2e(price.value).scale(factor / per);
+        return new CoinsAvant(price.value).scale(factor / per);
     }
 
     /** Creates a new price string such as "5 gp" from this object */
     toString(): string {
         if (DENOMINATIONS.every((denomination) => !this[denomination])) {
-            return `0 ${game.i18n.localize("PF2E.CurrencyAbbreviations.gp")}`;
+            return `0 ${game.i18n.localize("AVANT.CurrencyAbbreviations.gp")}`;
         }
 
         const DENOMINATIONS_REVERSED = [...DENOMINATIONS].reverse();
         const parts: string[] = [];
         for (const denomination of DENOMINATIONS_REVERSED) {
             if (this[denomination]) {
-                parts.push(`${this[denomination]} ${game.i18n.localize(`PF2E.CurrencyAbbreviations.${denomination}`)}`);
+                parts.push(`${this[denomination]} ${game.i18n.localize(`AVANT.CurrencyAbbreviations.${denomination}`)}`);
             }
         }
 
@@ -140,4 +140,4 @@ const coinCompendiumIds = {
     cp: "lzJ8AVhRcbFul5fh",
 };
 
-export { CoinsPF2e, coinCompendiumIds };
+export { CoinsAvant, coinCompendiumIds };

@@ -1,7 +1,7 @@
 import { ItemSystemModel, ItemSystemSchema } from "@item/base/data/model.ts";
 import type {
     ActionType,
-    BaseItemSourcePF2e,
+    BaseItemSourceAvant,
     Frequency,
     FrequencyInterval,
     FrequencySource,
@@ -9,16 +9,16 @@ import type {
 } from "@item/base/data/system.ts";
 import type { OneToThree } from "@module/data.ts";
 import { LaxArrayField, SlugField } from "@system/schema-data-fields.ts";
-import type { AbilityItemPF2e } from "./document.ts";
+import type { AbilityItemAvant } from "./document.ts";
 import { AbilityTraitToggles } from "./trait-toggles.ts";
 import type { AbilityTrait, ActionCategory } from "./types.ts";
 import fields = foundry.data.fields;
 
-type AbilitySource = BaseItemSourcePF2e<"action", AbilitySystemSource>;
+type AbilitySource = BaseItemSourceAvant<"action", AbilitySystemSource>;
 
 class FrequencyField extends fields.SchemaField<FrequencySchema, FrequencySource, Frequency, false, true, false> {
     constructor() {
-        const frequencies: Record<FrequencyInterval, string> = CONFIG.PF2E.frequencies;
+        const frequencies: Record<FrequencyInterval, string> = CONFIG.AVANT.frequencies;
         super(
             {
                 value: new fields.NumberField({
@@ -47,8 +47,8 @@ class FrequencyField extends fields.SchemaField<FrequencySchema, FrequencySource
     }
 }
 
-class AbilitySystemData extends ItemSystemModel<AbilityItemPF2e, AbilitySystemSchema> {
-    static override LOCALIZATION_PREFIXES = [...super.LOCALIZATION_PREFIXES, "PF2E.Item.Ability"];
+class AbilitySystemData extends ItemSystemModel<AbilityItemAvant, AbilitySystemSchema> {
+    static override LOCALIZATION_PREFIXES = [...super.LOCALIZATION_PREFIXES, "AVANT.Item.Ability"];
 
     declare traits: AbilityTraits;
 
@@ -59,9 +59,9 @@ class AbilitySystemData extends ItemSystemModel<AbilityItemPF2e, AbilitySystemSc
     declare deathNote: boolean;
 
     static override defineSchema(): AbilitySystemSchema {
-        const traitChoices: Record<AbilityTrait, string> = CONFIG.PF2E.actionTraits;
-        const abilityTypes: Record<ActionType, string> = CONFIG.PF2E.actionTypes;
-        const categories: Record<ActionCategory, string> = CONFIG.PF2E.actionCategories;
+        const traitChoices: Record<AbilityTrait, string> = CONFIG.AVANT.actionTraits;
+        const abilityTypes: Record<ActionType, string> = CONFIG.AVANT.actionTypes;
+        const categories: Record<ActionCategory, string> = CONFIG.AVANT.actionCategories;
 
         return {
             ...super.defineSchema(),
@@ -137,7 +137,7 @@ class AbilitySystemData extends ItemSystemModel<AbilityItemPF2e, AbilitySystemSc
 }
 
 interface AbilitySystemData
-    extends ItemSystemModel<AbilityItemPF2e, AbilitySystemSchema>,
+    extends ItemSystemModel<AbilityItemAvant, AbilitySystemSchema>,
         Omit<ModelPropsFromSchema<AbilitySystemSchema>, "description"> {}
 
 type AbilitySystemSchema = Omit<ItemSystemSchema, "traits"> & {

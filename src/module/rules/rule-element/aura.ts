@@ -5,7 +5,7 @@ import type { EffectTrait } from "@item/abstract-effect/types.ts";
 import { DataUnionField, PredicateField, StrictArrayField } from "@system/schema-data-fields.ts";
 import { isImageOrVideoPath, sluggify } from "@util";
 import * as R from "remeda";
-import { RuleElementOptions, RuleElementPF2e } from "./base.ts";
+import { RuleElementOptions, RuleElementAvant } from "./base.ts";
 import {
     ModelPropsFromRESchema,
     ResolvableValueField,
@@ -17,7 +17,7 @@ import { ItemAlteration } from "./item-alteration/alteration.ts";
 import fields = foundry.data.fields;
 
 /** A Pathfinder 2e aura, capable of transmitting effects and with a visual representation on the canvas */
-class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
+class AuraRuleElement extends RuleElementAvant<AuraSchema> {
     constructor(source: AuraRuleElementSource, options: RuleElementOptions) {
         super(source, options);
         if (this.invalid) return;
@@ -33,7 +33,7 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
             required: true,
             nullable: false,
             initial: undefined,
-            choices: { ...CONFIG.PF2E.spellTraits, ...CONFIG.PF2E.actionTraits },
+            choices: { ...CONFIG.AVANT.spellTraits, ...CONFIG.AVANT.actionTraits },
         });
 
         const effectSchemaField: fields.SchemaField<AuraEffectSchema> = new fields.SchemaField({
@@ -44,7 +44,7 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                 blank: false,
                 initial: "all",
                 choices: ["allies", "enemies", "all"],
-                label: "PF2E.RuleEditor.Aura.Effects.Affects",
+                label: "AVANT.RuleEditor.Aura.Effects.Affects",
             }),
             events: new StrictArrayField(
                 new fields.StringField({
@@ -54,7 +54,7 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                     initial: undefined,
                     choices: ["enter", "turn-start", "turn-end"],
                 }),
-                { required: true, nullable: false, initial: ["enter"], label: "PF2E.RuleEditor.Aura.Effects.Events" },
+                { required: true, nullable: false, initial: ["enter"], label: "AVANT.RuleEditor.Aura.Effects.Events" },
             ),
             save: new fields.SchemaField(
                 {
@@ -64,29 +64,29 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                         blank: false,
                         initial: undefined,
                         choices: SAVE_TYPES,
-                        label: "PF2E.RuleEditor.Aura.Effects.Type",
+                        label: "AVANT.RuleEditor.Aura.Effects.Type",
                     }),
                     dc: new ResolvableValueField({
                         required: true,
                         nullable: false,
                         initial: undefined,
-                        label: "PF2E.Check.DC.Unspecific",
+                        label: "AVANT.Check.DC.Unspecific",
                     }),
                 },
-                { required: true, nullable: true, initial: null, label: "PF2E.SavesHeader" },
+                { required: true, nullable: true, initial: null, label: "AVANT.SavesHeader" },
             ),
             predicate: new PredicateField({ required: false, nullable: false }),
             removeOnExit: new fields.BooleanField({
                 required: true,
                 nullable: false,
                 initial: true,
-                label: "PF2E.RuleEditor.Aura.Effects.RemoveOnExit",
+                label: "AVANT.RuleEditor.Aura.Effects.RemoveOnExit",
             }),
             includesSelf: new fields.BooleanField({
                 required: true,
                 nullable: false,
                 initial: (d) => d.affects !== "enemies",
-                label: "PF2E.RuleEditor.Aura.Effects.IncludesSelf",
+                label: "AVANT.RuleEditor.Aura.Effects.IncludesSelf",
             }),
             alterations: new StrictArrayField(new fields.EmbeddedDataField(ItemAlteration)),
         });
@@ -97,14 +97,14 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                 integer,
                 nullable: false,
                 initial: undefined,
-                label: "PF2E.RuleEditor.Aura.Appearance.Translation.X",
+                label: "AVANT.RuleEditor.Aura.Appearance.Translation.X",
             }),
             y: new fields.NumberField({
                 required: true,
                 integer,
                 nullable: false,
                 initial: undefined,
-                label: "PF2E.RuleEditor.Aura.Appearance.Translation.Y",
+                label: "AVANT.RuleEditor.Aura.Appearance.Translation.Y",
             }),
         });
 
@@ -124,21 +124,21 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                             required: true,
                             nullable: false,
                             initial: "#000000",
-                            label: "PF2E.RuleEditor.Aura.Appearance.Color",
+                            label: "AVANT.RuleEditor.Aura.Appearance.Color",
                         },
                     ),
                     alpha: new fields.AlphaField({
                         required: true,
                         nullable: false,
                         initial: 0.75,
-                        label: "PF2E.RuleEditor.General.Opacity",
+                        label: "AVANT.RuleEditor.General.Opacity",
                     }),
                 } as const,
                 {
                     required: false,
                     nullable: true,
                     initial: () => ({ color: "#000000", alpha: 0.75 }),
-                    label: "PF2E.RuleEditor.Aura.Appearance.Border",
+                    label: "AVANT.RuleEditor.Aura.Appearance.Border",
                 } as const,
             ),
             highlight: new fields.SchemaField(
@@ -157,21 +157,21 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                             required: true,
                             nullable: false,
                             initial: "user-color",
-                            label: "PF2E.RuleEditor.Aura.Appearance.Color",
+                            label: "AVANT.RuleEditor.Aura.Appearance.Color",
                         },
                     ),
                     alpha: new fields.AlphaField({
                         required: false,
                         nullable: false,
                         initial: 0.25,
-                        label: "PF2E.RuleEditor.General.Opacity",
+                        label: "AVANT.RuleEditor.General.Opacity",
                     }),
                 } as const,
                 {
                     required: false,
                     nullable: false,
                     initial: () => ({ color: "user-color", alpha: 0.25 }),
-                    label: "PF2E.RuleEditor.Aura.Appearance.Highlight",
+                    label: "AVANT.RuleEditor.Aura.Appearance.Highlight",
                 },
             ),
             texture: new fields.SchemaField(
@@ -186,7 +186,7 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                         required: true,
                         nullable: false,
                         initial: 1,
-                        label: "PF2E.RuleEditor.General.Opacity",
+                        label: "AVANT.RuleEditor.General.Opacity",
                     }),
                     scale: new fields.NumberField({
                         required: true,
@@ -199,15 +199,15 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                         required: false,
                         nullable: true,
                         initial: null,
-                        label: "PF2E.RuleEditor.Aura.Appearance.Translation.Label",
-                        hint: "PF2E.RuleEditor.Aura.Appearance.Translation.Hint",
+                        label: "AVANT.RuleEditor.Aura.Appearance.Translation.Label",
+                        hint: "AVANT.RuleEditor.Aura.Appearance.Translation.Hint",
                     } as const),
                     loop: new fields.BooleanField<boolean, boolean, true, false, true>({
                         required: true,
                         nullable: false,
                         initial: true,
-                        label: "PF2E.RuleEditor.Aura.Appearance.Loop.Label",
-                        hint: "PF2E.RuleEditor.Aura.Appearance.Loop.Hint",
+                        label: "AVANT.RuleEditor.Aura.Appearance.Loop.Label",
+                        hint: "AVANT.RuleEditor.Aura.Appearance.Loop.Hint",
                     }),
                     playbackRate: new fields.NumberField({
                         required: false,
@@ -215,11 +215,11 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                         positive: true,
                         max: 4,
                         initial: 1,
-                        label: "PF2E.RuleEditor.Aura.Appearance.PlaybackRate.Label",
-                        hint: "PF2E.RuleEditor.Aura.Appearance.PlaybackRate.Hint",
+                        label: "AVANT.RuleEditor.Aura.Appearance.PlaybackRate.Label",
+                        hint: "AVANT.RuleEditor.Aura.Appearance.PlaybackRate.Hint",
                     }),
                 } as const,
-                { required: false, nullable: true, initial: null, label: "PF2E.RuleEditor.Aura.Appearance.Texture" },
+                { required: false, nullable: true, initial: null, label: "AVANT.RuleEditor.Aura.Appearance.Texture" },
             ),
         };
 
@@ -229,24 +229,24 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                 required: true,
                 nullable: false,
                 initial: 5,
-                label: "PF2E.RuleEditor.Aura.Basics.Radius",
+                label: "AVANT.RuleEditor.Aura.Basics.Radius",
             }),
             level: new ResolvableValueField({
                 required: false,
                 nullable: true,
                 initial: null,
-                label: "PF2E.RuleEditor.Aura.Basics.Level.Label",
-                hint: "PF2E.RuleEditor.Aura.Basics.Level.Hint",
+                label: "AVANT.RuleEditor.Aura.Basics.Level.Label",
+                hint: "AVANT.RuleEditor.Aura.Basics.Level.Hint",
             }),
             traits: new StrictArrayField(auraTraitField, {
                 required: true,
                 nullable: false,
-                label: "PF2E.TraitsLabel",
+                label: "AVANT.TraitsLabel",
             }),
             effects: new StrictArrayField(effectSchemaField, {
                 required: true,
                 nullable: false,
-                label: "PF2E.RuleEditor.Aura.Effects.Label",
+                label: "AVANT.RuleEditor.Aura.Effects.Label",
             }),
             appearance: new fields.SchemaField(appearanceSchema, {
                 required: true,
@@ -256,14 +256,14 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
                     highlight: { color: "user-color", alpha: 0.25 },
                     texture: null,
                 }),
-                label: "PF2E.RuleEditor.Aura.Appearance.Label",
+                label: "AVANT.RuleEditor.Aura.Appearance.Label",
             }),
             mergeExisting: new fields.BooleanField({
                 required: true,
                 nullable: false,
                 initial: true,
-                label: "PF2E.RuleEditor.Aura.Basics.MergeExisting.Label",
-                hint: "PF2E.RuleEditor.Aura.Basics.MergeExisting.Hint",
+                label: "AVANT.RuleEditor.Aura.Basics.MergeExisting.Label",
+                hint: "AVANT.RuleEditor.Aura.Basics.MergeExisting.Hint",
             }),
         };
     }
@@ -356,7 +356,7 @@ class AuraRuleElement extends RuleElementPF2e<AuraSchema> {
     }
 }
 
-interface AuraRuleElement extends RuleElementPF2e<AuraSchema>, ModelPropsFromRESchema<AuraSchema> {
+interface AuraRuleElement extends RuleElementAvant<AuraSchema>, ModelPropsFromRESchema<AuraSchema> {
     slug: string;
     effects: AuraEffectREData[];
 }

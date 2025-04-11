@@ -1,10 +1,10 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import { htmlQueryAll, sortStringRecord } from "@util";
 import * as R from "remeda";
 import type { SelectableTagField } from "./index.ts";
 
-abstract class BaseTagSelector<TDocument extends ActorPF2e | ItemPF2e> extends DocumentSheet<
+abstract class BaseTagSelector<TDocument extends ActorAvant | ItemAvant> extends DocumentSheet<
     TDocument,
     TagSelectorOptions
 > {
@@ -12,7 +12,7 @@ abstract class BaseTagSelector<TDocument extends ActorPF2e | ItemPF2e> extends D
         return {
             ...super.defaultOptions,
             id: "tag-selector",
-            classes: ["pf2e", "tag-selector"],
+            classes: ["avant", "tag-selector"],
             sheetConfig: false,
             width: "auto",
         };
@@ -37,7 +37,7 @@ abstract class BaseTagSelector<TDocument extends ActorPF2e | ItemPF2e> extends D
     }
 
     override get title(): string {
-        return game.i18n.localize(this.options.title || "PF2E.TraitsLabel");
+        return game.i18n.localize(this.options.title || "AVANT.TraitsLabel");
     }
 
     protected abstract get configTypes(): readonly SelectableTagField[];
@@ -60,12 +60,12 @@ abstract class BaseTagSelector<TDocument extends ActorPF2e | ItemPF2e> extends D
     }
 
     /**
-     * Builds an object of all keys of this.configTypes from CONFIG.PF2E
+     * Builds an object of all keys of this.configTypes from CONFIG.AVANT
      * @returns An object of all key and translated value pairs sorted by key
      */
     #getChoices(): Record<string, string> {
         const choices = this.configTypes.reduce((types: Record<string, string>, key) => {
-            const config: Record<string, string | { label: string }> = CONFIG.PF2E[key];
+            const config: Record<string, string | { label: string }> = CONFIG.AVANT[key];
             const configLabels = R.mapValues(config, (c) => (R.isObjectType(c) ? c.label : c));
             return fu.mergeObject(types, configLabels);
         }, {});
@@ -82,7 +82,7 @@ interface TagSelectorOptions extends DocumentSheetOptions {
     customChoices?: Record<string, string>;
 }
 
-interface TagSelectorData<TDocument extends ActorPF2e | ItemPF2e> extends DocumentSheetData<TDocument> {
+interface TagSelectorData<TDocument extends ActorAvant | ItemAvant> extends DocumentSheetData<TDocument> {
     documentType: string;
 }
 

@@ -1,21 +1,21 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { AutomaticBonusProgression } from "@actor/character/automatic-bonus-progression.ts";
 import type { StrikeData } from "@actor/data/base.ts";
 import { getRangeIncrement } from "@actor/helpers.ts";
-import { CheckModifier, ModifierPF2e, ensureProficiencyOption } from "@actor/modifiers.ts";
+import { CheckModifier, ModifierAvant, ensureProficiencyOption } from "@actor/modifiers.ts";
 import type { RollOrigin, RollTarget } from "@actor/roll-context/types.ts";
-import type { ItemPF2e, WeaponPF2e } from "@item";
+import type { ItemAvant, WeaponAvant } from "@item";
 import type { AbilityTrait } from "@item/ability/types.ts";
 import type { WeaponTrait } from "@item/weapon/types.ts";
-import { RollNotePF2e } from "@module/notes.ts";
+import { RollNoteAvant } from "@module/notes.ts";
 import {
     extractDegreeOfSuccessAdjustments,
     extractModifierAdjustments,
     extractRollSubstitutions,
 } from "@module/rules/helpers.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
-import type { TokenDocumentPF2e } from "@scene";
-import { CheckPF2e, CheckType } from "@system/check/index.ts";
+import type { TokenDocumentAvant } from "@scene";
+import { CheckAvant, CheckType } from "@system/check/index.ts";
 import type { CheckDC, DegreeOfSuccessString } from "@system/degree-of-success.ts";
 import { CheckDCReference, Statistic } from "@system/statistic/index.ts";
 import { sluggify } from "@util";
@@ -32,7 +32,7 @@ import type {
 class ActionMacroHelpers {
     static resolveStat(
         stat: string,
-        actor: ActorPF2e,
+        actor: ActorAvant,
     ): {
         checkType: CheckType;
         property: string;
@@ -45,32 +45,32 @@ class ActionMacroHelpers {
                     checkType: "perception-check",
                     property: "perception",
                     stat,
-                    subtitle: "PF2E.ActionsCheck.perception",
+                    subtitle: "AVANT.ActionsCheck.perception",
                 };
             case "unarmed":
                 return {
                     checkType: "attack-roll",
                     property: "unarmed",
                     stat,
-                    subtitle: "PF2E.ActionsCheck.unarmed",
+                    subtitle: "AVANT.ActionsCheck.unarmed",
                 };
             default: {
                 const slug = sluggify(stat);
                 const property = `skills.${slug}`;
-                const subtitle = `PF2E.ActionsCheck.${stat}`;
+                const subtitle = `AVANT.ActionsCheck.${stat}`;
                 return {
                     checkType: "skill-check",
                     property,
                     stat,
                     subtitle: game.i18n.has(subtitle)
                         ? subtitle
-                        : game.i18n.format("PF2E.ActionsCheck.x", { type: actor.skills?.[stat]?.label ?? null }),
+                        : game.i18n.format("AVANT.ActionsCheck.x", { type: actor.skills?.[stat]?.label ?? null }),
                 };
             }
         }
     }
 
-    static defaultCheckContext<ItemType extends ItemPF2e<ActorPF2e>>(
+    static defaultCheckContext<ItemType extends ItemAvant<ActorAvant>>(
         options: CheckContextOptions<ItemType>,
         data: CheckContextData<ItemType>,
     ): CheckMacroContext<ItemType> | undefined {
@@ -118,31 +118,31 @@ class ActionMacroHelpers {
         translationPrefix: string,
         outcome: DegreeOfSuccessString,
         translationKey?: string,
-    ): RollNotePF2e {
-        const visible = game.pf2e.settings.metagame.results;
+    ): RollNoteAvant {
+        const visible = game.avant.settings.metagame.results;
         const outcomes = visible ? [outcome] : [];
-        return new RollNotePF2e({
+        return new RollNoteAvant({
             selector,
             text: game.i18n.localize(translationKey ?? `${translationPrefix}.Notes.${outcome}`),
             outcome: outcomes,
         });
     }
 
-    static outcomesNote(selector: string, translationKey: string, outcomes: DegreeOfSuccessString[]): RollNotePF2e {
-        const visible = game.pf2e.settings.metagame.results;
+    static outcomesNote(selector: string, translationKey: string, outcomes: DegreeOfSuccessString[]): RollNoteAvant {
+        const visible = game.avant.settings.metagame.results;
         const visibleOutcomes = visible ? outcomes : [];
-        return new RollNotePF2e({
+        return new RollNoteAvant({
             selector: selector,
             text: game.i18n.localize(translationKey),
             outcome: visibleOutcomes,
         });
     }
 
-    static async simpleRollActionCheck<TItem extends ItemPF2e<ActorPF2e>>(
+    static async simpleRollActionCheck<TItem extends ItemAvant<ActorAvant>>(
         options: SimpleRollActionCheckOptions<TItem>,
     ): Promise<void> {
         // figure out actors to roll for
-        const rollers: ActorPF2e[] = [];
+        const rollers: ActorAvant[] = [];
         if (Array.isArray(options.actors)) {
             rollers.push(...options.actors);
         } else if (options.actors) {
@@ -152,7 +152,7 @@ class ActionMacroHelpers {
         }
 
         if (rollers.length === 0) {
-            throw new Error(game.i18n.localize("PF2E.ActionsWarning.NoActor"));
+            throw new Error(game.i18n.localize("AVANT.ActionsWarning.NoActor"));
         }
 
         const targetData = options.target?.() ?? this.target();
@@ -177,14 +177,14 @@ class ActionMacroHelpers {
                     target: targetData.actor,
                 })!;
 
-                const header = await renderTemplate("systems/pf2e/templates/chat/action/header.hbs", {
+                const header = await renderTemplate("systems/avant/templates/chat/action/header.hbs", {
                     glyph: options.actionGlyph,
                     subtitle,
                     title: options.title,
                 });
 
                 const actionTraits = (options.traits ?? []).filter(
-                    (t): t is AbilityTrait => t in CONFIG.PF2E.actionTraits,
+                    (t): t is AbilityTrait => t in CONFIG.AVANT.actionTraits,
                 );
                 const notes = options.extraNotes?.(statistic.slug) ?? [];
                 const label = (await options.content?.(header)) ?? header;
@@ -260,7 +260,7 @@ class ActionMacroHelpers {
                     );
                     const dosAdjustments = extractDegreeOfSuccessAdjustments(actor.synthetics, domains);
 
-                    await CheckPF2e.roll(
+                    await CheckAvant.roll(
                         check,
                         {
                             actor: selfActor,
@@ -286,7 +286,7 @@ class ActionMacroHelpers {
                 }
             } catch (cce) {
                 if (cce instanceof CheckContextError) {
-                    const message = game.i18n.format("PF2E.ActionsWarning.NoStatistic", {
+                    const message = game.i18n.format("AVANT.ActionsWarning.NoStatistic", {
                         id: cce.actor.id,
                         name: cce.actor.name,
                         statistic: cce.slug,
@@ -300,8 +300,8 @@ class ActionMacroHelpers {
     }
 
     static target(): {
-        token: TokenDocumentPF2e | null;
-        actor: ActorPF2e | null;
+        token: TokenDocumentAvant | null;
+        actor: ActorAvant | null;
     } {
         const targets = Array.from(game.user.targets).filter((t) => t.actor?.isOfType("creature"));
         const target = targets.shift()?.document ?? null;
@@ -312,21 +312,21 @@ class ActionMacroHelpers {
         };
     }
 
-    static getWeaponPotencyModifier(item: WeaponPF2e<ActorPF2e>, selector: string): ModifierPF2e | null {
+    static getWeaponPotencyModifier(item: WeaponAvant<ActorAvant>, selector: string): ModifierAvant | null {
         const slug = "potency";
         if (AutomaticBonusProgression.isEnabled(item.actor)) {
-            return new ModifierPF2e({
+            return new ModifierAvant({
                 slug,
                 type: "potency",
-                label: "PF2E.AutomaticBonusProgression.attackPotency",
+                label: "AVANT.AutomaticBonusProgression.attackPotency",
                 modifier: item.actor.synthetics.weaponPotency["strike-attack-roll"]?.[0]?.bonus ?? 0,
                 adjustments: extractModifierAdjustments(item.actor.synthetics.modifierAdjustments, [selector], slug),
             });
         } else if (item.system.runes.potency > 0) {
-            return new ModifierPF2e({
+            return new ModifierAvant({
                 slug,
                 type: "item",
-                label: "PF2E.Item.Weapon.Rune.Potency",
+                label: "AVANT.Item.Weapon.Rune.Potency",
                 modifier: item.system.runes.potency,
                 adjustments: extractModifierAdjustments(item.actor.synthetics.modifierAdjustments, [selector], slug),
             });
@@ -335,7 +335,7 @@ class ActionMacroHelpers {
         }
     }
 
-    static getApplicableEquippedWeapons(actor: ActorPF2e, trait: WeaponTrait): WeaponPF2e<ActorPF2e>[] {
+    static getApplicableEquippedWeapons(actor: ActorAvant, trait: WeaponTrait): WeaponAvant<ActorAvant>[] {
         if (actor.isOfType("character")) {
             return actor.system.actions.flatMap((s) => (s.ready && s.item.traits.has(trait) ? s.item : []));
         } else {
@@ -347,16 +347,16 @@ class ActionMacroHelpers {
     static getSimpleCheckLabel(slug: string): string | null {
         switch (slug) {
             case "flat":
-                return game.i18n.localize("PF2E.FlatCheck");
+                return game.i18n.localize("AVANT.FlatCheck");
             case "perception":
-                return game.i18n.localize("PF2E.PerceptionLabel");
+                return game.i18n.localize("AVANT.PerceptionLabel");
             case "unarmed":
-                return game.i18n.localize("PF2E.TraitUnarmed");
+                return game.i18n.localize("AVANT.TraitUnarmed");
             case "lore":
-                return game.i18n.localize("PF2E.SkillLore");
+                return game.i18n.localize("AVANT.SkillLore");
             default: {
-                const saves: Record<string, string> = CONFIG.PF2E.saves;
-                const skills: Record<string, { label: string }> = CONFIG.PF2E.skills;
+                const saves: Record<string, string> = CONFIG.AVANT.saves;
+                const skills: Record<string, { label: string }> = CONFIG.AVANT.skills;
                 const label = saves[slug] ?? skills[slug]?.label;
                 return label ? game.i18n.localize(label) : null;
             }
@@ -383,7 +383,7 @@ class ActionMacroHelpers {
 class CheckContextError extends Error {
     constructor(
         message: string,
-        public actor: ActorPF2e,
+        public actor: ActorAvant,
         public slug: string,
     ) {
         super(message);
@@ -392,7 +392,7 @@ class CheckContextError extends Error {
 
 interface ResolveCheckDCParams {
     unresolvedDC: UnresolvedCheckDC | undefined | null;
-    target?: ActorPF2e | null;
+    target?: ActorAvant | null;
     fully?: boolean;
 }
 

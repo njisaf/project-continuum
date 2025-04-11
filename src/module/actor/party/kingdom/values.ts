@@ -71,19 +71,19 @@ const KINGDOM_SKILL_ABILITIES: Record<KingdomSkill, KingdomAbility> = {
     wilderness: "stability",
 };
 
-const KINGDOM_ABILITY_LABELS = R.mapToObj(KINGDOM_ABILITIES, (a) => [a, `PF2E.Kingmaker.Abilities.${a}`]);
+const KINGDOM_ABILITY_LABELS = R.mapToObj(KINGDOM_ABILITIES, (a) => [a, `AVANT.Kingmaker.Abilities.${a}`]);
 
-const KINGDOM_COMMODITY_LABELS = R.mapToObj(KINGDOM_COMMODITIES, (c) => [c, `PF2E.Kingmaker.Kingdom.Commodity.${c}`]);
+const KINGDOM_COMMODITY_LABELS = R.mapToObj(KINGDOM_COMMODITIES, (c) => [c, `AVANT.Kingmaker.Kingdom.Commodity.${c}`]);
 
 /** Ruin label by ability slug */
 const KINGDOM_RUIN_LABELS = {
-    culture: "PF2E.Kingmaker.Kingdom.Ruin.corruption",
-    economy: "PF2E.Kingmaker.Kingdom.Ruin.crime",
-    stability: "PF2E.Kingmaker.Kingdom.Ruin.decay",
-    loyalty: "PF2E.Kingmaker.Kingdom.Ruin.strife",
+    culture: "AVANT.Kingmaker.Kingdom.Ruin.corruption",
+    economy: "AVANT.Kingmaker.Kingdom.Ruin.crime",
+    stability: "AVANT.Kingmaker.Kingdom.Ruin.decay",
+    loyalty: "AVANT.Kingmaker.Kingdom.Ruin.strife",
 };
 
-const KINGDOM_SKILL_LABELS = R.mapToObj(KINGDOM_SKILLS, (a) => [a, `PF2E.Kingmaker.Skills.${a}`]);
+const KINGDOM_SKILL_LABELS = R.mapToObj(KINGDOM_SKILLS, (a) => [a, `AVANT.Kingmaker.Skills.${a}`]);
 
 interface KingdomSizeData {
     faces: number;
@@ -104,7 +104,7 @@ const KINGDOM_SIZE_DATA = {
 const KINGDOM_SETTLEMENT_TYPES = ["village", "town", "city", "metropolis"] as const;
 const KINGDOM_SETTLEMENT_TYPE_LABELS = R.mapToObj(KINGDOM_SETTLEMENT_TYPES, (size) => [
     size,
-    `PF2E.Kingmaker.Settlement.Type.${size}`,
+    `AVANT.Kingmaker.Settlement.Type.${size}`,
 ]);
 
 interface KingdomSettlementTypeData {
@@ -131,8 +131,8 @@ const KINGDOM_SETTLEMENT_TYPE_DATA = {
 } satisfies Record<KingdomSettlementType, KingdomSettlementTypeData>;
 
 const vacancyLabel = (role: KingdomLeadershipRole) =>
-    game.i18n.format("PF2E.Kingmaker.Kingdom.VacantRole", {
-        role: game.i18n.localize(`PF2E.Kingmaker.Kingdom.LeadershipRole.${role}`),
+    game.i18n.format("AVANT.Kingmaker.Kingdom.VacantRole", {
+        role: game.i18n.localize(`AVANT.Kingmaker.Kingdom.LeadershipRole.${role}`),
     });
 
 type VacancyPenalty = {
@@ -240,7 +240,7 @@ interface KingdomCHGData {
 
 /** Returns every single possible charter, heartland, and government */
 function getKingdomCHGData(): KingdomCHGData {
-    const localize = localizer("PF2E.Kingmaker");
+    const localize = localizer("AVANT.Kingmaker");
     return {
         charter: {
             conquest: {
@@ -312,7 +312,7 @@ function getKingdomCHGData(): KingdomCHGData {
                 img: "icons/environment/settlement/pyramid.webp",
                 boosts: ["stability", "economy", "free"],
                 skills: ["intrigue", "warfare"],
-                feat: "Compendium.pf2e.kingmaker-features.Item.WGpkcIChjIk1i0q0", // Crush Dissent
+                feat: "Compendium.avant.kingmaker-features.Item.WGpkcIChjIk1i0q0", // Crush Dissent
             },
             feudalism: {
                 name: localize("Government.feudalism.Name"),
@@ -320,7 +320,7 @@ function getKingdomCHGData(): KingdomCHGData {
                 img: "icons/environment/settlement/watchtower-cliff.webp",
                 boosts: ["stability", "culture", "free"],
                 skills: ["defense", "trade"],
-                feat: "Compendium.pf2e.kingmaker-features.Item.JYY8vQxPe9AIGTvv", // Fortified Fiefs
+                feat: "Compendium.avant.kingmaker-features.Item.JYY8vQxPe9AIGTvv", // Fortified Fiefs
             },
             oligarchy: {
                 name: localize("Government.oligarchy.Name"),
@@ -328,7 +328,7 @@ function getKingdomCHGData(): KingdomCHGData {
                 img: "icons/environment/settlement/house-manor.webp",
                 boosts: ["loyalty", "economy", "free"],
                 skills: ["arts", "industry"],
-                feat: "Compendium.pf2e.kingmaker-features.Item.9dkyZ7r1z7loOxI7", // Insider Trading
+                feat: "Compendium.avant.kingmaker-features.Item.9dkyZ7r1z7loOxI7", // Insider Trading
             },
             republic: {
                 name: localize("Government.republic.Name"),
@@ -336,7 +336,7 @@ function getKingdomCHGData(): KingdomCHGData {
                 img: "icons/environment/settlement/gazebo.webp",
                 boosts: ["stability", "economy", "free"],
                 skills: ["engineering", "politics"],
-                feat: "Compendium.pf2e.kingmaker-features.Item.BChcBEZpcqMnLISC", // Pull Together
+                feat: "Compendium.avant.kingmaker-features.Item.BChcBEZpcqMnLISC", // Pull Together
             },
             thaumocracy: {
                 name: localize("Government.thaumocracy.Name"),
@@ -344,7 +344,7 @@ function getKingdomCHGData(): KingdomCHGData {
                 img: "icons/environment/settlement/wizard-castle.webp",
                 boosts: ["economy", "culture", "free"],
                 skills: ["folklore", "magic"],
-                feat: "Compendium.pf2e.kingmaker-features.Item.nDDEbrWj2JouxlRw", // Practical Magic,
+                feat: "Compendium.avant.kingmaker-features.Item.nDDEbrWj2JouxlRw", // Practical Magic,
             },
             yeomanry: {
                 name: localize("Government.yeomanry.Name"),
@@ -352,7 +352,7 @@ function getKingdomCHGData(): KingdomCHGData {
                 img: "icons/environment/settlement/house-farmland-small.webp",
                 boosts: ["loyalty", "culture", "free"],
                 skills: ["agriculture", "wilderness"],
-                feat: "Compendium.pf2e.kingmaker-features.Item.WFng3pxgEAdpdy1p", // Muddle Through
+                feat: "Compendium.avant.kingmaker-features.Item.WFng3pxgEAdpdy1p", // Muddle Through
             },
         },
     };

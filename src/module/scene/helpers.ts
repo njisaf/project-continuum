@@ -1,14 +1,14 @@
-import { ActorPF2e } from "@actor";
-import type { CreaturePF2e } from "@actor/creature/document.ts";
-import { PrototypeTokenPF2e } from "@actor/data/base.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene";
+import { ActorAvant } from "@actor";
+import type { CreatureAvant } from "@actor/creature/document.ts";
+import { PrototypeTokenAvant } from "@actor/data/base.ts";
+import type { SceneAvant, TokenDocumentAvant } from "@scene";
 import { DetectionModeEntry } from "./token-document/data.ts";
 
 // Prevent concurrent executions of this method in case of network latency
 let auraCheckLock = Promise.resolve();
 
 /** Check for auras containing newly-placed or moved tokens */
-const checkAuras = foundry.utils.debounce(async function (this: ScenePF2e): Promise<void> {
+const checkAuras = foundry.utils.debounce(async function (this: SceneAvant): Promise<void> {
     if (!(canvas.ready && this.isInFocus && this.grid.type === CONST.GRID_TYPES.SQUARE)) {
         return;
     }
@@ -21,7 +21,7 @@ const checkAuras = foundry.utils.debounce(async function (this: ScenePF2e): Prom
 
     try {
         // Get all tokens in the scene, excluding additional tokens linked to a common actor
-        const tokens = this.tokens.reduce((list: TokenDocumentPF2e<ScenePF2e>[], token) => {
+        const tokens = this.tokens.reduce((list: TokenDocumentAvant<SceneAvant>[], token) => {
             if (token.isLinked && list.some((t) => t.actor === token.actor)) {
                 return list;
             }
@@ -48,7 +48,7 @@ const checkAuras = foundry.utils.debounce(async function (this: ScenePF2e): Prom
 }, 100);
 
 /** Assigns detection modes and sight settings for either a token or prototype token assuming RBV is enabled. */
-function computeSightAndDetectionForRBV(token: TokenDocumentPF2e | PrototypeTokenPF2e<CreaturePF2e>): void {
+function computeSightAndDetectionForRBV(token: TokenDocumentAvant | PrototypeTokenAvant<CreatureAvant>): void {
     const actor = token.actor;
     const scene = "scene" in token ? token.scene : null;
     if (!actor?.isOfType("creature")) return;
@@ -77,7 +77,7 @@ function computeSightAndDetectionForRBV(token: TokenDocumentPF2e | PrototypeToke
     if (visionMode === "darkvision") {
         token.sight.range = basicSight.range = null;
 
-        if (actor.isOfType("character") && actor.flags.pf2e.colorDarkvision) {
+        if (actor.isOfType("character") && actor.flags.avant.colorDarkvision) {
             token.sight.saturation = 1;
         } else if (!game.user.settings.monochromeDarkvision) {
             token.sight.saturation = 0;
@@ -94,14 +94,14 @@ function computeSightAndDetectionForRBV(token: TokenDocumentPF2e | PrototypeToke
     }
 
     if (!actor.hasCondition("deafened")) {
-        const range = scene?.flags.pf2e.hearingRange ?? null;
+        const range = scene?.flags.avant.hearingRange ?? null;
         token.detectionModes.push({ id: "hearing", enabled: true, range });
     }
 }
 
 /** Returns true if this token has the default actor image or the default image for its actor type */
-function isDefaultTokenImage(token: TokenDocumentPF2e | PrototypeTokenPF2e<ActorPF2e>): boolean {
-    const defaultIcons = [ActorPF2e.DEFAULT_ICON, `systems/pf2e/icons/default-icons/${token.actor?.type}.svg`];
+function isDefaultTokenImage(token: TokenDocumentAvant | PrototypeTokenAvant<ActorAvant>): boolean {
+    const defaultIcons = [ActorAvant.DEFAULT_ICON, `systems/avant/icons/default-icons/${token.actor?.type}.svg`];
     return defaultIcons.some((path) => token.texture.src?.endsWith(path));
 }
 

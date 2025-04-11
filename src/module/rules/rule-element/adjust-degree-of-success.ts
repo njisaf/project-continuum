@@ -1,4 +1,4 @@
-import type { ActorType, CharacterPF2e, NPCPF2e } from "@actor";
+import type { ActorType, CharacterAvant, NPCAvant } from "@actor";
 import {
     DEGREE_ADJUSTMENT_AMOUNTS,
     DEGREE_OF_SUCCESS_STRINGS,
@@ -7,13 +7,13 @@ import {
 } from "@system/degree-of-success.ts";
 import { RecordField } from "@system/schema-data-fields.ts";
 import { ModelPropsFromRESchema } from "./data.ts";
-import { RuleElementPF2e, RuleElementSchema } from "./index.ts";
+import { RuleElementAvant, RuleElementSchema } from "./index.ts";
 import fields = foundry.data.fields;
 
 /**
  * @category RuleElement
  */
-class AdjustDegreeOfSuccessRuleElement extends RuleElementPF2e<AdjustDegreeRuleSchema> {
+class AdjustDegreeOfSuccessRuleElement extends RuleElementAvant<AdjustDegreeRuleSchema> {
     protected static override validActorTypes: ActorType[] = ["character", "npc"];
 
     static override defineSchema(): AdjustDegreeRuleSchema {
@@ -69,9 +69,9 @@ class AdjustDegreeOfSuccessRuleElement extends RuleElementPF2e<AdjustDegreeRuleS
 }
 
 interface AdjustDegreeOfSuccessRuleElement
-    extends RuleElementPF2e<AdjustDegreeRuleSchema>,
+    extends RuleElementAvant<AdjustDegreeRuleSchema>,
         ModelPropsFromRESchema<AdjustDegreeRuleSchema> {
-    get actor(): CharacterPF2e | NPCPF2e;
+    get actor(): CharacterAvant | NPCAvant;
 }
 
 const degreeAdjustmentAmountString = [

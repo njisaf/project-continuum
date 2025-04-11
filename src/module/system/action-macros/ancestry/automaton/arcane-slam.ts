@@ -1,6 +1,6 @@
-import { CreaturePF2e } from "@actor";
-import { ModifierPF2e } from "@actor/modifiers.ts";
-import { RollNotePF2e } from "@module/notes.ts";
+import { CreatureAvant } from "@actor";
+import { ModifierAvant } from "@actor/modifiers.ts";
+import { RollNoteAvant } from "@module/notes.ts";
 import { Predicate } from "@system/predication.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../../index.ts";
 
@@ -11,15 +11,15 @@ export function arcaneSlam(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph ?? "D",
-        title: "PF2E.Actions.ArcaneSlam.Title",
+        title: "AVANT.Actions.ArcaneSlam.Title",
         checkContext: (opts) => {
             const modifiers = options.modifiers?.length ? [...options.modifiers] : [];
-            if (opts.actor instanceof CreaturePF2e && opts.target instanceof CreaturePF2e) {
+            if (opts.actor instanceof CreatureAvant && opts.target instanceof CreatureAvant) {
                 const attackerSize = opts.actor.system.traits.size;
                 const targetSize = opts.target.system.traits.size;
                 const sizeDifference = attackerSize.difference(targetSize);
-                const sizeModifier = new ModifierPF2e(
-                    "PF2E.Actions.ArcaneSlam.Modifier.SizeDifference",
+                const sizeModifier = new ModifierAvant(
+                    "AVANT.Actions.ArcaneSlam.Modifier.SizeDifference",
                     Math.clamp(2 * sizeDifference, -4, 4),
                     "circumstance",
                 );
@@ -35,15 +35,15 @@ export function arcaneSlam(options: SkillActionOptions): void {
         difficultyClass: options.difficultyClass ?? "fortitude",
         extraNotes: (selector: string) => {
             const notes = [
-                ActionMacroHelpers.note(selector, "PF2E.Actions.ArcaneSlam", "criticalSuccess"),
-                ActionMacroHelpers.note(selector, "PF2E.Actions.ArcaneSlam", "success"),
-                ActionMacroHelpers.note(selector, "PF2E.Actions.ArcaneSlam", "failure"),
-                ActionMacroHelpers.note(selector, "PF2E.Actions.ArcaneSlam", "criticalFailure"),
+                ActionMacroHelpers.note(selector, "AVANT.Actions.ArcaneSlam", "criticalSuccess"),
+                ActionMacroHelpers.note(selector, "AVANT.Actions.ArcaneSlam", "success"),
+                ActionMacroHelpers.note(selector, "AVANT.Actions.ArcaneSlam", "failure"),
+                ActionMacroHelpers.note(selector, "AVANT.Actions.ArcaneSlam", "criticalFailure"),
             ];
             if (!target) {
-                const translated = game.i18n.localize("PF2E.Actions.ArcaneSlam.Notes.NoTarget");
+                const translated = game.i18n.localize("AVANT.Actions.ArcaneSlam.Notes.NoTarget");
                 notes.unshift(
-                    new RollNotePF2e({
+                    new RollNoteAvant({
                         selector,
                         text: `<p class="compact-text">${translated}</p>`,
                         predicate: new Predicate(),

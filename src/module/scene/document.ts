@@ -1,33 +1,33 @@
-import { LightLevels, SceneFlagsPF2e } from "./data.ts";
+import { LightLevels, SceneFlagsAvant } from "./data.ts";
 import { checkAuras } from "./helpers.ts";
 import type {
-    AmbientLightDocumentPF2e,
-    MeasuredTemplateDocumentPF2e,
-    RegionDocumentPF2e,
-    TileDocumentPF2e,
+    AmbientLightDocumentAvant,
+    MeasuredTemplateDocumentAvant,
+    RegionDocumentAvant,
+    TileDocumentAvant,
 } from "./index.ts";
-import { TokenDocumentPF2e } from "./index.ts";
-import type { SceneConfigPF2e } from "./sheet.ts";
+import { TokenDocumentAvant } from "./index.ts";
+import type { SceneConfigAvant } from "./sheet.ts";
 
-class ScenePF2e extends Scene {
+class SceneAvant extends Scene {
     /** Has this document completed `DataModel` initialization? */
     declare initialized: boolean;
 
     /** Is the rules-based vision setting enabled? */
     get rulesBasedVision(): boolean {
         if (!this.tokenVision) return false;
-        return this.flags.pf2e.rulesBasedVision ?? game.pf2e.settings.rbv;
+        return this.flags.avant.rulesBasedVision ?? game.avant.settings.rbv;
     }
 
     get hearingRange(): number | null {
-        return this.flags.pf2e.hearingRange;
+        return this.flags.avant.hearingRange;
     }
 
     /** Is this scene's darkness value synced to the world time? */
     get darknessSyncedToTime(): boolean {
         return (
-            this.flags.pf2e.syncDarkness === "enabled" ||
-            (this.flags.pf2e.syncDarkness === "default" && game.settings.get("pf2e", "worldClock.syncDarkness"))
+            this.flags.avant.syncDarkness === "enabled" ||
+            (this.flags.avant.syncDarkness === "default" && game.settings.get("avant", "worldClock.syncDarkness"))
         );
     }
 
@@ -76,13 +76,13 @@ class ScenePF2e extends Scene {
     override prepareBaseData(): void {
         super.prepareBaseData();
 
-        this.flags.pf2e = fu.mergeObject(
+        this.flags.avant = fu.mergeObject(
             {
                 hearingRange: null,
                 rulesBasedVision: null,
                 syncDarkness: "default",
             },
-            this.flags.pf2e ?? {},
+            this.flags.avant ?? {},
         );
 
         if (this.rulesBasedVision) {
@@ -115,12 +115,12 @@ class ScenePF2e extends Scene {
     override _onUpdate(changed: DeepPartial<this["_source"]>, operation: SceneUpdateOperation, userId: string): void {
         super._onUpdate(changed, operation, userId);
 
-        const flagChanges = changed.flags?.pf2e ?? {};
+        const flagChanges = changed.flags?.avant ?? {};
         if (this.isView && ["rulesBasedVision", "hearingRange"].some((k) => flagChanges[k] !== undefined)) {
             canvas.perception.update({ initializeLighting: true, initializeVision: true });
         }
 
-        if (changed.active === true || (this.active && changed.flags?.pf2e?.environmentTypes)) {
+        if (changed.active === true || (this.active && changed.flags?.avant?.environmentTypes)) {
             this.#refreshTerrainAwareness();
         }
 
@@ -161,7 +161,7 @@ class ScenePF2e extends Scene {
         // the token's prepared data light data was overridden from TokenLight REs.
         const tokensHadSyntheticLights = documents.some(
             (d) =>
-                d instanceof TokenDocumentPF2e &&
+                d instanceof TokenDocumentAvant &&
                 !(d._source.light.dim || d._source.light.bright) &&
                 d.actor?.synthetics.tokenOverrides.light,
         );
@@ -171,27 +171,27 @@ class ScenePF2e extends Scene {
     }
 }
 
-interface ScenePF2e extends Scene {
-    flags: SceneFlagsPF2e;
+interface SceneAvant extends Scene {
+    flags: SceneFlagsAvant;
 
     /** Check for auras containing newly-placed or moved tokens (added as a debounced method) */
     checkAuras(): void;
 
-    readonly lights: foundry.abstract.EmbeddedCollection<AmbientLightDocumentPF2e<this>>;
-    readonly regions: foundry.abstract.EmbeddedCollection<RegionDocumentPF2e<this>>;
-    readonly templates: foundry.abstract.EmbeddedCollection<MeasuredTemplateDocumentPF2e<this>>;
-    readonly tiles: foundry.abstract.EmbeddedCollection<TileDocumentPF2e<this>>;
-    readonly tokens: foundry.abstract.EmbeddedCollection<TokenDocumentPF2e<this>>;
+    readonly lights: foundry.abstract.EmbeddedCollection<AmbientLightDocumentAvant<this>>;
+    readonly regions: foundry.abstract.EmbeddedCollection<RegionDocumentAvant<this>>;
+    readonly templates: foundry.abstract.EmbeddedCollection<MeasuredTemplateDocumentAvant<this>>;
+    readonly tiles: foundry.abstract.EmbeddedCollection<TileDocumentAvant<this>>;
+    readonly tokens: foundry.abstract.EmbeddedCollection<TokenDocumentAvant<this>>;
 
-    get sheet(): SceneConfigPF2e<this>;
+    get sheet(): SceneConfigAvant<this>;
 }
 
 // Added as debounced method
-Object.defineProperty(ScenePF2e.prototype, "checkAuras", {
+Object.defineProperty(SceneAvant.prototype, "checkAuras", {
     configurable: false,
     enumerable: false,
     writable: false,
     value: checkAuras,
 });
 
-export { ScenePF2e };
+export { SceneAvant };

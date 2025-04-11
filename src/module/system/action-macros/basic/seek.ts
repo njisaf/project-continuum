@@ -8,15 +8,15 @@ function seek(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph ?? "A",
-        title: "PF2E.Actions.Seek.Title",
+        title: "AVANT.Actions.Seek.Title",
         checkContext: (opts) => ActionMacroHelpers.defaultCheckContext(opts, { modifiers, rollOptions, slug }),
         traits: ["concentrate", "secret"],
         event: options.event,
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Seek", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Seek", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Seek", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Seek", "success"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);
@@ -26,12 +26,12 @@ function seek(options: SkillActionOptions): void {
 
 const action = new SingleCheckAction({
     cost: 1,
-    description: "PF2E.Actions.Seek.Description",
+    description: "AVANT.Actions.Seek.Description",
     img: "icons/skills/movement/arrow-upward-yellow.webp",
-    name: "PF2E.Actions.Seek.Title",
+    name: "AVANT.Actions.Seek.Title",
     notes: [
-        { outcome: ["criticalSuccess"], text: "PF2E.Actions.Seek.Notes.criticalSuccess" },
-        { outcome: ["success"], text: "PF2E.Actions.Seek.Notes.success" },
+        { outcome: ["criticalSuccess"], text: "AVANT.Actions.Seek.Notes.criticalSuccess" },
+        { outcome: ["success"], text: "AVANT.Actions.Seek.Notes.success" },
     ],
     rollOptions: ["action:seek"],
     section: "basic",

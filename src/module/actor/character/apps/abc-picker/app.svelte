@@ -1,11 +1,19 @@
 <script lang="ts">
-    import { ErrorPF2e } from "@util";
+    import { ErrorAvant } from "@util";
     import type { KeyboardEventHandler, MouseEventHandler } from "svelte/elements";
     import type { ABCPickerContext } from "./app.ts";
 
     const { actor, foundryApp, state: data }: ABCPickerContext = $props();
-    const typePlural = game.i18n.localize(`PF2E.Item.${data.itemType.capitalize()}.Plural`);
-    const searchPlaceholder = game.i18n.format("PF2E.Actor.Character.ABCPicker.SearchPlaceholder", {
+    // For now, we'll use the system item type for plural form
+    let typePlural = "";
+    try {
+        typePlural = game.i18n.localize(`AVANT.Item.${data.itemType.capitalize()}.Plural`);
+    } catch (e) {
+        // Fallback to singularized item type if plural not found
+        typePlural = game.i18n.localize(`TYPES.Item.${data.itemType}`);
+    }
+
+    const searchPlaceholder = game.i18n.format("AVANT.Actor.Character.ABCPicker.SearchPlaceholder", {
         items: typePlural,
     });
 
@@ -20,8 +28,14 @@
     const saveSelection: MouseEventHandler<HTMLButtonElement> = async (event): Promise<void> => {
         const uuid = event.currentTarget.closest("li")?.dataset?.uuid ?? "";
         const item = await fromUuid(uuid);
-        if (!(item instanceof Item) || item.type !== data.itemType) {
-            throw ErrorPF2e(`Unexpected error retrieving ${data.itemType}`);
+
+        // Map UI types to system types
+        let systemItemType = data.itemType;
+        if (data.itemType === "culture") systemItemType = "heritage";
+        if (data.itemType === "vocation") systemItemType = "background";
+
+        if (!(item instanceof Item) || (item.type !== systemItemType && item.type !== data.itemType)) {
+            throw ErrorAvant(`Unexpected error retrieving ${data.itemType}`);
         }
         actor.createEmbeddedDocuments("Item", [{ ...item.toObject(), _id: null }]);
         foundryApp.close();
@@ -51,7 +65,7 @@
                 type="button"
                 class="flat name-source"
                 class:omit-rarity={!item.rarity}
-                data-tooltip="PF2E.Actor.Character.ABCPicker.Tooltip.ViewSheet"
+                data-tooltip="AVANT.Actor.Character.ABCPicker.Tooltip.ViewSheet"
                 onclick={viewItemSheet}
             >
                 <img src={item.img} loading="lazy" alt="Class icon" />
@@ -67,7 +81,7 @@
                 type="button"
                 class="confirm"
                 aria-labelledby="tooltip"
-                data-tooltip="PF2E.Actor.Character.ABCPicker.Tooltip.ConfirmSelection"
+                data-tooltip="AVANT.Actor.Character.ABCPicker.Tooltip.ConfirmSelection"
                 onclick={saveSelection}
             >
                 <i class="fa-solid fa-check"></i>

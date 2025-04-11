@@ -1,26 +1,26 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { TrickMagicItemPopup } from "@actor/sheet/trick-magic-item-popup.ts";
-import type { SpellPF2e, WeaponPF2e } from "@item";
-import { ItemProxyPF2e, PhysicalItemPF2e } from "@item";
+import type { SpellAvant, WeaponAvant } from "@item";
+import { ItemProxyAvant, PhysicalItemAvant } from "@item";
 import { RawItemChatData } from "@item/base/data/index.ts";
 import { performLatePreparation } from "@item/helpers.ts";
 import { TrickMagicItemEntry } from "@item/spellcasting-entry/trick.ts";
 import type { SpellcastingEntry } from "@item/spellcasting-entry/types.ts";
 import type { ValueAndMax } from "@module/data.ts";
-import type { UserPF2e } from "@module/user/document.ts";
+import type { UserAvant } from "@module/user/document.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
-import { ErrorPF2e, setHasElement } from "@util";
+import { ErrorAvant, setHasElement } from "@util";
 import * as R from "remeda";
 import type { ConsumableSource, ConsumableSystemData } from "./data.ts";
 import type { ConsumableCategory, ConsumableTrait, OtherConsumableTag } from "./types.ts";
 import { DAMAGE_ONLY_CONSUMABLE_CATEGORIES, DAMAGE_OR_HEALING_CONSUMABLE_CATEGORIES } from "./values.ts";
 
-class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+class ConsumableAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     /** A cached copy of embeddedSpell, lazily regenerated every data preparation cycle */
-    declare private _embeddedSpell: SpellPF2e<NonNullable<TParent>> | null | undefined;
+    declare private _embeddedSpell: SpellAvant<NonNullable<TParent>> | null | undefined;
 
     static override get validTraits(): Record<ConsumableTrait, string> {
-        return CONFIG.PF2E.consumableTraits;
+        return CONFIG.AVANT.consumableTraits;
     }
 
     get otherTags(): Set<OtherConsumableTag> {
@@ -39,8 +39,8 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
         return R.pick(this.system.uses, ["value", "max"]);
     }
 
-    get embeddedSpell(): SpellPF2e<NonNullable<TParent>> | null {
-        if (!this.actor) throw ErrorPF2e(`No owning actor found for "${this.name}" (${this.id})`);
+    get embeddedSpell(): SpellAvant<NonNullable<TParent>> | null {
+        if (!this.actor) throw ErrorAvant(`No owning actor found for "${this.name}" (${this.id})`);
         if (this._embeddedSpell !== undefined) {
             return this._embeddedSpell;
         }
@@ -56,7 +56,7 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
                 { inplace: false },
             );
             const context = { parent: this.actor, parentItem: this };
-            const spell = new ItemProxyPF2e(spellSource, context) as SpellPF2e<NonNullable<TParent>>;
+            const spell = new ItemProxyAvant(spellSource, context) as SpellAvant<NonNullable<TParent>>;
             performLatePreparation(spell);
             this._embeddedSpell = spell;
             return spell;
@@ -89,19 +89,19 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     }
 
     override async getChatData(
-        this: ConsumablePF2e<ActorPF2e>,
+        this: ConsumableAvant<ActorAvant>,
         htmlOptions: EnrichmentOptions = {},
         rollOptions: Record<string, unknown> = {},
     ): Promise<RawItemChatData> {
-        const traits = this.traitChatData(CONFIG.PF2E.consumableTraits);
+        const traits = this.traitChatData(CONFIG.AVANT.consumableTraits);
         const [category, isUsableItemType] = this.isIdentified
-            ? [game.i18n.localize(CONFIG.PF2E.consumableCategories[this.category]), true]
+            ? [game.i18n.localize(CONFIG.AVANT.consumableCategories[this.category]), true]
             : [
                   this.generateUnidentifiedName({ typeOnly: true }),
                   !["other", "scroll", "talisman", "toolkit", "wand"].includes(this.category),
               ];
 
-        const usesLabel = game.i18n.localize("PF2E.Item.Consumable.Uses.Label");
+        const usesLabel = game.i18n.localize("AVANT.Item.Consumable.Uses.Label");
         const fromFormula = !!rollOptions.fromFormula;
 
         return this.processChatData(htmlOptions, {
@@ -117,19 +117,19 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     override generateUnidentifiedName({ typeOnly = false }: { typeOnly?: boolean } = { typeOnly: false }): string {
         const liquidOrSubstance = () =>
             this.traits.has("inhaled") || this.traits.has("contact")
-                ? "PF2E.identification.UnidentifiedType.Substance"
-                : "PF2E.identification.UnidentifiedType.Liquid";
+                ? "AVANT.identification.UnidentifiedType.Substance"
+                : "AVANT.identification.UnidentifiedType.Liquid";
         const itemType = game.i18n.localize(
             ["drug", "elixir", "mutagen", "oil", "poison", "potion"].includes(this.category)
                 ? liquidOrSubstance()
                 : ["scroll", "snare", "ammo"].includes(this.category)
-                  ? CONFIG.PF2E.consumableCategories[this.category]
-                  : "PF2E.identification.UnidentifiedType.Object",
+                  ? CONFIG.AVANT.consumableCategories[this.category]
+                  : "AVANT.identification.UnidentifiedType.Object",
         );
 
         if (typeOnly) return itemType;
 
-        return game.i18n.format("PF2E.identification.UnidentifiedItem", { item: itemType });
+        return game.i18n.format("AVANT.identification.UnidentifiedItem", { item: itemType });
     }
 
     override getRollOptions(prefix = this.type, options?: { includeGranter?: boolean }): string[] {
@@ -143,7 +143,7 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
         ];
     }
 
-    isAmmoFor(weapon: WeaponPF2e): boolean {
+    isAmmoFor(weapon: WeaponAvant): boolean {
         if (!weapon.isOfType("weapon")) {
             console.warn("Cannot load a consumable into a non-weapon");
             return false;
@@ -165,7 +165,7 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
                 new TrickMagicItemPopup(this);
             } else {
                 const formatParams = { actor: actor.name, spell: this.name };
-                const message = game.i18n.format("PF2E.LackCastConsumableCapability", formatParams);
+                const message = game.i18n.format("AVANT.LackCastConsumableCapability", formatParams);
                 ui.notifications.warn(message);
                 return;
             }
@@ -173,12 +173,12 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
             // Announce consumption of non-ammunition
             const exhausted = uses.max >= thisMany && uses.value === thisMany;
             const key = exhausted && uses.max > 1 ? "UseExhausted" : uses.max > thisMany ? "UseMulti" : "UseSingle";
-            const content = game.i18n.format(`PF2E.ConsumableMessage.${key}`, {
+            const content = game.i18n.format(`AVANT.ConsumableMessage.${key}`, {
                 name: this.name,
                 current: uses.value - thisMany,
             });
             const flags = {
-                pf2e: {
+                avant: {
                     origin: {
                         sourceId: this.sourceId,
                         uuid: this.uuid,
@@ -222,9 +222,9 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
         if (!actor || !spell) return;
 
         // Find the best spellcasting entry to cast this consumable
-        const entry = ((): SpellcastingEntry<ActorPF2e> | null => {
+        const entry = ((): SpellcastingEntry<ActorAvant> | null => {
             if (trickMagicItemData) return trickMagicItemData;
-            type SpellcastingAbility = SpellcastingEntry<ActorPF2e>;
+            type SpellcastingAbility = SpellcastingEntry<ActorAvant>;
 
             return (
                 actor.spellcasting
@@ -239,7 +239,7 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     protected override _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) return super._preUpdate(changed, operation, user);
 
@@ -289,9 +289,9 @@ class ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extend
     }
 }
 
-interface ConsumablePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends PhysicalItemPF2e<TParent> {
+interface ConsumableAvant<TParent extends ActorAvant | null = ActorAvant | null> extends PhysicalItemAvant<TParent> {
     readonly _source: ConsumableSource;
     system: ConsumableSystemData;
 }
 
-export { ConsumablePF2e };
+export { ConsumableAvant };

@@ -3,9 +3,9 @@ import { AbilityTrait } from "@item/ability/types.ts";
 import { PhysicalItemSource } from "@item/base/data/index.ts";
 import { Size, TraitsWithRarity, ValuesList, ZeroToTwo } from "@module/data.ts";
 import { MaterialDamageEffect } from "@system/damage/types.ts";
-import { ActionCost, BaseItemSourcePF2e, Frequency, ItemSystemData, ItemSystemSource } from "../base/data/system.ts";
+import { ActionCost, BaseItemSourceAvant, Frequency, ItemSystemData, ItemSystemSource } from "../base/data/system.ts";
 import type { ITEM_CARRY_TYPES } from "../base/data/values.ts";
-import type { CoinsPF2e } from "./helpers.ts";
+import type { CoinsAvant } from "./helpers.ts";
 import type { PhysicalItemTrait, PhysicalItemType, PreciousMaterialGrade, PreciousMaterialType } from "./types.ts";
 import type { UsageDetails } from "./usage.ts";
 
@@ -14,7 +14,7 @@ type ItemCarryType = (typeof ITEM_CARRY_TYPES)[number];
 type BasePhysicalItemSource<
     TType extends PhysicalItemType,
     TSystemSource extends PhysicalSystemSource = PhysicalSystemSource,
-> = BaseItemSourcePF2e<TType, TSystemSource>;
+> = BaseItemSourceAvant<TType, TSystemSource>;
 
 interface PhysicalSystemSource extends ItemSystemSource {
     level: { value: number };
@@ -163,7 +163,7 @@ interface PartialPrice {
 }
 
 interface Price extends Required<PartialPrice> {
-    value: CoinsPF2e;
+    value: CoinsAvant;
 }
 
 export type {

@@ -1,5 +1,5 @@
-import type { TokenPF2e } from "@module/canvas/index.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene";
+import type { TokenAvant } from "@module/canvas/index.ts";
+import type { SceneAvant, TokenDocumentAvant } from "@scene";
 import { PartyClownCar } from "@scene/token-document/clown-car.ts";
 import { createHTMLElement, htmlQuery } from "@util";
 
@@ -7,7 +7,7 @@ export class RenderTokenHUD {
     static listen(): void {
         Hooks.on("renderTokenHUD", (_app, $html, data) => {
             const html = $html[0];
-            game.pf2e.StatusEffects.onRenderTokenHUD(html, data);
+            game.avant.StatusEffects.onRenderTokenHUD(html, data);
 
             const token = canvas.scene?.tokens.get(data._id ?? "")?.object;
             this.addClownCarButton(html, token);
@@ -22,18 +22,18 @@ export class RenderTokenHUD {
     /** Replace the token HUD's status effects button with one for depositing/retrieving party-member tokens.  */
     static addClownCarButton(
         html: HTMLElement,
-        token: TokenPF2e<TokenDocumentPF2e<ScenePF2e>> | null | undefined,
+        token: TokenAvant<TokenDocumentAvant<SceneAvant>> | null | undefined,
     ): void {
         if (!token?.actor?.isOfType("party")) return;
 
         const { actor } = token;
         const actionIcon = ((): HTMLImageElement => {
             const imgElement = document.createElement("img");
-            imgElement.src = "systems/pf2e/icons/other/enter-exit.svg";
+            imgElement.src = "systems/avant/icons/other/enter-exit.svg";
             const willRetrieve = actor.members.some((m) => m.getActiveTokens(true, true).length > 0);
             imgElement.className = willRetrieve ? "retrieve" : "deposit";
             imgElement.title = game.i18n.localize(
-                willRetrieve ? "PF2E.Actor.Party.ClownCar.Retrieve" : "PF2E.Actor.Party.ClownCar.Deposit",
+                willRetrieve ? "AVANT.Actor.Party.ClownCar.Retrieve" : "AVANT.Actor.Party.ClownCar.Deposit",
             );
 
             return imgElement;
@@ -53,7 +53,7 @@ export class RenderTokenHUD {
                 const switchToDeposit = actionIcon.className === "retrieve";
                 actionIcon.className = switchToDeposit ? "deposit" : "retrieve";
                 actionIcon.title = game.i18n.localize(
-                    switchToDeposit ? "PF2E.Actor.Party.ClownCar.Deposit" : "PF2E.Actor.Party.ClownCar.Retrieve",
+                    switchToDeposit ? "AVANT.Actor.Party.ClownCar.Deposit" : "AVANT.Actor.Party.ClownCar.Retrieve",
                 );
             } finally {
                 delete controlButton.dataset.disabled;

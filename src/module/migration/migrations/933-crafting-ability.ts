@@ -1,7 +1,7 @@
 import { CraftingFormulaData, PreparedFormulaData } from "@actor/character/crafting/types.ts";
 import { CharacterSystemSource } from "@actor/character/data.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { CraftingAbilityRuleSource } from "@module/rules/rule-element/crafting-ability.ts";
 import { sluggify } from "@util/misc.ts";
 import { MigrationBase } from "../base.ts";
@@ -10,7 +10,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration933CraftingAbility extends MigrationBase {
     static override version = 0.933;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type !== "character") return;
 
         // Remove the sort field from character formulas
@@ -24,7 +24,7 @@ export class Migration933CraftingAbility extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.system.rules.some((r) => r.key === "CraftingEntry")) {
             source.system.rules = source.system.rules.map((r) => {
                 if (r.key !== "CraftingEntry") return r;

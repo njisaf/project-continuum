@@ -1,9 +1,9 @@
-import type { ActorPF2e } from "@actor";
-import { DamageDicePF2e, ModifierPF2e, RawDamageDice, adjustModifiers } from "@actor/modifiers.ts";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import { DamageDiceAvant, ModifierAvant, RawDamageDice, adjustModifiers } from "@actor/modifiers.ts";
+import type { ItemAvant } from "@item";
 import { WeaponDamage } from "@item/weapon/data.ts";
 import { extractDamageAlterations, extractModifierAdjustments } from "@module/rules/helpers.ts";
-import { ErrorPF2e, fontAwesomeIcon, signedInteger, tupleHasValue } from "@util";
+import { ErrorAvant, fontAwesomeIcon, signedInteger, tupleHasValue } from "@util";
 import * as R from "remeda";
 import type { Die, NumericTerm, RollTerm } from "types/foundry/client-esm/dice/terms/module.d.ts";
 import { combinePartialTerms } from "./formula.ts";
@@ -56,7 +56,7 @@ const DamageCategorization = {
     },
 } as const;
 
-/** Create `DamageDicePF2e` and `ModifierPF2e` instances in order to apply damage alterations to base damage data. */
+/** Create `DamageDiceAvant` and `ModifierAvant` instances in order to apply damage alterations to base damage data. */
 function applyBaseDamageAlterations({ actor, item, base, domains, rollOptions }: ApplyDamageAlterationsParams): void {
     const alterationsRecord = actor?.synthetics.damageAlterations ?? {};
     const modifierAdjustments = extractModifierAdjustments(actor.synthetics.modifierAdjustments, domains, "base");
@@ -69,7 +69,7 @@ function applyBaseDamageAlterations({ actor, item, base, domains, rollOptions }:
         for (const partial of base) {
             for (const term of partial.terms ?? []) {
                 if (term.dice) {
-                    const damage = new DamageDicePF2e({
+                    const damage = new DamageDiceAvant({
                         selector: "damage",
                         slug: "base",
                         damageType: partial.damageType,
@@ -84,8 +84,8 @@ function applyBaseDamageAlterations({ actor, item, base, domains, rollOptions }:
                     term.dice.number = damage.diceNumber;
                     term.dice.faces = damage.dieSize ? damageDieSizeToFaces(damage.dieSize) : term.dice.faces;
                 } else if (term.modifier) {
-                    const modifier = new ModifierPF2e({
-                        label: "PF2E.ModifierTitle",
+                    const modifier = new ModifierAvant({
+                        label: "AVANT.ModifierTitle",
                         slug: "base",
                         modifier: term.modifier,
                         damageCategory: partial.category,
@@ -106,8 +106,8 @@ function applyBaseDamageAlterations({ actor, item, base, domains, rollOptions }:
 
 interface ApplyDamageAlterationsParams {
     base: BaseDamageData[];
-    actor: ActorPF2e;
-    item: ItemPF2e<ActorPF2e>;
+    actor: ActorAvant;
+    item: ItemAvant<ActorAvant>;
     domains: string[];
     rollOptions: Set<string>;
 }
@@ -117,7 +117,7 @@ const FACES = [4, 6, 8, 10, 12];
 /** Apply damage dice overrides and upgrades to a non-weapon's damage formula */
 function applyDamageDiceOverrides(
     baseEntries: BaseDamageData[],
-    dice: DamageDicePF2e[],
+    dice: DamageDiceAvant[],
     options: { critical?: boolean; maxIncreases?: number } = {},
 ): void {
     const critical = options.critical ?? false;
@@ -125,7 +125,7 @@ function applyDamageDiceOverrides(
 
     type RequiredNonNullable<T, K extends keyof T> = T & { [P in K]-?: NonNullable<T[P]> };
     const overrideDice = dice.filter(
-        (d): d is RequiredNonNullable<DamageDicePF2e, "override"> => !d.ignored && !!d.override,
+        (d): d is RequiredNonNullable<DamageDiceAvant, "override"> => !d.ignored && !!d.override,
     );
     if (overrideDice.length === 0) return;
 
@@ -209,7 +209,7 @@ function extractBaseDamage(roll: DamageRoll): BaseDamageData[] {
             return [{ dice: R.pick(expression, ["number", "faces"]), modifier: 0, category }];
         } else if (expression instanceof IntermediateDie) {
             if (typeof expression.number !== "number" || typeof expression.faces !== "number") {
-                throw ErrorPF2e("Unable to parse DamageRoll with non-deterministic intermediate expressions.");
+                throw ErrorAvant("Unable to parse DamageRoll with non-deterministic intermediate expressions.");
             }
             const faces = tupleHasValue(DAMAGE_DICE_FACES, expression.faces) ? expression.faces : 4;
             return [{ dice: { number: expression.number, faces }, modifier: 0, category }];
@@ -225,7 +225,7 @@ function extractBaseDamage(roll: DamageRoll): BaseDamageData[] {
         if (expression instanceof ArithmeticExpression) {
             const operator = expression.operator;
             if (operator === "*" || operator === "/") {
-                throw ErrorPF2e(`Cannot use ${operator} on non-deterministic artithmetic terms`);
+                throw ErrorAvant(`Cannot use ${operator} on non-deterministic artithmetic terms`);
             }
 
             const leftTerms = recursiveExtractTerms(expression.operands[0], { category });
@@ -248,9 +248,9 @@ function extractBaseDamage(roll: DamageRoll): BaseDamageData[] {
 
         // At this point its an error, but we need to report what type it is
         if (!expression.isDeterministic) {
-            throw ErrorPF2e(`Unable to parse DamageRoll with non-deterministic ${expression.constructor.name}.`);
+            throw ErrorAvant(`Unable to parse DamageRoll with non-deterministic ${expression.constructor.name}.`);
         }
-        throw ErrorPF2e("Unrecognized roll term type " + expression.constructor.name);
+        throw ErrorAvant("Unrecognized roll term type " + expression.constructor.name);
     }
 
     return roll.instances.flatMap((instance): BaseDamageData[] => {
@@ -266,15 +266,15 @@ function extractBaseDamage(roll: DamageRoll): BaseDamageData[] {
 /** Create a span element for displaying splash damage */
 function renderComponentDamage(term: RollTerm): HTMLElement {
     if (!["precision", "splash"].includes(term.flavor)) {
-        throw ErrorPF2e("Unexpected error rendering damage roll");
+        throw ErrorAvant("Unexpected error rendering damage roll");
     }
 
     const span = document.createElement("span");
     span.className = term.flavor;
     const [title, faClass] =
         term.flavor === "precision"
-            ? [game.i18n.localize("PF2E.Damage.Precision"), "crosshairs"]
-            : [game.i18n.localize("PF2E.TraitSplash"), "burst"];
+            ? [game.i18n.localize("AVANT.Damage.Precision"), "crosshairs"]
+            : [game.i18n.localize("AVANT.TraitSplash"), "burst"];
 
     span.title = title;
     const icon = fontAwesomeIcon(faClass);
@@ -350,7 +350,7 @@ function isUnsimplifableArithmetic(term: RollTerm): boolean {
 function processBaseDamage<TDamage extends ConvertedNPCDamage | WeaponDamage>(
     selector: string,
     unprocessed: TDamage,
-    options: { actor: ActorPF2e; item: ItemPF2e<ActorPF2e>; domains: string[]; options: string[] | Set<string> },
+    options: { actor: ActorAvant; item: ItemAvant<ActorAvant>; domains: string[]; options: string[] | Set<string> },
 ): TDamage;
 function processBaseDamage(
     selector: string,
@@ -360,12 +360,12 @@ function processBaseDamage(
         item,
         domains,
         options,
-    }: { actor: ActorPF2e; item: ItemPF2e<ActorPF2e>; domains: string[]; options: string[] | Set<string> },
+    }: { actor: ActorAvant; item: ItemAvant<ActorAvant>; domains: string[]; options: string[] | Set<string> },
 ): ConvertedNPCDamage | WeaponDamage {
     const damageCategory = "category" in unprocessed ? unprocessed.category : null;
     const dice =
         unprocessed.dice > 0
-            ? new DamageDicePF2e({
+            ? new DamageDiceAvant({
                   selector,
                   slug: "base",
                   category: damageCategory,
@@ -376,7 +376,7 @@ function processBaseDamage(
             : null;
     const modifier =
         unprocessed.modifier !== 0
-            ? new ModifierPF2e({
+            ? new ModifierAvant({
                   slug: "base",
                   label: "Base",
                   damageCategory,
@@ -386,7 +386,7 @@ function processBaseDamage(
             : null;
     const persistent = unprocessed.persistent
         ? unprocessed.persistent.faces
-            ? new DamageDicePF2e({
+            ? new DamageDiceAvant({
                   selector,
                   slug: "base-persistent",
                   category: "persistent",
@@ -394,7 +394,7 @@ function processBaseDamage(
                   diceNumber: unprocessed.persistent.number,
                   dieSize: `d${unprocessed.persistent.faces}`,
               })
-            : new ModifierPF2e({
+            : new ModifierAvant({
                   slug: "base-persistent",
                   label: "Base",
                   damageCategory: "persistent",
@@ -462,24 +462,24 @@ function damageDiceIcon(roll: DamageRoll | DamageInstance, { fixedWidth = false 
     return fontAwesomeIcon(glyph, { fixedWidth });
 }
 
-function getDamageDiceValueLabel(d: DamageDicePF2e | RawDamageDice, props: { sign?: boolean } = {}): string {
+function getDamageDiceValueLabel(d: DamageDiceAvant | RawDamageDice, props: { sign?: boolean } = {}): string {
     return d.diceNumber && d.dieSize
         ? `${props.sign ? "+" : ""}${d.diceNumber}${d.dieSize}`
         : d.diceNumber
-          ? game.i18n.format("PF2E.Roll.Dialog.Damage.Dice", { dice: signedInteger(d.diceNumber) })
+          ? game.i18n.format("AVANT.Roll.Dialog.Damage.Dice", { dice: signedInteger(d.diceNumber) })
           : "";
 }
 
-function getDamageDiceOverrideLabel(d: DamageDicePF2e | RawDamageDice): string {
+function getDamageDiceOverrideLabel(d: DamageDiceAvant | RawDamageDice): string {
     const parts = [
-        d.override?.upgrade ? game.i18n.localize("PF2E.Roll.Dialog.Damage.DieSizeUpgrade") : null,
+        d.override?.upgrade ? game.i18n.localize("AVANT.Roll.Dialog.Damage.DieSizeUpgrade") : null,
         d.override?.diceNumber || d.override?.dieSize
-            ? game.i18n.format("PF2E.Roll.Dialog.Damage.Override", {
+            ? game.i18n.format("AVANT.Roll.Dialog.Damage.Override", {
                   value:
                       d.override.diceNumber && d.override.dieSize
                           ? `${d.override.diceNumber}${d.override.dieSize}`
                           : d.override.diceNumber
-                            ? game.i18n.format("PF2E.Roll.Dialog.Damage.Dice", {
+                            ? game.i18n.format("AVANT.Roll.Dialog.Damage.Dice", {
                                   dice: d.override.diceNumber,
                               })
                             : (d.override.dieSize ?? ""),
@@ -489,7 +489,7 @@ function getDamageDiceOverrideLabel(d: DamageDicePF2e | RawDamageDice): string {
 
     // If this is only a damage type override, show "Override" and let the icon sort out the meaning
     return parts.length === 0 && d.override?.damageType
-        ? game.i18n.format("PF2E.Roll.Dialog.Damage.OverrideLabel")
+        ? game.i18n.format("AVANT.Roll.Dialog.Damage.OverrideLabel")
         : parts.join(" + ");
 }
 

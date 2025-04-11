@@ -1,7 +1,7 @@
 <script lang="ts">
     import Filters from "./filters.svelte";
     import ResultItem from "./result-item.svelte";
-    import { ErrorPF2e } from "@util";
+    import { ErrorAvant } from "@util";
     import { CompendiumBrowser, type CompendiumBrowserState } from "../browser.ts";
     import type { ContentTabName } from "../data.ts";
 
@@ -9,9 +9,9 @@
 
     const { activeTabName = $bindable(), ...props }: BrowserTabProps = $props();
     if (!activeTabName) {
-        throw ErrorPF2e(`Invalid tab name: "${activeTabName}"!`);
+        throw ErrorAvant(`Invalid tab name: "${activeTabName}"!`);
     }
-    const browser = game.pf2e.compendiumBrowser;
+    const browser = game.avant.compendiumBrowser;
     const tab = $derived(browser.tabs[activeTabName]);
 
     function resetFilters(): void {
@@ -29,7 +29,7 @@
     $effect(() => {
         if (tab.isGMOnly && !game.user.isGM) {
             props.state.activeTabName = "";
-            console.error("PF2e System | This browser tab is flagged as GM-only!");
+            console.error("Avant System | This browser tab is flagged as GM-only!");
         }
     });
 </script>

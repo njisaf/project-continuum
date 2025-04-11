@@ -1,0 +1,227 @@
+{
+    "_id": "4osf0dNeZ19KBoTb",
+    "folder": "EUCVujSBQzbNqPJX",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Manifold Modifications",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "class",
+        "description": {
+            "value": "<p>You've modified your innovation using clever workarounds, so you can include another initial modification without compromising its structure. Your innovation gains an additional initial modification from the list for innovations of its type.</p>"
+        },
+        "level": {
+            "value": 8
+        },
+        "prerequisites": {
+            "value": [
+                {
+                    "value": "initial modification"
+                }
+            ]
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Guns & Gears"
+        },
+        "rules": [
+            {
+                "adjustName": false,
+                "allowedDrops": {
+                    "label": "AVANT.SpecificRule.Inventor.Modification.Initial.AllowedDrops",
+                    "predicate": [
+                        "item:level:1",
+                        "item:type:feature",
+                        "item:trait:inventor"
+                    ]
+                },
+                "choices": [
+                    {
+                        "predicate": [
+                            "feature:armor-innovation",
+                            {
+                                "not": "feature:harmonic-oscillator"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Harmonic Oscillator"
+                    },
+                    {
+                        "predicate": [
+                            "feature:armor-innovation",
+                            {
+                                "not": "feature:metallic-reactance"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Metallic Reactance"
+                    },
+                    {
+                        "predicate": [
+                            "armor-innovation:power-suit",
+                            {
+                                "not": "feature:muscular-exoskeleton"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Muscular Exoskeleton"
+                    },
+                    {
+                        "predicate": [
+                            "feature:armor-innovation",
+                            {
+                                "not": "feature:otherworldly-protection"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Otherworldly Protection"
+                    },
+                    {
+                        "predicate": [
+                            "feature:armor-innovation",
+                            {
+                                "not": "feature:phlogistonic-regulator"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Phlogistonic Regulator"
+                    },
+                    {
+                        "predicate": [
+                            "feature:armor-innovation",
+                            {
+                                "not": "feature:speed-boosters"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Speed Boosters"
+                    },
+                    {
+                        "predicate": [
+                            "armor-innovation:subterfuge-suit",
+                            {
+                                "not": "feature:subtle-dampeners"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Subtle Dampeners"
+                    },
+                    {
+                        "predicate": [
+                            "weapon-innovation:ranged",
+                            {
+                                "nor": [
+                                    "weapon-innovation:thrown",
+                                    "feature:blunt-shot"
+                                ]
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Blunt Shot"
+                    },
+                    {
+                        "predicate": [
+                            "weapon-innovation:category:simple",
+                            {
+                                "not": "feature:complex-simplicity"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Complex Simplicity"
+                    },
+                    {
+                        "predicate": [
+                            "weapon-innovation:usage:hands:1",
+                            "weapon-innovation:melee",
+                            {
+                                "nor": [
+                                    "weapon-innovation:trait:agile",
+                                    "weapon-innovation:trait:attached",
+                                    "weapon-innovation:trait:free-hand",
+                                    "feature:dynamic-weighting"
+                                ]
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Dynamic Weighting"
+                    },
+                    {
+                        "predicate": [
+                            "weapon-innovation:melee",
+                            {
+                                "not": "feature:entangling-form"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Entangling Form"
+                    },
+                    {
+                        "predicate": [
+                            "weapon-innovation:melee",
+                            {
+                                "not": "feature:hampering-spikes"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Hampering Spikes"
+                    },
+                    {
+                        "predicate": [
+                            "weapon-innovation:melee",
+                            {
+                                "not": "feature:hefty-composition"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Hefty Composition"
+                    },
+                    {
+                        "predicate": [
+                            "feature:weapon-innovation",
+                            {
+                                "not": "feature:modular-head"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Modular Head"
+                    },
+                    {
+                        "predicate": [
+                            "weapon-innovation:melee",
+                            {
+                                "not": "feature:pacification-tools"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Pacification Tools"
+                    },
+                    {
+                        "predicate": [
+                            "weapon-innovation:melee",
+                            {
+                                "not": "feature:razor-prongs"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Razor Prongs"
+                    },
+                    {
+                        "predicate": [
+                            "feature:weapon-innovation",
+                            {
+                                "not": "feature:segmented-frame"
+                            }
+                        ],
+                        "value": "Compendium.avant.classfeatures.Item.Segmented Frame"
+                    }
+                ],
+                "flag": "modification",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Inventor.Modification.Initial.Prompt"
+            },
+            {
+                "allowDuplicate": false,
+                "flag": "armorInnovation",
+                "key": "GrantItem",
+                "uuid": "{item|flags.avant.rulesSelections.modification}"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "inventor",
+                "modification"
+            ]
+        }
+    },
+    "type": "feat"
+}

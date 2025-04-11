@@ -1,18 +1,18 @@
-import type { ActorPF2e, CreaturePF2e } from "@actor";
+import type { ActorAvant, CreatureAvant } from "@actor";
 import { Immunity } from "@actor/data/iwr.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { ImmunityType } from "@actor/types.ts";
-import type { AbilityItemPF2e, MeleePF2e, WeaponPF2e } from "@item";
-import { ConditionPF2e } from "@item";
+import type { AbilityItemAvant, MeleeAvant, WeaponAvant } from "@item";
+import { ConditionAvant } from "@item";
 import { extractModifierAdjustments } from "@module/rules/helpers.ts";
 import { Predicate } from "@system/predication.ts";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 
 /** A static class of helper functions for applying automation for certain weapon traits on attack rolls */
 class AttackTraitHelpers {
     protected static getLabel(traitOrTag: string): string {
-        const traits: Record<string, string | undefined> = CONFIG.PF2E.weaponTraits;
-        const tags: Record<string, string | undefined> = CONFIG.PF2E.otherWeaponTags;
+        const traits: Record<string, string | undefined> = CONFIG.AVANT.weaponTraits;
+        const tags: Record<string, string | undefined> = CONFIG.AVANT.otherWeaponTags;
         return traits[traitOrTag] ?? tags[traitOrTag] ?? traitOrTag;
     }
 
@@ -20,9 +20,9 @@ class AttackTraitHelpers {
         return trait.replace(/-d?\d{1,3}$/, "");
     }
 
-    static createAttackModifiers({ item, domains }: CreateAttackModifiersParams): ModifierPF2e[] {
+    static createAttackModifiers({ item, domains }: CreateAttackModifiersParams): ModifierAvant[] {
         const actor = item.actor;
-        if (!actor) throw ErrorPF2e("The weapon must be embedded");
+        if (!actor) throw ErrorAvant("The weapon must be embedded");
 
         return item.system.traits.value.flatMap((trait) => {
             const unannotatedTrait = this.getUnannotatedTrait(trait);
@@ -32,7 +32,7 @@ class AttackTraitHelpers {
                     if (!rangeIncrement) return [];
 
                     const penaltyRange = Number(/-(\d+)$/.exec(trait)![1]);
-                    return new ModifierPF2e({
+                    return new ModifierAvant({
                         slug: unannotatedTrait,
                         label: this.getLabel(trait),
                         modifier: -2,
@@ -50,7 +50,7 @@ class AttackTraitHelpers {
                     });
                 }
                 case "sweep": {
-                    return new ModifierPF2e({
+                    return new ModifierAvant({
                         slug: unannotatedTrait,
                         label: this.getLabel(trait),
                         modifier: 1,
@@ -59,7 +59,7 @@ class AttackTraitHelpers {
                     });
                 }
                 case "backswing": {
-                    return new ModifierPF2e({
+                    return new ModifierAvant({
                         slug: unannotatedTrait,
                         label: this.getLabel(trait),
                         modifier: 1,
@@ -75,12 +75,12 @@ class AttackTraitHelpers {
 }
 
 interface CreateAttackModifiersParams {
-    item: AbilityItemPF2e<ActorPF2e> | WeaponPF2e<ActorPF2e> | MeleePF2e<ActorPF2e>;
+    item: AbilityItemAvant<ActorAvant> | WeaponAvant<ActorAvant> | MeleeAvant<ActorAvant>;
     domains: string[];
 }
 
 /** Set immunities for creatures with traits call for them */
-function setImmunitiesFromTraits(actor: CreaturePF2e): void {
+function setImmunitiesFromTraits(actor: CreatureAvant): void {
     if (actor.isOfType("character")) return;
 
     const traits = actor.traits;
@@ -112,7 +112,7 @@ function setImmunitiesFromTraits(actor: CreaturePF2e): void {
         for (const immunityType of constructImmunities) {
             if (!existing.includes(immunityType)) {
                 immunities.push(
-                    new Immunity({ type: immunityType, source: game.i18n.localize("PF2E.TraitConstruct") }),
+                    new Immunity({ type: immunityType, source: game.i18n.localize("AVANT.TraitConstruct") }),
                 );
             }
         }
@@ -120,24 +120,24 @@ function setImmunitiesFromTraits(actor: CreaturePF2e): void {
 
     // "They are immune to all mental effects." – GMC pg. 331
     if (traits.has("mindless") && !existing.includes("mental")) {
-        immunities.push(new Immunity({ type: "mental", source: game.i18n.localize("PF2E.TraitMindless") }));
+        immunities.push(new Immunity({ type: "mental", source: game.i18n.localize("AVANT.TraitMindless") }));
     }
 
     // "Swarms are immune to the grappled [sic], prone, and restrained conditions." – GMC pg. 334
     if (traits.has("swarm")) {
         for (const immunity of ["grabbed", "prone", "restrained"] as const) {
             if (!existing.includes(immunity)) {
-                immunities.push(new Immunity({ type: immunity, source: game.i18n.localize("PF2E.TraitSwarm") }));
+                immunities.push(new Immunity({ type: immunity, source: game.i18n.localize("AVANT.TraitSwarm") }));
             }
         }
     }
 }
 
-function imposeEncumberedCondition(actor: CreaturePF2e): void {
-    if (!game.pf2e.settings.encumbrance) return;
+function imposeEncumberedCondition(actor: CreatureAvant): void {
+    if (!game.avant.settings.encumbrance) return;
     if (actor.inventory.bulk.isEncumbered && actor.conditions.bySlug("encumbered").length === 0) {
-        const source = game.pf2e.ConditionManager.getCondition("encumbered").toObject();
-        const encumbered = new ConditionPF2e(fu.mergeObject(source, { _id: "xxxENCUMBEREDxxx" }), { parent: actor });
+        const source = game.avant.ConditionManager.getCondition("encumbered").toObject();
+        const encumbered = new ConditionAvant(fu.mergeObject(source, { _id: "AvantEncumbered01" }), { parent: actor });
         actor.conditions.set(encumbered.id, encumbered);
         encumbered.prepareSiblingData();
         encumbered.prepareActorData();

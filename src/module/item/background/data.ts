@@ -1,9 +1,9 @@
 import { AttributeString, SkillSlug } from "@actor/types.ts";
 import { ABCSystemData, ABCSystemSource } from "@item/abc/data.ts";
-import { BaseItemSourcePF2e, ItemTraits } from "@item/base/data/system.ts";
+import { BaseItemSourceAvant, ItemTraits } from "@item/base/data/system.ts";
 import { BackgroundTrait } from "./types.ts";
 
-type BackgroundSource = BaseItemSourcePF2e<"background", BackgroundSystemSource>;
+type BackgroundSource = BaseItemSourceAvant<"background", BackgroundSystemSource>;
 
 interface BackgroundSystemSource extends ABCSystemSource {
     traits: BackgroundTraits;

@@ -1,17 +1,17 @@
-import type { ActorPF2e, CharacterPF2e, HazardPF2e } from "@actor";
-import type { CharacterSheetPF2e } from "@actor/character/sheet.ts";
-import { RollInitiativeOptionsPF2e } from "@actor/data/index.ts";
+import type { ActorAvant, CharacterAvant, HazardAvant } from "@actor";
+import type { CharacterSheetAvant } from "@actor/character/sheet.ts";
+import { RollInitiativeOptionsAvant } from "@actor/data/index.ts";
 import { isReallyPC, resetActors } from "@actor/helpers.ts";
 import { InitiativeRollResult } from "@actor/initiative.ts";
 import { SkillSlug } from "@actor/types.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene/index.ts";
+import type { SceneAvant, TokenDocumentAvant } from "@scene/index.ts";
 import { calculateXP } from "@scripts/macros/index.ts";
 import { ThreatRating } from "@scripts/macros/xp/index.ts";
 import { objectHasKey } from "@util";
 import * as R from "remeda";
-import type { CombatantFlags, CombatantPF2e, RolledCombatant } from "./combatant.ts";
+import type { CombatantFlags, CombatantAvant, RolledCombatant } from "./combatant.ts";
 
-class EncounterPF2e extends Combat {
+class EncounterAvant extends Combat {
     /** Has this document completed `DataModel` initialization? */
     declare initialized: boolean;
 
@@ -20,8 +20,8 @@ class EncounterPF2e extends Combat {
 
     /** Sort combatants by initiative rolls, falling back to tiebreak priority and then finally combatant ID (random) */
     protected override _sortCombatants(
-        a: CombatantPF2e<this, TokenDocumentPF2e>,
-        b: CombatantPF2e<this, TokenDocumentPF2e>,
+        a: CombatantAvant<this, TokenDocumentAvant>,
+        b: CombatantAvant<this, TokenDocumentAvant>,
     ): number {
         const resolveTie = (): number => {
             const [priorityA, priorityB] = [a, b].map(
@@ -45,9 +45,9 @@ class EncounterPF2e extends Combat {
         if (!game.ready) return null;
 
         const { party } = game.actors;
-        const partyMembers: ActorPF2e[] = party?.members.filter((a) => a.alliance === "party" && isReallyPC(a)) ?? [];
+        const partyMembers: ActorAvant[] = party?.members.filter((a) => a.alliance === "party" && isReallyPC(a)) ?? [];
         // If no party members are in the encounter yet, show threat/XP as though all are.
-        const fightyPartyMembers = ((): ActorPF2e[] => {
+        const fightyPartyMembers = ((): ActorAvant[] => {
             const inEncounter = partyMembers.filter((m) => m.combatant?.encounter === this);
             return inEncounter.length > 0 ? inEncounter : partyMembers;
         })();
@@ -76,8 +76,8 @@ class EncounterPF2e extends Combat {
             partyLevel,
             fightyPartyMembers.length,
             opposition.filter((e) => e.isOfType("character", "npc")).map((e) => e.level),
-            opposition.filter((e): e is HazardPF2e => e.isOfType("hazard")),
-            { pwol: game.pf2e.settings.variants.pwol.enabled },
+            opposition.filter((e): e is HazardAvant => e.isOfType("hazard")),
+            { pwol: game.avant.settings.variants.pwol.enabled },
         );
         const threat = result.rating;
         const budget = { spent: result.totalXP, max: result.encounterBudgets[threat], partyLevel };
@@ -118,7 +118,7 @@ class EncounterPF2e extends Combat {
         embeddedName: "Combatant",
         data: PreCreate<foundry.documents.CombatantSource>[],
         operation: Partial<DatabaseCreateOperation<this>> = {},
-    ): Promise<CombatantPF2e<this, TokenDocumentPF2e<ScenePF2e>>[]> {
+    ): Promise<CombatantAvant<this, TokenDocumentAvant<SceneAvant>>[]> {
         const createData = data.filter((datum) => {
             const token = canvas.tokens.placeables.find((canvasToken) => canvasToken.id === datum.tokenId);
             if (!token) return false;
@@ -131,16 +131,16 @@ class EncounterPF2e extends Combat {
 
             const actorTraits = actor.traits;
             if (actor.type === "loot" || ["minion", "eidolon"].some((t) => actorTraits.has(t))) {
-                const actorTypes: Record<string, string> = CONFIG.PF2E.actorTypes;
+                const actorTypes: Record<string, string> = CONFIG.AVANT.actorTypes;
                 const type = game.i18n.localize(
                     actorTraits.has("minion")
-                        ? CONFIG.PF2E.creatureTraits.minion
+                        ? CONFIG.AVANT.creatureTraits.minion
                         : actorTraits.has("eidolon")
-                          ? CONFIG.PF2E.creatureTraits.eidolon
+                          ? CONFIG.AVANT.creatureTraits.eidolon
                           : actorTypes[actor.type],
                 );
                 ui.notifications.info(
-                    game.i18n.format("PF2E.Encounter.ExcludingFromInitiative", { type, actor: actor.name }),
+                    game.i18n.format("AVANT.Encounter.ExcludingFromInitiative", { type, actor: actor.name }),
                 );
                 return false;
             }
@@ -148,12 +148,12 @@ class EncounterPF2e extends Combat {
         });
 
         return super.createEmbeddedDocuments(embeddedName, createData, operation) as Promise<
-            CombatantPF2e<this, TokenDocumentPF2e<ScenePF2e>>[]
+            CombatantAvant<this, TokenDocumentAvant<SceneAvant>>[]
         >;
     }
 
     /** Roll initiative for PCs and NPCs using their prepared roll methods */
-    override async rollInitiative(ids: string[], options: RollInitiativeOptionsPF2e = {}): Promise<this> {
+    override async rollInitiative(ids: string[], options: RollInitiativeOptionsAvant = {}): Promise<this> {
         const extraRollOptions = options.extraRollOptions ?? [];
         const rollMode = options.messageOptions?.rollMode ?? options.rollMode;
         if (options.secret) extraRollOptions.push("secret");
@@ -181,7 +181,7 @@ class EncounterPF2e extends Combat {
                       value: result.roll.total,
                       statistic:
                           result.roll.options.domains?.find(
-                              (s): s is SkillSlug | "perception" => s in CONFIG.PF2E.skills || s === "perception",
+                              (s): s is SkillSlug | "perception" => s in CONFIG.AVANT.skills || s === "perception",
                           ) ?? null,
                   }
                 : [],
@@ -202,7 +202,7 @@ class EncounterPF2e extends Combat {
                 _id: i.id,
                 initiative: i.value,
                 flags: {
-                    pf2e: {
+                    avant: {
                         initiativeStatistic: i.statistic ?? null,
                         overridePriority: {
                             [i.value]: i.overridePriority,
@@ -224,7 +224,7 @@ class EncounterPF2e extends Combat {
                     id: combatant.id,
                     value,
                     statistic:
-                        objectHasKey(CONFIG.PF2E.skills, statistic) || statistic === "perception"
+                        objectHasKey(CONFIG.AVANT.skills, statistic) || statistic === "perception"
                             ? statistic
                             : combatant.actor.system.initiative.statistic || "perception",
                 },
@@ -238,7 +238,7 @@ class EncounterPF2e extends Combat {
      * `async` since this is usually called from CRUD hooks, which are called prior to encounter/combatant data resets
      */
     async resetActors(): Promise<void> {
-        const actors: ActorPF2e[] = R.unique(
+        const actors: ActorAvant[] = R.unique(
             this.combatants.contents
                 .flatMap((c) => [c.actor, c.actor?.isOfType("character") ? c.actor.familiar : null])
                 .filter(R.isTruthy),
@@ -259,7 +259,7 @@ class EncounterPF2e extends Combat {
         super._onCreate(data, operation, userId);
 
         const pcSheets = Object.values(ui.windows).filter(
-            (sheet): sheet is CharacterSheetPF2e<CharacterPF2e> => sheet.constructor.name === "CharacterSheetPF2e",
+            (sheet): sheet is CharacterSheetAvant<CharacterAvant> => sheet.constructor.name === "CharacterSheetAvant",
         );
         for (const sheet of pcSheets) {
             sheet.toggleInitiativeLink();
@@ -274,7 +274,7 @@ class EncounterPF2e extends Combat {
     ): void {
         super._onUpdate(changed, operation, userId);
 
-        game.pf2e.StatusEffects.onUpdateEncounter(this);
+        game.avant.StatusEffects.onUpdateEncounter(this);
 
         const { combatant, previous } = this;
         const actor = combatant?.actor;
@@ -298,7 +298,7 @@ class EncounterPF2e extends Combat {
                 // Only the primary updater of the previous participant's actor can end the turn
                 const previousCombatant = this.combatants.get(previous.combatantId ?? "");
                 if (game.user === previousCombatant?.actor?.primaryUpdater) {
-                    const alreadyWent = previousCombatant.flags.pf2e.roundOfLastTurnEnd === previous.round;
+                    const alreadyWent = previousCombatant.flags.avant.roundOfLastTurnEnd === previous.round;
                     if (typeof previous.round === "number" && !alreadyWent) {
                         await previousCombatant.endTurn({ round: previous.round });
                     }
@@ -323,8 +323,8 @@ class EncounterPF2e extends Combat {
             // Reset all participating actors' data to get updated encounter roll options
             this.resetActors();
 
-            await game.pf2e.effectTracker.refresh();
-            game.pf2e.effectPanel.refresh();
+            await game.avant.effectTracker.refresh();
+            game.avant.effectPanel.refresh();
         });
     }
 
@@ -333,14 +333,14 @@ class EncounterPF2e extends Combat {
         super._onDelete(operation, userId);
 
         if (this.started) {
-            Hooks.callAll("pf2e.endTurn", this.combatant ?? null, this, userId);
-            game.pf2e.effectTracker.onEncounterEnd(this);
+            Hooks.callAll("avant.endTurn", this.combatant ?? null, this, userId);
+            game.avant.effectTracker.onEncounterEnd(this);
         }
 
         // Disable the initiative button if this was the only encounter
         if (!game.combat) {
             const pcSheets = Object.values(ui.windows).filter(
-                (sheet): sheet is CharacterSheetPF2e<CharacterPF2e> => sheet.constructor.name === "CharacterSheetPF2e",
+                (sheet): sheet is CharacterSheetAvant<CharacterAvant> => sheet.constructor.name === "CharacterSheetAvant",
             );
             for (const sheet of pcSheets) {
                 sheet.toggleInitiativeLink();
@@ -355,19 +355,19 @@ class EncounterPF2e extends Combat {
     }
 }
 
-interface EncounterPF2e extends Combat {
-    readonly combatants: foundry.abstract.EmbeddedCollection<CombatantPF2e<this, TokenDocumentPF2e | null>>;
+interface EncounterAvant extends Combat {
+    readonly combatants: foundry.abstract.EmbeddedCollection<CombatantAvant<this, TokenDocumentAvant | null>>;
 
-    scene: ScenePF2e;
+    scene: SceneAvant;
 
-    rollNPC(options: RollInitiativeOptionsPF2e): Promise<this>;
+    rollNPC(options: RollInitiativeOptionsAvant): Promise<this>;
 }
 
 interface EncounterMetrics {
     threat: ThreatRating;
     budget: { spent: number; max: number; partyLevel: number };
-    award: { xp: number; recipients: ActorPF2e[] };
-    participants: { party: ActorPF2e[]; opposition: ActorPF2e[] };
+    award: { xp: number; recipients: ActorAvant[] };
+    participants: { party: ActorAvant[]; opposition: ActorAvant[] };
 }
 
 interface SetInitiativeData {
@@ -377,4 +377,4 @@ interface SetInitiativeData {
     overridePriority?: number | null;
 }
 
-export { EncounterPF2e };
+export { EncounterAvant };

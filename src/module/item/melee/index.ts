@@ -1,3 +1,3 @@
 export * from "./data.ts";
-export { MeleePF2e } from "./document.ts";
-export { MeleeSheetPF2e } from "./sheet.ts";
+export { MeleeAvant } from "./document.ts";
+export { MeleeSheetAvant } from "./sheet.ts";

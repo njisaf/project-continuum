@@ -1,18 +1,18 @@
-import { DamageDicePF2e, MODIFIER_TYPES, ModifierPF2e, ModifierType } from "@actor/modifiers.ts";
+import { DamageDiceAvant, MODIFIER_TYPES, ModifierAvant, ModifierType } from "@actor/modifiers.ts";
 import type { ActorType } from "@actor/types.ts";
-import type { MeleePF2e, WeaponPF2e } from "@item";
-import { RollNotePF2e } from "@module/notes.ts";
+import type { MeleeAvant, WeaponAvant } from "@item";
+import { RollNoteAvant } from "@module/notes.ts";
 import { DamageCategoryUnique, DamageType } from "@system/damage/types.ts";
 import { DAMAGE_CATEGORIES_UNIQUE } from "@system/damage/values.ts";
 import * as R from "remeda";
 import type { SchemaField } from "types/foundry/common/data/fields.d.ts";
 import { CritSpecEffect } from "../synthetics.ts";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema, RuleValue } from "./data.ts";
 import fields = foundry.data.fields;
 
 /** Substitute a pre-determined result for a check's D20 roll */
-class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
+class CritSpecRuleElement extends RuleElementAvant<CritSpecRuleSchema> {
     static override validActorTypes: ActorType[] = ["character", "npc"];
 
     static override defineSchema(): CritSpecRuleSchema {
@@ -32,7 +32,7 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
                     damageType: new fields.StringField({
                         required: false,
                         nullable: true,
-                        choices: () => CONFIG.PF2E.damageTypes,
+                        choices: () => CONFIG.AVANT.damageTypes,
                         initial: null,
                     }),
                     category: new fields.StringField({
@@ -55,7 +55,7 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
                     damageType: new fields.StringField({
                         required: false,
                         nullable: true,
-                        choices: () => CONFIG.PF2E.damageTypes,
+                        choices: () => CONFIG.AVANT.damageTypes,
                         initial: null,
                     }),
                     category: new fields.StringField({
@@ -85,7 +85,7 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
     override beforePrepareData(): void {
         if (this.ignored) return;
 
-        const synthetic = (weapon: WeaponPF2e | MeleePF2e, options: Set<string>): CritSpecEffect | null => {
+        const synthetic = (weapon: WeaponAvant | MeleeAvant, options: Set<string>): CritSpecEffect | null => {
             const predicate = this.resolveInjectedProperties(this.predicate);
             return predicate.test(options) ? this.#getEffect(weapon) : null;
         };
@@ -95,18 +95,18 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
         this.actor.synthetics.criticalSpecializations[this.alternate ? "alternate" : "standard"].push(synthetic);
     }
 
-    #getEffect(weapon: WeaponPF2e | MeleePF2e): CritSpecEffect {
+    #getEffect(weapon: WeaponAvant | MeleeAvant): CritSpecEffect {
         const text = this.text ? this.resolveInjectedProperties(this.text.trim()) : null;
         const slug = "critical-specialization";
-        const label = "PF2E.Actor.Creature.CriticalSpecialization";
+        const label = "AVANT.Actor.Creature.CriticalSpecialization";
 
         const note = () =>
             this.alternate && !this.text
                 ? null
-                : new RollNotePF2e({
+                : new RollNoteAvant({
                       selector: "strike-damage",
                       title: label,
-                      text: text ?? `PF2E.Item.Weapon.CriticalSpecialization.${weapon.group}`,
+                      text: text ?? `AVANT.Item.Weapon.CriticalSpecialization.${weapon.group}`,
                       outcome: ["criticalSuccess"],
                   });
 
@@ -117,7 +117,7 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
 
         const damageDice = () =>
             this.alternate && this.damageDice
-                ? new DamageDicePF2e({
+                ? new DamageDiceAvant({
                       slug,
                       label,
                       selector: "strike-damage",
@@ -131,7 +131,7 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
 
         const modifier = () =>
             this.alternate && this.modifier
-                ? new ModifierPF2e({
+                ? new ModifierAvant({
                       slug,
                       label,
                       type: this.modifier.type,
@@ -150,7 +150,7 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
             case "crossbow":
             case "dart":
             case "knife": {
-                const dice = new DamageDicePF2e({
+                const dice = new DamageDiceAvant({
                     slug,
                     selector: "strike-damage",
                     label,
@@ -161,10 +161,10 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
                 });
                 const bonusValue = weapon.isOfType("melee")
                     ? (weapon.linkedWeapon?.system.runes.potency ?? 0)
-                    : weapon.flags.pf2e.attackItemBonus;
+                    : weapon.flags.avant.attackItemBonus;
                 const bonus =
                     bonusValue > 0
-                        ? new ModifierPF2e({
+                        ? new ModifierAvant({
                               slug,
                               label,
                               type: "item",
@@ -178,7 +178,7 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
             case "pick":
                 return weapon.baseDamage.die
                     ? [
-                          new ModifierPF2e({
+                          new ModifierAvant({
                               slug,
                               label,
                               type: "untyped",
@@ -194,7 +194,7 @@ class CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema> {
     }
 }
 
-interface CritSpecRuleElement extends RuleElementPF2e<CritSpecRuleSchema>, ModelPropsFromRESchema<CritSpecRuleSchema> {}
+interface CritSpecRuleElement extends RuleElementAvant<CritSpecRuleSchema>, ModelPropsFromRESchema<CritSpecRuleSchema> {}
 
 type DamageDieFaces = 4 | 6 | 8 | 10 | 12;
 

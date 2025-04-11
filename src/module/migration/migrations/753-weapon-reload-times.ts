@@ -1,4 +1,4 @@
-import { ItemSourcePF2e, WeaponSource } from "@item/base/data/index.ts";
+import { ItemSourceAvant, WeaponSource } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Ensure "backpack" weapons and alchemical bombs have correct reload times */
@@ -9,7 +9,7 @@ export class Migration753WeaponReloadTimes extends MigrationBase {
         return source.system.traits.value.some((t) => t.startsWith("thrown"));
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "weapon") return;
 
         const slug = source.system.slug ?? "";

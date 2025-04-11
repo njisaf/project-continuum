@@ -1,9 +1,9 @@
-<div class="pf2e chat-card item-card" data-actor-id="{{actor.id}}" data-item-id="{{item.id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+<div class="avant chat-card item-card" data-actor-id="{{actor.id}}" data-item-id="{{item.id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
     <header class="card-header flexrow">
         <img src="{{item.img}}" alt="{{item.name}}" />
         <h3>{{item.name}}</h3>
     </header>
-    <div class="tags paizo-style" data-tooltip-class="pf2e">
+    <div class="tags paizo-style" data-tooltip-class="avant">
         {{#if (and item.isIdentified data.rarity)}}
             <span
                 class="tag rarity {{data.rarity.slug}}"
@@ -23,8 +23,8 @@
     </div>
 
     <footer{{#unless item.isIdentified}} data-visibility="gm"{{/unless}}>
-        <span>{{localize "PF2E.Item.Physical.LevelLabel" level=item.level}}</span>
-        <span>{{localize "PF2E.Item.Physical.PriceLabel" price=(coinLabel item.price)}}</span>
+        <span>{{localize "AVANT.Item.Physical.LevelLabel" level=item.level}}</span>
+        <span>{{localize "AVANT.Item.Physical.PriceLabel" price=(coinLabel item.price)}}</span>
         {{#each data.properties as |property|}}
             <span class="tag tag_alt">{{localize property}}</span>
         {{/each}}

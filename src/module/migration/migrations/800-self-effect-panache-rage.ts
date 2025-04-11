@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString } from "@util";
 import { MigrationBase } from "../base.ts";
 
@@ -7,10 +7,10 @@ import { MigrationBase } from "../base.ts";
 export class Migration800SelfEffectPanacheRage extends MigrationBase {
     static override version = 0.8;
 
-    override async updateItem(source: ItemSourcePF2e, actorSource?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actorSource?: ActorSourceAvant): Promise<void> {
         if (
             actorSource?._id === "bpTQfx4UixMV3Fja" ||
-            actorSource?._stats.compendiumSource === "Compendium.pf2e.extinction-curse-bestiary.Actor.bpTQfx4UixMV3Fja"
+            actorSource?._stats.compendiumSource === "Compendium.avant.extinction-curse-bestiary.Actor.bpTQfx4UixMV3Fja"
         ) {
             // Skip "Kharostan" for this due to having a weird rage toggle
             return;

@@ -1,8 +1,8 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
-import { CoinsPF2e } from "@item/physical/helpers.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import type { ActorAvant, CharacterAvant } from "@actor";
+import { CoinsAvant } from "@item/physical/helpers.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 
-interface PopupData extends FormApplicationData<ActorPF2e> {
+interface PopupData extends FormApplicationData<ActorAvant> {
     selection?: string[];
     actorInfo?: {
         id: string;
@@ -19,8 +19,8 @@ interface PopupFormData extends FormData {
 /**
  * @category Other
  */
-export class DistributeCoinsPopup extends FormApplication<ActorPF2e, DistributeCoinsOptions> {
-    constructor(actor: ActorPF2e, options: Partial<DistributeCoinsOptions> = {}) {
+export class DistributeCoinsPopup extends FormApplication<ActorAvant, DistributeCoinsOptions> {
+    constructor(actor: ActorAvant, options: Partial<DistributeCoinsOptions> = {}) {
         super(actor, options);
     }
 
@@ -29,7 +29,7 @@ export class DistributeCoinsPopup extends FormApplication<ActorPF2e, DistributeC
         options.id = "distribute-coins";
         options.classes = [];
         options.title = "Distribute Coins";
-        options.template = "systems/pf2e/templates/actors/distribute-coins.hbs";
+        options.template = "systems/avant/templates/actors/distribute-coins.hbs";
         options.width = "auto";
         return options;
     }
@@ -54,7 +54,7 @@ export class DistributeCoinsPopup extends FormApplication<ActorPF2e, DistributeC
 
     override async _updateObject(_event: Event, formData: Record<string, unknown> & PopupFormData): Promise<void> {
         const thisActor = this.object;
-        const selectedActors: CharacterPF2e[] = formData.actorIds.flatMap((actorId) => {
+        const selectedActors: CharacterAvant[] = formData.actorIds.flatMap((actorId) => {
             const maybeActor = game.actors.get(actorId);
             return maybeActor?.isOfType("character") ? maybeActor : [];
         });
@@ -64,7 +64,7 @@ export class DistributeCoinsPopup extends FormApplication<ActorPF2e, DistributeC
             return;
         }
 
-        const coinShare = new CoinsPF2e();
+        const coinShare = new CoinsAvant();
         if (formData.breakCoins) {
             const thisActorCopperValue = thisActor.inventory.coins.copperValue;
             const copperToDistribute = Math.trunc(thisActorCopperValue / playerCount);
@@ -107,7 +107,7 @@ export class DistributeCoinsPopup extends FormApplication<ActorPF2e, DistributeC
             else if (index < playerCount - 1) message += `, ${actor.name}`;
             else message += ` and ${actor.name}.`;
         }
-        ChatMessagePF2e.create({
+        ChatMessageAvant.create({
             author: game.user.id,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             content: message,
@@ -129,5 +129,5 @@ export class DistributeCoinsPopup extends FormApplication<ActorPF2e, DistributeC
 
 interface DistributeCoinsOptions extends FormApplicationOptions {
     /** An optional initial list of recipients to receive coins */
-    recipients?: ActorPF2e[];
+    recipients?: ActorAvant[];
 }

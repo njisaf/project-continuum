@@ -1,5 +1,5 @@
-import type { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { PublicationData } from "@module/data.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -78,7 +78,7 @@ export class Migration877PublicationData extends MigrationBase {
     }
 }
 
-type ActorWithOldPublicationData = ActorSourcePF2e & {
+type ActorWithOldPublicationData = ActorSourceAvant & {
     system: {
         source?: unknown;
         "-=source"?: null;
@@ -89,7 +89,7 @@ type ActorWithOldPublicationData = ActorSourcePF2e & {
     };
 };
 
-type ItemWithOldPublicationData = ItemSourcePF2e & {
+type ItemWithOldPublicationData = ItemSourceAvant & {
     system: {
         source?: unknown;
         "-=source"?: null;

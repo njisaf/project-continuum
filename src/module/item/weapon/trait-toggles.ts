@@ -1,5 +1,5 @@
-import type { ActorPF2e } from "@actor";
-import type { WeaponPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { WeaponAvant } from "@item";
 import { nextDamageDieSize } from "@system/damage/helpers.ts";
 import type { DamageType } from "@system/damage/types.ts";
 import { objectHasKey, tupleHasValue } from "@util";
@@ -7,14 +7,14 @@ import { upgradeWeaponTrait } from "./helpers.ts";
 
 /** A helper class to handle toggleable weapon traits */
 class WeaponTraitToggles {
-    parent: WeaponPF2e;
+    parent: WeaponAvant;
 
-    constructor(weapon: WeaponPF2e) {
+    constructor(weapon: WeaponAvant) {
         this.parent = weapon;
         Object.defineProperty(this, "parent", { enumerable: false });
     }
 
-    get actor(): ActorPF2e | null {
+    get actor(): ActorAvant | null {
         return this.parent.actor;
     }
 
@@ -66,7 +66,7 @@ class WeaponTraitToggles {
                     case "s":
                         return "slashing";
                     default: {
-                        return objectHasKey(CONFIG.PF2E.damageTypes, damageType) ? damageType : [];
+                        return objectHasKey(CONFIG.AVANT.damageTypes, damageType) ? damageType : [];
                     }
                 }
             });
@@ -80,7 +80,7 @@ class WeaponTraitToggles {
 
     applyChanges(): void {
         const weapon = this.parent;
-        if (this.doubleBarrel.selected && !weapon.flags.pf2e.damageFacesUpgraded) {
+        if (this.doubleBarrel.selected && !weapon.flags.avant.damageFacesUpgraded) {
             weapon.system.damage.die &&= nextDamageDieSize({ upgrade: weapon.system.damage.die });
             const traits = weapon.system.traits;
             const fatalTrait = traits.value.find((t) => /^fatal-d\d{1,2}$/.test(t));

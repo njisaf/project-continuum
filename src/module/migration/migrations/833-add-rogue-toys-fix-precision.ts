@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Add rule elements to Surprise Attack and Dread Striker, fix damage type of Precision edge */
 export class Migration833AddRogueToysFixPrecision extends MigrationBase {
     static override version = 0.833;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "feat") return;
 
         const flatFootedId = "game" in globalThis ? "AJh5ex99aV6VTggg" : "Flat-Footed";
@@ -27,7 +27,7 @@ export class Migration833AddRogueToysFixPrecision extends MigrationBase {
                             },
                         ],
                         selectors: ["strike-attack-roll", "spell-attack-roll", "strike-damage", "attack-spell-damage"],
-                        uuid: `Compendium.pf2e.conditionitems.Item.${flatFootedId}`,
+                        uuid: `Compendium.avant.conditionitems.Item.${flatFootedId}`,
                     },
                 ];
                 source.system.rules = rules;
@@ -39,7 +39,7 @@ export class Migration833AddRogueToysFixPrecision extends MigrationBase {
                         key: "EphemeralEffect",
                         predicate: ["target:condition:frightened"],
                         selectors: ["strike-attack-roll", "spell-attack-roll", "strike-damage", "attack-spell-damage"],
-                        uuid: `Compendium.pf2e.conditionitems.Item.${flatFootedId}`,
+                        uuid: `Compendium.avant.conditionitems.Item.${flatFootedId}`,
                     },
                 ];
                 source.system.rules = rules;
@@ -51,7 +51,7 @@ export class Migration833AddRogueToysFixPrecision extends MigrationBase {
                         {
                             domain: "all",
                             key: "RollOption",
-                            label: "PF2E.SpecificRule.Ranger.HuntersEdge.FirstAttack",
+                            label: "AVANT.SpecificRule.Ranger.HuntersEdge.FirstAttack",
                             option: "first-attack",
                             toggleable: true,
                         },

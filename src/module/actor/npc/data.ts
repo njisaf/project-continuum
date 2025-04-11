@@ -1,4 +1,4 @@
-import type { ActorPF2e } from "@actor/base.ts";
+import type { ActorAvant } from "@actor/base.ts";
 import type {
     Abilities,
     BaseCreatureSource,
@@ -22,15 +22,15 @@ import type {
 } from "@actor/creature/data.ts";
 import type {
     ActorAttributesSource,
-    ActorFlagsPF2e,
+    ActorFlagsAvant,
     AttributeBasedTraceData,
     HitPointsStatistic,
     StrikeData,
 } from "@actor/data/base.ts";
 import { InitiativeTraceData } from "@actor/initiative.ts";
-import type { ModifierPF2e, StatisticModifier } from "@actor/modifiers.ts";
+import type { ModifierAvant, StatisticModifier } from "@actor/modifiers.ts";
 import type { ActorAlliance, SaveType, SkillSlug } from "@actor/types.ts";
-import type { MeleePF2e } from "@item";
+import type { MeleeAvant } from "@item";
 import type { PublicationData, ValueAndMax } from "@module/data.ts";
 import type { RawPredicate } from "@system/predication.ts";
 
@@ -38,8 +38,8 @@ type NPCSource = BaseCreatureSource<"npc", NPCSystemSource> & {
     flags: DeepPartial<NPCFlags>;
 };
 
-type NPCFlags = ActorFlagsPF2e & {
-    pf2e: { lootable: boolean };
+type NPCFlags = ActorFlagsAvant & {
+    avant: { lootable: boolean };
 };
 
 interface NPCSystemSource extends CreatureSystemSource {
@@ -167,7 +167,7 @@ interface NPCSystemData extends Omit<NPCSystemSource, "attributes" | "perception
         rituals: { dc: number };
     };
 
-    customModifiers: Record<string, ModifierPF2e[]>;
+    customModifiers: Record<string, ModifierAvant[]>;
 }
 
 interface NPCPerceptionData extends CreaturePerceptionData {
@@ -209,7 +209,7 @@ interface NPCDetails extends NPCDetailsSource, CreatureDetails {
 
 /** The full data for a NPC action (used primarily for strikes.) */
 interface NPCStrike extends StrikeData {
-    item: MeleePF2e<ActorPF2e>;
+    item: MeleeAvant<ActorAvant>;
     /** The type of attack as a localization string */
     attackRollType?: string;
     /** The id of the item this strike is generated from */

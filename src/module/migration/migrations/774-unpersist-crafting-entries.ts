@@ -1,6 +1,6 @@
 import { CraftingAbilityData, CraftingFormulaData } from "@actor/character/crafting/index.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { PhysicalItemTrait } from "@item/physical/data.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { PredicateStatement } from "@system/predication.ts";
@@ -15,7 +15,7 @@ export class Migration774UnpersistCraftingEntries extends MigrationBase {
         any: ["item:trait:bomb", "item:subtype:ammo"],
     };
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type === "character") {
             const craftingData: MaybeWithOldEntries = source.system.crafting ?? {};
             const craftingEntries = craftingData.entries ?? {};
@@ -36,7 +36,7 @@ export class Migration774UnpersistCraftingEntries extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const rules = source.system.rules;
         // Change requiredTraits property to craftableItems predicate
         const craftingEntryRules = rules.filter(

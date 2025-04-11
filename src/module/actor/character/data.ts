@@ -17,7 +17,7 @@ import {
 import { CreatureInitiativeSource, CreatureSpeeds, Language } from "@actor/creature/index.ts";
 import {
     ActorAttributesSource,
-    ActorFlagsPF2e,
+    ActorFlagsAvant,
     AttributeBasedTraceData,
     HitPointsStatistic,
     InitiativeData,
@@ -25,7 +25,7 @@ import {
     TraitViewData,
 } from "@actor/data/base.ts";
 import { AttributeString, MovementType, SaveType, SkillSlug } from "@actor/types.ts";
-import type { WeaponPF2e } from "@item";
+import type { WeaponAvant } from "@item";
 import { ArmorCategory } from "@item/armor/types.ts";
 import { ProficiencyRank } from "@item/base/data/index.ts";
 import { DeitySystemData } from "@item/deity/data.ts";
@@ -34,7 +34,7 @@ import { BaseWeaponType, WeaponCategory, WeaponGroup } from "@item/weapon/types.
 import { ValueAndMax, ZeroToFour } from "@module/data.ts";
 import { DamageType } from "@system/damage/types.ts";
 import type { Predicate } from "@system/predication.ts";
-import type { CharacterPF2e } from "./document.ts";
+import type { CharacterAvant } from "./document.ts";
 import type { WeaponAuxiliaryAction } from "./helpers.ts";
 import type { CharacterSheetTabVisibility } from "./sheet.ts";
 
@@ -42,8 +42,8 @@ type CharacterSource = BaseCreatureSource<"character", CharacterSystemSource> & 
     flags: DeepPartial<CharacterFlags>;
 };
 
-type CharacterFlags = ActorFlagsPF2e & {
-    pf2e: {
+type CharacterFlags = ActorFlagsAvant & {
+    avant: {
         /** Has daily preparation crafting been completed for the day */
         dailyCraftingComplete?: boolean;
         /** If applicable, the character's proficiency rank in their deity's favored weapon */
@@ -385,7 +385,7 @@ interface ClassDCData extends Required<AttributeBasedTraceData> {
 
 /** The full data for a character strike */
 interface CharacterStrike extends StrikeData {
-    item: WeaponPF2e<CharacterPF2e>;
+    item: WeaponAvant<CharacterAvant>;
     /** Whether this attack is visible on the sheet */
     visible: boolean;
     /** Domains/selectors from which modifiers are drawn */

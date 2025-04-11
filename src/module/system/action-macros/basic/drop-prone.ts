@@ -23,8 +23,8 @@ class DropProneAction extends SimpleAction {
     constructor() {
         super({
             cost: 1,
-            description: "PF2E.Actions.DropProne.Description",
-            name: "PF2E.Actions.DropProne.Title",
+            description: "AVANT.Actions.DropProne.Description",
+            name: "AVANT.Actions.DropProne.Title",
             section: "basic",
             slug: "drop-prone",
             traits: ["move"],

@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Update UUIDS of domain journal entries to newer pages */
@@ -9,23 +9,23 @@ export class Migration844DeityDomainUUIDs extends MigrationBase {
     #updateUUIDs(text: string): string {
         return this.#idMap.reduce((oldText, data) => {
             const pattern = new RegExp(
-                String.raw`\bCompendium\.pf2e\.domains\.(?:JournalEntry?\.)?(?:${data.oldId}|${data.name})\](?:\{[^}]+})?`,
+                String.raw`\bCompendium\.avant\.domains\.(?:JournalEntry?\.)?(?:${data.oldId}|${data.name})\](?:\{[^}]+})?`,
                 "g",
             );
             return oldText.replace(
                 pattern,
-                `Compendium.pf2e.journals.JournalEntry.EEZvDB1Z7ezwaxIr.JournalEntryPage.${data.pageId}]{${data.name}}`,
+                `Compendium.avant.journals.JournalEntry.EEZvDB1Z7ezwaxIr.JournalEntryPage.${data.pageId}]{${data.name}}`,
             );
         }, text);
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type === "npc") {
             source.system.details.publicNotes &&= this.#updateUUIDs(source.system.details.publicNotes);
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.description.gm &&= this.#updateUUIDs(source.system.description.gm);
         source.system.description.value &&= this.#updateUUIDs(source.system.description.value);
     }

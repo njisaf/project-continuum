@@ -4,9 +4,9 @@ import * as R from "remeda";
 import { energyDamageTypes, preciousMaterials } from "./traits.ts";
 
 const damageCategoriesUnique: Record<DamageCategoryUnique, string> = {
-    persistent: "PF2E.ConditionTypePersistentShort",
-    precision: "PF2E.Damage.Precision",
-    splash: "PF2E.TraitSplash",
+    persistent: "AVANT.ConditionTypePersistentShort",
+    precision: "AVANT.Damage.Precision",
+    splash: "AVANT.TraitSplash",
 };
 
 const materialDamageEffects = R.pick(preciousMaterials, [
@@ -32,29 +32,29 @@ const materialDamageEffects = R.pick(preciousMaterials, [
 const damageCategories = {
     ...damageCategoriesUnique,
     ...materialDamageEffects,
-    energy: "PF2E.TraitEnergy",
-    physical: "PF2E.TraitPhysical",
+    energy: "AVANT.TraitEnergy",
+    physical: "AVANT.TraitPhysical",
 };
 
 const physicalDamageTypes = {
-    bleed: "PF2E.TraitBleed",
-    bludgeoning: "PF2E.TraitBludgeoning",
-    piercing: "PF2E.TraitPiercing",
-    slashing: "PF2E.TraitSlashing",
+    bleed: "AVANT.TraitBleed",
+    bludgeoning: "AVANT.TraitBludgeoning",
+    piercing: "AVANT.TraitPiercing",
+    slashing: "AVANT.TraitSlashing",
 };
 
 const damageTypes: Record<DamageType, string> = {
     ...energyDamageTypes,
     ...physicalDamageTypes,
-    mental: "PF2E.TraitMental",
-    poison: "PF2E.TraitPoison",
-    spirit: "PF2E.TraitSpirit",
-    untyped: "PF2E.TraitUntyped",
+    mental: "AVANT.TraitMental",
+    poison: "AVANT.TraitPoison",
+    spirit: "AVANT.TraitSpirit",
+    untyped: "AVANT.TraitUntyped",
 };
 
 const damageRollFlavors = [...DAMAGE_TYPES].reduce(
     (result, key) => {
-        result[key] = `PF2E.Damage.RollFlavor.${key}`;
+        result[key] = `AVANT.Damage.RollFlavor.${key}`;
         return result;
     },
     {} as Record<DamageType, string>,

@@ -3,7 +3,7 @@
     import BrowserTab from "./browser-tab.svelte";
     import type { CompendiumBrowserContext } from "../browser.ts";
 
-    const browser = game.pf2e.compendiumBrowser;
+    const browser = game.avant.compendiumBrowser;
     const tabs = $derived(browser.tabsArray.filter((t) => t.visible));
     const props: CompendiumBrowserContext = $props();
     const state = props.state;
@@ -35,7 +35,7 @@
 {/if}
 {#if !state.activeTabName}
     <div class="browser-tab" data-tooltip-class="pf2e">
-        <div class="landing-page">{game.i18n.localize("PF2E.CompendiumBrowser.Hint")}</div>
+        <div class="landing-page">{game.i18n.localize("AVANT.CompendiumBrowser.Hint")}</div>
     </div>
 {:else}
     <BrowserTab bind:activeTabName={state.activeTabName} {state} />

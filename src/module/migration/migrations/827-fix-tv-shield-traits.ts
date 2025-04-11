@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Fix unannotated shield traits added from Lost Omens: Treasure Vault */
 export class Migration827FixTVShieldTraits extends MigrationBase {
     static override version = 0.827;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "armor") return;
         const traits: { value: string[] } = source.system.traits;
 

@@ -1,16 +1,16 @@
-import type { ActorType, CreaturePF2e } from "@actor";
+import type { ActorType, CreatureAvant } from "@actor";
 import type { MovementType } from "@actor/types.ts";
 import { MOVEMENT_TYPES } from "@actor/values.ts";
 import { tupleHasValue } from "@util";
 import type { BaseSpeedSynthetic, DeferredMovementType } from "../synthetics.ts";
-import { RuleElementOptions, RuleElementPF2e } from "./base.ts";
+import { RuleElementOptions, RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema, RuleElementSource } from "./data.ts";
 import fields = foundry.data.fields;
 
 /**
  * @category RuleElement
  */
-class BaseSpeedRuleElement extends RuleElementPF2e<BaseSpeedRuleSchema> {
+class BaseSpeedRuleElement extends RuleElementAvant<BaseSpeedRuleSchema> {
     protected static override validActorTypes: ActorType[] = ["character", "familiar", "npc"];
 
     constructor(data: RuleElementSource, options: RuleElementOptions) {
@@ -65,9 +65,9 @@ class BaseSpeedRuleElement extends RuleElementPF2e<BaseSpeedRuleSchema> {
 }
 
 interface BaseSpeedRuleElement
-    extends RuleElementPF2e<BaseSpeedRuleSchema>,
+    extends RuleElementAvant<BaseSpeedRuleSchema>,
         ModelPropsFromRESchema<BaseSpeedRuleSchema> {
-    get actor(): CreaturePF2e;
+    get actor(): CreatureAvant;
 }
 
 type BaseSpeedRuleSchema = RuleElementSchema & {

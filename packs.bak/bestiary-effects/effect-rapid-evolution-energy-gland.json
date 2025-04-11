@@ -1,0 +1,84 @@
+{
+    "_id": "RBfd5qwFkuKxNb57",
+    "img": "systems/avant/icons/spells/prismatic-sphere.webp",
+    "name": "Effect: Rapid Evolution - Energy Gland",
+    "system": {
+        "description": {
+            "value": "<p>The creature gains energy damage resistance similar to the triggering type.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 4
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Bestiary 3"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitForce",
+                        "value": "force"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    }
+                ],
+                "flag": "energyDamage",
+                "key": "ChoiceSet"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.energyDamage}",
+                "value": 15
+            },
+            {
+                "key": "DamageDice",
+                "override": {
+                    "damageType": "{item|flags.avant.rulesSelections.energyDamage}"
+                },
+                "selector": "energy-ray-damage"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

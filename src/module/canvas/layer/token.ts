@@ -1,6 +1,6 @@
-import type { TokenPF2e } from "../index.ts";
+import type { TokenAvant } from "../index.ts";
 
-class TokenLayerPF2e<TObject extends TokenPF2e> extends TokenLayer<TObject> {
+class TokenLayerAvant<TObject extends TokenAvant> extends TokenLayer<TObject> {
     /** Prevent redirection of event to `Ruler` when ctrl key is pressed. */
     protected override _onClickLeft(event: PlaceablesLayerPointerEvent<TObject>): void {
         // @todo fixme
@@ -62,4 +62,4 @@ class TokenLayerPF2e<TObject extends TokenPF2e> extends TokenLayer<TObject> {
     }
 }
 
-export { TokenLayerPF2e };
+export { TokenLayerAvant };

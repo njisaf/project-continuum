@@ -1,0 +1,77 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+## Rules for Extending the Avant Codebase
+
+This system is significantly more complex than many Foundry systems, with extensive type definitions, class hierarchies, and separation of concerns. When modifying, prioritize understanding the existing patterns before adding new code.
+
+### 1. Follow the Modular Architecture
+- Place new code in the appropriate module directory based on its functionality (actor, item, sheet, etc.)
+- For each feature, consider which layer it belongs to: data model, document class, or UI component
+
+### 2. Respect the Type System
+- Use TypeScript interfaces and types consistently
+- Extend existing type declarations rather than creating parallel structures
+- Use generic types where appropriate (e.g., `ActorAvant<TParent>`)
+- When importing JSON files, use the `with { type: "json" }` syntax for ESM compatibility
+
+### 3. Hook Registration and Management
+- Register new hooks in the appropriate hook files within `src/scripts/hooks/`
+- Each hook implementation should be in its own file with descriptive naming
+- Follow the pattern of static classes with a `listen()` method for hook registration
+- Avoid duplicate hook registrations or circular references
+
+### 4. Actor and Item Implementation
+- Extend the appropriate base classes (`ActorAvant`, `ItemAvant`)
+- Keep business logic in the document classes, separate from UI rendering
+- Use the `synthetics` pattern for data that's computed from multiple sources
+
+### 5. Sheet Development
+- Extend `ActorSheetAvant` or appropriate subclass for new sheet types
+- Use the established pattern for `getData()` methods that prepare data for templates
+- Implement event handlers following existing patterns in `activateListeners()`
+- For Svelte components, ensure proper imports using Avant-named classes
+
+### 6. Data Flow and Updates
+- Use Foundry's data update methods consistently (`actor.update()`, etc.)
+- Follow the pattern of preparing data in phases (base data, embedded documents, derived data)
+- Use helper methods for complex data transformations
+
+### 7. Utility and Helper Functions
+- Keep utility functions pure and separate from classes
+- Place helpers in appropriate utility modules
+- Follow functional programming patterns for data transformations
+- Implement proper error handling with informative messages
+- For backward compatibility, provide aliased functions (e.g., `ErrorPF2e` → `ErrorAvant`)
+
+### 8. Style and Naming
+- Use PascalCase for classes and interfaces
+- Use camelCase for methods, properties, and variables
+- Follow the established prefix pattern for related concepts (e.g., `Avant` suffix)
+- Ensure consistent naming when replacing PF2e references with Avant equivalents
+
+### 9. Documentation
+- Document public APIs and complex logic with JSDoc comments
+- Follow the established pattern of describing parameters and return values
+- Use TypeScript interface definitions to document data structures
+
+### 10. Testing and Validation
+- Create appropriate test cases for new functionality
+- Use TypeScript to catch type errors at compile time
+- Validate user input and handle edge cases gracefully
+
+### 11. Error Handling and Graceful Degradation
+- Always use try/catch blocks for operations that might fail
+- Provide informative error messages that help with debugging
+- Handle missing content gracefully rather than failing the entire process
+- Write defensive code that checks for null/undefined values before accessing properties
+- Use console warnings for non-critical issues and console errors for critical problems
+
+### 12. Build System Considerations
+- Be mindful of the build process and how it interacts with the Foundry VTT system
+- Pay attention to UUID redirects when modifying or removing content
+- When removing content from the fork, ensure references are properly updated
+- Properly handle JSON imports with the ESM `with { type: "json" }` syntax
+- Test builds regularly to catch issues early

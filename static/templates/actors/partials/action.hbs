@@ -22,7 +22,7 @@
     <div class="button-group">
         {{#if action.usable}}
             <button type="button" class="use-action" data-action="use-action">
-                <span>{{localize "PF2E.Action.Use"}}</span>
+                <span>{{localize "AVANT.Action.Use"}}</span>
                 <span class="action-glyph">{{action.glyph}}</span>
             </button>
         {{/if}}
@@ -34,7 +34,7 @@
             <span>
                 /
                 {{action.frequency.max}}
-                {{localize "PF2E.Frequency.per"}}
+                {{localize "AVANT.Frequency.per"}}
                 {{localize (lookup @root.frequencies action.frequency.per)}}
             </span>
         </div>
@@ -42,15 +42,15 @@
 
     {{#if (and action.exploration @root.document.parties.size)}}
         <button type="button" class="activate {{#if action.exploration.active}}active{{/if}}" data-action="toggle-exploration">
-            {{localize "PF2E.Actor.Character.Active"}}
+            {{localize "AVANT.Actor.Character.Active"}}
         </button>
     {{/if}}
 
     <div class="item-controls" data-tooltip-direction="UP">
         {{#if @root.editable}}
-            <a data-action="edit-item" data-tooltip="PF2E.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
+            <a data-action="edit-item" data-tooltip="AVANT.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
             {{#unless action.feat~}}
-                <a data-action="delete-item" data-tooltip="PF2E.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
+                <a data-action="delete-item" data-tooltip="AVANT.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
             {{~/unless}}
         {{/if}}
     </div>

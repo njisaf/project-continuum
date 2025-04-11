@@ -1,14 +1,14 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { resetActors } from "@actor/helpers.ts";
 import { PersistentDialog } from "@item/condition/persistent-damage-dialog.ts";
 import { ConditionSlug } from "@item/condition/types.ts";
 import { CONDITION_SLUGS } from "@item/condition/values.ts";
-import type { TokenPF2e } from "@module/canvas/token/index.ts";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
-import type { EncounterPF2e } from "@module/encounter/index.ts";
-import type { TokenDocumentPF2e } from "@scene";
+import type { TokenAvant } from "@module/canvas/token/index.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
+import type { EncounterAvant } from "@module/encounter/index.ts";
+import type { TokenDocumentAvant } from "@scene";
 import { StatusEffectIconTheme } from "@scripts/config/index.ts";
-import { ErrorPF2e, fontAwesomeIcon, htmlQueryAll, objectHasKey, setHasElement } from "@util";
+import { ErrorAvant, fontAwesomeIcon, htmlQueryAll, objectHasKey, setHasElement } from "@util";
 import * as R from "remeda";
 
 const debouncedRender = fu.debounce(() => {
@@ -21,24 +21,24 @@ export class StatusEffects {
     static #lastCombatantToken: string | null = null;
 
     static readonly #ICON_THEME_DIRS: Record<StatusEffectIconTheme, string> = {
-        default: "systems/pf2e/icons/conditions/",
-        blackWhite: "systems/pf2e/icons/conditions-2/",
+        default: "systems/avant/icons/conditions/",
+        blackWhite: "systems/avant/icons/conditions-2/",
     };
 
     static #conditionSummaries: Record<ConditionSlug, { name: string; rules: string; summary: string }> | null = null;
 
     /** Set the theme for condition icons on tokens */
     static initialize(): void {
-        const iconTheme = game.settings.get("pf2e", "statusEffectType");
-        CONFIG.controlIcons.defeated = game.settings.get("pf2e", "deathIcon");
-        CONFIG.PF2E.statusEffects.lastIconTheme = iconTheme;
-        CONFIG.PF2E.statusEffects.iconDir = this.#ICON_THEME_DIRS[iconTheme];
+        const iconTheme = game.settings.get("avant", "statusEffectType");
+        CONFIG.controlIcons.defeated = game.settings.get("avant", "deathIcon");
+        CONFIG.AVANT.statusEffects.lastIconTheme = iconTheme;
+        CONFIG.AVANT.statusEffects.iconDir = this.#ICON_THEME_DIRS[iconTheme];
         this.#updateStatusIcons();
     }
 
     /** Update status icons and tokens due to certain potential changes */
     static reset(): void {
-        CONFIG.controlIcons.defeated = game.settings.get("pf2e", "deathIcon");
+        CONFIG.controlIcons.defeated = game.settings.get("avant", "deathIcon");
         this.#updateStatusIcons();
         this.refresh();
     }
@@ -47,9 +47,9 @@ export class StatusEffects {
         return (this.#conditionSummaries ??= R.mapToObj(Array.from(CONDITION_SLUGS), (s) => [
             s,
             {
-                name: game.i18n.localize(`PF2E.condition.${s}.name`),
-                rules: game.i18n.localize(`PF2E.condition.${s}.rules`),
-                summary: game.i18n.localize(`PF2E.condition.${s}.summary`),
+                name: game.i18n.localize(`AVANT.condition.${s}.name`),
+                rules: game.i18n.localize(`AVANT.condition.${s}.rules`),
+                summary: game.i18n.localize(`AVANT.condition.${s}.summary`),
             },
         ]));
     }
@@ -59,10 +59,10 @@ export class StatusEffects {
      * And migrate all statusEffect URLs of all Tokens
      */
     static async migrateStatusEffectUrls(chosenSetting: StatusEffectIconTheme): Promise<void> {
-        console.debug("PF2e System | Changing status effect icon types");
+        console.debug("Avant System | Changing status effect icon types");
         const iconDir = this.#ICON_THEME_DIRS[chosenSetting];
-        CONFIG.PF2E.statusEffects.iconDir = iconDir;
-        CONFIG.PF2E.statusEffects.lastIconTheme = chosenSetting;
+        CONFIG.AVANT.statusEffects.iconDir = iconDir;
+        CONFIG.AVANT.statusEffects.lastIconTheme = chosenSetting;
         this.#updateStatusIcons();
         await resetActors();
         if (canvas.ready) {
@@ -93,16 +93,16 @@ export class StatusEffects {
 
     /** Updates the core CONFIG.statusEffects with the new icons */
     static #updateStatusIcons(): void {
-        const iconTheme = game.settings.get("pf2e", "statusEffectType");
+        const iconTheme = game.settings.get("avant", "statusEffectType");
         const directory = iconTheme === "default" ? "conditions" : "conditions-2";
-        CONFIG.statusEffects = Object.entries(CONFIG.PF2E.statusEffects.conditions).map(([id, name]) => ({
+        CONFIG.statusEffects = Object.entries(CONFIG.AVANT.statusEffects.conditions).map(([id, name]) => ({
             id,
             name,
-            img: `systems/pf2e/icons/${directory}/${id}.webp` as const,
+            img: `systems/avant/icons/${directory}/${id}.webp` as const,
         }));
         CONFIG.statusEffects.push({
             id: "dead",
-            name: "PF2E.Actor.Dead",
+            name: "AVANT.Actor.Dead",
             img: CONFIG.controlIcons.defeated,
         });
     }
@@ -112,7 +112,7 @@ export class StatusEffects {
         if (!token) return;
 
         const iconGrid = html.querySelector<HTMLElement>(".status-effects");
-        if (!iconGrid) throw ErrorPF2e("Unexpected error retrieving status effects grid");
+        if (!iconGrid) throw ErrorAvant("Unexpected error retrieving status effects grid");
 
         const affectingConditions = token.actor?.conditions.active.filter((c) => c.isInHUD) ?? [];
 
@@ -121,7 +121,7 @@ export class StatusEffects {
         iconGrid.append(titleBar);
 
         const statusIcons = iconGrid.querySelectorAll<HTMLImageElement>(".effect-control");
-        const deathIcon = game.settings.get("pf2e", "deathIcon");
+        const deathIcon = game.settings.get("avant", "deathIcon");
 
         for (const icon of statusIcons) {
             // Replace the img element with a picture element, which can display ::after content
@@ -180,9 +180,9 @@ export class StatusEffects {
         this.#activateListeners(iconGrid);
     }
 
-    /** Called by `EncounterPF2e#_onUpdate` */
-    static onUpdateEncounter(encounter: EncounterPF2e): void {
-        if (!(game.user.isGM && game.settings.get("pf2e", "statusEffectShowCombatMessage"))) return;
+    /** Called by `EncounterAvant#_onUpdate` */
+    static onUpdateEncounter(encounter: EncounterAvant): void {
+        if (!(game.user.isGM && game.settings.get("avant", "statusEffectShowCombatMessage"))) return;
 
         if (!encounter.started) {
             this.#lastCombatantToken = null;
@@ -223,7 +223,7 @@ export class StatusEffects {
 
         const tokensAndActors = R.uniqueBy(
             canvas.tokens.controlled
-                .map((t): [TokenPF2e, ActorPF2e] | null => (t.actor ? [t, t.actor] : null))
+                .map((t): [TokenAvant, ActorAvant] | null => (t.actor ? [t, t.actor] : null))
                 .filter(R.isTruthy),
             ([, a]) => a,
         );
@@ -241,8 +241,8 @@ export class StatusEffects {
 
             if (event.type === "click") {
                 if (typeof condition?.value === "number") {
-                    game.pf2e.ConditionManager.updateConditionValue(condition.id, token, condition.value + 1);
-                } else if (objectHasKey(CONFIG.PF2E.conditionTypes, slug)) {
+                    game.avant.ConditionManager.updateConditionValue(condition.id, token, condition.value + 1);
+                } else if (objectHasKey(CONFIG.AVANT.conditionTypes, slug)) {
                     actor.increaseCondition(slug);
                 } else {
                     this.#toggleStatus(token, control, event);
@@ -254,7 +254,7 @@ export class StatusEffects {
                     const conditionIds = actor.conditions.bySlug(slug, { temporary: false }).map((c) => c.id);
                     actor.deleteEmbeddedDocuments("Item", conditionIds);
                 } else if (condition?.value) {
-                    game.pf2e.ConditionManager.updateConditionValue(condition.id, token, condition.value - 1);
+                    game.avant.ConditionManager.updateConditionValue(condition.id, token, condition.value - 1);
                 } else {
                     this.#toggleStatus(token, control, event);
                 }
@@ -262,7 +262,7 @@ export class StatusEffects {
         }
     }
 
-    static async #toggleStatus(token: TokenPF2e, control: HTMLElement, event: MouseEvent): Promise<void> {
+    static async #toggleStatus(token: TokenAvant, control: HTMLElement, event: MouseEvent): Promise<void> {
         const { actor } = token;
         if (!actor) return;
 
@@ -277,8 +277,8 @@ export class StatusEffects {
         const conditionIds: string[] = [];
 
         if (event.type === "click" && !affecting) {
-            if (objectHasKey(CONFIG.PF2E.conditionTypes, slug)) {
-                const newCondition = game.pf2e.ConditionManager.getCondition(slug).toObject();
+            if (objectHasKey(CONFIG.AVANT.conditionTypes, slug)) {
+                const newCondition = game.avant.ConditionManager.getCondition(slug).toObject();
                 await token.actor?.createEmbeddedDocuments("Item", [newCondition]);
             } else if (slug === "dead") {
                 await token.actor?.toggleStatusEffect(slug, { overlay: true });
@@ -293,7 +293,7 @@ export class StatusEffects {
     }
 
     /** Create a ChatMessage with the actor's current conditions. */
-    static async #createChatMessage(token: TokenDocumentPF2e | null, whisper = false): Promise<Maybe<ChatMessagePF2e>> {
+    static async #createChatMessage(token: TokenDocumentAvant | null, whisper = false): Promise<Maybe<ChatMessageAvant>> {
         if (!token?.actor) return null;
 
         const conditions = await Promise.all(
@@ -304,20 +304,20 @@ export class StatusEffects {
         );
         if (conditions.length === 0) return null;
 
-        const content = await renderTemplate("systems/pf2e/templates/chat/participant-conditions.hbs", { conditions });
+        const content = await renderTemplate("systems/avant/templates/chat/participant-conditions.hbs", { conditions });
         const messageSource: Partial<foundry.documents.ChatMessageSource> = {
             author: game.user.id,
-            speaker: ChatMessagePF2e.getSpeaker({ token }),
+            speaker: ChatMessageAvant.getSpeaker({ token }),
             content,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         };
         const isNPCEvent = !token.actor?.hasPlayerOwner;
-        const whisperMessage = whisper || (isNPCEvent && game.settings.get("pf2e", "metagame_secretCondition"));
+        const whisperMessage = whisper || (isNPCEvent && game.settings.get("avant", "metagame_secretCondition"));
         if (whisperMessage) {
             messageSource.whisper = ChatMessage.getWhisperRecipients("GM").map((u) => u.id);
         }
 
-        return ChatMessagePF2e.create(messageSource);
+        return ChatMessageAvant.create(messageSource);
     }
 
     /** Re-render the token HUD */

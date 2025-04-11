@@ -1,10 +1,10 @@
-import { ActorPF2e } from "@actor";
-import { SpellPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import { SpellAvant } from "@item";
 import { SpellConsumableItemType } from "@item/consumable/spell-consumables.ts";
 import { OneToTen } from "@module/data.ts";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 
-interface FormInputData extends FormApplicationData<ActorPF2e> {
+interface FormInputData extends FormApplicationData<ActorAvant> {
     itemTypeOptions?: object;
     validLevels?: number[];
     itemType?: SpellConsumableItemType;
@@ -18,22 +18,22 @@ type FormOutputData = {
 
 const itemTypeOptions = Object.fromEntries(
     new Map<SpellConsumableItemType, string>([
-        ["scroll", "PF2E.CastingItemCreateDialog.scroll"],
-        ["wand", "PF2E.CastingItemCreateDialog.wand"],
-        ["cantripDeck5", "PF2E.CastingItemCreateDialog.cantripDeck5"],
+        ["scroll", "AVANT.CastingItemCreateDialog.scroll"],
+        ["wand", "AVANT.CastingItemCreateDialog.wand"],
+        ["cantripDeck5", "AVANT.CastingItemCreateDialog.cantripDeck5"],
     ]),
 );
 
-export class CastingItemCreateDialog extends FormApplication<ActorPF2e> {
+export class CastingItemCreateDialog extends FormApplication<ActorAvant> {
     onSubmitCallback: CastingItemCreateCallback;
-    spell: SpellPF2e;
+    spell: SpellAvant;
     formDataCache: FormOutputData;
 
     constructor(
-        object: ActorPF2e,
+        object: ActorAvant,
         options: Partial<FormApplicationOptions>,
         callback: CastingItemCreateCallback,
-        spell: SpellPF2e,
+        spell: SpellAvant,
     ) {
         super(object, options);
 
@@ -49,8 +49,8 @@ export class CastingItemCreateDialog extends FormApplication<ActorPF2e> {
         const options = super.defaultOptions;
 
         options.classes = [];
-        options.title = game.i18n.localize("PF2E.CastingItemCreateDialog.title");
-        options.template = "systems/pf2e/templates/popups/casting-item-create-dialog.hbs";
+        options.title = game.i18n.localize("AVANT.CastingItemCreateDialog.title");
+        options.template = "systems/avant/templates/popups/casting-item-create-dialog.hbs";
         options.width = "auto";
         options.submitOnChange = true;
         options.closeOnSubmit = false;
@@ -60,7 +60,7 @@ export class CastingItemCreateDialog extends FormApplication<ActorPF2e> {
 
     override async getData(): Promise<FormInputData> {
         if (!this.spell) {
-            throw ErrorPF2e("CastingItemCreateDialog | Could not read spelldata");
+            throw ErrorAvant("CastingItemCreateDialog | Could not read spelldata");
         }
 
         const { cantripDeck5: cantripDeck5, ...nonCantripOptions } = itemTypeOptions;
@@ -84,7 +84,7 @@ export class CastingItemCreateDialog extends FormApplication<ActorPF2e> {
         }
 
         if (this.formDataCache.itemType === "wand" && this.formDataCache.level === 10) {
-            ui.notifications.warn(game.i18n.localize("PF2E.CastingItemCreateDialog.10thLevelWand"));
+            ui.notifications.warn(game.i18n.localize("AVANT.CastingItemCreateDialog.10thLevelWand"));
         } else if (this.onSubmitCallback && this.spell) {
             this.onSubmitCallback(this.formDataCache.level, this.formDataCache.itemType, this.spell);
         }
@@ -95,5 +95,5 @@ export class CastingItemCreateDialog extends FormApplication<ActorPF2e> {
 type CastingItemCreateCallback = (
     level: OneToTen,
     itemType: SpellConsumableItemType,
-    spell: SpellPF2e,
+    spell: SpellAvant,
 ) => Promise<void>;

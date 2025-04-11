@@ -2,16 +2,16 @@
     <div class="inventory-bottom-summary">
         {{#with inventory.bulk as |bulk|}}
             <div class="encumbrance{{#if bulk.isEncumbered}} encumbered{{/if}}{{#if bulk.isOverMax}} over-limit{{/if}}">
-                <img src="icons/containers/bags/pack-leather-white-tan.webp" alt="{{localize "PF2E.Actor.Inventory.Encumbrance"}}">
+                <img src="icons/containers/bags/pack-leather-white-tan.webp" alt="{{localize "AVANT.Actor.Inventory.Encumbrance"}}">
                 <span class="encumbrance-bar" style="width:{{bulk.maxPercentageInteger}}%"></span>
                 <div class="encumbrance-label">
                     <span>
-                        {{localize "PF2E.Item.Physical.Bulk.Label"}}: {{bulk.value}} /
+                        {{localize "AVANT.Item.Physical.Bulk.Label"}}: {{bulk.value}} /
                         <span data-tooltip="{{bulk.encumberedAfterBreakdown}}">
-                            {{localize "PF2E.ConditionTypeEncumbered"}}: {{bulk.encumberedAfter}}
+                            {{localize "AVANT.ConditionTypeEncumbered"}}: {{bulk.encumberedAfter}}
                         </span>
                     </span>
-                    <span data-tooltip="{{bulk.maxBreakdown}}">{{localize "PF2E.BulkMaxLabel"}}: {{bulk.max}}</span>
+                    <span data-tooltip="{{bulk.maxBreakdown}}">{{localize "AVANT.BulkMaxLabel"}}: {{bulk.max}}</span>
                 </div>
                 <span class="bar-bg"></span>
             </div>
@@ -19,7 +19,7 @@
         {{#with inventory.invested}}
             <div class="invested-total{{#if (gt @root.inventory.invested.value @root.inventory.invested.max)}} overinvested{{/if}}">
                 <i class="fa-solid fa-gem fa-fw"></i>
-                {{localize "PF2E.InvestedLabel"}}
+                {{localize "AVANT.InvestedLabel"}}
                 {{@root.inventory.invested.value}} / {{@root.inventory.invested.max}}
             </div>
         {{/with}}

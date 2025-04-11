@@ -1,8 +1,8 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import { ZeroToTwo } from "@module/data.ts";
 import { RollSubstitution } from "@module/rules/synthetics.ts";
-import type { TokenDocumentPF2e } from "@scene/token-document/index.ts";
+import type { TokenDocumentAvant } from "@scene/token-document/index.ts";
 import { CheckDC, DegreeOfSuccessAdjustment } from "@system/degree-of-success.ts";
 import { BaseRollContext } from "@system/rolls.ts";
 
@@ -28,11 +28,11 @@ interface CheckCheckContext extends BaseRollContext {
     /** Should this roll be rolled twice? If so, should it keep highest or lowest? */
     rollTwice?: RollTwiceOption;
     /** The actor which initiated this roll. */
-    actor?: ActorPF2e;
+    actor?: ActorAvant;
     /** The token which initiated this roll. */
-    token?: TokenDocumentPF2e | null;
+    token?: TokenDocumentAvant | null;
     /** The originating item of this attack, if any */
-    item?: ItemPF2e<ActorPF2e> | null;
+    item?: ItemAvant<ActorAvant> | null;
     /** Optional title of the roll options dialog; defaults to the check name */
     title?: string;
     /** Optional DC data for the check */

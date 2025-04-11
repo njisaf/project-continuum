@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.HighJump";
+const PREFIX = "AVANT.Actions.HighJump";
 
 function highJump(options: SkillActionOptions): void {
     const slug = options?.skill ?? "athletics";

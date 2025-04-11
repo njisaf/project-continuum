@@ -1,22 +1,22 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { AttackPopout } from "@actor/character/apps/attack-popout.ts";
 import { ElementalBlast } from "@actor/character/elemental-blast.ts";
-import { ItemPF2e, type ConditionPF2e, type EffectPF2e } from "@item";
+import { ItemAvant, type ConditionAvant, type EffectAvant } from "@item";
 import { EffectTrait } from "@item/abstract-effect/types.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { createUseActionMessage } from "@module/chat-message/helpers.ts";
-import { MacroPF2e } from "@module/macro.ts";
+import { MacroAvant } from "@module/macro.ts";
 import { eventToRollMode } from "@module/sheet/helpers.ts";
 import { objectHasKey } from "@util";
 import { UUIDUtils } from "@util/uuid.ts";
 
 /** Given an item's id or uuid, retrieves the item and uses it.  */
-export async function rollItemMacro(itemIdOrUuid: string, event: Event | null = null): Promise<ChatMessagePF2e | null> {
+export async function rollItemMacro(itemIdOrUuid: string, event: Event | null = null): Promise<ChatMessageAvant | null> {
     const speaker = ChatMessage.getSpeaker();
     const item = await (async () => {
         if (UUIDUtils.isItemUUID(itemIdOrUuid)) {
             const item = await fromUuid(itemIdOrUuid);
-            if (item instanceof ItemPF2e && item.actor) {
+            if (item instanceof ItemAvant && item.actor) {
                 return item;
             } else {
                 ui.notifications.warn(`Item with uuid ${itemIdOrUuid} does not exist`);
@@ -59,21 +59,21 @@ export async function createActionMacro({
     if (!actor?.isOfType("character", "npc")) return;
 
     const data = ((): { name: string; command: string; img: ImageFilePath } | null => {
-        if (actor.isOfType("character") && objectHasKey(CONFIG.PF2E.effectTraits, elementTrait)) {
+        if (actor.isOfType("character") && objectHasKey(CONFIG.AVANT.effectTraits, elementTrait)) {
             const blast = new ElementalBlast(actor);
             const config = blast.configs.find((c) => c.element === elementTrait);
             if (!config) return null;
             return {
                 name: game.i18n.localize(config.label),
-                command: `game.pf2e.rollActionMacro({ actorUUID: "${actorUUID}", type: "blast", elementTrait: "${elementTrait}" })`,
+                command: `game.avant.rollActionMacro({ actorUUID: "${actorUUID}", type: "blast", elementTrait: "${elementTrait}" })`,
                 img: config.img,
             };
         } else if (actionIndex !== undefined) {
             const action = actor.system.actions[actionIndex];
             if (!action) return null;
             return {
-                name: `${game.i18n.localize("PF2E.WeaponStrikeLabel")}: ${action.label}`,
-                command: `game.pf2e.rollActionMacro({ actorUUID: "${actorUUID}",  type: "strike", itemId: "${action.item.id}", slug: "${action.slug}" })`,
+                name: `${game.i18n.localize("AVANT.WeaponStrikeLabel")}: ${action.label}`,
+                command: `game.avant.rollActionMacro({ actorUUID: "${actorUUID}",  type: "strike", itemId: "${action.item.id}", slug: "${action.slug}" })`,
                 img: action.item.img,
             };
         }
@@ -83,13 +83,13 @@ export async function createActionMacro({
 
     const actionMacro =
         game.macros.find((macro) => macro.name === data.name && macro.command === data.command) ??
-        (await MacroPF2e.create(
+        (await MacroAvant.create(
             {
                 command: data.command,
                 name: data.name,
                 type: "script",
                 img: data.img,
-                flags: { pf2e: { actionMacro: true } },
+                flags: { avant: { actionMacro: true } },
             },
             { renderSheet: false },
         ));
@@ -102,10 +102,10 @@ export async function rollActionMacro({
     elementTrait,
     slug,
     type,
-}: RollActionMacroParams): Promise<ChatMessagePF2e | undefined> {
+}: RollActionMacroParams): Promise<ChatMessageAvant | undefined> {
     const actor = resolveMacroActor(actorUUID);
     if (!actor?.isOfType("character", "npc")) {
-        ui.notifications.error("PF2E.MacroActionNoActorError", { localize: true });
+        ui.notifications.error("AVANT.MacroActionNoActorError", { localize: true });
         return;
     }
 
@@ -130,7 +130,7 @@ export async function rollActionMacro({
                 if (closedExisting(`blast-${elementTrait}`)) return;
                 const auraActive = actor.itemTypes.effect.find((e) => e.slug === "effect-kinetic-aura");
                 if (!auraActive) {
-                    ui.notifications.error("PF2E.MacroActionNoActionError", { localize: true });
+                    ui.notifications.error("AVANT.MacroActionNoActionError", { localize: true });
                     return;
                 }
 
@@ -140,7 +140,7 @@ export async function rollActionMacro({
             case "strike": {
                 if (closedExisting(`strike-${itemId}-${slug}`)) return;
                 if (!strike) {
-                    ui.notifications.error("PF2E.MacroActionNoActionError", { localize: true });
+                    ui.notifications.error("AVANT.MacroActionNoActionError", { localize: true });
                     return;
                 }
 
@@ -152,7 +152,7 @@ export async function rollActionMacro({
 
     // For other actors show a chat card
     if (!strike) {
-        ui.notifications.error("PF2E.MacroActionNoActionError", { localize: true });
+        ui.notifications.error("AVANT.MacroActionNoActionError", { localize: true });
         return;
     }
 
@@ -162,10 +162,10 @@ export async function rollActionMacro({
 
     const templateData = { actor, strike, identifier, description };
 
-    const content = await renderTemplate("systems/pf2e/templates/chat/strike-card.hbs", templateData);
+    const content = await renderTemplate("systems/avant/templates/chat/strike-card.hbs", templateData);
     const token = actor.token ?? actor.getActiveTokens(true, true).shift() ?? null;
     const chatData: PreCreate<foundry.documents.ChatMessageSource> = {
-        speaker: ChatMessagePF2e.getSpeaker({ actor, token }),
+        speaker: ChatMessageAvant.getSpeaker({ actor, token }),
         content,
         style: CONST.CHAT_MESSAGE_STYLES.OTHER,
     };
@@ -175,19 +175,19 @@ export async function rollActionMacro({
         chatData.whisper = ChatMessage.getWhisperRecipients("GM").map((u) => u.id);
     if (rollMode === "blindroll") chatData.blind = true;
 
-    return ChatMessagePF2e.create(chatData);
+    return ChatMessageAvant.create(chatData);
 }
 
-export async function createToggleEffectMacro(effect: ConditionPF2e | EffectPF2e, slot: number): Promise<void> {
+export async function createToggleEffectMacro(effect: ConditionAvant | EffectAvant, slot: number): Promise<void> {
     const uuid = effect.uuid.startsWith("Actor") ? effect.sourceId : effect.uuid;
     if (!uuid) {
-        ui.notifications.error("PF2E.ErrorMessage.CantCreateEffectMacro", { localize: true });
+        ui.notifications.error("AVANT.ErrorMessage.CantCreateEffectMacro", { localize: true });
         return;
     }
 
     const command = `const actors = game.user.getActiveTokens().flatMap((t) => t.actor ?? []);
 if (actors.length === 0) {
-    return ui.notifications.error("PF2E.ErrorMessage.NoTokenSelected", { localize: true });
+    return ui.notifications.error("AVANT.ErrorMessage.NoTokenSelected", { localize: true });
 }
 
 const ITEM_UUID = "${uuid}"; // ${effect.name}
@@ -209,12 +209,12 @@ if (item?.type === "condition") {
         }
     }
 } else {
-    ui.notifications.error(game.i18n.format("PF2E.ErrorMessage.ItemNotFoundByUUID", { uuid: ITEM_UUID }));
+    ui.notifications.error(game.i18n.format("AVANT.ErrorMessage.ItemNotFoundByUUID", { uuid: ITEM_UUID }));
 }
 `;
     const toggleMacro =
         game.macros.contents.find((macro) => macro.name === effect.name && macro.command === command) ??
-        (await MacroPF2e.create(
+        (await MacroAvant.create(
             {
                 command,
                 name: effect.name,
@@ -226,10 +226,10 @@ if (item?.type === "condition") {
     game.user.assignHotbarMacro(toggleMacro ?? null, slot);
 }
 
-function resolveMacroActor(uuid?: ActorUUID): ActorPF2e | null {
+function resolveMacroActor(uuid?: ActorUUID): ActorAvant | null {
     if (uuid) {
         const actor = fromUuidSync(uuid);
-        return actor instanceof ActorPF2e ? actor : null;
+        return actor instanceof ActorAvant ? actor : null;
     }
     const speaker = ChatMessage.getSpeaker();
     return canvas.tokens.get(speaker.token ?? "")?.actor ?? game.actors.get(speaker.actor ?? "") ?? null;

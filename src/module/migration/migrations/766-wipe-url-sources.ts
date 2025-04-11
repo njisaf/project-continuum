@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { isObject } from "@util";
 import { MigrationBase } from "../base.ts";
 
@@ -6,9 +6,9 @@ import { MigrationBase } from "../base.ts";
 export class Migration766WipeURLSources extends MigrationBase {
     static override version = 0.766;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (
-            (!("game" in globalThis) || source._stats.compendiumSource?.startsWith("Compendium.pf2e.")) &&
+            (!("game" in globalThis) || source._stats.compendiumSource?.startsWith("Compendium.avant.")) &&
             "source" in source.system &&
             isObject<{ value: unknown }>(source.system.source) &&
             typeof source.system.source.value === "string" &&

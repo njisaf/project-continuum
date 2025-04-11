@@ -1,0 +1,62 @@
+{
+    "_id": "QuNXNPHvh4DBmyZH",
+    "img": "systems/avant/icons/deities/kurgess.webp",
+    "name": "Kurgess - Major Curse",
+    "system": {
+        "description": {
+            "value": "<p>The wrath of Kurgess withers you almost to nothing. You are permanently @UUID[Compendium.avant.conditionitems.Item.Drained]{Drained 2} and @UUID[Compendium.avant.conditionitems.Item.Enfeebled]{Enfeebled 4}.</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "unlimited",
+            "value": -1
+        },
+        "level": {
+            "value": 0
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Lost Omens Gods & Magic"
+        },
+        "rules": [
+            {
+                "alterations": [
+                    {
+                        "mode": "override",
+                        "property": "badge-value",
+                        "value": 2
+                    }
+                ],
+                "inMemoryOnly": true,
+                "key": "GrantItem",
+                "uuid": "Compendium.avant.conditionitems.Item.Drained"
+            },
+            {
+                "alterations": [
+                    {
+                        "mode": "override",
+                        "property": "badge-value",
+                        "value": 4
+                    }
+                ],
+                "inMemoryOnly": true,
+                "key": "GrantItem",
+                "uuid": "Compendium.avant.conditionitems.Item.Enfeebled"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": false
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

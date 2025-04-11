@@ -1,8 +1,8 @@
-import type { MeleePF2e } from "@item";
+import type { MeleeAvant } from "@item";
 import { ItemSystemModel, ItemSystemSchema } from "@item/base/data/model.ts";
 import type {
-    BaseItemSourcePF2e,
-    ItemFlagsPF2e,
+    BaseItemSourceAvant,
+    ItemFlagsAvant,
     ItemSystemSource,
     ItemTraitsNoRarity,
 } from "@item/base/data/system.ts";
@@ -14,24 +14,24 @@ import { LaxArrayField, RecordField, SlugField } from "@system/schema-data-field
 import type { NPCAttackTrait } from "./types.ts";
 import fields = foundry.data.fields;
 
-type MeleeSource = BaseItemSourcePF2e<"melee", MeleeSystemSource> & {
+type MeleeSource = BaseItemSourceAvant<"melee", MeleeSystemSource> & {
     flags: DeepPartial<MeleeFlags>;
 };
 
-type MeleeFlags = ItemFlagsPF2e & {
-    pf2e: {
+type MeleeFlags = ItemFlagsAvant & {
+    avant: {
         linkedWeapon?: string;
     };
 };
 
-class MeleeSystemData extends ItemSystemModel<MeleePF2e, NPCAttackSystemSchema> {
+class MeleeSystemData extends ItemSystemModel<MeleeAvant, NPCAttackSystemSchema> {
     declare material: WeaponMaterialData;
 
     /** Weapon property runes (or rather the effects thereof) added via rule element */
     declare runes: { property: WeaponPropertyRuneType[] };
 
     static override defineSchema(): NPCAttackSystemSchema {
-        const traitChoices: Record<NPCAttackTrait, string> = CONFIG.PF2E.npcAttackTraits;
+        const traitChoices: Record<NPCAttackTrait, string> = CONFIG.AVANT.npcAttackTraits;
 
         return {
             ...super.defineSchema(),
@@ -61,7 +61,7 @@ class MeleeSystemData extends ItemSystemModel<MeleePF2e, NPCAttackSystemSchema> 
                         required: true,
                         nullable: false,
                         initial: undefined,
-                        choices: CONFIG.PF2E.damageTypes,
+                        choices: CONFIG.AVANT.damageTypes,
                     }),
                     category: new fields.StringField({
                         required: true,
@@ -84,7 +84,7 @@ class MeleeSystemData extends ItemSystemModel<MeleePF2e, NPCAttackSystemSchema> 
 }
 
 interface MeleeSystemData
-    extends ItemSystemModel<MeleePF2e, NPCAttackSystemSchema>,
+    extends ItemSystemModel<MeleeAvant, NPCAttackSystemSchema>,
         Omit<ModelPropsFromSchema<NPCAttackSystemSchema>, "description"> {}
 
 type NPCAttackSystemSchema = Omit<ItemSystemSchema, "traits"> & {

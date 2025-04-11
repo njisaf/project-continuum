@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { sluggify } from "@util";
 import { MigrationBase } from "../base.ts";
@@ -9,7 +9,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration857WeaponSpecializationRE extends MigrationBase {
     static override version = 0.857;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const slug = source.system.slug ?? sluggify(source.name);
         if (
             source.type !== "feat" ||
@@ -28,7 +28,7 @@ export class Migration857WeaponSpecializationRE extends MigrationBase {
             source.system.rules.unshift({
                 key: "AdjustModifier",
                 mode: "multiply",
-                relabel: "PF2E.GreaterWeaponSpecialization",
+                relabel: "AVANT.GreaterWeaponSpecialization",
                 selector: "strike-damage",
                 slug: "weapon-specialization",
                 value: 2,
@@ -38,7 +38,7 @@ export class Migration857WeaponSpecializationRE extends MigrationBase {
                 {
                     hideIfDisabled: true,
                     key: "FlatModifier",
-                    label: "PF2E.WeaponSpecialization",
+                    label: "AVANT.WeaponSpecialization",
                     predicate: [
                         {
                             gte: ["item:proficiency:rank", 2],

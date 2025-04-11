@@ -1,18 +1,18 @@
-import type { ActorPF2e } from "@actor";
-import { ActorSizePF2e } from "@actor/data/size.ts";
-import { ItemPF2e, type PhysicalItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import { ActorSizeAvant } from "@actor/data/size.ts";
+import { ItemAvant, type PhysicalItemAvant } from "@item";
 import type { ClassTrait } from "@item/class/types.ts";
 import { Price } from "@item/physical/data.ts";
 import { DENOMINATIONS } from "@item/physical/values.ts";
 import { Size } from "@module/data.ts";
-import type { UserPF2e } from "@module/user/index.ts";
-import { ErrorPF2e, isObject } from "@util";
+import type { UserAvant } from "@module/user/index.ts";
+import { ErrorAvant, isObject } from "@util";
 import { UUIDUtils } from "@util/uuid.ts";
 import { KitSource, KitSystemData, type KitEntryData } from "./data.ts";
 
-class KitPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+class KitAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     static override get validTraits(): Record<ClassTrait, string> {
-        return CONFIG.PF2E.classTraits;
+        return CONFIG.AVANT.classTraits;
     }
 
     get entries(): KitEntryData[] {
@@ -26,16 +26,16 @@ class KitPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemP
     /** Expand a tree of kit entry data into a list of physical items */
     override async createGrantedItems(
         options: { entries?: KitEntryData[]; containerId?: string; size?: Size } = {},
-    ): Promise<PhysicalItemPF2e<null>[]> {
-        const size = new ActorSizePF2e({ value: options.size ?? "med", smallIsMedium: true }).value;
+    ): Promise<PhysicalItemAvant<null>[]> {
+        const size = new ActorSizeAvant({ value: options.size ?? "med", smallIsMedium: true }).value;
         const entries = options.entries ?? this.entries;
         const itemUUIDs = entries.map((e): ItemUUID => e.uuid);
         const items: unknown[] = await UUIDUtils.fromUUIDs(itemUUIDs);
-        if (entries.length !== items.length) throw ErrorPF2e(`Some items from ${this.name} were not found`);
-        if (!items.every((i): i is ItemPF2e<null> => i instanceof ItemPF2e && !i.parent)) return [];
+        if (entries.length !== items.length) throw ErrorAvant(`Some items from ${this.name} were not found`);
+        if (!items.every((i): i is ItemAvant<null> => i instanceof ItemAvant && !i.parent)) return [];
 
         return items.reduce(
-            async (promise: PhysicalItemPF2e<null>[] | Promise<PhysicalItemPF2e<null>[]>, item, index) => {
+            async (promise: PhysicalItemAvant<null>[] | Promise<PhysicalItemAvant<null>[]>, item, index) => {
                 const prepared = await promise;
                 const clone = item.clone({ _id: fu.randomID(), system: { size } }, { keepId: true });
                 const entry = entries[index];
@@ -69,7 +69,7 @@ class KitPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemP
     protected override async _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) {
             return await super._preUpdate(changed, operation, user);
@@ -89,9 +89,9 @@ class KitPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemP
     }
 }
 
-interface KitPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface KitAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: KitSource;
     system: KitSystemData;
 }
 
-export { KitPF2e };
+export { KitAvant };

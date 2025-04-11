@@ -1,6 +1,6 @@
 import { LANGUAGES, LANGUAGE_RARITIES } from "@actor/creature/values.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     SORTABLE_BASE_OPTIONS,
     htmlClosest,
     htmlQuery,
@@ -28,8 +28,8 @@ export class LanguagesManager {
     constructor(menu: HomebrewElements) {
         this.menu = menu;
 
-        const languagesFromSetting = game.settings.get("pf2e", "homebrew.languages").map((l) => l.id);
-        this.moduleLanguages = R.keys(CONFIG.PF2E.languages).filter(
+        const languagesFromSetting = game.settings.get("avant", "homebrew.languages").map((l) => l.id);
+        this.moduleLanguages = R.keys(CONFIG.AVANT.languages).filter(
             (l): l is LanguageNotCommon =>
                 l !== "common" && !LANGUAGES.includes(l) && !languagesFromSetting.includes(l),
         );
@@ -51,7 +51,7 @@ export class LanguagesManager {
                 data[r]
                     .map((slug) => {
                         const locKey =
-                            CONFIG.PF2E.languages[slug] ?? homebrewLanguages.find((l) => l.id === slug)?.value ?? slug;
+                            CONFIG.AVANT.languages[slug] ?? homebrewLanguages.find((l) => l.id === slug)?.value ?? slug;
                         return { slug, label: game.i18n.localize(locKey) };
                     })
                     .sort((a, b) => a.label.localeCompare(b.label)),
@@ -85,15 +85,15 @@ export class LanguagesManager {
         }
 
         const rarities: readonly string[] = LANGUAGE_RARITIES;
-        const localize = localizer("PF2E.SETTINGS.Homebrew.Languages.Rarities");
+        const localize = localizer("AVANT.SETTINGS.Homebrew.Languages.Rarities");
         for (const raritySection of htmlQueryAll(html, ".form-group.language-rarity")) {
             const rarity = Array.from(raritySection.classList).find((c) => rarities.includes(c)) ?? "unavailable";
             if (rarity === "unavailable") continue;
             const labelEl = raritySection.querySelector("label");
-            if (!labelEl) throw ErrorPF2e("");
+            if (!labelEl) throw ErrorAvant("");
 
             labelEl.innerHTML = localize(sluggify(rarity, { camel: "bactrian" }));
-            game.pf2e.TextEditor.convertXMLNode(labelEl, "rarity", { classes: ["tag", "rarity", rarity] });
+            game.avant.TextEditor.convertXMLNode(labelEl, "rarity", { classes: ["tag", "rarity", rarity] });
         }
     }
 
@@ -101,7 +101,7 @@ export class LanguagesManager {
         return (
             !!language &&
             language !== "common" &&
-            (objectHasKey(CONFIG.PF2E.languages, language) || this.menu.cache.languages.some((l) => l.id === language))
+            (objectHasKey(CONFIG.AVANT.languages, language) || this.menu.cache.languages.some((l) => l.id === language))
         );
     }
 
@@ -110,18 +110,18 @@ export class LanguagesManager {
         const dropTarget = htmlClosest(droppedEl, "ul[data-languages]");
         const oldRarity = droppedEl.dataset.rarity;
         const newRarity = dropTarget?.dataset.rarity;
-        if (!(oldRarity && newRarity)) throw ErrorPF2e("Unexpected update to language rarities");
+        if (!(oldRarity && newRarity)) throw ErrorAvant("Unexpected update to language rarities");
         if (oldRarity === newRarity) return;
 
         const language = droppedEl.dataset.slug;
         if (!this.#isValidLanguage(language)) {
-            throw ErrorPF2e("Unexpected update to language rarities");
+            throw ErrorAvant("Unexpected update to language rarities");
         }
 
         const data = this.data;
         const source = data.toObject();
         const commonLanguageSelect = htmlQuery<HTMLSelectElement>(this.menu.form, "select[data-common-language]");
-        if (!commonLanguageSelect) throw ErrorPF2e("Unexpected error updating menu");
+        if (!commonLanguageSelect) throw ErrorAvant("Unexpected error updating menu");
 
         const rarities = ["uncommon", "rare", "secret", "unavailable"] as const;
 
@@ -136,7 +136,7 @@ export class LanguagesManager {
             commonLanguageSelect.append(newOption);
         } else {
             if (!tupleHasValue(rarities, newRarity)) {
-                throw ErrorPF2e("Unexpected update to language rarities");
+                throw ErrorAvant("Unexpected update to language rarities");
             }
             for (const rarity of rarities) {
                 source[rarity].findSplice((l) => l === language);

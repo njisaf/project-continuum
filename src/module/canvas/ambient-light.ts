@@ -1,15 +1,15 @@
-import { AmbientLightDocumentPF2e } from "@scene/index.ts";
-import { LightingLayerPF2e } from "./index.ts";
+import { AmbientLightDocumentAvant } from "@scene/index.ts";
+import { LightingLayerAvant } from "./index.ts";
 
-class AmbientLightPF2e<
-    TDocument extends AmbientLightDocumentPF2e = AmbientLightDocumentPF2e,
+class AmbientLightAvant<
+    TDocument extends AmbientLightDocumentAvant = AmbientLightDocumentAvant,
 > extends AmbientLight<TDocument> {
     // Still exists if we need it later, but slated for removal once V12 is fully out
 }
 
-interface AmbientLightPF2e<TDocument extends AmbientLightDocumentPF2e = AmbientLightDocumentPF2e>
+interface AmbientLightAvant<TDocument extends AmbientLightDocumentAvant = AmbientLightDocumentAvant>
     extends AmbientLight<TDocument> {
-    get layer(): LightingLayerPF2e<this>;
+    get layer(): LightingLayerAvant<this>;
 }
 
-export { AmbientLightPF2e };
+export { AmbientLightAvant };

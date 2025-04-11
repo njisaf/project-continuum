@@ -43,7 +43,7 @@ interface HomebrewTag<T extends HomebrewTraitKey = HomebrewTraitKey> {
           : T extends "languages"
             ? LanguageNotCommon
             : T extends Exclude<HomebrewTraitKey, "baseArmors" | "baseWeapons" | "languages">
-              ? keyof (typeof CONFIG.PF2E)[T]
+              ? keyof (typeof CONFIG.AVANT)[T]
               : never;
     value: string;
 }
@@ -84,11 +84,11 @@ class LanguageSettings extends foundry.abstract.DataModel<null, LanguageSettings
 
         const nonCommonLanguages = new Set([...this.uncommon, ...this.rare, ...this.secret, ...this.unavailable]);
         this.common = new Set(
-            R.keys(CONFIG.PF2E.languages).filter(
+            R.keys(CONFIG.AVANT.languages).filter(
                 (l): l is LanguageNotCommon => l !== "common" && !nonCommonLanguages.has(l),
             ),
         );
-        this.homebrew = new Set(game.settings.get("pf2e", "homebrew.languages").map((t) => t.id));
+        this.homebrew = new Set(game.settings.get("avant", "homebrew.languages").map((t) => t.id));
     }
 
     static override defineSchema(): LanguageSettingsSchema {
@@ -139,7 +139,7 @@ class LanguageSettings extends foundry.abstract.DataModel<null, LanguageSettings
         const source = this._source;
         for (const rarity of [...LANGUAGE_RARITIES, "unavailable"] as const) {
             if (rarity === "common") continue;
-            source[rarity] = source[rarity].filter((l) => l in CONFIG.PF2E.languages);
+            source[rarity] = source[rarity].filter((l) => l in CONFIG.AVANT.languages);
         }
         this.reset();
     }

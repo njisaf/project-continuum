@@ -1,0 +1,104 @@
+{
+    "_id": "LfxwvZRwtrh8mQN0",
+    "img": "icons/sundries/gaming/playing-cards-grey.webp",
+    "name": "Spell Effect: Harrowing",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Harrowing]</p>\n<p>Randomly determine a harrow suit. The creature can reroll any associated check they just made, gaining a +4 status bonus to the reroll if the ritual was a critical success. If the ritual was a failure, it gets a –4 status penalty.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": false,
+            "unit": "days",
+            "value": 30
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Stolen Fate Player's Guide"
+        },
+        "rules": [
+            {
+                "adjustName": true,
+                "choices": [
+                    {
+                        "label": "AVANT.Check.Result.Degree.Check.criticalSuccess",
+                        "value": 4
+                    },
+                    {
+                        "label": "AVANT.Check.Result.Degree.Check.success",
+                        "value": 0
+                    },
+                    {
+                        "label": "AVANT.Check.Result.Degree.Check.failure",
+                        "value": -4
+                    }
+                ],
+                "flag": "degreeOfSuccess",
+                "key": "ChoiceSet"
+            },
+            {
+                "adjustName": true,
+                "choices": [
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Books",
+                        "value": "skill-check"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Crowns",
+                        "value": "perception"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Hammers",
+                        "value": "strike-attack-roll"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Keys",
+                        "value": "reflex"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Shields",
+                        "value": "fortitude"
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.HarrowDeck.HarrowSuits.Stars",
+                        "value": "will"
+                    }
+                ],
+                "flag": "suit",
+                "key": "ChoiceSet"
+            },
+            {
+                "key": "FlatModifier",
+                "predicate": [
+                    "harrowing-reroll"
+                ],
+                "removeAfterRoll": "if-enabled",
+                "selector": "{item|flags.avant.rulesSelections.suit}",
+                "type": "status",
+                "value": "{item|flags.avant.rulesSelections.degreeOfSuccess}"
+            },
+            {
+                "domain": "all",
+                "key": "RollOption",
+                "label": "AVANT.SpecificRule.Harrowing.RerollLabel",
+                "option": "harrowing-reroll",
+                "toggleable": true
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

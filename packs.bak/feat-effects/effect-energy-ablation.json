@@ -1,0 +1,201 @@
+{
+    "_id": "WEP9Oe1D9WsWSOU8",
+    "img": "icons/magic/symbols/circled-gem-pink.webp",
+    "name": "Effect: Energy Ablation",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.feats-srd.Item.Energy Ablation]</p>\n<p>You gain resistance to an energy damage type of your choice equal to the spell's rank.</p>"
+        },
+        "duration": {
+            "expiry": "turn-end",
+            "sustained": false,
+            "unit": "rounds",
+            "value": 1
+        },
+        "level": {
+            "value": 2
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitForce",
+                        "value": "force"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    },
+                    {
+                        "label": "AVANT.TraitVitality",
+                        "value": "vitality"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    }
+                ],
+                "flag": "energyAblationType",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.EnergyType"
+            },
+            {
+                "adjustName": false,
+                "choices": [
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.First",
+                        "value": 1
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Second",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    3
+                                ]
+                            }
+                        ],
+                        "value": 2
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Third",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    5
+                                ]
+                            }
+                        ],
+                        "value": 3
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Fourth",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    7
+                                ]
+                            }
+                        ],
+                        "value": 4
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Fifth",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    9
+                                ]
+                            }
+                        ],
+                        "value": 5
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Sixth",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    11
+                                ]
+                            }
+                        ],
+                        "value": 6
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Seventh",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    13
+                                ]
+                            }
+                        ],
+                        "value": 7
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Eighth",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    15
+                                ]
+                            }
+                        ],
+                        "value": 8
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Ninth",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    17
+                                ]
+                            }
+                        ],
+                        "value": 9
+                    },
+                    {
+                        "label": "AVANT.SpecificRule.SpellRank.Tenth",
+                        "predicate": [
+                            {
+                                "gte": [
+                                    "self:level",
+                                    19
+                                ]
+                            }
+                        ],
+                        "value": 10
+                    }
+                ],
+                "flag": "energyAblationRank",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.SpellRank.Prompt"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.energyAblationType}",
+                "value": "{item|flags.avant.rulesSelections.energyAblationRank}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "effect"
+}

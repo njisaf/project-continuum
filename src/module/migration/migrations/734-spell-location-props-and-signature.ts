@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { SpellSource, SpellSystemSource } from "@item/spell/data.ts";
 import { SpellcastingEntrySource, SpellcastingEntrySystemSource } from "@item/spellcasting-entry/data.ts";
 import { OneToTen } from "@module/data.ts";
@@ -9,7 +9,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration734SpellLocationPropsAndSignature extends MigrationBase {
     static override version = 0.734;
 
-    override async updateActor(actor: ActorSourcePF2e): Promise<void> {
+    override async updateActor(actor: ActorSourceAvant): Promise<void> {
         const entries = actor.items.filter(
             (item): item is SpellcastingEntrySource => item.type === "spellcastingEntry",
         );
@@ -31,7 +31,7 @@ export class Migration734SpellLocationPropsAndSignature extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e, actor?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actor?: ActorSourceAvant): Promise<void> {
         // updateItem() runs after updateActor(). We rely on that to do some cleanup on spellcasting entry
         if (source.type === "spellcastingEntry") {
             const data: SpellcastingEntrySystemDataOld = source.system;

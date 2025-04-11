@@ -1,3 +1,3 @@
-type EffectTrait = keyof typeof CONFIG.PF2E.effectTraits;
+type EffectTrait = keyof typeof CONFIG.AVANT.effectTraits;
 
 export type { EffectTrait };

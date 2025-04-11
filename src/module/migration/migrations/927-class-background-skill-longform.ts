@@ -1,6 +1,6 @@
 import { SkillSlug } from "@actor/types.ts";
 import { BackgroundSystemSource } from "@item/background/data.ts";
-import { BackgroundSource, ClassSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { BackgroundSource, ClassSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { ClassSystemSource } from "@item/class/data.ts";
 import { BattleFormSource } from "@module/rules/rule-element/battle-form/types.ts";
 import { objectHasKey } from "@util";
@@ -10,7 +10,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration927ClassBackgroundBattleFormSkillLongform extends MigrationBase {
     static override version = 0.927;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         // Migrate any battleform rules on any items
         for (const rule of source.system.rules) {
             if (rule.key === "BattleForm") {

@@ -1,12 +1,12 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { AbilitySource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { AbilitySource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** actionCategory changed from a value object to just a string */
 export class Migration839ActionCategories extends MigrationBase {
     static override version = 0.839;
 
-    override async updateItem(source: ItemSourcePF2e, actorSource?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actorSource?: ActorSourceAvant): Promise<void> {
         if (source.type !== "action") return;
 
         // Move from actionCategory to category, but also make it null it has a non-npc actor

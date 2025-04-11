@@ -1,1 +1,1 @@
-export { TokenPF2e } from "./object.ts";
+export { TokenAvant } from "./object.ts";

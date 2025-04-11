@@ -1,6 +1,6 @@
 <nav class="sheet-tabs tabs rule-tabs">
     <h4>
-        <a data-rule-tab="basics"><i class="fa-solid fa-cogs"></i> {{localize "PF2E.RuleEditor.General.Basics"}}</a>
+        <a data-rule-tab="basics"><i class="fa-solid fa-cogs"></i> {{localize "AVANT.RuleEditor.General.Basics"}}</a>
         <a data-rule-tab="effects"><i class="fa-solid fa-play"></i> {{localize fields.effects.label}}</a>
         <a data-rule-tab="appearance"><i class="fa-solid fa-image"></i> {{localize fields.appearance.label}}</a>
     </h4>
@@ -35,7 +35,7 @@
     <div class="stacked">
         <div class="grid-item">
             <label>{{localize fields.traits.label}}</label>
-            <tagify-tags class="pf2e-tagify tagify-traits" name="system.rules.{{index}}.traits" value="{{json object.traits}}" />
+            <tagify-tags class="avant-tagify tagify-traits" name="system.rules.{{index}}.traits" value="{{json object.traits}}" />
         </div>
 
         <div class="grid-item long-label">
@@ -58,7 +58,7 @@
 <div data-rule-tab="effects">
     {{#each effects as |effect eid|}}
         <div class="item-container">
-            <label>{{localize "PF2E.ItemTitle"}}</label>
+            <label>{{localize "AVANT.ItemTitle"}}</label>
             <a class="content-link" data-link data-uuid="{{effect.uuid}}">
                 <img src="{{effect.item.img}}">
                 <span class="name">{{effect.item.name}}</span>
@@ -71,7 +71,7 @@
                     data-rule-index="{{../index}}"
                     data-effect-id="{{eid}}"
                     data-action="remove-effect"
-                    data-tooltip="PF2E.RuleEditor.Aura.Effects.RemoveEffect"
+                    data-tooltip="AVANT.RuleEditor.Aura.Effects.RemoveEffect"
                 ><i class="fa-solid fa-trash"></i></a>
             </div>
         </div>
@@ -94,7 +94,7 @@
         {{!-- Not fully implemented
         <div class="grid-item">
             <label>{{localize ../fields.effects.element.fields.events.label}}</label>
-            <input type="text" class="pf2e-tagify tagify-events" name="system.rules.{{../index}}.effects.{{eid}}.events" value="{{json effect.events}}" data-dtype="JSON"/>
+            <input type="text" class="avant-tagify tagify-events" name="system.rules.{{../index}}.effects.{{eid}}.events" value="{{json effect.events}}" data-dtype="JSON"/>
         </div>
 
         <fieldset>
@@ -127,7 +127,7 @@
         </div>
         <hr>
     {{/each}}
-    {{{form.dropZone "aura-effect-drop" "PF2E.RuleEditor.Aura.Effects.DropText" "PF2E.RuleEditor.Aura.Effects.DropTooltip"}}}
+    {{{form.dropZone "aura-effect-drop" "AVANT.RuleEditor.Aura.Effects.DropText" "AVANT.RuleEditor.Aura.Effects.DropTooltip"}}}
 </div>
 
 <div data-rule-tab="appearance">
@@ -140,7 +140,7 @@
                     {{#if object.appearance.border}}
                         <color-picker name="{{concat "system.rules." index ".appearance.border.color"}}" value="{{borderColor}}"></color-picker>
                     {{else}}
-                        <div>{{localize "PF2E.RuleEditor.Aura.Appearance.NotApplicable"}}</div>
+                        <div>{{localize "AVANT.RuleEditor.Aura.Appearance.NotApplicable"}}</div>
                     {{/if}}
 
                     <label class="user">

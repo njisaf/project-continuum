@@ -1,4 +1,4 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Store indication of NPC elite/weak adjustment in attributes instead of traits */
@@ -18,7 +18,7 @@ export class Migration779EliteWeak extends MigrationBase {
     }
 }
 
-type MaybeWithExtraNestedTraits = ActorSourcePF2e & {
+type MaybeWithExtraNestedTraits = ActorSourceAvant & {
     system: {
         traits: {
             traits?: { value: string[] };

@@ -5,13 +5,13 @@
                 {{localize section.label}}
                 {{#with section.customLimit}}
                     <span class="limit">
-                        ({{localize label}} <input type="number" name="{{concat "flags.pf2e.featLimits." section.id}}" value="{{section.limit}}" min="{{min}}" max="{{max}}" step="1"/>)
+                        ({{localize label}} <input type="number" name="{{concat "flags.avant.featLimits." section.id}}" value="{{section.limit}}" min="{{min}}" max="{{max}}" step="1"/>)
                     </span>
                 {{/with}}
                 <div class="controls">
                     {{#if (eq section.id "bonus")}}
                         <button type="button" data-action="create-feat">
-                            <i class="fa-solid fa-fw fa-plus"></i>{{localize "PF2E.Actor.Character.CreateFeat"}}
+                            <i class="fa-solid fa-fw fa-plus"></i>{{localize "AVANT.Actor.Character.CreateFeat"}}
                         </button>
                     {{/if}}
                     <button
@@ -19,13 +19,13 @@
                         data-action="browse-feats"
                         data-type="feat"
                     >
-                        <i class="fa-solid fa-fw fa-search"></i>{{localize "PF2E.BrowseLabel"}}
+                        <i class="fa-solid fa-fw fa-search"></i>{{localize "AVANT.BrowseLabel"}}
                     </button>
                 </div>
             </header>
             <ol class="feats-list" data-foundry-list>
                 {{#each section.feats as |featSlot|}}
-                    {{> "systems/pf2e/templates/actors/character/partials/feat-slot.hbs" featSlot=featSlot featFilter=section.featFilter}}
+                    {{> "systems/avant/templates/actors/character/partials/feat-slot.hbs" featSlot=featSlot featFilter=section.featFilter}}
                 {{/each}}
             </ol>
         </section>

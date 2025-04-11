@@ -1,12 +1,12 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
+import type { ActorAvant, CharacterAvant } from "@actor";
 import { MartialProficiency } from "@actor/character/data.ts";
-import { ItemPF2e } from "@item";
+import { ItemAvant } from "@item";
 import { BaseWeaponType } from "@item/weapon/types.ts";
 import { ZeroToFour } from "@module/data.ts";
 import { objectHasKey, sluggify } from "@util";
 import { DeityCategory, DeitySource, DeitySystemData } from "./data.ts";
 
-class DeityPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+class DeityAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     get category(): DeityCategory {
         return this.system.category;
     }
@@ -26,14 +26,14 @@ class DeityPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
         }
     }
 
-    override prepareActorData(this: DeityPF2e<ActorPF2e>): void {
+    override prepareActorData(this: DeityAvant<ActorAvant>): void {
         if (!this.actor.isOfType("character")) {
             // This should never happen, but ...
             this.delete({ render: false });
             return;
         }
 
-        this.actor.deity = this as DeityPF2e<CharacterPF2e>;
+        this.actor.deity = this as DeityAvant<CharacterAvant>;
 
         const deities = this.actor.system.details.deities;
         const systemData = this.system;
@@ -44,12 +44,12 @@ class DeityPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
 
         // Set available domains from this deity
         for (const domain of this.system.domains.primary) {
-            const label = CONFIG.PF2E.deityDomains[domain]?.label;
+            const label = CONFIG.AVANT.deityDomains[domain]?.label;
             deities.domains[domain] = label ?? domain;
             // Add the apocryphal variant if there is one
             const apocryphaKey = `${domain}-apocryphal`;
-            if (objectHasKey(CONFIG.PF2E.deityDomains, apocryphaKey)) {
-                const apocrypha = CONFIG.PF2E.deityDomains[apocryphaKey];
+            if (objectHasKey(CONFIG.AVANT.deityDomains, apocryphaKey)) {
+                const apocrypha = CONFIG.AVANT.deityDomains[apocryphaKey];
                 deities.domains[apocryphaKey] = apocrypha.label;
             }
         }
@@ -79,15 +79,15 @@ class DeityPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     }
 
     /** If applicable, set a trained proficiency with this deity's favored weapon */
-    setFavoredWeaponRank(this: DeityPF2e<ActorPF2e>): void {
+    setFavoredWeaponRank(this: DeityAvant<ActorAvant>): void {
         if (!this.actor.isOfType("character")) return;
 
-        const favoredWeaponRank = this.actor.flags.pf2e.favoredWeaponRank;
+        const favoredWeaponRank = this.actor.flags.avant.favoredWeaponRank;
         if (favoredWeaponRank > 0) {
             type PartialAttackProficiencies = Record<string, Partial<MartialProficiency> | undefined>;
             const attacks: PartialAttackProficiencies = this.actor.system.proficiencies.attacks;
-            const baseWeaponTypes: Record<string, string | undefined> = CONFIG.PF2E.baseWeaponTypes;
-            const baseShieldTypes: Record<string, string | undefined> = CONFIG.PF2E.baseShieldTypes;
+            const baseWeaponTypes: Record<string, string | undefined> = CONFIG.AVANT.baseWeaponTypes;
+            const baseShieldTypes: Record<string, string | undefined> = CONFIG.AVANT.baseShieldTypes;
             for (const baseType of this.favoredWeapons) {
                 attacks[`weapon-base-${baseType}`] = {
                     label: baseWeaponTypes[baseType] ?? baseShieldTypes[baseType] ?? baseType,
@@ -118,9 +118,9 @@ class DeityPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     }
 }
 
-interface DeityPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface DeityAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: DeitySource;
     system: DeitySystemData;
 }
 
-export { DeityPF2e };
+export { DeityAvant };

@@ -5,7 +5,7 @@
   },
   "name": "Scale Mail",
   "type": "armor",
-  "img": "systems/pf2e/icons/equipment/armor/scale-mail.jpg",
+  "img": "systems/avant/icons/equipment/armor/scale-mail.jpg",
   "data": {
     "description": {
       "value": "<p><span class=\"fontstyle0\">Scale mail consists of many metal scales sewn onto a reinforced leather backing, often in the form of a long shirt that protects the torso, arms, and legs.</span> </p>",

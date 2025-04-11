@@ -1,28 +1,28 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { Sense } from "@actor/creature/sense.ts";
-import { AbilityItemPF2e, FeatPF2e, PhysicalItemPF2e } from "@item";
+import { AbilityItemAvant, FeatAvant, PhysicalItemAvant } from "@item";
 import { Bulk } from "@item/physical/bulk.ts";
 import { SpellSource } from "@item/spell/index.ts";
 import { coerceToSpellGroupId } from "@item/spellcasting-entry/helpers.ts";
-import { ErrorPF2e, getActionGlyph, ordinalString } from "@util";
+import { ErrorAvant, getActionGlyph, ordinalString } from "@util";
 import { traitSlugToObject } from "@util/tags.ts";
 import * as R from "remeda";
 import { AbilityViewData } from "./data-types.ts";
 
-function onClickCreateSpell(actor: ActorPF2e, data: Record<string, string | undefined>): void {
+function onClickCreateSpell(actor: ActorAvant, data: Record<string, string | undefined>): void {
     if (!data.location) {
-        throw ErrorPF2e("Unexpected missing spellcasting-entry location");
+        throw ErrorAvant("Unexpected missing spellcasting-entry location");
     }
 
     const groupId = coerceToSpellGroupId(data.groupId);
     const rank = typeof groupId === "number" ? groupId : 1;
-    const newLabel = game.i18n.localize("PF2E.NewLabel");
+    const newLabel = game.i18n.localize("AVANT.NewLabel");
     const [rankLabel, spellLabel] =
         groupId === "cantrips"
-            ? [null, game.i18n.localize("PF2E.TraitCantrip")]
+            ? [null, game.i18n.localize("AVANT.TraitCantrip")]
             : [
-                  game.i18n.format("PF2E.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) }),
-                  game.i18n.localize(data.location === "rituals" ? "PF2E.Item.Spell.Ritual.Label" : "TYPES.Item.spell"),
+                  game.i18n.format("AVANT.Item.Spell.Rank.Ordinal", { rank: ordinalString(rank) }),
+                  game.i18n.localize(data.location === "rituals" ? "AVANT.Item.Spell.Ritual.Label" : "TYPES.Item.spell"),
               ];
     const source = {
         type: "spell",
@@ -44,7 +44,7 @@ function onClickCreateSpell(actor: ActorPF2e, data: Record<string, string | unde
 }
 
 /** Create a price label like "L / 10" when appropriate. */
-function createBulkPerLabel(item: PhysicalItemPF2e): string {
+function createBulkPerLabel(item: PhysicalItemAvant): string {
     return item.system.bulk.per === 1 || item.system.bulk.value === 0
         ? item.system.quantity === 1
             ? item.bulk.toString()
@@ -66,12 +66,12 @@ function condenseSenses(senses: Sense[]): Sense[] {
 }
 
 /** Creates ability or feat view data for actor sheet actions rendering */
-function createAbilityViewData(item: AbilityItemPF2e | FeatPF2e): AbilityViewData {
+function createAbilityViewData(item: AbilityItemAvant | FeatAvant): AbilityViewData {
     return {
         ...R.pick(item, ["id", "img", "name", "actionCost", "frequency"]),
         glyph: getActionGlyph(item.actionCost),
         usable: !!item.system.selfEffect || !!item.system?.frequency || !!item.crafting,
-        traits: item.system.traits.value.map((t) => traitSlugToObject(t, CONFIG.PF2E.actionTraits)),
+        traits: item.system.traits.value.map((t) => traitSlugToObject(t, CONFIG.AVANT.actionTraits)),
         has: {
             aura: item.traits.has("aura") || item.system.rules.some((r) => r.key === "Aura"),
             deathNote: item.isOfType("action") && item.system.deathNote,

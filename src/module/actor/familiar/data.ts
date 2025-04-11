@@ -1,4 +1,4 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import type {
     BaseCreatureSource,
     CreatureAttributes,
@@ -11,17 +11,17 @@ import type {
     SkillData,
 } from "@actor/creature/data.ts";
 import { ActorSystemModel, ActorSystemSchema } from "@actor/data/model.ts";
-import type { ModifierPF2e } from "@actor/modifiers.ts";
+import type { ModifierAvant } from "@actor/modifiers.ts";
 import type { AttributeString } from "@actor/types.ts";
 import { ATTRIBUTE_ABBREVIATIONS } from "@actor/values.ts";
 import type { StatisticTraceData } from "@system/statistic/data.ts";
 import type { ModelPropFromDataField, SourcePropFromDataField } from "types/foundry/common/data/fields.d.ts";
-import type { FamiliarPF2e } from "./document.ts";
+import type { FamiliarAvant } from "./document.ts";
 import fields = foundry.data.fields;
 
 type FamiliarSource = BaseCreatureSource<"familiar", FamiliarSystemSource>;
 
-class FamiliarSystemData extends ActorSystemModel<FamiliarPF2e, FamiliarSystemSchema> {
+class FamiliarSystemData extends ActorSystemModel<FamiliarAvant, FamiliarSystemSchema> {
     declare traits: CreatureTraitsData;
 
     declare perception: CreaturePerceptionData;
@@ -38,7 +38,7 @@ class FamiliarSystemData extends ActorSystemModel<FamiliarPF2e, FamiliarSystemSc
         return {
             ...super.defineSchema(),
             master: new fields.SchemaField({
-                id: new fields.ForeignDocumentField(ActorPF2e, {
+                id: new fields.ForeignDocumentField(ActorAvant, {
                     idOnly: true,
                     required: true,
                     nullable: true,
@@ -79,11 +79,11 @@ class FamiliarSystemData extends ActorSystemModel<FamiliarPF2e, FamiliarSystemSc
 }
 
 interface FamiliarSystemData
-    extends foundry.abstract.TypeDataModel<FamiliarPF2e, FamiliarSystemSchema>,
+    extends foundry.abstract.TypeDataModel<FamiliarAvant, FamiliarSystemSchema>,
         ModelPropsFromSchema<FamiliarSystemSchema> {
     attributes: CreatureAttributes;
     details: FamiliarDetails;
-    customModifiers: Record<string, ModifierPF2e[]>;
+    customModifiers: Record<string, ModifierAvant[]>;
 }
 
 type FamiliarSystemSchema = ActorSystemSchema & {

@@ -2,9 +2,9 @@
     <div class="scroll-container">
         <ol class="skills-list">
             <li class="skill header">
-                <div class="name">{{localize "PF2E.SkillLabel"}}</div>
-                <div>{{localize "PF2E.Actor.NPC.SkillsEditor.Note"}}</div>
-                <div>{{localize "PF2E.ModifierTitle"}}</div>
+                <div class="name">{{localize "AVANT.SkillLabel"}}</div>
+                <div>{{localize "AVANT.Actor.NPC.SkillsEditor.Note"}}</div>
+                <div>{{localize "AVANT.ModifierTitle"}}</div>
             </li>
             {{#each trainedSkills as |skill|}}
                 <li class="skill" data-skill="{{skill.slug}}">
@@ -29,22 +29,22 @@
                         {{#if skill.special}}
                             <table>
                                 <tr>
-                                    <th class="name">{{localize "PF2E.Actor.NPC.SkillsEditor.Special"}}</th>
-                                    <th class="predicate">{{localize "PF2E.Actor.NPC.SkillsEditor.Predicate"}}</th>
-                                    <th class="modifier">{{localize "PF2E.ModifierTitle"}}</th>
-                                    <th class="controls"><a data-action="add-special-skill" data-tooltip="PF2E.Actor.NPC.SkillsEditor.AddSpecial"><i class="fa-solid fa-plus"></i></a></th>
+                                    <th class="name">{{localize "AVANT.Actor.NPC.SkillsEditor.Special"}}</th>
+                                    <th class="predicate">{{localize "AVANT.Actor.NPC.SkillsEditor.Predicate"}}</th>
+                                    <th class="modifier">{{localize "AVANT.ModifierTitle"}}</th>
+                                    <th class="controls"><a data-action="add-special-skill" data-tooltip="AVANT.Actor.NPC.SkillsEditor.AddSpecial"><i class="fa-solid fa-plus"></i></a></th>
                                 </tr>
                                 {{#each skill.special as |special idx|}}
                                     <tr>
                                         <td class="name"><input type="text" name="system.skills.{{skill.slug}}.special.{{idx}}.label" value="{{special.label}}"></td>
                                         <td class="predicate"><input type="text" name="system.skills.{{skill.slug}}.special.{{idx}}.predicate" value="{{json special.predicate}}"></td>
                                         <td class="modifier"><input type="number" name="system.skills.{{skill.slug}}.special.{{idx}}.base" value="{{special.base}}"></td>
-                                        <td class="controls"><a data-action="remove-special-skill" data-special-skill-index="{{idx}}" title="{{localize "PF2E.ItemRemoveRuleElement"}}"><i class="fa-solid fa-trash"></i></a></td>
+                                        <td class="controls"><a data-action="remove-special-skill" data-special-skill-index="{{idx}}" title="{{localize "AVANT.ItemRemoveRuleElement"}}"><i class="fa-solid fa-trash"></i></a></td>
                                     </tr>
                                 {{/each}}
                             </table>
                         {{else}}
-                            <a data-action="add-special-skill"><i class="fa-solid fa-plus"></i> {{localize "PF2E.Actor.NPC.SkillsEditor.AddSpecial"}}</a>
+                            <a data-action="add-special-skill"><i class="fa-solid fa-plus"></i> {{localize "AVANT.Actor.NPC.SkillsEditor.AddSpecial"}}</a>
                         {{/if}}
                     </section>
                 </li>
@@ -57,15 +57,15 @@
                     {{/each}}
                 </select>
                 <button type="button" data-action="add-skill">
-                    <i class="fa-solid fa-plus"></i> {{localize "PF2E.NPC.AddSkill"}}
+                    <i class="fa-solid fa-plus"></i> {{localize "AVANT.NPC.AddSkill"}}
                 </button>
             </li>
         </ol>
 
         <ol class="skills-list">
             <li class="skill header lore">
-                <div class="name">{{localize "PF2E.Lore"}}</div>
-                <div>{{localize "PF2E.ModifierTitle"}}</div>
+                <div class="name">{{localize "AVANT.Lore"}}</div>
+                <div>{{localize "AVANT.ModifierTitle"}}</div>
             </li>
 
             {{#each loreSkills as |skill|}}
@@ -92,10 +92,10 @@
                     type="text"
                     id="{{actor.uuid}}-new-lore"
                     area-label="{{localize "Name"}}"
-                    placeholder="{{localize "PF2E.Actor.NPC.SkillsEditor.LorePlaceholder"}}"
+                    placeholder="{{localize "AVANT.Actor.NPC.SkillsEditor.LorePlaceholder"}}"
                 />
                 <button type="button" data-action="add-lore">
-                    <i class="fa-solid fa-plus"></i> {{localize "PF2E.NPC.AddSkill"}}
+                    <i class="fa-solid fa-plus"></i> {{localize "AVANT.NPC.AddSkill"}}
                 </button>
             </li>
         </ol>

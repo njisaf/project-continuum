@@ -2,11 +2,11 @@ import type { BoostFlawState } from "@actor/character/apps/attribute-builder.ts"
 import type { SocketMessage } from "@scripts/socket.ts";
 import { htmlClosest, htmlQuery, htmlQueryAll, objectHasKey, tupleHasValue } from "@util";
 import * as R from "remeda";
-import type { PartyPF2e } from "../document.ts";
+import type { PartyAvant } from "../document.ts";
 import { resolveKingdomBoosts } from "./helpers.ts";
 import type { Kingdom } from "./model.ts";
 import { KingdomCHG } from "./schema.ts";
-import { KingdomSheetPF2e } from "./sheet.ts";
+import { KingdomSheetAvant } from "./sheet.ts";
 import type { KingdomAbility } from "./types.ts";
 import {
     KINGDOM_ABILITIES,
@@ -33,8 +33,8 @@ class KingdomBuilder extends FormApplication<Kingdom> {
         return {
             ...super.defaultOptions,
             classes: ["sheet", "kingdom-builder"],
-            title: game.i18n.localize("PF2E.Kingmaker.KingdomBuilder.Title"),
-            template: "systems/pf2e/templates/actors/party/kingdom/builder.hbs",
+            title: game.i18n.localize("AVANT.Kingmaker.KingdomBuilder.Title"),
+            template: "systems/avant/templates/actors/party/kingdom/builder.hbs",
             width: 560,
             height: "auto",
             submitOnChange: true,
@@ -51,7 +51,7 @@ class KingdomBuilder extends FormApplication<Kingdom> {
 
     static showToPlayers(options: { uuid: string; tab?: string }): void {
         const users = game.users.filter((u) => !u.isSelf);
-        game.socket.emit("system.pf2e", {
+        game.socket.emit("system.avant", {
             request: "showSheet",
             users: users.map((u) => u.uuid),
             document: options.uuid,
@@ -70,7 +70,7 @@ class KingdomBuilder extends FormApplication<Kingdom> {
         return this.object;
     }
 
-    get actor(): PartyPF2e {
+    get actor(): PartyAvant {
         return this.object.actor;
     }
 
@@ -93,7 +93,7 @@ class KingdomBuilder extends FormApplication<Kingdom> {
             // Also add a cancel button for the gm if this is the building phase
             if (this.kingdom.active === "building") {
                 buttons.unshift({
-                    label: "PF2E.Kingmaker.KingdomBuilder.CancelCreation",
+                    label: "AVANT.Kingmaker.KingdomBuilder.CancelCreation",
                     class: "cancel",
                     icon: "fa-solid fa-xmark",
                     onclick: () => {
@@ -170,8 +170,8 @@ class KingdomBuilder extends FormApplication<Kingdom> {
             build: this.#prepareAbilityBuilder(),
             finished,
             aspirationOptions: [
-                { value: "fame", label: "PF2E.Kingmaker.Kingdom.Aspiration.fame" },
-                { value: "infamy", label: "PF2E.Kingmaker.Kingdom.Aspiration.infamy" },
+                { value: "fame", label: "AVANT.Kingmaker.Kingdom.Aspiration.fame" },
+                { value: "infamy", label: "AVANT.Kingmaker.Kingdom.Aspiration.infamy" },
             ],
         };
     }
@@ -330,7 +330,7 @@ class KingdomBuilder extends FormApplication<Kingdom> {
             this.close();
             await this.kingdom.update({ active: true });
             await this.kingdom.importActivities();
-            new KingdomSheetPF2e(this.actor).render(true);
+            new KingdomSheetAvant(this.actor).render(true);
         });
     }
 

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -19,7 +19,7 @@ export class Migration860RMGroup extends MigrationBase {
     }
 }
 
-type MaybeWithDeletableGroup = ItemSourcePF2e & {
+type MaybeWithDeletableGroup = ItemSourceAvant & {
     system: {
         "-=group"?: unknown;
     };

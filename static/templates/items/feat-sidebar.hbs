@@ -1,6 +1,6 @@
 <div class="inventory-details">
     <div class="form-group">
-        <label>{{localize "PF2E.Category"}}</label>
+        <label>{{localize "AVANT.Category"}}</label>
         <select name="system.category">
             {{selectOptions categories selected=data.category localize=true}}
         </select>
@@ -8,7 +8,7 @@
 
     {{#if showPrerequisites}}
         <div class="prerequisites">
-            <h4 class="tags-title">{{localize "PF2E.FeatPrereqLabel"}}</h4>
+            <h4 class="tags-title">{{localize "AVANT.FeatPrereqLabel"}}</h4>
             <ul class="tags">
                 {{#each data.prerequisites.value as |v k|}}
                     <li class="tag tag_transparent {{k}}">{{v.value}}</li>

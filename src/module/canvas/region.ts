@@ -1,8 +1,8 @@
-import type { RegionDocumentPF2e } from "@scene/region-document/document.ts";
+import type { RegionDocumentAvant } from "@scene/region-document/document.ts";
 import type { RegionSource } from "types/foundry/common/documents/region.d.ts";
 
 /** Add support for drag/drop repositioning of regions. */
-class RegionPF2e<TDocument extends RegionDocumentPF2e = RegionDocumentPF2e> extends Region<TDocument> {
+class RegionAvant<TDocument extends RegionDocumentAvant = RegionDocumentAvant> extends Region<TDocument> {
     static override RENDER_FLAGS = { ...super.RENDER_FLAGS, refreshPosition: {} };
 
     override getSnappedPosition(position?: Point): Point {
@@ -58,4 +58,4 @@ class RegionPF2e<TDocument extends RegionDocumentPF2e = RegionDocumentPF2e> exte
     }
 }
 
-export { RegionPF2e };
+export { RegionAvant };

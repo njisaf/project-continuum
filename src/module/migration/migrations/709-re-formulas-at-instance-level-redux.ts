@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { Migration702REFormulasAtInstanceLevel } from "./702-re-formulas-at-instance-level.ts";
 
@@ -28,7 +28,7 @@ export class Migration709REFormulasAtInstanceLevelRedux extends Migration702REFo
     }
 
     /** Migrate nested roll formulas on rule elements */
-    override async updateItem(itemSource: ItemSourcePF2e): Promise<void> {
+    override async updateItem(itemSource: ItemSourceAvant): Promise<void> {
         const rules = itemSource.system.rules.filter((r) => r.key === "BattleForm");
         for (const rule of rules) {
             this.walkObject(rule);

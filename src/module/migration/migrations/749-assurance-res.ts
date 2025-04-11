@@ -1,6 +1,6 @@
 import { SkillSlug } from "@actor/types.ts";
 import { CORE_SKILL_SLUGS } from "@actor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { ChoiceSetSource } from "@module/rules/rule-element/choice-set/data.ts";
 import { setHasElement } from "@util";
@@ -14,11 +14,11 @@ export class Migration749AssuranceREs extends MigrationBase {
     }
 
     #newRules(skill: SkillSlug | "choice"): RuleElementSource[] {
-        const selector = skill === "choice" ? "{item|flags.pf2e.rulesSelections.assurance}" : skill;
+        const selector = skill === "choice" ? "{item|flags.avant.rulesSelections.assurance}" : skill;
         const rules = [
             {
                 key: "SubstituteRoll",
-                label: "PF2E.SpecificRule.SubstituteRoll.Assurance",
+                label: "AVANT.SpecificRule.SubstituteRoll.Assurance",
                 selector,
                 slug: "assurance",
                 value: 10,
@@ -37,7 +37,7 @@ export class Migration749AssuranceREs extends MigrationBase {
         return rules;
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const { slug, rules } = source.system;
         if (!(source.type === "feat" && slug?.startsWith("assurance"))) {
             return;

@@ -1,28 +1,28 @@
-import type { ActorAttributes, ActorDetails, ActorHitPoints, BaseActorSourcePF2e } from "@actor/data/base.ts";
+import type { ActorAttributes, ActorDetails, ActorHitPoints, BaseActorSourceAvant } from "@actor/data/base.ts";
 import type { Resistance, Weakness } from "@actor/data/iwr.ts";
 import { Immunity } from "@actor/data/iwr.ts";
 import { ActorHitPointsSchema, ActorSystemModel, ActorSystemSchema } from "@actor/data/model.ts";
-import { ActorSizePF2e } from "@actor/data/size.ts";
+import { ActorSizeAvant } from "@actor/data/size.ts";
 import type { ActorAlliance, ImmunityType, ResistanceType, WeaknessType } from "@actor/types.ts";
 import type { Rarity, Size } from "@module/data.ts";
 import { PublicationField, RarityField } from "@module/model.ts";
 import { DataUnionField, LaxArrayField } from "@system/schema-data-fields.ts";
 import type { ArmorClassTraceData } from "@system/statistic/armor-class.ts";
-import type { VehiclePF2e } from "./document.ts";
+import type { VehicleAvant } from "./document.ts";
 import type { VehicleTrait } from "./types.ts";
 import fields = foundry.data.fields;
 
 /** The stored source data of a vehicle actor */
-type VehicleSource = BaseActorSourcePF2e<"vehicle", VehicleSystemSource>;
+type VehicleSource = BaseActorSourceAvant<"vehicle", VehicleSystemSource>;
 
-class VehicleSystemData extends ActorSystemModel<VehiclePF2e, VehicleSystemSchema> {
+class VehicleSystemData extends ActorSystemModel<VehicleAvant, VehicleSystemSchema> {
     declare attributes: VehicleAttributes;
 
     declare alliance: ActorAlliance;
 
     static override defineSchema(): VehicleSystemSchema {
-        const vehicleTraits: Record<VehicleTrait, string> = CONFIG.PF2E.vehicleTraits;
-        const sizes: Record<Size, string> = CONFIG.PF2E.actorSizes;
+        const vehicleTraits: Record<VehicleTrait, string> = CONFIG.AVANT.vehicleTraits;
+        const sizes: Record<Size, string> = CONFIG.AVANT.actorSizes;
         const requiredInteger = ({ min, initial = min }: { min: number; initial?: number }) =>
             new fields.NumberField({ required: true, nullable: false, integer: true, min, initial });
         const blankableString = () =>
@@ -37,9 +37,9 @@ class VehicleSystemData extends ActorSystemModel<VehiclePF2e, VehicleSystemSchem
                 max: 50,
                 initial: 5,
             });
-        const immunityTypes: Record<ImmunityType, string> = CONFIG.PF2E.immunityTypes;
-        const weaknessTypes: Record<WeaknessType, string> = CONFIG.PF2E.weaknessTypes;
-        const resistanceTypes: Record<ResistanceType, string> = CONFIG.PF2E.resistanceTypes;
+        const immunityTypes: Record<ImmunityType, string> = CONFIG.AVANT.immunityTypes;
+        const weaknessTypes: Record<WeaknessType, string> = CONFIG.AVANT.weaknessTypes;
+        const resistanceTypes: Record<ResistanceType, string> = CONFIG.AVANT.resistanceTypes;
 
         return {
             ...super.defineSchema(),
@@ -197,7 +197,7 @@ class VehicleSystemData extends ActorSystemModel<VehiclePF2e, VehicleSystemSchem
 }
 
 interface VehicleSystemData
-    extends ActorSystemModel<VehiclePF2e, VehicleSystemSchema>,
+    extends ActorSystemModel<VehicleAvant, VehicleSystemSchema>,
         ModelPropsFromSchema<VehicleSystemSchema> {
     traits: VehicleTraits;
     attributes: VehicleAttributes;
@@ -228,7 +228,7 @@ type VehicleTraitsSchema = {
 };
 
 interface VehicleTraits extends ModelPropsFromSchema<VehicleTraitsSchema> {
-    size: ActorSizePF2e;
+    size: ActorSizeAvant;
 }
 
 type VehicleAttributesSchema = {

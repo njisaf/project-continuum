@@ -1,4 +1,4 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -7,8 +7,8 @@ import { MigrationBase } from "../base.ts";
 export class Migration741RollOptionToggleToItem extends MigrationBase {
     static override version = 0.741;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
-        if (!R.isPlainObject(source.flags.pf2e?.rollOptions)) return;
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
+        if (!R.isPlainObject(source.flags.avant?.rollOptions)) return;
 
         const rules = source.items
             .flatMap((i) => i.system.rules)
@@ -22,7 +22,7 @@ export class Migration741RollOptionToggleToItem extends MigrationBase {
                     r.option.length > 0,
             );
 
-        const rollOptions = source.flags.pf2e.rollOptions;
+        const rollOptions = source.flags.avant.rollOptions;
 
         for (const rule of rules) {
             const domain = rollOptions[rule.domain];

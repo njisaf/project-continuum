@@ -1,11 +1,11 @@
-import type { ActorType, CharacterPF2e, NPCPF2e } from "@actor";
-import { RuleElementPF2e } from "./base.ts";
+import type { ActorType, CharacterAvant, NPCAvant } from "@actor";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema } from "./data.ts";
 
 /**
  * @category RuleElement
  */
-class DexterityModifierCapRuleElement extends RuleElementPF2e<DexterityModifierCapRuleSchema> {
+class DexterityModifierCapRuleElement extends RuleElementAvant<DexterityModifierCapRuleSchema> {
     protected static override validActorTypes: ActorType[] = ["character", "npc"];
 
     static override defineSchema(): DexterityModifierCapRuleSchema {
@@ -31,9 +31,9 @@ class DexterityModifierCapRuleElement extends RuleElementPF2e<DexterityModifierC
 }
 
 interface DexterityModifierCapRuleElement
-    extends RuleElementPF2e<DexterityModifierCapRuleSchema>,
+    extends RuleElementAvant<DexterityModifierCapRuleSchema>,
         ModelPropsFromRESchema<DexterityModifierCapRuleSchema> {
-    get actor(): CharacterPF2e | NPCPF2e;
+    get actor(): CharacterAvant | NPCAvant;
 }
 
 type DexterityModifierCapRuleSchema = RuleElementSchema & {

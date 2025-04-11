@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e, WeaponSource } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant, WeaponSource } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { ChoiceSetSchema } from "@module/rules/rule-element/choice-set/data.ts";
 import { PredicateStatement } from "@system/predication.ts";
@@ -17,13 +17,13 @@ export class Migration745EffectTargetToChoiceSet extends MigrationBase {
 
     #toChoiceSet(
         rule: EffectTargetSource,
-        itemSource: ItemSourcePF2e,
-        actorSource: ActorSourcePF2e | null,
+        itemSource: ItemSourceAvant,
+        actorSource: ActorSourceAvant | null,
     ): OwnedWeaponChoiceSetSource {
         const newRE: OwnedWeaponChoiceSetSource = {
             key: "ChoiceSet",
             choices: { ownedItems: true, types: ["weapon"] },
-            prompt: "PF2E.SpecificRule.Prompt.Weapon",
+            prompt: "AVANT.SpecificRule.Prompt.Weapon",
         };
 
         if (typeof rule.targetId === "string" && actorSource) {
@@ -39,7 +39,7 @@ export class Migration745EffectTargetToChoiceSet extends MigrationBase {
             newRE.choices.predicate = { all: ["item:equipped"] };
         } else if (itemSource.system.slug === "shillelagh") {
             newRE.adjustName = false;
-            newRE.prompt = "PF2E.SpecificRule.Prompt.Shillelagh";
+            newRE.prompt = "AVANT.SpecificRule.Prompt.Shillelagh";
             newRE.choices.predicate = {
                 all: ["item:equipped"],
                 any: ["item:base:club", "item:base:staff"],
@@ -51,7 +51,7 @@ export class Migration745EffectTargetToChoiceSet extends MigrationBase {
         return newRE;
     }
 
-    override async updateItem(source: ItemSourcePF2e, actorSource?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actorSource?: ActorSourceAvant): Promise<void> {
         const { rules } = source.system;
         for (const rule of rules) {
             if (this.#isEffectTargetRE(rule)) {
@@ -62,7 +62,7 @@ export class Migration745EffectTargetToChoiceSet extends MigrationBase {
                 );
                 for (const other of otherRules) {
                     const flag = sluggify(source.system.slug ?? source.name, { camel: "dromedary" });
-                    other.selector = other.selector.replace(/\bdata\.target\b/, `flags.pf2e.rulesSelections.${flag}`);
+                    other.selector = other.selector.replace(/\bdata\.target\b/, `flags.avant.rulesSelections.${flag}`);
                 }
             }
         }

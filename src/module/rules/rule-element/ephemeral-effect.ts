@@ -1,14 +1,14 @@
 import { DeferredValueParams } from "@actor/modifiers.ts";
-import { ItemPF2e } from "@item";
+import { ItemAvant } from "@item";
 import { ConditionSource, EffectSource } from "@item/base/data/index.ts";
 import { UUIDUtils } from "@util/uuid.ts";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, RuleElementSchema } from "./data.ts";
 import { ItemAlteration, ItemAlterationSchema } from "./item-alteration/alteration.ts";
 import fields = foundry.data.fields;
 
 /** An effect that applies ephemerally during a single action, such as a strike */
-class EphemeralEffectRuleElement extends RuleElementPF2e<EphemeralEffectSchema> {
+class EphemeralEffectRuleElement extends RuleElementAvant<EphemeralEffectSchema> {
     static override defineSchema(): EphemeralEffectSchema {
         const alterationField = new fields.EmbeddedDataField(ItemAlteration);
         return {
@@ -51,8 +51,8 @@ class EphemeralEffectRuleElement extends RuleElementPF2e<EphemeralEffectSchema> 
                 return null;
             }
             const effect: ClientDocument | null =
-                game.pf2e.ConditionManager.conditions.get(uuid) ?? (await fromUuid(uuid));
-            if (!(effect instanceof ItemPF2e && effect.isOfType("condition", "effect"))) {
+                game.avant.ConditionManager.conditions.get(uuid) ?? (await fromUuid(uuid));
+            if (!(effect instanceof ItemAvant && effect.isOfType("condition", "effect"))) {
                 this.failValidation(`unable to find effect or condition item with uuid "${uuid}"`);
                 return null;
             }
@@ -91,7 +91,7 @@ class EphemeralEffectRuleElement extends RuleElementPF2e<EphemeralEffectSchema> 
 }
 
 interface EphemeralEffectRuleElement
-    extends RuleElementPF2e<EphemeralEffectSchema>,
+    extends RuleElementAvant<EphemeralEffectSchema>,
         ModelPropsFromRESchema<EphemeralEffectSchema> {}
 
 type EphemeralEffectSchema = RuleElementSchema & {

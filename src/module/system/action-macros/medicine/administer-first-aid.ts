@@ -1,25 +1,25 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { SingleCheckAction } from "@actor/actions/index.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { CheckDC } from "@system/degree-of-success.ts";
 import { Statistic } from "@system/statistic/index.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-const PREFIX = "PF2E.Actions.AdministerFirstAid";
+const PREFIX = "AVANT.Actions.AdministerFirstAid";
 
 const ADMINISTER_FIRST_AID_VARIANTS = ["stabilize", "stop-bleeding"] as const;
 type AdministerFirstAidVariant = (typeof ADMINISTER_FIRST_AID_VARIANTS)[number];
 
-function stabilizeDifficultyClass(target: ActorPF2e): CheckDC | null {
+function stabilizeDifficultyClass(target: ActorAvant): CheckDC | null {
     if (!target?.isOfType("creature")) return null;
 
     const { dying } = target.attributes;
     if (!dying?.value) {
         throw new Error(game.i18n.localize(`${PREFIX}.Warning.TargetNotDying`));
     }
-    const dcModifier = new ModifierPF2e({
+    const dcModifier = new ModifierAvant({
         slug: "dying-recovery",
-        label: "PF2E.ModifierTitle",
+        label: "AVANT.ModifierTitle",
         modifier: 5 + dying.recoveryDC + dying.value - 10,
     });
 

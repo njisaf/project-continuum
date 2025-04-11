@@ -1,26 +1,26 @@
 import { createTooltipster } from "@util/destroyables.ts";
-import type { CharacterPF2e } from "./document.ts";
+import type { CharacterAvant } from "./document.ts";
 
 export class PCSheetTabManager {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
 
     link: HTMLElement;
 
-    constructor(actor: CharacterPF2e, link: HTMLAnchorElement) {
+    constructor(actor: CharacterAvant, link: HTMLAnchorElement) {
         this.actor = actor;
         this.link = link;
         this.initialize();
     }
 
     async initialize(): Promise<void> {
-        const content = await renderTemplate("systems/pf2e/templates/actors/character/manage-tabs.hbs");
+        const content = await renderTemplate("systems/avant/templates/actors/character/manage-tabs.hbs");
         createTooltipster(this.link, {
             content,
             contentAsHTML: true,
             delay: 250,
             interactive: true,
             theme: "crb-hover",
-            title: game.i18n.localize("PF2E.TabManageTabsLabel"),
+            title: game.i18n.localize("AVANT.TabManageTabsLabel"),
             trigger: "custom",
             triggerOpen: { click: true },
             triggerClose: { originClick: true, mouseleave: true },
@@ -32,7 +32,7 @@ export class PCSheetTabManager {
     /** Set each checkbox to be checked according to its corresponding tab visibility */
     #onReady(tooltip: HTMLElement | null = null): void {
         if (!tooltip) return;
-        const tabVisibility: Record<string, boolean> = this.actor.flags.pf2e.sheetTabs;
+        const tabVisibility: Record<string, boolean> = this.actor.flags.avant.sheetTabs;
         const nav = this.link.closest("nav");
         const tabs = nav?.querySelectorAll<HTMLAnchorElement>("a.item[data-tab]") ?? [];
         // Show the hidden tab buttons as present but semi-transparent
@@ -66,10 +66,10 @@ export class PCSheetTabManager {
 
             if (checkbox.checked) {
                 tab?.classList.remove("to-hide");
-                await this.actor.update({ [`flags.pf2e.sheetTabs.-=${tabName}`]: null }, { render: false });
+                await this.actor.update({ [`flags.avant.sheetTabs.-=${tabName}`]: null }, { render: false });
             } else {
                 tab?.classList.add("to-hide");
-                await this.actor.update({ [`flags.pf2e.sheetTabs.${tabName}`]: false }, { render: false });
+                await this.actor.update({ [`flags.avant.sheetTabs.${tabName}`]: false }, { render: false });
             }
 
             for (const c of checkboxes) {

@@ -1,4 +1,4 @@
-import type { ActorPF2e, CreaturePF2e } from "@actor";
+import type { ActorAvant, CreatureAvant } from "@actor";
 import { SenseData } from "@actor/creature/data.ts";
 import { Sense } from "@actor/creature/sense.ts";
 import { AttributeString } from "@actor/types.ts";
@@ -6,7 +6,7 @@ import * as R from "remeda";
 import type { StatisticData, StatisticTraceData } from "./data.ts";
 import { Statistic, type RollOptionConfig } from "./statistic.ts";
 
-class PerceptionStatistic<TActor extends ActorPF2e = ActorPF2e> extends Statistic<TActor> {
+class PerceptionStatistic<TActor extends ActorAvant = ActorAvant> extends Statistic<TActor> {
     /** Special senses possessed by the actor */
     senses: Collection<Sense>;
 
@@ -47,7 +47,7 @@ class PerceptionStatistic<TActor extends ActorPF2e = ActorPF2e> extends Statisti
         return R.uniqueBy(preparedSenses, (s) => s.type);
     }
 
-    override getTraceData(this: Statistic<CreaturePF2e>): PerceptionTraceData<AttributeString>;
+    override getTraceData(this: Statistic<CreatureAvant>): PerceptionTraceData<AttributeString>;
     override getTraceData(): PerceptionTraceData;
     override getTraceData(): PerceptionTraceData {
         return {

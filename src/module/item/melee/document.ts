@@ -1,25 +1,25 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { SIZE_TO_REACH } from "@actor/creature/values.ts";
-import { ItemPF2e, type WeaponPF2e } from "@item";
+import { ItemAvant, type WeaponAvant } from "@item";
 import type { RangeData } from "@item/types.ts";
 import type { BaseWeaponType, WeaponCategory, WeaponGroup } from "@item/weapon/types.ts";
-import type { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import type { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { simplifyFormula } from "@scripts/dice.ts";
 import { DamageCategorization } from "@system/damage/helpers.ts";
-import { ConvertedNPCDamage, WeaponDamagePF2e } from "@system/damage/weapon.ts";
+import { ConvertedNPCDamage, WeaponDamageAvant } from "@system/damage/weapon.ts";
 import { sluggify, tupleHasValue } from "@util";
 import * as R from "remeda";
 import type { MeleeFlags, MeleeSource, MeleeSystemData } from "./data.ts";
 import type { NPCAttackTrait } from "./types.ts";
 
-class MeleePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+class MeleeAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     /** Set during data preparation if a linked weapon is found */
     declare category: WeaponCategory | null;
     declare group: WeaponGroup | null;
     declare baseType: BaseWeaponType | null;
 
     static override get validTraits(): Record<NPCAttackTrait, string> {
-        return CONFIG.PF2E.npcAttackTraits;
+        return CONFIG.AVANT.npcAttackTraits;
     }
 
     get traits(): Set<NPCAttackTrait> {
@@ -93,7 +93,7 @@ class MeleePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
             };
         }
 
-        return WeaponDamagePF2e.npcDamageToWeaponDamage(instance);
+        return WeaponDamageAvant.npcDamageToWeaponDamage(instance);
     }
 
     get dealsDamage(): boolean {
@@ -118,8 +118,8 @@ class MeleePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     }
 
     /** The linked inventory weapon, if this melee item was spawned from one */
-    get linkedWeapon(): WeaponPF2e<ActorPF2e> | null {
-        const item = this.actor?.items.get(this.flags.pf2e.linkedWeapon ?? "");
+    get linkedWeapon(): WeaponAvant<ActorAvant> | null {
+        const item = this.actor?.items.get(this.flags.avant.linkedWeapon ?? "");
         return item?.isOfType("weapon") ? item : null;
     }
 
@@ -167,7 +167,7 @@ class MeleePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
                 instance.damage = new Roll(instance.damage)._formula;
             } catch {
                 const message = `Unable to parse damage formula on NPC attack ${this.name}`;
-                console.warn(`PF2e System | ${message}`);
+                console.warn(`Avant System | ${message}`);
                 instance.damage = "1d4";
             }
 
@@ -221,17 +221,17 @@ class MeleePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Ite
     override async toMessage(
         _event?: MouseEvent | JQuery.TriggeredEvent,
         { create = true }: { create?: boolean } = {},
-    ): Promise<ChatMessagePF2e | undefined> {
+    ): Promise<ChatMessageAvant | undefined> {
         if (!create) return undefined; // Nothing useful to do
         const strike = this.actor?.system.actions?.find((s) => s.item === this);
-        return strike ? game.pf2e.rollActionMacro({ itemId: this.id, slug: strike.slug }) : undefined;
+        return strike ? game.avant.rollActionMacro({ itemId: this.id, slug: strike.slug }) : undefined;
     }
 }
 
-interface MeleePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface MeleeAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     flags: MeleeFlags;
     readonly _source: MeleeSource;
     system: MeleeSystemData;
 }
 
-export { MeleePF2e };
+export { MeleeAvant };

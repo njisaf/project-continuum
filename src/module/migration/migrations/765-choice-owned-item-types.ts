@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration765ChoiceOwnedItemTypes extends MigrationBase {
     static override version = 0.765;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         for (const rule of source.system.rules) {
             if (rule.key === "ChoiceSet" && "choices" in rule && R.isPlainObject(rule.choices)) {
                 if (rule.choices.ownedItems && !rule.choices.types) {

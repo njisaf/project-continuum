@@ -1,17 +1,17 @@
 import { IWRApplication } from "@system/damage/iwr.ts";
 import { htmlQuery } from "@util";
-import { ChatMessagePF2e } from "../document.ts";
+import { ChatMessageAvant } from "../document.ts";
 
 export const DamageTaken = {
-    listen: async (message: ChatMessagePF2e, html: HTMLElement): Promise<void> => {
+    listen: async (message: ChatMessageAvant, html: HTMLElement): Promise<void> => {
         const damageTakenCard = htmlQuery(html, ".damage-taken");
         if (!damageTakenCard) return;
 
         // Obscure target name if "tokenSetsNameVisibility" setting is enabled
-        const settingEnabled = game.pf2e.settings.tokens.nameVisibility;
+        const settingEnabled = game.avant.settings.tokens.nameVisibility;
         if (!game.user.isGM && settingEnabled && message.token && !message.token.playersCanSeeName) {
             const nameElem = htmlQuery(damageTakenCard, ".target-name");
-            if (nameElem) nameElem.innerText = game.i18n.localize("PF2E.Actor.ApplyDamage.TheTarget");
+            if (nameElem) nameElem.innerText = game.i18n.localize("AVANT.Actor.ApplyDamage.TheTarget");
         }
 
         // Add IWR-application tooltip
@@ -43,7 +43,7 @@ export const DamageTaken = {
             $(iwrInfo).tooltipster({
                 theme: "crb-hover",
                 maxWidth: 400,
-                content: await renderTemplate("systems/pf2e/templates/chat/damage/iwr-breakdown.hbs", {
+                content: await renderTemplate("systems/avant/templates/chat/damage/iwr-breakdown.hbs", {
                     applications: iwrApplications,
                 }),
                 contentAsHTML: true,

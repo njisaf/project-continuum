@@ -7,11 +7,11 @@ import {
     StrictBooleanField,
     StrictStringField,
 } from "@system/schema-data-fields.ts";
-import { ErrorPF2e, sluggify } from "@util";
+import { ErrorAvant, sluggify } from "@util";
 import * as R from "remeda";
 import { RollOptionToggle } from "../../synthetics.ts";
 import { AELikeRuleElement } from "../ae-like.ts";
-import { RuleElementOptions, RuleElementPF2e } from "../base.ts";
+import { RuleElementOptions, RuleElementAvant } from "../base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSource } from "../data.ts";
 import { Suboption, type RollOptionSchema } from "./data.ts";
 
@@ -19,7 +19,7 @@ import { Suboption, type RollOptionSchema } from "./data.ts";
  * Set a roll option at a specificed domain
  * @category RuleElement
  */
-class RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema> {
+class RollOptionRuleElement extends RuleElementAvant<RollOptionSchema> {
     /** True if this roll option has a suboptions configuration */
     hasSubOptions: boolean;
 
@@ -35,7 +35,7 @@ class RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema> {
         }
 
         // Prevent all further processing of this RE if it is a totm toggle and the setting is disabled
-        if (this.toggleable === "totm" && !game.pf2e.settings.totm) {
+        if (this.toggleable === "totm" && !game.avant.settings.totm) {
             this.ignored = true;
             return;
         }
@@ -168,7 +168,7 @@ class RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema> {
 
     /** Force false totm toggleable roll options if the totmToggles setting is disabled */
     override resolveValue(): boolean {
-        if (this.toggleable === "totm" && !game.settings.get("pf2e", "totmToggles")) {
+        if (this.toggleable === "totm" && !game.settings.get("avant", "totmToggles")) {
             return false;
         }
         return this.alwaysActive ? true : !!super.resolveValue(this.value);
@@ -179,7 +179,7 @@ class RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema> {
         const suboptions = this.suboptions;
         if (Array.isArray(suboptions)) return suboptions;
 
-        const data = fu.getProperty(CONFIG.PF2E, suboptions.config);
+        const data = fu.getProperty(CONFIG.AVANT, suboptions.config);
         const choices = processChoicesFromData(data);
         return choices.map(
             (choice) =>
@@ -358,9 +358,9 @@ class RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema> {
             const flagKey = sluggify(this.#resolveOption(), { camel: "dromedary" });
             if (value) {
                 const flagValue = /^\d+$/.test(this.selection) ? Number(this.selection) : this.selection;
-                this.item.flags.pf2e.rulesSelections[flagKey] = flagValue;
+                this.item.flags.avant.rulesSelections[flagKey] = flagValue;
             } else {
-                this.item.flags.pf2e.rulesSelections[flagKey] ??= null;
+                this.item.flags.avant.rulesSelections[flagKey] ??= null;
             }
         }
     }
@@ -390,7 +390,7 @@ class RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema> {
      * @returns the new value if successful or otherwise `null`
      */
     async toggle(value = !this.resolveValue(), selection: string | null = null): Promise<boolean | null> {
-        if (!this.toggleable) throw ErrorPF2e("Attempted to toggle non-toggleable roll option");
+        if (!this.toggleable) throw ErrorAvant("Attempted to toggle non-toggleable roll option");
 
         const actor = this.actor;
         const updates: { _id: string; "system.rules": RuleElementSource[] }[] = [];
@@ -447,7 +447,7 @@ class RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema> {
     }
 
     /** Remove the parent effect if configured so */
-    override async afterRoll({ domains, rollOptions }: RuleElementPF2e.AfterRollParams): Promise<void> {
+    override async afterRoll({ domains, rollOptions }: RuleElementAvant.AfterRollParams): Promise<void> {
         const option = this.#resolveOption({ withSuboption: true });
         if (
             !this.ignored &&
@@ -457,16 +457,16 @@ class RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema> {
             domains.includes(this.domain) &&
             rollOptions.has(option)
         ) {
-            if (game.settings.get("pf2e", "automation.removeExpiredEffects")) {
+            if (game.settings.get("avant", "automation.removeExpiredEffects")) {
                 await this.item.delete();
-            } else if (game.settings.get("pf2e", "automation.effectExpiration")) {
+            } else if (game.settings.get("avant", "automation.effectExpiration")) {
                 await this.item.update({ "system.duration.value": -1, "system.expired": true });
             }
         }
     }
 }
 
-interface RollOptionRuleElement extends RuleElementPF2e<RollOptionSchema>, ModelPropsFromRESchema<RollOptionSchema> {
+interface RollOptionRuleElement extends RuleElementAvant<RollOptionSchema>, ModelPropsFromRESchema<RollOptionSchema> {
     value: boolean | string;
 }
 

@@ -1,11 +1,11 @@
-import type { ActorPF2e, CreaturePF2e } from "@actor";
+import type { ActorAvant, CreatureAvant } from "@actor";
 import { onClickCreateSpell } from "@actor/sheet/helpers.ts";
 import { ItemSummaryRenderer } from "@actor/sheet/item-summary-renderer.ts";
-import type { ItemPF2e, SpellPF2e } from "@item";
-import { ItemSourcePF2e, SpellSource } from "@item/base/data/index.ts";
-import type { SpellcastingEntryPF2e, SpellcastingSheetData } from "@item/spellcasting-entry/index.ts";
+import type { ItemAvant, SpellAvant } from "@item";
+import { ItemSourceAvant, SpellSource } from "@item/base/data/index.ts";
+import type { SpellcastingEntryAvant, SpellcastingSheetData } from "@item/spellcasting-entry/index.ts";
 import { ZeroToTen } from "@module/data.ts";
-import { ErrorPF2e, htmlClosest, htmlQueryAll } from "@util";
+import { ErrorAvant, htmlClosest, htmlQueryAll } from "@util";
 import MiniSearch from "minisearch";
 import * as R from "remeda";
 
@@ -13,20 +13,20 @@ import * as R from "remeda";
  * Sheet used to render the the spell list for prepared casting.
  * It overrides the actor sheet to inherit important drag/drop behavior for actor items (the spells).
  */
-class SpellPreparationSheet<TActor extends CreaturePF2e> extends ActorSheet<TActor, ItemPF2e> {
+class SpellPreparationSheet<TActor extends CreatureAvant> extends ActorSheet<TActor, ItemAvant> {
     /** Implementation used to handle the toggling and rendering of item summaries */
     itemRenderer = new ItemSummaryRenderer(this);
 
-    item: SpellcastingEntryPF2e<TActor>;
+    item: SpellcastingEntryAvant<TActor>;
 
-    #searchEngine = new MiniSearch<Pick<SpellPF2e<TActor>, "id" | "name">>({
+    #searchEngine = new MiniSearch<Pick<SpellAvant<TActor>, "id" | "name">>({
         fields: ["name"],
         idField: "id",
         processTerm: (t) => (t.length > 1 ? t.toLocaleLowerCase(game.i18n.lang) : null),
         searchOptions: { combineWith: "AND", prefix: true },
     });
 
-    constructor(item: SpellcastingEntryPF2e<TActor>, options: Partial<ActorSheetOptions>) {
+    constructor(item: SpellcastingEntryAvant<TActor>, options: Partial<ActorSheetOptions>) {
         super(item.actor, options);
         this.item = item;
     }
@@ -37,7 +37,7 @@ class SpellPreparationSheet<TActor extends CreaturePF2e> extends ActorSheet<TAct
             classes: ["default", "sheet", "spellcasting-entry", "preparation"],
             width: 480,
             height: 600,
-            template: "systems/pf2e/templates/actors/spell-preparation-sheet.hbs",
+            template: "systems/avant/templates/actors/spell-preparation-sheet.hbs",
             scrollY: [".sheet-content"],
             dragDrop: [{ dragSelector: "li[data-item-id]" }],
             filters: [{ inputSelector: "input[type=search]", contentSelector: "ol.spell-list" }],
@@ -51,7 +51,7 @@ class SpellPreparationSheet<TActor extends CreaturePF2e> extends ActorSheet<TAct
     }
 
     override get title(): string {
-        return game.i18n.format("PF2E.Actor.Creature.SpellPreparation.Title", { actor: this.actor.name });
+        return game.i18n.format("AVANT.Actor.Creature.SpellPreparation.Title", { actor: this.actor.name });
     }
 
     /**
@@ -117,16 +117,16 @@ class SpellPreparationSheet<TActor extends CreaturePF2e> extends ActorSheet<TAct
                 case "browse-spells": {
                     const maxRank = Number(anchor.dataset.rank) || 10;
                     const category = anchor.dataset.category ?? null;
-                    game.pf2e.compendiumBrowser.openSpellTab(this.item, maxRank, category);
+                    game.avant.compendiumBrowser.openSpellTab(this.item, maxRank, category);
                 }
             }
         });
     }
 
-    #getSpellFromEvent(event: MouseEvent): SpellPF2e<ActorPF2e> {
+    #getSpellFromEvent(event: MouseEvent): SpellAvant<ActorAvant> {
         const itemId = htmlClosest(event.target, "li[data-item-id]")?.dataset.itemId;
         const item = this.actor.items.get(itemId, { strict: true });
-        if (!item.isOfType("spell")) throw ErrorPF2e("Unexpected item type");
+        if (!item.isOfType("spell")) throw ErrorAvant("Unexpected item type");
 
         return item;
     }
@@ -147,9 +147,9 @@ class SpellPreparationSheet<TActor extends CreaturePF2e> extends ActorSheet<TAct
 
     /** Allow adding new spells to the shortlist by dragging directly into the window */
     protected override async _onDropItemCreate(
-        itemSource: ItemSourcePF2e | ItemSourcePF2e[],
-    ): Promise<ItemPF2e<TActor>[]>;
-    protected override async _onDropItemCreate(itemSource: ItemSourcePF2e | ItemSourcePF2e[]): Promise<Item<TActor>[]> {
+        itemSource: ItemSourceAvant | ItemSourceAvant[],
+    ): Promise<ItemAvant<TActor>[]>;
+    protected override async _onDropItemCreate(itemSource: ItemSourceAvant | ItemSourceAvant[]): Promise<Item<TActor>[]> {
         const sources = Array.isArray(itemSource) ? itemSource : [itemSource];
         const spellSources = sources.filter((source): source is SpellSource => source.type === "spell");
         for (const spellSource of spellSources) {
@@ -160,7 +160,7 @@ class SpellPreparationSheet<TActor extends CreaturePF2e> extends ActorSheet<TAct
     }
 
     /** Allow transferring spells between open windows */
-    protected override async _onSortItem(event: DragEvent, itemData: ItemSourcePF2e): Promise<ItemPF2e[]> {
+    protected override async _onSortItem(event: DragEvent, itemData: ItemSourceAvant): Promise<ItemAvant[]> {
         if (itemData.type !== "spell") return [];
 
         const spell = this.actor.items.get(itemData._id!);
@@ -180,7 +180,7 @@ class SpellPreparationSheet<TActor extends CreaturePF2e> extends ActorSheet<TAct
     }
 }
 
-interface SpellPreparationSheetData<TActor extends CreaturePF2e> extends ActorSheetData<TActor> {
+interface SpellPreparationSheetData<TActor extends CreatureAvant> extends ActorSheetData<TActor> {
     owner: boolean;
     entry: SpellcastingSheetData;
     maxRank: ZeroToTen;

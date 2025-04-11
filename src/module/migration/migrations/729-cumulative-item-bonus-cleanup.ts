@@ -1,4 +1,4 @@
-import { ArmorSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ArmorSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Clean up after bug overhauling cumulative item bonuses */
@@ -12,18 +12,18 @@ export class Migration729CumulativeItemBonusCleanup extends MigrationBase {
         "sarkorian-god-caller-garb",
     ]);
 
-    private isExplorersClothing(source: ItemSourcePF2e): source is ArmorSource {
+    private isExplorersClothing(source: ItemSourceAvant): source is ArmorSource {
         return source.type === "armor" && this.#explorersClothingVariants.has(source.system.slug ?? "");
     }
 
-    private isStanceEffectOrAnimalSkinFeat(source: ItemSourcePF2e): boolean {
+    private isStanceEffectOrAnimalSkinFeat(source: ItemSourceAvant): boolean {
         return (
             (source.type === "effect" && source.system.slug === "stance-mountain-stance") ||
             (source.type === "feat" && source.system.slug === "animal-skin")
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (this.isExplorersClothing(source)) {
             // Early versions of explorer's clothing lacked group, base, and possibly the comfort trait
             source.system.category = "unarmored";

@@ -1,7 +1,7 @@
 import { ZeroToTwo } from "@module/data.ts";
 
-interface SceneFlagsPF2e extends DocumentFlags {
-    pf2e: {
+interface SceneFlagsAvant extends DocumentFlags {
+    avant: {
         [key: string]: unknown;
         hearingRange: number | null;
         /** Rules-based vision override for the scene: `null` indicates the world setting is used. */
@@ -18,7 +18,7 @@ enum LightLevels {
 }
 
 type LightLevel = ZeroToTwo;
-type EnvironmentType = keyof typeof CONFIG.PF2E.environmentTypes;
+type EnvironmentType = keyof typeof CONFIG.AVANT.environmentTypes;
 
 export { LightLevels };
-export type { LightLevel, SceneFlagsPF2e, EnvironmentType };
+export type { LightLevel, SceneFlagsAvant, EnvironmentType };

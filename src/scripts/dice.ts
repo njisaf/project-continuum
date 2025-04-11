@@ -1,17 +1,17 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import { createSimpleFormula, parseTermsFromSimpleFormula } from "@system/damage/formula.ts";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 
 /**
  * @category Other
  */
-class DicePF2e {
+class DiceAvant {
     _rolled?: boolean;
     terms?: string[];
 
     /**
-     * A standardized helper function for managing core PF2e "d20 rolls"
+     * A standardized helper function for managing core Avant "d20 rolls"
      *
      * Holding SHIFT, ALT, or CTRL when the attack is rolled will "fast-forward".
      * This chooses the default options of a normal attack with no bonus, Advantage, or Disadvantage respectively
@@ -45,9 +45,9 @@ class DicePF2e {
         rollType = "",
     }: {
         event: MouseEvent | JQuery.TriggeredEvent;
-        item?: ItemPF2e<ActorPF2e> | null;
+        item?: ItemAvant<ActorAvant> | null;
         parts: (string | number)[];
-        actor?: ActorPF2e;
+        actor?: ActorAvant;
         data: Record<string, unknown>;
         template?: string;
         title: string;
@@ -68,10 +68,10 @@ class DicePF2e {
             let flav = flavor instanceof Function ? flavor(rollParts, data) : title;
             if (adv === 1) {
                 rollParts[0] = ["2d20kh"];
-                flav = game.i18n.format("PF2E.Roll.FortuneTitle", { title: title });
+                flav = game.i18n.format("AVANT.Roll.FortuneTitle", { title: title });
             } else if (adv === -1) {
                 rollParts[0] = ["2d20kl"];
-                flav = game.i18n.format("PF2E.Roll.MisfortuneTitle", { title: title });
+                flav = game.i18n.format("AVANT.Roll.MisfortuneTitle", { title: title });
             }
 
             // Don't include situational bonuses unless they are defined
@@ -95,7 +95,7 @@ class DicePF2e {
                     speaker,
                     flavor: flav,
                     flags: {
-                        pf2e: {
+                        avant: {
                             context: {
                                 type: rollType,
                             },
@@ -126,7 +126,7 @@ class DicePF2e {
             if (parts.indexOf("@statusBonus") === -1) parts = parts.concat(["@statusBonus"]);
 
             // Render modal dialog
-            template = template || "systems/pf2e/templates/chat/roll-dialog.hbs";
+            template = template || "systems/avant/templates/chat/roll-dialog.hbs";
             const dialogData = {
                 data,
                 rollMode,
@@ -143,25 +143,25 @@ class DicePF2e {
                         content,
                         buttons: {
                             advantage: {
-                                label: game.i18n.localize("PF2E.Roll.Fortune"),
+                                label: game.i18n.localize("AVANT.Roll.Fortune"),
                                 callback: async (html) => {
                                     roll = await _roll(parts, 1, html);
                                 },
                             },
                             normal: {
-                                label: game.i18n.localize("PF2E.Roll.Normal"),
+                                label: game.i18n.localize("AVANT.Roll.Normal"),
                                 callback: async (html) => {
                                     roll = await _roll(parts, 0, html);
                                 },
                             },
                             disadvantage: {
-                                label: game.i18n.localize("PF2E.Roll.Misfortune"),
+                                label: game.i18n.localize("AVANT.Roll.Misfortune"),
                                 callback: async (html) => {
                                     roll = await _roll(parts, -1, html);
                                 },
                             },
                         },
-                        default: game.i18n.localize("PF2E.Roll.Normal"),
+                        default: game.i18n.localize("AVANT.Roll.Normal"),
                         close: (html) => {
                             if (onClose) onClose(html, parts, data);
                             resolve(roll);
@@ -177,7 +177,7 @@ class DicePF2e {
 
     alter(add: number, multiply: number): this {
         const rgx = new RegExp(foundry.dice.terms.DiceTerm.REGEXP, "g");
-        if (this._rolled) throw ErrorPF2e("You may not alter a Roll which has already been rolled");
+        if (this._rolled) throw ErrorAvant("You may not alter a Roll which has already been rolled");
 
         // Update dice roll terms
         this.terms = this.terms?.map((t) =>
@@ -217,4 +217,4 @@ function simplifyFormula(formula: string): string {
     return createSimpleFormula(terms);
 }
 
-export { DicePF2e, simplifyFormula };
+export { DiceAvant, simplifyFormula };

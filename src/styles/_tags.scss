@@ -286,7 +286,7 @@ tags.tags.paizo-style {
     }
 }
 
-tags.tagify.pf2e-tagify {
+tags.tagify.avant-tagify {
     --tag-bg: var(--color-text-light-3);
     --tag-pad: 0.125rem;
     --tag-text-color: var(--text-dark);
@@ -340,7 +340,7 @@ tags.tagify.pf2e-tagify {
 }
 
 // Prevents early word wrap on certain forms
-tags.pf2e-tagify,
+tags.avant-tagify,
 tags.tags.paizo-style {
     &.tagify--hasMaxTags > span {
         display: none;
@@ -385,7 +385,7 @@ tags.tags.paizo-style {
 // Set core input width for tagify-tags element
 tagify-tags {
     .tags,
-    .pf2e-tagify {
+    .avant-tagify {
         width: calc(100% - 2px);
     }
 }

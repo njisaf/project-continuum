@@ -8,7 +8,7 @@
                 <a
                     class="edit-mode-button"
                     data-action="toggle-edit-mode"
-                    data-tooltip="PF2E.EditHazardLabel"
+                    data-tooltip="AVANT.EditHazardLabel"
                 ><i class="fa-solid fa-lock{{#if editing}}-open{{/if}}"></i></a>
             {{/if}}
         </div>
@@ -16,7 +16,7 @@
 
     <div class="details">
         <div class="title">
-            <input name="name" class="name" type="text" value="{{actor.name}}" placeholder="{{localize "PF2E.CharacterNamePlaceholder"}}"/>
+            <input name="name" class="name" type="text" value="{{actor.name}}" placeholder="{{localize "AVANT.CharacterNamePlaceholder"}}"/>
             <label>{{localize "TYPES.Actor.hazard"}}</label>
             <input class="level" name="system.details.level.value" type="number" value="{{data.details.level.value}}" placeholder="1" />
         </div>
@@ -31,11 +31,11 @@
                 </select>
             </template>
             <tagify-tags class="tags paizo-style" name="system.traits.value" value="{{json data.traits.value}}"
-                {{#if (eq data.traits.value.length 0)}}placeholder="{{localize "PF2E.Traits"}}"{{/if}} />
+                {{#if (eq data.traits.value.length 0)}}placeholder="{{localize "AVANT.Traits"}}"{{/if}} />
         {{else}}
             <div class="tags paizo-style">
                 {{#unless (eq data.details.isComplex "common")}}<span class="tag rarity {{data.traits.rarity}}">{{localize rarityLabel}}</span>{{/unless}}
-                {{#if data.details.isComplex}}<span class="tag">{{localize "PF2E.TraitComplex"}}</span>{{/if}}
+                {{#if data.details.isComplex}}<span class="tag">{{localize "AVANT.TraitComplex"}}</span>{{/if}}
 
                 {{#each actorTraits as |trait|}}
                     <span class="tag" data-slug="{{trait.name}}">{{localize trait.label}}</span>

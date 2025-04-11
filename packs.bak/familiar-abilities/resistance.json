@@ -1,0 +1,145 @@
+{
+    "_id": "FcQQLMAJMgOLjnSv",
+    "img": "systems/avant/icons/actions/Passive.webp",
+    "name": "Resistance",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "familiar",
+        "description": {
+            "value": "<p>Choose two of the following: acid, cold, electricity, fire, poison, or sonic. Your familiar gains resistance equal to half your level (minimum resistance 1) against the chosen damage types.</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitPoison",
+                        "value": "poison"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    }
+                ],
+                "flag": "resistanceOne",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Resistance",
+                "rollOption": "resistance"
+            },
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "predicate": [
+                            {
+                                "not": "resistance:acid"
+                            }
+                        ],
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "predicate": [
+                            {
+                                "not": "resistance:cold"
+                            }
+                        ],
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "predicate": [
+                            {
+                                "not": "resistance:electricity"
+                            }
+                        ],
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "predicate": [
+                            {
+                                "not": "resistance:fire"
+                            }
+                        ],
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitPoison",
+                        "predicate": [
+                            {
+                                "not": "resistance:poison"
+                            }
+                        ],
+                        "value": "poison"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "predicate": [
+                            {
+                                "not": "resistance:sonic"
+                            }
+                        ],
+                        "value": "sonic"
+                    }
+                ],
+                "flag": "resistanceTwo",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.Resistance",
+                "rollOption": "resistance"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.resistanceOne}",
+                "value": "max(1,floor(@actor.level/2))"
+            },
+            {
+                "key": "Resistance",
+                "type": "{item|flags.avant.rulesSelections.resistanceTwo}",
+                "value": "max(1,floor(@actor.level/2))"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "flags.avant.resistance.resistanceOne",
+                "value": "{item|flags.avant.rulesSelections.resistanceOne}"
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "flags.avant.resistance.resistanceTwo",
+                "value": "{item|flags.avant.rulesSelections.resistanceTwo}"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "action"
+}

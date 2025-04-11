@@ -1,4 +1,4 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { ItemGrantSource } from "@item/base/data/system.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -6,11 +6,11 @@ import { MigrationBase } from "../base.ts";
 export class Migration755GrantIdsToData extends MigrationBase {
     static override version = 0.755;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         for (const item of source.items) {
-            if (!item.flags.pf2e) continue;
+            if (!item.flags.avant) continue;
 
-            const systemFlags: MaybeWithOldGrantFlags = item.flags.pf2e;
+            const systemFlags: MaybeWithOldGrantFlags = item.flags.avant;
             const { grantedBy, itemGrants } = systemFlags;
 
             if (typeof grantedBy === "string") {

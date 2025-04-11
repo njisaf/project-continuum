@@ -1,28 +1,28 @@
-import { ActorPF2e } from "@actor";
-import { ItemPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import { ItemAvant } from "@item";
 import type { EffectAreaShape } from "@item/spell/types.ts";
-import type { MeasuredTemplatePF2e } from "@module/canvas/measured-template.ts";
+import type { MeasuredTemplateAvant } from "@module/canvas/measured-template.ts";
 import { ItemOriginFlag } from "@module/chat-message/data.ts";
-import type { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import type { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { toggleClearTemplatesButton } from "@module/chat-message/helpers.ts";
-import type { ScenePF2e } from "./document.ts";
+import type { SceneAvant } from "./document.ts";
 
-class MeasuredTemplateDocumentPF2e<
-    TParent extends ScenePF2e | null = ScenePF2e | null,
+class MeasuredTemplateDocumentAvant<
+    TParent extends SceneAvant | null = SceneAvant | null,
 > extends MeasuredTemplateDocument<TParent> {
-    get actor(): ActorPF2e | null {
-        const uuid = this.flags.pf2e?.origin?.actor;
+    get actor(): ActorAvant | null {
+        const uuid = this.flags.avant?.origin?.actor;
         if (!uuid) return null;
         const document = fromUuidSync(uuid);
-        return document instanceof ActorPF2e ? document : (this.item?.actor ?? null);
+        return document instanceof ActorAvant ? document : (this.item?.actor ?? null);
     }
 
-    get item(): ItemPF2e<ActorPF2e> | null {
-        const origin = this.flags.pf2e?.origin;
+    get item(): ItemAvant<ActorAvant> | null {
+        const origin = this.flags.avant?.origin;
         const uuid = origin?.uuid;
         if (!uuid) return null;
         const item = fromUuidSync(uuid as string);
-        if (!(item instanceof ItemPF2e)) return null;
+        if (!(item instanceof ItemAvant)) return null;
 
         if (item?.isOfType("spell")) {
             const overlayIds = origin?.variant?.overlays;
@@ -35,22 +35,22 @@ class MeasuredTemplateDocumentPF2e<
     }
 
     /** The chat message from which this template was spawned */
-    get message(): ChatMessagePF2e | null {
-        return game.messages.get(this.flags.pf2e?.messageId ?? "") ?? null;
+    get message(): ChatMessageAvant | null {
+        return game.messages.get(this.flags.avant?.messageId ?? "") ?? null;
     }
 
     get areaShape(): EffectAreaShape | null {
-        return this.flags.pf2e.areaShape;
+        return this.flags.avant.areaShape;
     }
 
-    /** Ensure the source has a `pf2e` flag along with an `areaShape` if directly inferable. */
+    /** Ensure the source has a `avant` flag along with an `areaShape` if directly inferable. */
     protected override _initializeSource(
         data: object,
         options?: DataModelConstructionOptions<TParent>,
     ): this["_source"] {
         const initialized = super._initializeSource(data, options);
         const areaShape = initialized.t === "cone" ? "cone" : initialized.t === "ray" ? "line" : null;
-        initialized.flags.pf2e = fu.mergeObject({ areaShape }, initialized.flags.pf2e ?? {});
+        initialized.flags.avant = fu.mergeObject({ areaShape }, initialized.flags.avant ?? {});
         return initialized;
     }
 
@@ -71,12 +71,12 @@ class MeasuredTemplateDocumentPF2e<
     }
 }
 
-interface MeasuredTemplateDocumentPF2e<TParent extends ScenePF2e | null = ScenePF2e | null>
+interface MeasuredTemplateDocumentAvant<TParent extends SceneAvant | null = SceneAvant | null>
     extends MeasuredTemplateDocument<TParent> {
-    get object(): MeasuredTemplatePF2e<this> | null;
+    get object(): MeasuredTemplateAvant<this> | null;
 
     flags: DocumentFlags & {
-        pf2e: {
+        avant: {
             messageId?: string;
             origin?: ItemOriginFlag;
             areaShape: EffectAreaShape | null;
@@ -84,4 +84,4 @@ interface MeasuredTemplateDocumentPF2e<TParent extends ScenePF2e | null = SceneP
     };
 }
 
-export { MeasuredTemplateDocumentPF2e };
+export { MeasuredTemplateDocumentAvant };

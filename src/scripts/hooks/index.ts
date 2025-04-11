@@ -22,7 +22,7 @@ import { Setup } from "./setup.ts";
 import { TargetToken } from "./target-token.ts";
 import { UpdateWorldTime } from "./update-world-time.ts";
 
-export const HooksPF2e = {
+export const HooksAvant = {
     listen(): void {
         const listeners: { listen(): void }[] = [
             Load, // Run this first since it's not an actual hook listener

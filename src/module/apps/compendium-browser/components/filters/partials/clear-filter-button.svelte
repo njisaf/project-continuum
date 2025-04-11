@@ -21,7 +21,7 @@
             data.to = data.max;
             data.changed = false;
         } else if ("values" in data && options.name) {
-            const activeTab = game.pf2e.compendiumBrowser.activeTab;
+            const activeTab = game.avant.compendiumBrowser.activeTab;
             if (!activeTab) return;
             data.values = activeTab.parseRangeFilterInput(options.name, data.defaultMin, data.defaultMax);
             data.changed = false;

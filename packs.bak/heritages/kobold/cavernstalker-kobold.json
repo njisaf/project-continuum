@@ -1,0 +1,58 @@
+{
+    "_id": "35k2aujXYvqUCSS1",
+    "folder": "U6XqIM7a4BC1W4QM",
+    "img": "systems/avant/icons/features/ancestry/cavern-kobold.webp",
+    "name": "Cavernstalker Kobold",
+    "system": {
+        "ancestry": {
+            "name": "Kobold",
+            "slug": "kobold",
+            "uuid": "Compendium.avant.ancestries.Item.7oQxL6wgsokD3QXG"
+        },
+        "description": {
+            "value": "<p>You hatched in a warren with narrow tunnels that was also home to a being of primal earth energy, which has made you limber and flexible. When @UUID[Compendium.avant.actionsavant.Item.Climb]{Climbing} rock walls, stalactites, and other natural stone features, you move at half your Speed on a success and at full Speed on a critical success (and you move at full Speed on a success if you have @UUID[Compendium.avant.feats-srd.Item.Quick Climb]). This doesn't affect you if you're using a climb Speed. If you roll a success on an Acrobatics check to @UUID[Compendium.avant.actionsavant.Item.Squeeze], you get a critical success instead.</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core 2"
+        },
+        "rules": [
+            {
+                "key": "Note",
+                "predicate": [
+                    "action:climb",
+                    "natural-stone"
+                ],
+                "selector": "athletics",
+                "text": "When you climb natural stone, you move at half your Speed on a success, and full speed on a critical success.",
+                "title": "{item|name}"
+            },
+            {
+                "key": "Note",
+                "predicate": [
+                    "action:squeeze"
+                ],
+                "selector": "acrobatics",
+                "text": "When you roll a success to Squeeze, you get a critical success instead.",
+                "title": "{item|name}"
+            },
+            {
+                "adjustment": {
+                    "success": "one-degree-better"
+                },
+                "key": "AdjustDegreeOfSuccess",
+                "predicate": [
+                    "action:squeeze"
+                ],
+                "selector": "acrobatics",
+                "type": "skill"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "heritage"
+}

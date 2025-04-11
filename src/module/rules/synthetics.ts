@@ -1,22 +1,22 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { DexterityModifierCapData } from "@actor/character/types.ts";
 import type { LabeledSpeed, SenseData } from "@actor/creature/data.ts";
 import type {
-    DamageDicePF2e,
+    DamageDiceAvant,
     DeferredDamageDiceOptions,
     DeferredPromise,
     DeferredValue,
     ModifierAdjustment,
-    ModifierPF2e,
+    ModifierAvant,
 } from "@actor/modifiers.ts";
 import type { MovementType } from "@actor/types.ts";
-import type { MeleePF2e, WeaponPF2e } from "@item";
+import type { MeleeAvant, WeaponAvant } from "@item";
 import type { AbilityTrait } from "@item/ability/index.ts";
 import type { ConditionSource, EffectSource } from "@item/base/data/index.ts";
 import type { WeaponRuneSource } from "@item/weapon/data.ts";
 import type { WeaponPropertyRuneType } from "@item/weapon/types.ts";
-import type { ActiveEffectPF2e } from "@module/active-effect.ts";
-import type { RollNotePF2e } from "@module/notes.ts";
+import type { ActiveEffectAvant } from "@module/active-effect.ts";
+import type { RollNoteAvant } from "@module/notes.ts";
 import type { MaterialDamageEffect } from "@system/damage/types.ts";
 import type { DegreeOfSuccessAdjustment } from "@system/degree-of-success.ts";
 import type { Predicate } from "@system/predication.ts";
@@ -28,7 +28,7 @@ import type { Suboption } from "./rule-element/roll-option/data.ts";
 import { SpecialResourceRuleElement } from "./rule-element/special-resource.ts";
 
 /** Defines a list of data provided by rule elements that an actor can pull from during its data preparation lifecycle */
-interface RuleElementSynthetics<TActor extends ActorPF2e = ActorPF2e> {
+interface RuleElementSynthetics<TActor extends ActorAvant = ActorAvant> {
     criticalSpecializations: {
         standard: CritSpecSynthetic[];
         alternate: CritSpecSynthetic[];
@@ -47,7 +47,7 @@ interface RuleElementSynthetics<TActor extends ActorPF2e = ActorPF2e> {
     movementTypes: { [K in MovementType]?: DeferredMovementType[] };
     multipleAttackPenalties: Record<string, MAPSynthetic[]>;
     resources: Record<string, SpecialResourceRuleElement>;
-    rollNotes: Record<string, RollNotePF2e[]>;
+    rollNotes: Record<string, RollNoteAvant[]>;
     rollSubstitutions: Record<string, RollSubstitution[]>;
     rollTwice: Record<string, RollTwiceSynthetic[]>;
     senses: SenseSynthetic[];
@@ -56,7 +56,7 @@ interface RuleElementSynthetics<TActor extends ActorPF2e = ActorPF2e> {
     strikes: Record<string, DeferredStrike>;
     striking: Record<string, StrikingSynthetic[]>;
     toggles: Record<string, Record<string, RollOptionToggle>>;
-    tokenEffectIcons: ActiveEffectPF2e<TActor>[];
+    tokenEffectIcons: ActiveEffectAvant<TActor>[];
     tokenMarks: Map<TokenDocumentUUID, string>;
     tokenOverrides: DeepPartial<Pick<TokenSource, "light" | "name">> & {
         alpha?: number | null;
@@ -73,8 +73,8 @@ interface RuleElementSynthetics<TActor extends ActorPF2e = ActorPF2e> {
     weaponPotency: Record<string, PotencySynthetic[]>;
 }
 
-type CritSpecEffect = (DamageDicePF2e | ModifierPF2e | RollNotePF2e)[];
-type CritSpecSynthetic = (weapon: WeaponPF2e | MeleePF2e, options: Set<string>) => CritSpecEffect | null;
+type CritSpecEffect = (DamageDiceAvant | ModifierAvant | RollNoteAvant)[];
+type CritSpecSynthetic = (weapon: WeaponAvant | MeleeAvant, options: Set<string>) => CritSpecEffect | null;
 
 type DamageDiceSynthetics = { damage: DeferredDamageDice[] } & Record<string, DeferredDamageDice[] | undefined>;
 type ModifierSynthetics = Record<"all" | "damage", DeferredModifier[]> & Record<string, DeferredModifier[] | undefined>;
@@ -82,11 +82,11 @@ type ModifierAdjustmentSynthetics = { all: ModifierAdjustment[]; damage: Modifie
     string,
     ModifierAdjustment[] | undefined
 >;
-type DeferredModifier = DeferredValue<ModifierPF2e>;
-type DeferredDamageDice = (args: DeferredDamageDiceOptions) => DamageDicePF2e | null;
+type DeferredModifier = DeferredValue<ModifierAvant>;
+type DeferredDamageDice = (args: DeferredDamageDiceOptions) => DamageDiceAvant | null;
 type DeferredMovementType = DeferredValue<BaseSpeedSynthetic | null>;
 type DeferredEphemeralEffect = DeferredPromise<EffectSource | ConditionSource | null>;
-type DeferredStrike = (runes?: WeaponRuneSource) => WeaponPF2e<ActorPF2e> | null;
+type DeferredStrike = (runes?: WeaponRuneSource) => WeaponAvant<ActorAvant> | null;
 
 interface BaseSpeedSynthetic extends Omit<LabeledSpeed, "label" | "type"> {
     type: MovementType;
@@ -139,11 +139,11 @@ interface SenseSynthetic {
 
 interface StrikeAdjustment {
     adjustDamageRoll?: (
-        weapon: WeaponPF2e | MeleePF2e,
+        weapon: WeaponAvant | MeleeAvant,
         { materials }: { materials?: Set<MaterialDamageEffect> },
     ) => void;
-    adjustWeapon?: (weapon: WeaponPF2e | MeleePF2e) => void;
-    adjustTraits?: (weapon: WeaponPF2e | MeleePF2e, traits: AbilityTrait[]) => void;
+    adjustWeapon?: (weapon: WeaponAvant | MeleeAvant) => void;
+    adjustTraits?: (weapon: WeaponAvant | MeleeAvant, traits: AbilityTrait[]) => void;
 }
 
 interface StrikingSynthetic {

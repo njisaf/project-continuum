@@ -9,7 +9,7 @@ import { RuleElementForm, RuleElementFormSheetData } from "./base.ts";
 
 /** Form handler for the flat modifier rule element */
 class FlatModifierForm extends RuleElementForm<FlatModifierSource, FlatModifierRuleElement> {
-    override template = "systems/pf2e/templates/items/rules/flat-modifier.hbs";
+    override template = "systems/avant/templates/items/rules/flat-modifier.hbs";
 
     get isDamage(): boolean {
         const selectors = [this.rule.selector ?? []].flat();
@@ -37,19 +37,19 @@ class FlatModifierForm extends RuleElementForm<FlatModifierSource, FlatModifierR
                 .filter((t) => abpEnabled || t !== "potency")
                 .sort((a, b) => (a[0] === "untyped" ? -1 : b[0] === "untyped" ? 1 : a[1].localeCompare(b[1]))),
 
-            (t) => [t, game.i18n.localize(`PF2E.ModifierType.${t}`)],
+            (t) => [t, game.i18n.localize(`AVANT.ModifierType.${t}`)],
         );
 
         return {
             ...data,
             selectorIsArray: Array.isArray(this.rule.selector),
-            abilities: CONFIG.PF2E.abilities,
+            abilities: CONFIG.AVANT.abilities,
             types,
-            damageCategories: R.pick(CONFIG.PF2E.damageCategories, DAMAGE_CATEGORIES_UNIQUE),
+            damageCategories: R.pick(CONFIG.AVANT.damageCategories, DAMAGE_CATEGORIES_UNIQUE),
             isDamage: this.isDamage,
             criticalOptions: [
-                { value: "false", label: "PF2E.RuleEditor.General.CriticalBehavior.false" },
-                { value: "true", label: "PF2E.RuleEditor.General.CriticalBehavior.true" },
+                { value: "false", label: "AVANT.RuleEditor.General.CriticalBehavior.false" },
+                { value: "true", label: "AVANT.RuleEditor.General.CriticalBehavior.true" },
             ],
         };
     }
@@ -74,7 +74,7 @@ class FlatModifierForm extends RuleElementForm<FlatModifierSource, FlatModifierR
 
 interface FlatModifierFormSheetData extends RuleElementFormSheetData<FlatModifierSource, FlatModifierRuleElement> {
     selectorIsArray: boolean;
-    abilities: typeof CONFIG.PF2E.abilities;
+    abilities: typeof CONFIG.AVANT.abilities;
     types: Record<ModifierType, string>;
     damageCategories: Record<DamageCategoryUnique, string>;
     isDamage: boolean;

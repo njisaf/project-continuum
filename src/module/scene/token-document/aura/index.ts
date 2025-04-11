@@ -3,13 +3,13 @@ import { ItemTrait } from "@item/base/data/system.ts";
 import { EffectAreaSquare } from "@module/canvas/effect-area-square.ts";
 import { measureDistanceCuboid } from "@module/canvas/index.ts";
 import { getAreaSquares } from "@module/canvas/token/aura/util.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene";
+import type { SceneAvant, TokenDocumentAvant } from "@scene";
 import type { TokenAuraData } from "./types.ts";
 
 class TokenAura implements TokenAuraData {
     slug: string;
 
-    token: TokenDocumentPF2e;
+    token: TokenDocumentAvant;
 
     level: number | null;
 
@@ -42,7 +42,7 @@ class TokenAura implements TokenAuraData {
         return 0.5 * tokenWidth + (this.radius / gridSize) * gridSizePixels;
     }
 
-    get scene(): ScenePF2e {
+    get scene(): SceneAvant {
         return this.token.scene!;
     }
 
@@ -67,7 +67,7 @@ class TokenAura implements TokenAuraData {
     }
 
     /** Does this aura overlap with (at least part of) a token? */
-    containsToken(token: TokenDocumentPF2e): boolean {
+    containsToken(token: TokenDocumentAvant): boolean {
         // If either token is hidden or not rendered, return false early
         if (this.token.hidden || token.hidden || !this.token.object || !token.object) {
             return false;
@@ -107,7 +107,7 @@ interface TokenAuraParams extends Omit<AuraData, "effects" | "traits"> {
     slug: string;
     level: number | null;
     radius: number;
-    token: TokenDocumentPF2e;
+    token: TokenDocumentAvant;
     traits: ItemTrait[];
     effects: AuraEffectData[];
 }

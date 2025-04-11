@@ -1,0 +1,112 @@
+{
+    "_id": "aDOL3OAEWf3ka9oT",
+    "img": "icons/skills/wounds/blood-cells-vessel-red-orange.webp",
+    "name": "Spell Effect: Blood Ward",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.spells-srd.Item.Blood Ward]</p>\n<p>You gain a +1 status bonus to saving throws and AC against creatures with the trait you select.</p>"
+        },
+        "duration": {
+            "expiry": "turn-start",
+            "sustained": true,
+            "unit": "minutes",
+            "value": 1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.TraitAberration",
+                        "value": "aberration"
+                    },
+                    {
+                        "label": "AVANT.TraitAnimal",
+                        "value": "animal"
+                    },
+                    {
+                        "label": "AVANT.TraitBeast",
+                        "value": "beast"
+                    },
+                    {
+                        "label": "AVANT.TraitCelestial",
+                        "value": "celestial"
+                    },
+                    {
+                        "label": "AVANT.TraitConstruct",
+                        "value": "construct"
+                    },
+                    {
+                        "label": "AVANT.TraitDragon",
+                        "value": "dragon"
+                    },
+                    {
+                        "label": "AVANT.TraitElemental",
+                        "value": "elemental"
+                    },
+                    {
+                        "label": "AVANT.TraitFey",
+                        "value": "fey"
+                    },
+                    {
+                        "label": "AVANT.TraitFiend",
+                        "value": "fiend"
+                    },
+                    {
+                        "label": "AVANT.TraitFungus",
+                        "value": "fungus"
+                    },
+                    {
+                        "label": "AVANT.TraitMonitor",
+                        "value": "monitor"
+                    },
+                    {
+                        "label": "AVANT.TraitOoze",
+                        "value": "ooze"
+                    },
+                    {
+                        "label": "AVANT.TraitPlant",
+                        "value": "plant"
+                    },
+                    {
+                        "label": "AVANT.TraitUndead",
+                        "value": "undead"
+                    }
+                ],
+                "flag": "blood",
+                "key": "ChoiceSet"
+            },
+            {
+                "key": "FlatModifier",
+                "predicate": [
+                    "origin:trait:{item|flags.avant.rulesSelections.blood}"
+                ],
+                "selector": [
+                    "ac",
+                    "saving-throw"
+                ],
+                "type": "status",
+                "value": "ternary(gte(@item.level,5),2,1)"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

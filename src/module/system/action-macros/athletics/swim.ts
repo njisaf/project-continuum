@@ -1,14 +1,14 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 
-const PREFIX = "PF2E.Actions.Swim";
+const PREFIX = "AVANT.Actions.Swim";
 
 function swim(options: SkillActionOptions): void {
     const slug = options?.skill ?? "athletics";
     const rollOptions = ["action:swim"];
     const modifiers = (options?.modifiers ?? []).concat(
-        new ModifierPF2e({
+        new ModifierAvant({
             slug: "swim-speed",
             label: `${PREFIX}.Modifier.SwimSpeed`,
             modifier: 4,

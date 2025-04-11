@@ -1,12 +1,12 @@
 import type * as ActorInstance from "@actor";
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
 import type { EffectTrait } from "@item/abstract-effect/types.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import type { ItemInstances } from "@item/types.ts";
-import type { RollNotePF2e } from "@module/notes.ts";
+import type { RollNoteAvant } from "@module/notes.ts";
 import type { ItemAlteration } from "@module/rules/rule-element/item-alteration/alteration.ts";
-import type { TokenDocumentPF2e } from "@scene";
+import type { TokenDocumentAvant } from "@scene";
 import type { immunityTypes, resistanceTypes, weaknessTypes } from "@scripts/config/iwr.ts";
 import type { DamageRoll } from "@system/damage/roll.ts";
 import type { DegreeOfSuccessString } from "@system/degree-of-success.ts";
@@ -22,20 +22,20 @@ import type {
 
 type ActorType = (typeof ACTOR_TYPES)[number];
 
-/** Used exclusively to resolve `ActorPF2e#isOfType` */
-interface ActorInstances<TParent extends TokenDocumentPF2e | null> {
-    army: ActorInstance.ArmyPF2e<TParent>;
-    character: ActorInstance.CharacterPF2e<TParent>;
-    creature: ActorInstance.CreaturePF2e<TParent>;
-    familiar: ActorInstance.FamiliarPF2e<TParent>;
-    hazard: ActorInstance.HazardPF2e<TParent>;
-    loot: ActorInstance.LootPF2e<TParent>;
-    party: ActorInstance.PartyPF2e<TParent>;
-    npc: ActorInstance.NPCPF2e<TParent>;
-    vehicle: ActorInstance.VehiclePF2e<TParent>;
+/** Used exclusively to resolve `ActorAvant#isOfType` */
+interface ActorInstances<TParent extends TokenDocumentAvant | null> {
+    army: ActorInstance.ArmyAvant<TParent>;
+    character: ActorInstance.CharacterAvant<TParent>;
+    creature: ActorInstance.CreatureAvant<TParent>;
+    familiar: ActorInstance.FamiliarAvant<TParent>;
+    hazard: ActorInstance.HazardAvant<TParent>;
+    loot: ActorInstance.LootAvant<TParent>;
+    party: ActorInstance.PartyAvant<TParent>;
+    npc: ActorInstance.NPCAvant<TParent>;
+    vehicle: ActorInstance.VehicleAvant<TParent>;
 }
 
-type EmbeddedItemInstances<TParent extends ActorPF2e> = {
+type EmbeddedItemInstances<TParent extends ActorAvant> = {
     [K in keyof ItemInstances<TParent>]: ItemInstances<TParent>[K][];
 };
 type AttributeString = SetElement<typeof ATTRIBUTE_ABBREVIATIONS>;
@@ -67,7 +67,7 @@ interface AuraData {
 
 interface AuraEffectData {
     uuid: string;
-    parent: ItemPF2e;
+    parent: ItemAvant;
     affects: "allies" | "enemies" | "all";
     events: ("enter" | "turn-start" | "turn-end")[];
     save: {
@@ -93,13 +93,13 @@ interface AuraAppearanceData {
     } | null;
 }
 
-interface ActorCommitData<T extends ActorPF2e = ActorPF2e> {
+interface ActorCommitData<T extends ActorAvant = ActorAvant> {
     actorUpdates: DeepPartial<T["_source"]> | null;
-    itemCreates: PreCreate<ItemSourcePF2e>[];
+    itemCreates: PreCreate<ItemSourceAvant>[];
     itemUpdates: EmbeddedDocumentUpdateData[];
 }
 
-interface ActorRechargeData<T extends ActorPF2e> extends ActorCommitData<T> {
+interface ActorRechargeData<T extends ActorAvant> extends ActorCommitData<T> {
     affected: {
         frequencies: boolean;
         spellSlots: boolean;
@@ -113,16 +113,16 @@ interface ActorRechargeData<T extends ActorPF2e> extends ActorCommitData<T> {
 
 interface ApplyDamageParams {
     damage: number | Rolled<DamageRoll>;
-    token: TokenDocumentPF2e;
+    token: TokenDocumentAvant;
     /** The item used in the damaging action */
-    item?: ItemPF2e<ActorPF2e> | null;
+    item?: ItemAvant<ActorAvant> | null;
     skipIWR?: boolean;
     /** Predicate statements from the damage roll */
     rollOptions?: Set<string>;
     shieldBlockRequest?: boolean;
     breakdown?: string[];
     outcome?: DegreeOfSuccessString | null;
-    notes?: RollNotePF2e[];
+    notes?: RollNoteAvant[];
     /** Whether to treat to not adjust the damage any further. Skips IWR regardless of its setting if set */
     final?: boolean;
 }

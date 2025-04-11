@@ -1,4 +1,4 @@
-type BaseShieldType = keyof typeof CONFIG.PF2E.baseShieldTypes;
-type ShieldTrait = keyof typeof CONFIG.PF2E.shieldTraits;
+type BaseShieldType = keyof typeof CONFIG.AVANT.baseShieldTypes;
+type ShieldTrait = keyof typeof CONFIG.AVANT.shieldTraits;
 
 export type { BaseShieldType, ShieldTrait };

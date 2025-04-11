@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.Impersonate";
+const PREFIX = "AVANT.Actions.Impersonate";
 
 function impersonate(options: SkillActionOptions): void {
     const slug = options?.skill ?? "deception";

@@ -1,14 +1,14 @@
-import type { ActorAttributes, ActorDetails, BaseActorSourcePF2e } from "@actor/data/base.ts";
+import type { ActorAttributes, ActorDetails, BaseActorSourceAvant } from "@actor/data/base.ts";
 import { ActorSystemModel, ActorSystemSchema } from "@actor/data/model.ts";
 import type { ModelPropFromDataField, SourcePropFromDataField } from "types/foundry/common/data/fields.d.ts";
-import type { PartyPF2e } from "./document.ts";
+import type { PartyAvant } from "./document.ts";
 import { Kingdom } from "./kingdom/model.ts";
 import type { KingdomSchema } from "./kingdom/schema.ts";
 import fields = foundry.data.fields;
 
-type PartySource = BaseActorSourcePF2e<"party", PartySystemSource>;
+type PartySource = BaseActorSourceAvant<"party", PartySystemSource>;
 
-class PartySystemData extends ActorSystemModel<PartyPF2e, PartySystemSchema> {
+class PartySystemData extends ActorSystemModel<PartyAvant, PartySystemSchema> {
     static override defineSchema(): PartySystemSchema {
         return {
             ...super.defineSchema(),
@@ -30,7 +30,7 @@ class PartySystemData extends ActorSystemModel<PartyPF2e, PartySystemSchema> {
 }
 
 interface PartySystemData
-    extends ActorSystemModel<PartyPF2e, PartySystemSchema>,
+    extends ActorSystemModel<PartyAvant, PartySystemSchema>,
         ModelPropsFromSchema<PartySystemSchema> {
     attributes: PartyAttributes;
     details: PartyDetails;

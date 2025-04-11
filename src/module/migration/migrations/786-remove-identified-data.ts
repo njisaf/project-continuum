@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { IdentificationStatus } from "@item/physical/data.ts";
 import { MigrationBase } from "../base.ts";
@@ -7,7 +7,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration786RemoveIdentifiedData extends MigrationBase {
     static override version = 0.786;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!itemIsOfType(source, "physical")) return;
 
         const identification: MaybeWithIdentifiedData = source.system.identification ?? {};

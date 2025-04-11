@@ -1,11 +1,11 @@
-import type { ActorPF2e } from "@actor";
-import type { AbstractEffectPF2e, ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { AbstractEffectAvant, ItemAvant } from "@item";
 import * as R from "remeda";
 import type { EffectDurationSource } from "types/foundry/common/documents/active-effect.d.ts";
 
-export class ActiveEffectPF2e<TParent extends ActorPF2e | ItemPF2e | null> extends ActiveEffect<TParent> {
+export class ActiveEffectAvant<TParent extends ActorAvant | ItemAvant | null> extends ActiveEffect<TParent> {
     /** Create an active effect from an (abstract) effect for use in token effect icons */
-    static fromEffect<TActor extends ActorPF2e>(effect: AbstractEffectPF2e<TActor>): ActiveEffectPF2e<TActor> {
+    static fromEffect<TActor extends ActorAvant>(effect: AbstractEffectAvant<TActor>): ActiveEffectAvant<TActor> {
         const isEffect = effect.isOfType("effect");
         const isCondition = effect.isOfType("condition");
 

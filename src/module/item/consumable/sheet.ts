@@ -1,14 +1,14 @@
 import { ItemSheetOptions } from "@item/base/sheet/sheet.ts";
-import { PhysicalItemSheetData, PhysicalItemSheetPF2e } from "@item/physical/index.ts";
+import { PhysicalItemSheetData, PhysicalItemSheetAvant } from "@item/physical/index.ts";
 import { SheetOptions, createSheetTags } from "@module/sheet/helpers.ts";
 import { DamageType } from "@system/damage/index.ts";
 import { sortStringRecord } from "@util";
 import * as R from "remeda";
-import type { ConsumablePF2e } from "./document.ts";
+import type { ConsumableAvant } from "./document.ts";
 import { ConsumableCategory } from "./types.ts";
 import { DAMAGE_OR_HEALING_CONSUMABLE_CATEGORIES } from "./values.ts";
 
-class ConsumableSheetPF2e extends PhysicalItemSheetPF2e<ConsumablePF2e> {
+class ConsumableSheetAvant extends PhysicalItemSheetAvant<ConsumableAvant> {
     override async getData(options?: Partial<ItemSheetOptions>): Promise<ConsumableSheetData> {
         const sheetData = await super.getData(options);
         const item = this.item;
@@ -23,15 +23,15 @@ class ConsumableSheetPF2e extends PhysicalItemSheetPF2e<ConsumablePF2e> {
             ...sheetData,
             canHaveDamageOrHealing,
             canHaveHealing,
-            categories: sortStringRecord(CONFIG.PF2E.consumableCategories),
-            damageTypes: sortStringRecord(CONFIG.PF2E.damageTypes),
+            categories: sortStringRecord(CONFIG.AVANT.consumableCategories),
+            damageTypes: sortStringRecord(CONFIG.AVANT.damageTypes),
             damageKindOptions: [
-                { value: "damage", label: "PF2E.DamageLabel" },
-                { value: "healing", label: "PF2E.TraitHealing" },
+                { value: "damage", label: "AVANT.DamageLabel" },
+                { value: "healing", label: "AVANT.TraitHealing" },
             ],
-            materialEffects: createSheetTags(CONFIG.PF2E.materialDamageEffects, item.system.material.effects),
-            otherTags: createSheetTags(CONFIG.PF2E.otherConsumableTags, item.system.traits.otherTags),
-            stackGroups: this.item.isAmmo ? R.omit(CONFIG.PF2E.stackGroups, ["coins", "gems"]) : null,
+            materialEffects: createSheetTags(CONFIG.AVANT.materialDamageEffects, item.system.material.effects),
+            otherTags: createSheetTags(CONFIG.AVANT.otherConsumableTags, item.system.traits.otherTags),
+            stackGroups: this.item.isAmmo ? R.omit(CONFIG.AVANT.stackGroups, ["coins", "gems"]) : null,
         };
     }
 
@@ -61,7 +61,7 @@ class ConsumableSheetPF2e extends PhysicalItemSheetPF2e<ConsumablePF2e> {
     }
 }
 
-interface ConsumableSheetData extends PhysicalItemSheetData<ConsumablePF2e> {
+interface ConsumableSheetData extends PhysicalItemSheetData<ConsumableAvant> {
     canHaveDamageOrHealing: boolean;
     canHaveHealing: boolean;
     categories: Record<ConsumableCategory, string>;
@@ -69,7 +69,7 @@ interface ConsumableSheetData extends PhysicalItemSheetData<ConsumablePF2e> {
     damageTypes: Record<DamageType, string>;
     materialEffects: SheetOptions;
     otherTags: SheetOptions;
-    stackGroups: Omit<typeof CONFIG.PF2E.stackGroups, "coins" | "gems"> | null;
+    stackGroups: Omit<typeof CONFIG.AVANT.stackGroups, "coins" | "gems"> | null;
 }
 
-export { ConsumableSheetPF2e };
+export { ConsumableSheetAvant };

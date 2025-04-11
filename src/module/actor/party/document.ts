@@ -1,10 +1,10 @@
-import { ActorPF2e, type CreaturePF2e } from "@actor";
+import { ActorAvant, type CreatureAvant } from "@actor";
 import { resetActors } from "@actor/helpers.ts";
 import { ItemType } from "@item/base/data/index.ts";
-import { RuleElementPF2e } from "@module/rules/index.ts";
+import { RuleElementAvant } from "@module/rules/index.ts";
 import { RuleElementSchema } from "@module/rules/rule-element/data.ts";
-import type { UserPF2e } from "@module/user/document.ts";
-import type { TokenDocumentPF2e } from "@scene/index.ts";
+import type { UserAvant } from "@module/user/document.ts";
+import type { TokenDocumentAvant } from "@scene/index.ts";
 import type { Statistic } from "@system/statistic/index.ts";
 import { tupleHasValue } from "@util";
 import * as R from "remeda";
@@ -14,10 +14,10 @@ import { Kingdom } from "./kingdom/model.ts";
 import { PartySheetRenderOptions } from "./sheet.ts";
 import { PartyCampaign, PartyUpdateOperation } from "./types.ts";
 
-class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends ActorPF2e<TParent> {
+class PartyAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends ActorAvant<TParent> {
     override armorClass = null;
 
-    declare members: CreaturePF2e[];
+    declare members: CreatureAvant[];
 
     declare campaign: PartyCampaign | null;
 
@@ -39,7 +39,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
     }
 
     /** Part members can add and remove items (though system socket shenanigans)  */
-    override canUserModify(user: UserPF2e, action: UserAction): boolean {
+    override canUserModify(user: UserAvant, action: UserAction): boolean {
         return (
             super.canUserModify(user, action) ||
             (action === "update" && this.members.some((m) => m.canUserModify(user, action)))
@@ -79,7 +79,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
     }
 
     /** Only prepare rule elements for non-physical items (in case campaign items exist) */
-    protected override prepareRuleElements(): RuleElementPF2e<RuleElementSchema>[] {
+    protected override prepareRuleElements(): RuleElementAvant<RuleElementSchema>[] {
         return this.items.contents
             .filter((item) => !item.isOfType("physical"))
             .flatMap((item) => item.prepareRuleElements())
@@ -97,7 +97,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
         // Fetch members, and update their parties if this isn't a clone
         this.members = this.system.details.members
             .map((m) => fromUuidSync(m.uuid))
-            .filter((a): a is CreaturePF2e => a instanceof ActorPF2e && a.isOfType("creature"))
+            .filter((a): a is CreatureAvant => a instanceof ActorAvant && a.isOfType("creature"))
             .sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang));
         if (fromUuidSync(this.uuid) === this) {
             for (const member of this.members) {
@@ -121,13 +121,13 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
         );
         this.system.details.level.value = partyLevel;
 
-        if (game.pf2e.settings.campaign.type === "kingmaker" && !this.campaign) {
+        if (game.avant.settings.campaign.type === "kingmaker" && !this.campaign) {
             Object.defineProperty(this, "campaign", {
                 value: new Kingdom(fu.deepClone(this.system._source.campaign ?? {}), { parent: this.system }),
                 writable: true,
                 enumerable: false,
             });
-        } else if (!game.pf2e.settings.campaign.type) {
+        } else if (!game.avant.settings.campaign.type) {
             this.campaign = null;
         }
         this.campaign?.prepareBaseData();
@@ -145,7 +145,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
         this.campaign?.prepareDerivedData();
     }
 
-    async addMembers(...membersToAdd: CreaturePF2e[]): Promise<void> {
+    async addMembers(...membersToAdd: CreatureAvant[]): Promise<void> {
         const existing = this.system.details.members.filter((d) => this.members.some((m) => m.uuid === d.uuid));
         const existingUUIDs = new Set(existing.map((data) => data.uuid));
         const newMembers = membersToAdd.filter((a) => a.uuid.startsWith("Actor.") && !existingUUIDs.has(a.uuid));
@@ -164,7 +164,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
         await resetActors(newMembers);
     }
 
-    async removeMembers(...remove: (ActorUUID | CreaturePF2e)[]): Promise<void> {
+    async removeMembers(...remove: (ActorUUID | CreatureAvant)[]): Promise<void> {
         const uuids = remove.map((d) => (typeof d === "string" ? d : d.uuid));
         const existing = this.system.details.members.filter((d) => this.members.some((m) => m.uuid === d.uuid));
         const members = existing.filter((m) => !tupleHasValue(uuids, m.uuid));
@@ -212,7 +212,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
     protected override _preCreate(
         data: this["_source"],
         options: DatabaseCreateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         data.folder = null;
         return super._preCreate(data, options, user);
@@ -221,7 +221,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
     protected override async _preUpdate(
         changed: DeepPartial<PartySource>,
         options: PartyUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         // Prevent party actors from being dragged to folders
         changed.folder = null;
@@ -254,7 +254,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
 
         const removedCreatures = (operation.removedMembers ?? [])
             .map((uuid) => fromUuidSync(uuid))
-            .filter((a): a is CreaturePF2e => a instanceof ActorPF2e && a.isOfType("creature"));
+            .filter((a): a is CreatureAvant => a instanceof ActorAvant && a.isOfType("creature"));
         for (const actor of removedCreatures) {
             actor.parties.delete(this);
         }
@@ -270,7 +270,7 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
         }
 
         // Update the actor directory if this included campaign changes
-        if (game.ready && !!changed.system?.campaign && game.actors.get(this.id) === (this as ActorPF2e)) {
+        if (game.ready && !!changed.system?.campaign && game.actors.get(this.id) === (this as ActorAvant)) {
             ui.actors.render();
         }
     }
@@ -287,9 +287,9 @@ class PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | n
     }
 }
 
-interface PartyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends ActorPF2e<TParent> {
+interface PartyAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends ActorAvant<TParent> {
     readonly _source: PartySource;
     system: PartySystemData;
 }
 
-export { PartyPF2e };
+export { PartyAvant };

@@ -1,6 +1,6 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import type { ItemPF2e } from "@item";
-import { FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import type { ItemAvant } from "@item";
+import { FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { ChoiceSetSource } from "@module/rules/rule-element/choice-set/data.ts";
@@ -14,7 +14,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration923KineticistRestructure extends MigrationBase {
     static override version = 0.923;
 
-    override async updateActor(actorSource: ActorSourcePF2e): Promise<void> {
+    override async updateActor(actorSource: ActorSourceAvant): Promise<void> {
         if (actorSource.type !== "character") return;
 
         // If this actor already has a modern gate item, skip
@@ -36,19 +36,19 @@ export class Migration923KineticistRestructure extends MigrationBase {
             {
                 extends: "kineticist",
                 key: "SpecialStatistic",
-                label: "PF2E.TraitImpulse",
+                label: "AVANT.TraitImpulse",
                 slug: "impulse",
                 type: "attack-roll",
             },
             {
                 key: "GrantItem",
-                uuid: "Compendium.pf2e.actionspf2e.Item.6lbr0Jnv0zMB5uGb",
+                uuid: "Compendium.avant.actionsavant.Item.6lbr0Jnv0zMB5uGb",
                 flag: "elementalBlast",
             },
             {
                 key: "GrantItem",
                 predicate: ["class:kineticist"],
-                uuid: "Compendium.pf2e.actionspf2e.Item.nTBrvt2b9wngyr0i",
+                uuid: "Compendium.avant.actionsavant.Item.nTBrvt2b9wngyr0i",
                 flag: "baseKinesis",
             } as GrantItemSource,
         ] as RuleElementSource[];
@@ -61,7 +61,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
         }
 
         // Create method to connect a skill feat to an element feat via grants
-        const junctionFeats = actorFeats.filter((f) => f.flags.pf2e?.grantedBy?.id === gateJunction?._id);
+        const junctionFeats = actorFeats.filter((f) => f.flags.avant?.grantedBy?.id === gateJunction?._id);
         const connectSkillFeats = (element: string, elementFeat: FeatSource) => {
             const skillFeat = junctionFeats.find((s) => s.system.slug === this.#elementSkillFeats[element]);
             if (skillFeat) this.#addGrantedItem(actorSource, { parent: elementFeat, child: skillFeat });
@@ -84,7 +84,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
             const elementFeat = uuid ? await this.#loadFeatSource(uuid) : null;
             if (!elementFeat) continue;
 
-            const grantUUID = `{item|flags.pf2e.rulesSelections.element${elementNumberString}}`;
+            const grantUUID = `{item|flags.avant.rulesSelections.element${elementNumberString}}`;
             this.#addGrantedItem(actorSource, { parent: kineticGate, child: elementFeat, grantUUID });
 
             // Now attach the granted feats.
@@ -94,7 +94,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
                 this.#addGrantedItem(actorSource, {
                     parent: elementFeat,
                     child: feat,
-                    grantUUID: `{item|flags.pf2e.rulesSelections.impulse${impulseNumberString}}`,
+                    grantUUID: `{item|flags.avant.rulesSelections.impulse${impulseNumberString}}`,
                 });
             }
 
@@ -120,11 +120,11 @@ export class Migration923KineticistRestructure extends MigrationBase {
                 );
             }
 
-            const elementLabel = game.i18n.localize(CONFIG.PF2E.elementTraits[element as ElementTrait]);
+            const elementLabel = game.i18n.localize(CONFIG.AVANT.elementTraits[element as ElementTrait]);
 
             // Process what happens if the element forks
             if (threshold.choice === "fork") {
-                thresholdItem.name = game.i18n.format("PF2E.SpecificRule.Kineticist.KineticGate.ForkThePath.Rename", {
+                thresholdItem.name = game.i18n.format("AVANT.SpecificRule.Kineticist.KineticGate.ForkThePath.Rename", {
                     elementFork: elementLabel,
                 });
 
@@ -136,7 +136,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
                 this.#addGrantedItem(actorSource, {
                     parent: thresholdItem,
                     child: elementFeat,
-                    grantUUID: "{item|flags.pf2e.rulesSelections.elementFork}",
+                    grantUUID: "{item|flags.avant.rulesSelections.elementFork}",
                 });
 
                 if (threshold.featItem) {
@@ -144,7 +144,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
                     this.#addGrantedItem(actorSource, {
                         parent: elementFeat,
                         child: threshold.featItem,
-                        grantUUID: "{item|flags.pf2e.rulesSelections.impulseOne}",
+                        grantUUID: "{item|flags.avant.rulesSelections.impulseOne}",
                     });
                 }
 
@@ -156,7 +156,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
             // Process what happens if we selected a gate junction
             if (threshold.choice === "expand") {
                 thresholdItem.name = game.i18n.format(
-                    "PF2E.SpecificRule.Kineticist.KineticGate.ExpandThePortal.Rename",
+                    "AVANT.SpecificRule.Kineticist.KineticGate.ExpandThePortal.Rename",
                     { elementOne: elementLabel },
                 );
                 this.#setChoice(thresholdItem, "elementOne", element);
@@ -178,7 +178,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
                     this.#addGrantedItem(actorSource, {
                         parent: thresholdItem,
                         child: threshold.featItem,
-                        grantUUID: "{item|flags.pf2e.rulesSelections.impulseExpand}",
+                        grantUUID: "{item|flags.avant.rulesSelections.impulseExpand}",
                     });
                 }
 
@@ -189,12 +189,12 @@ export class Migration923KineticistRestructure extends MigrationBase {
     }
 
     #elementMap: Map<string, ItemUUID> = new Map([
-        ["air", "Compendium.pf2e.classfeatures.Item.X11Y3T1IzmtNqGMV"],
-        ["earth", "Compendium.pf2e.classfeatures.Item.dEm00L1XFXFCH2wS"],
-        ["fire", "Compendium.pf2e.classfeatures.Item.PfeDtJBJdUun0THS"],
-        ["metal", "Compendium.pf2e.classfeatures.Item.21JjdNW0RQ2LfaH3"],
-        ["water", "Compendium.pf2e.classfeatures.Item.MvunDFH8Karxee0t"],
-        ["wood", "Compendium.pf2e.classfeatures.Item.8X8db58vKx21L0Dr"],
+        ["air", "Compendium.avant.classfeatures.Item.X11Y3T1IzmtNqGMV"],
+        ["earth", "Compendium.avant.classfeatures.Item.dEm00L1XFXFCH2wS"],
+        ["fire", "Compendium.avant.classfeatures.Item.PfeDtJBJdUun0THS"],
+        ["metal", "Compendium.avant.classfeatures.Item.21JjdNW0RQ2LfaH3"],
+        ["water", "Compendium.avant.classfeatures.Item.MvunDFH8Karxee0t"],
+        ["wood", "Compendium.avant.classfeatures.Item.8X8db58vKx21L0Dr"],
     ]);
 
     #elementSkillFeats: Record<string, string> = {
@@ -206,33 +206,33 @@ export class Migration923KineticistRestructure extends MigrationBase {
         wood: "terrain-expertise",
     };
 
-    #gateJunctionFeat: ItemUUID = "Compendium.pf2e.classfeatures.Item.jx70hPakuTgB3lM5";
+    #gateJunctionFeat: ItemUUID = "Compendium.avant.classfeatures.Item.jx70hPakuTgB3lM5";
 
     async #loadFeatSource(uuid: ItemUUID): Promise<FeatSource | null> {
-        const item = await fromUuid<ItemPF2e>(uuid);
-        const source: ItemSourcePF2e | null = item?.toObject(true) ?? null;
+        const item = await fromUuid<ItemAvant>(uuid);
+        const source: ItemSourceAvant | null = item?.toObject(true) ?? null;
         if (!source || !itemIsOfType(source, "feat")) return null;
         source._id = fu.randomID();
         return source;
     }
 
     #addGrantedItem(
-        actorSource: ActorSourcePF2e,
-        options: { parent: ItemSourcePF2e; child: ItemSourcePF2e; grantUUID?: string | null },
+        actorSource: ActorSourceAvant,
+        options: { parent: ItemSourceAvant; child: ItemSourceAvant; grantUUID?: string | null },
     ) {
         const { child, parent } = options;
         if (!parent._id || !child._id) return;
 
         const childSlug = sluggify(child.system.slug ?? child.name, { camel: "dromedary" });
-        parent.flags.pf2e ??= {};
-        parent.flags.pf2e.itemGrants ??= {};
-        parent.flags.pf2e.itemGrants[childSlug] = { id: child._id, onDelete: "detach" };
-        if (`-=${childSlug}` in parent.flags.pf2e.itemGrants) {
-            delete parent.flags.pf2e.itemGrants[`-=${childSlug}`];
+        parent.flags.avant ??= {};
+        parent.flags.avant.itemGrants ??= {};
+        parent.flags.avant.itemGrants[childSlug] = { id: child._id, onDelete: "detach" };
+        if (`-=${childSlug}` in parent.flags.avant.itemGrants) {
+            delete parent.flags.avant.itemGrants[`-=${childSlug}`];
         }
 
-        child.flags.pf2e ??= {};
-        child.flags.pf2e.grantedBy = { id: parent._id, onDelete: "cascade" };
+        child.flags.avant ??= {};
+        child.flags.avant.grantedBy = { id: parent._id, onDelete: "cascade" };
 
         const grantUUID = options.grantUUID ?? child._stats.compendiumSource;
         const grant = parent.system.rules.find(
@@ -248,10 +248,10 @@ export class Migration923KineticistRestructure extends MigrationBase {
         }
     }
 
-    #wipeGrants(item: ItemSourcePF2e) {
-        if (!item?.flags.pf2e?.itemGrants) return;
+    #wipeGrants(item: ItemSourceAvant) {
+        if (!item?.flags.avant?.itemGrants) return;
 
-        const grants: Record<string, unknown> = item.flags.pf2e.itemGrants;
+        const grants: Record<string, unknown> = item.flags.avant.itemGrants;
         for (const key of Object.keys(grants)) {
             if (!key.startsWith("-=")) grants[`-=${key}`] = null;
         }
@@ -261,7 +261,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
      * Wipes all choice sets with no selection. Used for imported item so that changes in them don't cause too big a break, becuase choice sets without selections block processing
      * This is important for elements
      */
-    #wipeEmptyChoices(item: ItemSourcePF2e) {
+    #wipeEmptyChoices(item: ItemSourceAvant) {
         item.system.rules = item.system.rules.filter((r) => r.key !== "ChoiceSet" || ("selection" in r && r.selection));
     }
 
@@ -276,8 +276,8 @@ export class Migration923KineticistRestructure extends MigrationBase {
     }
 
     /** Extracts all kineticist choices, with the goal of reapplying them with new rules */
-    #extractKineticistDecisions(actorSource: ActorSourcePF2e, kineticGate: FeatSource): KineticistDecisions {
-        function getChoice(item?: ItemSourcePF2e, flag?: string): string | null {
+    #extractKineticistDecisions(actorSource: ActorSourceAvant, kineticGate: FeatSource): KineticistDecisions {
+        function getChoice(item?: ItemSourceAvant, flag?: string): string | null {
             const selection = item?.system.rules.find(
                 (r): r is ChoiceSetSource => r.key === "ChoiceSet" && "flag" in r && r.flag === flag,
             )?.selection;
@@ -298,7 +298,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
         );
         const initialFeats = actorFeats.filter(
             (i) =>
-                i.flags.pf2e?.grantedBy?.id === kineticGate._id &&
+                i.flags.avant?.grantedBy?.id === kineticGate._id &&
                 tupleHasValue(i.system.traits.value ?? [], "impulse"),
         );
 
@@ -333,7 +333,7 @@ export class Migration923KineticistRestructure extends MigrationBase {
                         junction: choice === "expand" ? getChoice(thresholdItem, "junction") : null,
                         featItem: actorFeats.find(
                             (i) =>
-                                i.flags.pf2e?.grantedBy?.id === thresholdItem._id &&
+                                i.flags.avant?.grantedBy?.id === thresholdItem._id &&
                                 tupleHasValue(i.system.traits.value ?? [], "impulse"),
                         ),
                     };
@@ -361,25 +361,25 @@ interface ThresholdChoice {
 }
 
 const JUNCTION_LABELS = {
-    aura: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.Aura",
-    critical: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.CriticalBlast",
-    resistance: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.ElementalResistance",
-    impulse: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.Impulse",
-    skill: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.Skill",
+    aura: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.Aura",
+    critical: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.CriticalBlast",
+    resistance: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.ElementalResistance",
+    impulse: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.Impulse",
+    skill: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.Skill",
 };
 
 const KINETIC_GATE_RULES = [
     {
         key: "ActiveEffectLike",
         mode: "override",
-        path: "flags.pf2e.kineticist.elements",
+        path: "flags.avant.kineticist.elements",
         priority: 19,
         value: [],
     },
     {
         key: "ActiveEffectLike",
         mode: "override",
-        path: "flags.pf2e.kineticist.gate",
+        path: "flags.avant.kineticist.gate",
         priority: 49,
         value: {
             five: null,
@@ -394,16 +394,16 @@ const KINETIC_GATE_RULES = [
         adjustName: false,
         choices: [
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.DualGate.Label",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.DualGate.Label",
                 value: "dual-gate",
             },
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.SingleGate",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.SingleGate",
                 value: "single-gate",
             },
         ],
         key: "ChoiceSet",
-        prompt: "PF2E.SpecificRule.Kineticist.KineticGate.Prompt.Gate",
+        prompt: "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.Gate",
         flag: "kineticGate",
         rollOption: "kinetic-gate:initial",
     },
@@ -414,12 +414,12 @@ const KINETIC_GATE_RULES = [
         },
         flag: "elementOne",
         key: "ChoiceSet",
-        prompt: "PF2E.SpecificRule.Kineticist.KineticGate.Prompt.Element",
+        prompt: "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.Element",
         rollOption: "kinetic-gate:first-element",
     } as ChoiceSetSource,
     {
         key: "GrantItem",
-        uuid: "{item|flags.pf2e.rulesSelections.elementOne}",
+        uuid: "{item|flags.avant.rulesSelections.elementOne}",
     },
     {
         adjustName: false,
@@ -429,17 +429,17 @@ const KINETIC_GATE_RULES = [
         flag: "elementTwo",
         key: "ChoiceSet",
         predicate: ["kinetic-gate:initial:dual-gate"],
-        prompt: "PF2E.SpecificRule.Kineticist.KineticGate.Prompt.Element",
+        prompt: "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.Element",
         rollOption: "kinetic-gate:second-element",
     } as ChoiceSetSource,
     {
         key: "GrantItem",
-        uuid: "{item|flags.pf2e.rulesSelections.elementTwo}",
+        uuid: "{item|flags.avant.rulesSelections.elementTwo}",
     },
     {
         domain: "all",
         key: "RollOption",
-        option: "junction:{item|flags.pf2e.rulesSelections.elementOne}:impulse",
+        option: "junction:{item|flags.avant.rulesSelections.elementOne}:impulse",
         predicate: ["kinetic-gate:initial:single-gate"],
     },
 ];
@@ -448,47 +448,47 @@ const GATES_THRESHOLD_RULES = (level: number) => [
     {
         choices: [
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.ExpandThePortal.Label",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.ExpandThePortal.Label",
                 value: "expand",
             },
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.ForkThePath.Label",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.ForkThePath.Label",
                 value: "fork",
             },
         ],
         key: "ChoiceSet",
-        prompt: "PF2E.SpecificRule.Kineticist.KineticGate.Prompt.Threshold",
+        prompt: "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.Threshold",
         rollOption: "kinetic-gate:first-threshold",
         flag: "threshold",
     },
     {
         actorFlag: true,
-        adjustName: "PF2E.SpecificRule.Kineticist.KineticGate.ExpandThePortal.Rename",
-        choices: "flags.pf2e.kineticist.elements",
+        adjustName: "AVANT.SpecificRule.Kineticist.KineticGate.ExpandThePortal.Rename",
+        choices: "flags.avant.kineticist.elements",
         flag: "elementOne",
         key: "ChoiceSet",
         predicate: ["kinetic-gate:first-threshold:expand"],
-        prompt: "PF2E.SpecificRule.Kineticist.KineticGate.Prompt.ExpandElement",
+        prompt: "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.ExpandElement",
     },
     {
         key: "GrantItem",
         predicate: ["kinetic-gate:first-threshold:expand"],
-        uuid: "Compendium.pf2e.classfeatures.Item.jx70hPakuTgB3lM5",
+        uuid: "Compendium.avant.classfeatures.Item.jx70hPakuTgB3lM5",
     },
     {
-        adjustName: "PF2E.SpecificRule.Kineticist.KineticGate.ForkThePath.Rename",
+        adjustName: "AVANT.SpecificRule.Kineticist.KineticGate.ForkThePath.Rename",
         choices: {
             filter: ["item:tag:kineticist-kinetic-gate"],
         },
         flag: "elementFork",
         key: "ChoiceSet",
         predicate: ["kinetic-gate:first-threshold:fork"],
-        prompt: "PF2E.SpecificRule.Kineticist.KineticGate.Prompt.Element",
+        prompt: "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.Element",
     },
     {
         allowDuplicate: false,
         key: "GrantItem",
-        uuid: "{item|flags.pf2e.rulesSelections.elementFork}",
+        uuid: "{item|flags.avant.rulesSelections.elementFork}",
     },
     {
         adjustName: false,
@@ -505,12 +505,12 @@ const GATES_THRESHOLD_RULES = (level: number) => [
                             and: [
                                 {
                                     or: [
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.one}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.two}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.three}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.four}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.five}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.six}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.one}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.two}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.three}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.four}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.five}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.six}",
                                     ],
                                 },
                                 {
@@ -523,23 +523,23 @@ const GATES_THRESHOLD_RULES = (level: number) => [
                                 {
                                     not: {
                                         xor: [
-                                            "item:trait:{actor|flags.pf2e.kineticist.gate.one}",
-                                            "item:trait:{actor|flags.pf2e.kineticist.gate.two}",
-                                            "item:trait:{actor|flags.pf2e.kineticist.gate.three}",
-                                            "item:trait:{actor|flags.pf2e.kineticist.gate.four}",
-                                            "item:trait:{actor|flags.pf2e.kineticist.gate.five}",
-                                            "item:trait:{actor|flags.pf2e.kineticist.gate.six}",
+                                            "item:trait:{actor|flags.avant.kineticist.gate.one}",
+                                            "item:trait:{actor|flags.avant.kineticist.gate.two}",
+                                            "item:trait:{actor|flags.avant.kineticist.gate.three}",
+                                            "item:trait:{actor|flags.avant.kineticist.gate.four}",
+                                            "item:trait:{actor|flags.avant.kineticist.gate.five}",
+                                            "item:trait:{actor|flags.avant.kineticist.gate.six}",
                                         ],
                                     },
                                 },
                                 {
                                     or: [
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.one}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.two}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.three}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.four}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.five}",
-                                        "item:trait:{actor|flags.pf2e.kineticist.gate.six}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.one}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.two}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.three}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.four}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.five}",
+                                        "item:trait:{actor|flags.avant.kineticist.gate.six}",
                                     ],
                                 },
                             ],
@@ -552,12 +552,12 @@ const GATES_THRESHOLD_RULES = (level: number) => [
         flag: "impulseExpand",
         key: "ChoiceSet",
         predicate: ["kinetic-gate:first-threshold:expand"],
-        prompt: "PF2E.SpecificRule.Kineticist.KineticGate.Prompt.Impulse",
+        prompt: "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.Impulse",
     },
     {
         allowDuplicate: false,
         key: "GrantItem",
-        uuid: "{item|flags.pf2e.rulesSelections.impulseExpand}",
+        uuid: "{item|flags.avant.rulesSelections.impulseExpand}",
     },
 ];
 
@@ -566,7 +566,7 @@ const GATE_JUNCTION_RULES = (element: string) => [
     {
         choices: [
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.Aura",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.Aura",
                 predicate: [
                     {
                         not: `junction:${element}:aura`,
@@ -575,7 +575,7 @@ const GATE_JUNCTION_RULES = (element: string) => [
                 value: "aura",
             },
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.CriticalBlast",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.CriticalBlast",
                 predicate: [
                     {
                         not: `junction:${element}:critical`,
@@ -584,7 +584,7 @@ const GATE_JUNCTION_RULES = (element: string) => [
                 value: "critical",
             },
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.ElementalResistance",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.ElementalResistance",
                 predicate: [
                     {
                         not: `junction:${element}:resistance`,
@@ -593,7 +593,7 @@ const GATE_JUNCTION_RULES = (element: string) => [
                 value: "resistance",
             },
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.Impulse",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.Impulse",
                 predicate: [
                     {
                         not: `junction:${element}:impulse`,
@@ -602,7 +602,7 @@ const GATE_JUNCTION_RULES = (element: string) => [
                 value: "impulse",
             },
             {
-                label: "PF2E.SpecificRule.Kineticist.KineticGate.Junction.Skill",
+                label: "AVANT.SpecificRule.Kineticist.KineticGate.Junction.Skill",
                 predicate: [
                     {
                         not: `junction:${element}:skill`,
@@ -613,11 +613,11 @@ const GATE_JUNCTION_RULES = (element: string) => [
         ],
         flag: "junction",
         key: "ChoiceSet",
-        prompt: "PF2E.SpecificRule.Kineticist.KineticGate.Prompt.Junction",
+        prompt: "AVANT.SpecificRule.Kineticist.KineticGate.Prompt.Junction",
     },
     {
         domain: "all",
         key: "RollOption",
-        option: `junction:${element}:{item|flags.pf2e.rulesSelections.junction}`,
+        option: `junction:${element}:{item|flags.avant.rulesSelections.junction}`,
     },
 ];

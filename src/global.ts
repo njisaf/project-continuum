@@ -1,50 +1,50 @@
 /// <reference types="vite/client" />
 
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { Action } from "@actor/actions/index.ts";
 import type { AutomaticBonusProgression } from "@actor/character/automatic-bonus-progression.ts";
 import type { ElementalBlast } from "@actor/character/elemental-blast.ts";
 import type { FeatGroupData } from "@actor/character/feats/index.ts";
-import type { CheckModifier, ModifierPF2e, ModifierType, StatisticModifier } from "@actor/modifiers.ts";
-import type { ItemPF2e, PhysicalItemPF2e } from "@item";
+import type { CheckModifier, ModifierAvant, ModifierType, StatisticModifier } from "@actor/modifiers.ts";
+import type { ItemAvant, PhysicalItemAvant } from "@item";
 import type { ConditionSource } from "@item/condition/data.ts";
-import type { CoinsPF2e } from "@item/physical/helpers.ts";
-import type { ActiveEffectPF2e } from "@module/active-effect.ts";
+import type { CoinsAvant } from "@item/physical/helpers.ts";
+import type { ActiveEffectAvant } from "@module/active-effect.ts";
 import type {
     CompendiumBrowser,
     CompendiumBrowserSettings,
     CompendiumBrowserSources,
 } from "@module/apps/compendium-browser/browser.ts";
 import type { EffectsPanel } from "@module/apps/effects-panel.ts";
-import type { HotbarPF2e } from "@module/apps/hotbar.ts";
+import type { HotbarAvant } from "@module/apps/hotbar.ts";
 import type { LicenseViewer } from "@module/apps/license-viewer/app.ts";
 import type {
-    ActorDirectoryPF2e,
-    ChatLogPF2e,
-    CompendiumDirectoryPF2e,
-    EncounterTrackerPF2e,
+    ActorDirectoryAvant,
+    ChatLogAvant,
+    CompendiumDirectoryAvant,
+    EncounterTrackerAvant,
 } from "@module/apps/sidebar/index.ts";
 import type { WorldClock } from "@module/apps/world-clock/app.ts";
-import type { CanvasPF2e, EffectsCanvasGroupPF2e } from "@module/canvas/index.ts";
+import type { CanvasAvant, EffectsCanvasGroupAvant } from "@module/canvas/index.ts";
 import type { StatusEffects } from "@module/canvas/status-effects.ts";
-import type { ChatMessagePF2e } from "@module/chat-message/index.ts";
-import type { ActorsPF2e } from "@module/collection/actors.ts";
-import type { CombatantPF2e, EncounterPF2e } from "@module/encounter/index.ts";
-import type { MacroPF2e } from "@module/macro.ts";
-import type { RuleElementPF2e, RuleElements } from "@module/rules/index.ts";
-import type { UserPF2e } from "@module/user/index.ts";
+import type { ChatMessageAvant } from "@module/chat-message/index.ts";
+import type { ActorsAvant } from "@module/collection/actors.ts";
+import type { CombatantAvant, EncounterAvant } from "@module/encounter/index.ts";
+import type { MacroAvant } from "@module/macro.ts";
+import type { RuleElementAvant, RuleElements } from "@module/rules/index.ts";
+import type { UserAvant } from "@module/user/index.ts";
 import type {
-    AmbientLightDocumentPF2e,
-    MeasuredTemplateDocumentPF2e,
-    RegionBehaviorPF2e,
-    RegionDocumentPF2e,
-    ScenePF2e,
-    TileDocumentPF2e,
-    TokenDocumentPF2e,
+    AmbientLightDocumentAvant,
+    MeasuredTemplateDocumentAvant,
+    RegionBehaviorAvant,
+    RegionDocumentAvant,
+    SceneAvant,
+    TileDocumentAvant,
+    TokenDocumentAvant,
 } from "@scene";
-import type { ActorDeltaPF2e } from "@scene/token-document/actor-delta.ts";
-import type { PF2ECONFIG, StatusEffectIconTheme } from "@scripts/config/index.ts";
-import type { DicePF2e } from "@scripts/dice.ts";
+import type { ActorDeltaAvant } from "@scene/token-document/actor-delta.ts";
+import type { AVANTCONFIG, StatusEffectIconTheme } from "@scripts/config/index.ts";
+import type { DiceAvant } from "@scripts/dice.ts";
 import type {
     calculateXP,
     checkPrompt,
@@ -57,7 +57,7 @@ import type {
     xpFromEncounter,
 } from "@scripts/macros/index.ts";
 import type { remigrate } from "@scripts/system/remigrate.ts";
-import type { CheckPF2e } from "@system/check/index.ts";
+import type { CheckAvant } from "@system/check/index.ts";
 import type { ConditionManager } from "@system/conditions/manager.ts";
 import type { EffectTracker } from "@system/effect-tracker.ts";
 import type { ModuleArt } from "@system/module-art.ts";
@@ -68,22 +68,22 @@ import type {
     HomebrewTraitSettingsKey,
     LanguageSettings,
 } from "@system/settings/homebrew/index.ts";
-import type { TextEditorPF2e } from "@system/text-editor.ts";
+import type { TextEditorAvant } from "@system/text-editor.ts";
 import type { sluggify } from "@util";
 import type EnJSON from "static/lang/en.json";
 
-interface GamePF2e
+interface GameAvant
     extends Game<
-        ActorPF2e<null>,
-        ActorsPF2e<ActorPF2e<null>>,
-        ChatMessagePF2e,
-        EncounterPF2e,
-        ItemPF2e<null>,
-        MacroPF2e,
-        ScenePF2e,
-        UserPF2e
+        ActorAvant<null>,
+        ActorsAvant<ActorAvant<null>>,
+        ChatMessageAvant,
+        EncounterAvant,
+        ItemAvant<null>,
+        MacroAvant,
+        SceneAvant,
+        UserAvant
     > {
-    pf2e: {
+    avant: {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
         actions: Record<string, Function> & Collection<Action>;
         compendiumBrowser: CompendiumBrowser;
@@ -106,25 +106,25 @@ interface GamePF2e
             moduleArt: ModuleArt;
             remigrate: typeof remigrate;
             sluggify: typeof sluggify;
-            generateItemName: (item: PhysicalItemPF2e) => string;
+            generateItemName: (item: PhysicalItemAvant) => string;
         };
         variantRules: {
             AutomaticBonusProgression: typeof AutomaticBonusProgression;
         };
-        Check: typeof CheckPF2e;
+        Check: typeof CheckAvant;
         CheckModifier: typeof CheckModifier;
-        Coins: typeof CoinsPF2e;
+        Coins: typeof CoinsAvant;
         ConditionManager: typeof ConditionManager;
-        Dice: typeof DicePF2e;
+        Dice: typeof DiceAvant;
         ElementalBlast: typeof ElementalBlast;
-        Modifier: typeof ModifierPF2e;
+        Modifier: typeof ModifierAvant;
         ModifierType: { [K in Uppercase<ModifierType>]: Lowercase<K> };
         Predicate: typeof Predicate;
-        RuleElement: typeof RuleElementPF2e;
+        RuleElement: typeof RuleElementAvant;
         RuleElements: typeof RuleElements;
         StatisticModifier: typeof StatisticModifier;
         StatusEffects: typeof StatusEffects;
-        TextEditor: typeof TextEditorPF2e;
+        TextEditor: typeof TextEditorAvant;
         /** Cached values of frequently-checked settings */
         settings: {
             automation: {
@@ -193,59 +193,59 @@ interface GamePF2e
 }
 
 type ConfiguredConfig = Config<
-    AmbientLightDocumentPF2e<ScenePF2e | null>,
-    ActiveEffectPF2e<ActorPF2e | ItemPF2e | null>,
-    ActorPF2e,
-    ActorDeltaPF2e<TokenDocumentPF2e>,
-    ChatLogPF2e,
-    ChatMessagePF2e,
-    EncounterPF2e,
-    CombatantPF2e<EncounterPF2e | null, TokenDocumentPF2e>,
-    EncounterTrackerPF2e<EncounterPF2e | null>,
-    CompendiumDirectoryPF2e,
-    HotbarPF2e,
-    ItemPF2e,
-    MacroPF2e,
-    MeasuredTemplateDocumentPF2e,
-    RegionDocumentPF2e,
-    RegionBehaviorPF2e,
-    TileDocumentPF2e,
-    TokenDocumentPF2e,
-    WallDocument<ScenePF2e | null>,
-    ScenePF2e,
-    UserPF2e,
-    EffectsCanvasGroupPF2e
+    AmbientLightDocumentAvant<SceneAvant | null>,
+    ActiveEffectAvant<ActorAvant | ItemAvant | null>,
+    ActorAvant,
+    ActorDeltaAvant<TokenDocumentAvant>,
+    ChatLogAvant,
+    ChatMessageAvant,
+    EncounterAvant,
+    CombatantAvant<EncounterAvant | null, TokenDocumentAvant>,
+    EncounterTrackerAvant<EncounterAvant | null>,
+    CompendiumDirectoryAvant,
+    HotbarAvant,
+    ItemAvant,
+    MacroAvant,
+    MeasuredTemplateDocumentAvant,
+    RegionDocumentAvant,
+    RegionBehaviorAvant,
+    TileDocumentAvant,
+    TokenDocumentAvant,
+    WallDocument<SceneAvant | null>,
+    SceneAvant,
+    UserAvant,
+    EffectsCanvasGroupAvant
 >;
 
 declare global {
-    interface ConfigPF2e extends ConfiguredConfig {
+    interface ConfigAvant extends ConfiguredConfig {
         debug: ConfiguredConfig["debug"] & {
             ruleElement: boolean;
         };
-        PF2E: typeof PF2ECONFIG;
+        AVANT: typeof AVANTCONFIG;
         time: {
             roundTime: number;
             turnTime: number;
         };
     }
 
-    const CONFIG: ConfigPF2e;
-    const canvas: CanvasPF2e;
+    const CONFIG: ConfigAvant;
+    const canvas: CanvasAvant;
 
     namespace globalThis {
         // eslint-disable-next-line no-var
-        var game: GamePF2e;
+        var game: GameAvant;
         // eslint-disable-next-line no-var
         var fu: typeof foundry.utils;
 
         // eslint-disable-next-line no-var
         var ui: FoundryUI<
-            ActorDirectoryPF2e,
-            ItemDirectory<ItemPF2e<null>>,
-            ChatLogPF2e,
-            CompendiumDirectoryPF2e,
-            EncounterTrackerPF2e<EncounterPF2e | null>,
-            HotbarPF2e
+            ActorDirectoryAvant,
+            ItemDirectory<ItemAvant<null>>,
+            ChatLogAvant,
+            CompendiumDirectoryAvant,
+            EncounterTrackerAvant<EncounterAvant | null>,
+            HotbarAvant
         >;
 
         // Add functions to the `Math` namespace for use in `Roll` formulas
@@ -265,81 +265,81 @@ declare global {
     }
 
     interface ClientSettings {
-        get(module: "pf2e", setting: "automation.actorsDeadAtZero"): "neither" | "npcsOnly" | "pcsOnly" | "both";
-        get(module: "pf2e", setting: "automation.effectExpiration"): boolean;
-        get(module: "pf2e", setting: "automation.encumbrance"): boolean;
-        get(module: "pf2e", setting: "automation.flankingDetection"): boolean;
-        get(module: "pf2e", setting: "automation.iwr"): boolean;
-        get(module: "pf2e", setting: "automation.lootableNPCs"): boolean;
-        get(module: "pf2e", setting: "automation.removeExpiredEffects"): boolean;
-        get(module: "pf2e", setting: "automation.rulesBasedVision"): boolean;
+        get(module: "avant", setting: "automation.actorsDeadAtZero"): "neither" | "npcsOnly" | "pcsOnly" | "both";
+        get(module: "avant", setting: "automation.effectExpiration"): boolean;
+        get(module: "avant", setting: "automation.encumbrance"): boolean;
+        get(module: "avant", setting: "automation.flankingDetection"): boolean;
+        get(module: "avant", setting: "automation.iwr"): boolean;
+        get(module: "avant", setting: "automation.lootableNPCs"): boolean;
+        get(module: "avant", setting: "automation.removeExpiredEffects"): boolean;
+        get(module: "avant", setting: "automation.rulesBasedVision"): boolean;
 
-        get(module: "pf2e", setting: "gradualBoostsVariant"): boolean;
-        get(module: "pf2e", setting: "automaticBonusVariant"): "noABP" | "ABPFundamentalPotency" | "ABPRulesAsWritten";
-        get(module: "pf2e", setting: "freeArchetypeVariant"): boolean;
-        get(module: "pf2e", setting: "proficiencyVariant"): boolean;
-        get(module: "pf2e", setting: "staminaVariant"): boolean;
+        get(module: "avant", setting: "gradualBoostsVariant"): boolean;
+        get(module: "avant", setting: "automaticBonusVariant"): "noABP" | "ABPFundamentalPotency" | "ABPRulesAsWritten";
+        get(module: "avant", setting: "freeArchetypeVariant"): boolean;
+        get(module: "avant", setting: "proficiencyVariant"): boolean;
+        get(module: "avant", setting: "staminaVariant"): boolean;
 
-        get(module: "pf2e", setting: "proficiencyUntrainedModifier"): number;
-        get(module: "pf2e", setting: "proficiencyTrainedModifier"): number;
-        get(module: "pf2e", setting: "proficiencyExpertModifier"): number;
-        get(module: "pf2e", setting: "proficiencyMasterModifier"): number;
-        get(module: "pf2e", setting: "proficiencyLegendaryModifier"): number;
+        get(module: "avant", setting: "proficiencyUntrainedModifier"): number;
+        get(module: "avant", setting: "proficiencyTrainedModifier"): number;
+        get(module: "avant", setting: "proficiencyExpertModifier"): number;
+        get(module: "avant", setting: "proficiencyMasterModifier"): number;
+        get(module: "avant", setting: "proficiencyLegendaryModifier"): number;
 
-        get(module: "pf2e", setting: "metagame_partyVision"): boolean;
-        get(module: "pf2e", setting: "metagame_secretCondition"): boolean;
-        get(module: "pf2e", setting: "metagame_secretDamage"): boolean;
-        get(module: "pf2e", setting: "metagame_showBreakdowns"): boolean;
-        get(module: "pf2e", setting: "metagame_showDC"): boolean;
-        get(module: "pf2e", setting: "metagame_showPartyStats"): boolean;
-        get(module: "pf2e", setting: "metagame_showResults"): boolean;
-        get(module: "pf2e", setting: "metagame_tokenSetsNameVisibility"): boolean;
-        get(module: "pf2e", setting: "metagame_secretChecks"): boolean;
+        get(module: "avant", setting: "metagame_partyVision"): boolean;
+        get(module: "avant", setting: "metagame_secretCondition"): boolean;
+        get(module: "avant", setting: "metagame_secretDamage"): boolean;
+        get(module: "avant", setting: "metagame_showBreakdowns"): boolean;
+        get(module: "avant", setting: "metagame_showDC"): boolean;
+        get(module: "avant", setting: "metagame_showPartyStats"): boolean;
+        get(module: "avant", setting: "metagame_showResults"): boolean;
+        get(module: "avant", setting: "metagame_tokenSetsNameVisibility"): boolean;
+        get(module: "avant", setting: "metagame_secretChecks"): boolean;
 
-        get(module: "pf2e", setting: "tokens.autoscale"): boolean;
+        get(module: "avant", setting: "tokens.autoscale"): boolean;
 
-        get(module: "pf2e", setting: "worldClock.dateTheme"): "AR" | "IC" | "AD" | "CE";
-        get(module: "pf2e", setting: "worldClock.playersCanView"): boolean;
-        get(module: "pf2e", setting: "worldClock.showClockButton"): boolean;
-        get(module: "pf2e", setting: "worldClock.syncDarkness"): boolean;
-        get(module: "pf2e", setting: "worldClock.timeConvention"): 24 | 12;
-        get(module: "pf2e", setting: "worldClock.worldCreatedOn"): string;
+        get(module: "avant", setting: "worldClock.dateTheme"): "AR" | "IC" | "AD" | "CE";
+        get(module: "avant", setting: "worldClock.playersCanView"): boolean;
+        get(module: "avant", setting: "worldClock.showClockButton"): boolean;
+        get(module: "avant", setting: "worldClock.syncDarkness"): boolean;
+        get(module: "avant", setting: "worldClock.timeConvention"): 24 | 12;
+        get(module: "avant", setting: "worldClock.worldCreatedOn"): string;
 
-        get(module: "pf2e", setting: "campaignFeats"): boolean;
-        get(module: "pf2e", setting: "campaignFeatSections"): FeatGroupData[];
-        get(module: "pf2e", setting: "campaignType"): string;
-        get(module: "pf2e", setting: "mythic"): "disabled" | "enabled" | "variant-tiers";
+        get(module: "avant", setting: "campaignFeats"): boolean;
+        get(module: "avant", setting: "campaignFeatSections"): FeatGroupData[];
+        get(module: "avant", setting: "campaignType"): string;
+        get(module: "avant", setting: "mythic"): "disabled" | "enabled" | "variant-tiers";
 
-        get(module: "pf2e", setting: "activeParty"): string;
-        get(module: "pf2e", setting: "activePartyFolderState"): boolean;
-        get(module: "pf2e", setting: "createdFirstParty"): boolean;
+        get(module: "avant", setting: "activeParty"): string;
+        get(module: "avant", setting: "activePartyFolderState"): boolean;
+        get(module: "avant", setting: "createdFirstParty"): boolean;
 
-        get(module: "pf2e", setting: "homebrew.languages"): HomebrewTag<"languages">[];
-        get(module: "pf2e", setting: "homebrew.weaponCategories"): HomebrewTag<"weaponCategories">[];
-        get(module: "pf2e", setting: HomebrewTraitSettingsKey): HomebrewTag[];
-        get(module: "pf2e", setting: "homebrew.damageTypes"): CustomDamageData[];
-        get(module: "pf2e", setting: "homebrew.languageRarities"): LanguageSettings;
+        get(module: "avant", setting: "homebrew.languages"): HomebrewTag<"languages">[];
+        get(module: "avant", setting: "homebrew.weaponCategories"): HomebrewTag<"weaponCategories">[];
+        get(module: "avant", setting: HomebrewTraitSettingsKey): HomebrewTag[];
+        get(module: "avant", setting: "homebrew.damageTypes"): CustomDamageData[];
+        get(module: "avant", setting: "homebrew.languageRarities"): LanguageSettings;
 
-        get(module: "pf2e", setting: "compendiumBrowserPacks"): CompendiumBrowserSettings;
-        get(module: "pf2e", setting: "compendiumBrowserSources"): CompendiumBrowserSources;
-        get(module: "pf2e", setting: "critFumbleButtons"): boolean;
-        get(module: "pf2e", setting: "critRule"): "doubledamage" | "doubledice";
-        get(module: "pf2e", setting: "deathIcon"): ImageFilePath;
-        get(module: "pf2e", setting: "dragMeasurement"): "always" | "encounters" | "never";
-        get(module: "pf2e", setting: "drawCritFumble"): boolean;
-        get(module: "pf2e", setting: "gmVision"): boolean;
-        get(module: "pf2e", setting: "identifyMagicNotMatchingTraditionModifier"): 0 | 2 | 5 | 10;
-        get(module: "pf2e", setting: "minimumRulesUI"): Exclude<UserRole, 0>;
-        get(module: "pf2e", setting: "nathMode"): boolean;
-        get(module: "pf2e", setting: "seenRemasterJournalEntry"): boolean;
-        get(module: "pf2e", setting: "statusEffectType"): StatusEffectIconTheme;
-        get(module: "pf2e", setting: "totmToggles"): boolean;
-        get(module: "pf2e", setting: "worldSchemaVersion"): number;
-        get(module: "pf2e", setting: "worldSystemVersion"): string;
+        get(module: "avant", setting: "compendiumBrowserPacks"): CompendiumBrowserSettings;
+        get(module: "avant", setting: "compendiumBrowserSources"): CompendiumBrowserSources;
+        get(module: "avant", setting: "critFumbleButtons"): boolean;
+        get(module: "avant", setting: "critRule"): "doubledamage" | "doubledice";
+        get(module: "avant", setting: "deathIcon"): ImageFilePath;
+        get(module: "avant", setting: "dragMeasurement"): "always" | "encounters" | "never";
+        get(module: "avant", setting: "drawCritFumble"): boolean;
+        get(module: "avant", setting: "gmVision"): boolean;
+        get(module: "avant", setting: "identifyMagicNotMatchingTraditionModifier"): 0 | 2 | 5 | 10;
+        get(module: "avant", setting: "minimumRulesUI"): Exclude<UserRole, 0>;
+        get(module: "avant", setting: "nathMode"): boolean;
+        get(module: "avant", setting: "seenRemasterJournalEntry"): boolean;
+        get(module: "avant", setting: "statusEffectType"): StatusEffectIconTheme;
+        get(module: "avant", setting: "totmToggles"): boolean;
+        get(module: "avant", setting: "worldSchemaVersion"): number;
+        get(module: "avant", setting: "worldSystemVersion"): string;
     }
 
     interface ClientSettingsMap {
-        get(key: "pf2e.worldClock.worldCreatedOn"): SettingConfig & { default: string };
+        get(key: "avant.worldClock.worldCreatedOn"): SettingConfig & { default: string };
     }
 
     interface RollMathProxy {

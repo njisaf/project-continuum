@@ -1,16 +1,16 @@
-import type { ActorType, CharacterPF2e } from "@actor";
+import type { ActorType, CharacterAvant } from "@actor";
 import { CharacterStrike } from "@actor/character/data.ts";
 import { SENSE_TYPES } from "@actor/creature/values.ts";
 import { ActorInitiative } from "@actor/initiative.ts";
-import { DamageDicePF2e, ModifierPF2e, StatisticModifier } from "@actor/modifiers.ts";
+import { DamageDiceAvant, ModifierAvant, StatisticModifier } from "@actor/modifiers.ts";
 import { MOVEMENT_TYPES } from "@actor/values.ts";
-import { WeaponPF2e } from "@item";
-import { RollNotePF2e } from "@module/notes.ts";
+import { WeaponAvant } from "@item";
+import { RollNoteAvant } from "@module/notes.ts";
 import { Predicate } from "@system/predication.ts";
 import { RecordField } from "@system/schema-data-fields.ts";
-import { ErrorPF2e, isObject, objectHasKey, setHasElement, sluggify, tupleHasValue } from "@util";
+import { ErrorAvant, isObject, objectHasKey, setHasElement, sluggify, tupleHasValue } from "@util";
 import * as R from "remeda";
-import { RuleElementOptions, RuleElementPF2e } from "../base.ts";
+import { RuleElementOptions, RuleElementAvant } from "../base.ts";
 import { CreatureSizeRuleElement } from "../creature-size.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSource } from "../data.ts";
 import { ImmunityRuleElement } from "../iwr/immunity.ts";
@@ -22,7 +22,7 @@ import { TempHPRuleElement } from "../temp-hp.ts";
 import { BattleFormRuleOverrideSchema, BattleFormRuleSchema } from "./schema.ts";
 import { BattleFormSource, BattleFormStrike, BattleFormStrikeQuery } from "./types.ts";
 
-class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
+class BattleFormRuleElement extends RuleElementAvant<BattleFormRuleSchema> {
     protected static override validActorTypes: ActorType[] = ["character"];
 
     /** The label given to modifiers of AC, skills, and strikes */
@@ -79,13 +79,13 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
                             required: true,
                             blank: false,
                             choices: () => ({
-                                ...CONFIG.PF2E.senses,
-                                ...R.mapKeys(CONFIG.PF2E.senses, (k) => sluggify(k, { camel: "dromedary" })),
+                                ...CONFIG.AVANT.senses,
+                                ...R.mapKeys(CONFIG.AVANT.senses, (k) => sluggify(k, { camel: "dromedary" })),
                             }),
                         }),
                         new fields.SchemaField({
                             acuity: new fields.StringField({
-                                choices: () => CONFIG.PF2E.senseAcuities,
+                                choices: () => CONFIG.AVANT.senseAcuities,
                                 required: false,
                                 blank: false,
                                 initial: undefined,
@@ -156,11 +156,11 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
         const path =
             slug === "fist"
                 ? "icons/skills/melee/unarmed-punch-fist.webp"
-                : (`systems/pf2e/icons/unarmed-attacks/${slug}.webp` as const);
+                : (`systems/avant/icons/unarmed-attacks/${slug}.webp` as const);
         return { ...accumulated, [slug]: path };
     }, {});
 
-    override async preCreate({ itemSource, ruleSource }: RuleElementPF2e.PreCreateParams): Promise<void> {
+    override async preCreate({ itemSource, ruleSource }: RuleElementAvant.PreCreateParams): Promise<void> {
         if (!this.test()) {
             ruleSource.ignored = true;
             return;
@@ -260,7 +260,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
 
         // Inform predicates that this battle form grants a skill modifier
         for (const key of Object.keys(this.overrides.skills)) {
-            if (key in CONFIG.PF2E.skills) {
+            if (key in CONFIG.AVANT.skills) {
                 rollOptions.all[`battle-form:${key}`] = true;
             }
         }
@@ -294,7 +294,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
 
         this.#suppressModifiers(armorClass);
         const newModifier = (Number(this.resolveValue(overrides.armorClass.modifier)) || 0) - 10;
-        armorClass.modifiers.push(new ModifierPF2e(this.modifierLabel, newModifier, "untyped"));
+        armorClass.modifiers.push(new ModifierAvant(this.modifierLabel, newModifier, "untyped"));
         actor.system.attributes.ac = fu.mergeObject(actor.system.attributes.ac, armorClass.parent.getTraceData());
     }
 
@@ -333,11 +333,11 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
                 attributes.speed.value = speedOverride;
             } else {
                 const otherSpeeds = currentSpeeds.otherSpeeds;
-                const label = game.i18n.localize(CONFIG.PF2E.speedTypes[movementType]);
+                const label = game.i18n.localize(CONFIG.AVANT.speedTypes[movementType]);
                 otherSpeeds.findSplice((s) => s.type === movementType);
                 otherSpeeds.push({ type: movementType, label, value: speedOverride });
                 const newSpeed = actor.prepareSpeed(movementType);
-                if (!newSpeed) throw ErrorPF2e("Unexpected failure retrieving movement type");
+                if (!newSpeed) throw ErrorAvant("Unexpected failure retrieving movement type");
                 this.#suppressModifiers(newSpeed);
 
                 otherSpeeds.findSplice((s) => s.type === movementType);
@@ -360,7 +360,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
                 continue;
             }
 
-            const baseMod = new ModifierPF2e({
+            const baseMod = new ModifierAvant({
                 label: this.modifierLabel,
                 slug: "battle-form",
                 modifier: newModifier,
@@ -385,7 +385,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
             key: "Strike",
             label:
                 game.i18n.localize(strikeData.label) ??
-                `PF2E.BattleForm.Attack.${sluggify(slug, { camel: "bactrian" })}`,
+                `AVANT.BattleForm.Attack.${sluggify(slug, { camel: "bactrian" })}`,
             slug,
             predicate: strikeData.predicate ?? [],
             img: strikeData.img ?? BattleFormRuleElement.#defaultIcons[slug] ?? this.item.img,
@@ -400,7 +400,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
             battleForm: true,
         }));
 
-        // Repopulate strikes with new WeaponPF2e instances--unless ownUnarmed is true
+        // Repopulate strikes with new WeaponAvant instances--unless ownUnarmed is true
         const strikeRules = actor.rules.filter((r): r is StrikeRuleElement => r.key === "Strike");
         if (this.ownUnarmed) {
             for (const rule of strikeRules) {
@@ -424,7 +424,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
 
         actor.system.actions = actor
             .prepareStrikes({ includeBasicUnarmed: this.ownUnarmed })
-            .filter((a) => a.item.flags.pf2e.battleForm || (this.ownUnarmed && a.item.category === "unarmed"));
+            .filter((a) => a.item.flags.avant.battleForm || (this.ownUnarmed && a.item.category === "unarmed"));
         const strikeActions = actor.system.actions.flatMap((s): CharacterStrike[] => [s, ...s.altUsages]);
 
         for (const action of strikeActions) {
@@ -442,7 +442,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
                     Object.entries(synthetics.rollNotes).flatMap(([key, note]) => (/\bdamage\b/.test(key) ? note : [])),
                 );
                 const baseModifier = Number(this.resolveValue(strike.modifier)) || 0;
-                action.unshift(new ModifierPF2e(this.modifierLabel, baseModifier, "untyped"));
+                action.unshift(new ModifierAvant(this.modifierLabel, baseModifier, "untyped"));
             } else {
                 const options = (actor.rollOptions["strike-attack-roll"] ??= {});
                 options["battle-form:own-attack-modifier"] = true;
@@ -467,7 +467,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
     }
 
     /** Disable ineligible check modifiers */
-    #suppressModifiers(statistic: { modifiers: readonly ModifierPF2e[] }): void {
+    #suppressModifiers(statistic: { modifiers: readonly ModifierAvant[] }): void {
         for (const modifier of statistic.modifiers) {
             if (!this.#filterModifier(modifier)) {
                 modifier.adjustments.push({ slug: null, test: () => true, suppress: true });
@@ -480,13 +480,13 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
         }
     }
 
-    #filterModifier(modifier: ModifierPF2e) {
+    #filterModifier(modifier: ModifierAvant) {
         if (modifier.slug === "battle-form") return true;
         if (modifier.type === "ability") return false;
         return ["status", "circumstance"].includes(modifier.type) || modifier.modifier < 0;
     }
 
-    #suppressNotes(notes: RollNotePF2e[]): void {
+    #suppressNotes(notes: RollNoteAvant[]): void {
         for (const note of notes) {
             if (!note.predicate.includes("battle-form")) {
                 note.predicate = note.predicate instanceof Predicate ? note.predicate : new Predicate(note.predicate);
@@ -496,7 +496,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
     }
 
     /** Disable ineligible damage adjustments (modifiers, bonuses, additional damage) */
-    override applyDamageExclusion(weapon: WeaponPF2e, modifiers: (DamageDicePF2e | ModifierPF2e)[]): void {
+    override applyDamageExclusion(weapon: WeaponAvant, modifiers: (DamageDiceAvant | ModifierAvant)[]): void {
         if (this.ownUnarmed) return;
 
         for (const modifier of modifiers) {
@@ -504,9 +504,9 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
                 continue;
             }
 
-            const isNumericBonus = modifier instanceof ModifierPF2e && modifier.modifier >= 0;
-            const isAbilityModifier = modifier instanceof ModifierPF2e && modifier.type === "ability";
-            const isExtraDice = modifier instanceof DamageDicePF2e;
+            const isNumericBonus = modifier instanceof ModifierAvant && modifier.modifier >= 0;
+            const isAbilityModifier = modifier instanceof ModifierAvant && modifier.type === "ability";
+            const isExtraDice = modifier instanceof DamageDiceAvant;
             const isStatusOrCircumstance = isNumericBonus && ["status", "circumstance"].includes(modifier.type);
             const isDamageTrait =
                 isExtraDice &&
@@ -548,7 +548,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
         for (const [slug, strike] of Object.entries(value.strikes)) {
             if (!isStrikeQuery(strike)) continue;
 
-            strike.pack = String(strike.pack ?? "pf2e.equipment-srd");
+            strike.pack = String(strike.pack ?? "avant.equipment-srd");
             strike.ownIfHigher = !!(strike.ownIfHigher ?? true);
 
             const queryObject = ((): Record<string, unknown> | null => {
@@ -572,7 +572,7 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
             }
 
             const weapon = (await game.packs.get(strike.pack)?.getDocuments(queryObject))?.[0];
-            if (!(weapon instanceof WeaponPF2e)) {
+            if (!(weapon instanceof WeaponAvant)) {
                 this.failValidation("Failed to retrieve queried weapon");
                 break;
             }
@@ -596,9 +596,9 @@ class BattleFormRuleElement extends RuleElementPF2e<BattleFormRuleSchema> {
 }
 
 interface BattleFormRuleElement
-    extends RuleElementPF2e<BattleFormRuleSchema>,
+    extends RuleElementAvant<BattleFormRuleSchema>,
         ModelPropsFromRESchema<BattleFormRuleSchema> {
-    get actor(): CharacterPF2e;
+    get actor(): CharacterAvant;
 }
 
 interface ValueWithStrikes {

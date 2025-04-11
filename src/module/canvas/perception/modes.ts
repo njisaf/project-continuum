@@ -1,5 +1,5 @@
-import { TokenPF2e } from "../token/object.ts";
-import type { PointVisionSourcePF2e } from "./point-vision-source.ts";
+import { TokenAvant } from "../token/object.ts";
+import type { PointVisionSourceAvant } from "./point-vision-source.ts";
 
 const darkvision = new VisionMode({
     id: "darkvision",
@@ -30,9 +30,9 @@ class LightPerceptionMode extends DetectionModeLightPerception {
         });
     }
 
-    protected override _canDetect(visionSource: PointVisionSourcePF2e, target: PlaceableObject): boolean {
+    protected override _canDetect(visionSource: PointVisionSourceAvant, target: PlaceableObject): boolean {
         if (target instanceof PlaceableObject && target.document.hidden) return false;
-        if (target instanceof TokenPF2e && target.actor?.hasCondition("hidden", "undetected", "unnoticed")) {
+        if (target instanceof TokenAvant && target.actor?.hasCondition("hidden", "undetected", "unnoticed")) {
             return false;
         }
 
@@ -49,9 +49,9 @@ class VisionDetectionMode extends DetectionModeBasicSight {
         });
     }
 
-    protected override _canDetect(visionSource: PointVisionSourcePF2e, target: PlaceableObject): boolean {
+    protected override _canDetect(visionSource: PointVisionSourceAvant, target: PlaceableObject): boolean {
         if (target instanceof PlaceableObject && target.document.hidden) return false;
-        if (target instanceof TokenPF2e && target.actor?.hasCondition("hidden", "undetected", "unnoticed")) {
+        if (target instanceof TokenAvant && target.actor?.hasCondition("hidden", "undetected", "unnoticed")) {
             return false;
         }
 
@@ -63,7 +63,7 @@ class HearingDetectionMode extends DetectionMode {
     constructor() {
         super({
             id: "hearing",
-            label: "PF2E.Actor.Creature.Sense.Type.Hearing",
+            label: "AVANT.Actor.Creature.Sense.Type.Hearing",
             type: DetectionMode.DETECTION_TYPES.SOUND,
         });
     }
@@ -77,9 +77,9 @@ class HearingDetectionMode extends DetectionMode {
         return filter;
     }
 
-    protected override _canDetect(visionSource: PointVisionSourcePF2e, target: PlaceableObject): boolean {
+    protected override _canDetect(visionSource: PointVisionSourceAvant, target: PlaceableObject): boolean {
         // Not if the target isn't a token
-        if (!(target instanceof TokenPF2e)) return false;
+        if (!(target instanceof TokenAvant)) return false;
 
         // Not if the token is GM-hidden
         if (target.document.hidden) return false;
@@ -87,7 +87,7 @@ class HearingDetectionMode extends DetectionMode {
         // Not if the target doesn't emit sound
         if (!target.actor?.emitsSound) return false;
 
-        if (!game.pf2e.settings.rbv) return true;
+        if (!game.avant.settings.rbv) return true;
 
         // Not if the target is unnoticed or undetected
         if (target.actor?.hasCondition("undetected", "unnoticed")) {
@@ -103,10 +103,10 @@ class HearingDetectionMode extends DetectionMode {
      * Retrieve hearing source and test against that.
      */
     protected override _testLOS(
-        visionSource: PointVisionSourcePF2e,
+        visionSource: PointVisionSourceAvant,
         _mode: TokenDetectionMode,
         _target: PlaceableObject,
-        test: CanvasVisibilityTestPF2e,
+        test: CanvasVisibilityTestAvant,
     ): boolean {
         test.loh ??= new Map();
         const hasLOH = test.loh.get(visionSource) ?? !!visionSource.hearing?.contains(test.point.x, test.point.y);
@@ -121,11 +121,11 @@ declare namespace HearingDetectionMode {
     var _detectionFilter: OutlineOverlayFilter | undefined;
 }
 
-interface CanvasVisibilityTestPF2e extends CanvasVisibilityTest {
-    loh?: Map<PointVisionSourcePF2e, boolean>;
+interface CanvasVisibilityTestAvant extends CanvasVisibilityTest {
+    loh?: Map<PointVisionSourceAvant, boolean>;
 }
 
-class DetectionModeTremorPF2e extends DetectionModeTremor {
+class DetectionModeTremorAvant extends DetectionModeTremor {
     constructor() {
         super({
             id: "feelTremor",
@@ -141,10 +141,10 @@ class DetectionModeTremorPF2e extends DetectionModeTremor {
         return filter;
     }
 
-    protected override _canDetect(visionSource: PointVisionSourcePF2e, target: PlaceableObject): boolean {
+    protected override _canDetect(visionSource: PointVisionSourceAvant, target: PlaceableObject): boolean {
         return (
             super._canDetect(visionSource, target) &&
-            target instanceof TokenPF2e &&
+            target instanceof TokenAvant &&
             !target.document.hidden &&
             !target.actor?.isOfType("loot") &&
             !target.actor?.hasCondition("undetected", "unnoticed")
@@ -157,7 +157,7 @@ function setPerceptionModes(): void {
     CONFIG.Canvas.detectionModes.basicSight = new VisionDetectionMode();
     CONFIG.Canvas.detectionModes.lightPerception = new LightPerceptionMode();
     CONFIG.Canvas.detectionModes.hearing = new HearingDetectionMode();
-    CONFIG.Canvas.detectionModes.feelTremor = new DetectionModeTremorPF2e();
+    CONFIG.Canvas.detectionModes.feelTremor = new DetectionModeTremorAvant();
 }
 
 export { setPerceptionModes };

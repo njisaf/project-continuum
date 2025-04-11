@@ -1,30 +1,30 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
+import type { ActorAvant, CharacterAvant } from "@actor";
 import { AttackTraitHelpers } from "@actor/creature/helpers.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
-import type { AbilityItemPF2e, ArmorPF2e, ConditionPF2e, WeaponPF2e } from "@item";
-import { EffectPF2e, ItemProxyPF2e } from "@item";
+import { ModifierAvant } from "@actor/modifiers.ts";
+import type { AbilityItemAvant, ArmorAvant, ConditionAvant, WeaponAvant } from "@item";
+import { EffectAvant, ItemProxyAvant } from "@item";
 import { ItemCarryType } from "@item/physical/index.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { ZeroToThree, ZeroToTwo } from "@module/data.ts";
 import { extractModifierAdjustments } from "@module/rules/helpers.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { SheetOptions, createSheetOptions } from "@module/sheet/helpers.ts";
 import { DAMAGE_DIE_SIZES } from "@system/damage/values.ts";
 import { Predicate } from "@system/predication.ts";
-import { ErrorPF2e, getActionGlyph, objectHasKey, sluggify, tupleHasValue } from "@util";
+import { ErrorAvant, getActionGlyph, objectHasKey, sluggify, tupleHasValue } from "@util";
 import { traitSlugToObject } from "@util/tags.ts";
 import * as R from "remeda";
 
 /** Handle weapon traits that introduce modifiers or add other weapon traits */
 class PCAttackTraitHelpers extends AttackTraitHelpers {
-    static adjustWeapon(weapon: WeaponPF2e): void {
+    static adjustWeapon(weapon: WeaponAvant): void {
         const traits = weapon.system.traits.value;
         for (const trait of [...traits]) {
             switch (trait.replace(/-d?\d{1,3}$/, "")) {
                 case "fatal-aim": {
                     if (weapon.range?.increment && weapon.handsHeld === 2) {
                         const fatal = trait.replace("-aim", "");
-                        if (objectHasKey(CONFIG.PF2E.weaponTraits, fatal) && !traits.includes(fatal)) {
+                        if (objectHasKey(CONFIG.AVANT.weaponTraits, fatal) && !traits.includes(fatal)) {
                             traits.push(fatal);
                         }
                     }
@@ -45,9 +45,9 @@ class PCAttackTraitHelpers extends AttackTraitHelpers {
         }
     }
 
-    static override createAttackModifiers({ item, domains }: CreateAttackModifiersParams): ModifierPF2e[] {
+    static override createAttackModifiers({ item, domains }: CreateAttackModifiersParams): ModifierAvant[] {
         const { actor } = item;
-        if (!actor) throw ErrorPF2e("The weapon must be embedded");
+        if (!actor) throw ErrorAvant("The weapon must be embedded");
 
         const traitsAndTags = [item.system.traits.value, item.system.traits.otherTags].flat().filter(R.isTruthy);
         const synthetics = actor.synthetics.modifierAdjustments;
@@ -59,9 +59,9 @@ class PCAttackTraitHelpers extends AttackTraitHelpers {
                     // (pre-remaster language)
                     // "Firing a kickback weapon gives a –2 circumstance penalty to the attack roll, but characters with
                     // 14 or more Strength ignore the penalty."
-                    return new ModifierPF2e({
+                    return new ModifierAvant({
                         slug: unannotatedTrait,
-                        label: CONFIG.PF2E.weaponTraits.kickback,
+                        label: CONFIG.AVANT.weaponTraits.kickback,
                         modifier: -2,
                         type: "circumstance",
                         predicate: new Predicate({ lt: ["attribute:str:mod", 2] }),
@@ -69,7 +69,7 @@ class PCAttackTraitHelpers extends AttackTraitHelpers {
                     });
                 }
                 case "improvised": {
-                    return new ModifierPF2e({
+                    return new ModifierAvant({
                         slug: unannotatedTrait,
                         label: this.getLabel(trait),
                         modifier: -2,
@@ -88,28 +88,28 @@ class PCAttackTraitHelpers extends AttackTraitHelpers {
 }
 
 interface AuxiliaryInteractParams {
-    weapon: WeaponPF2e<CharacterPF2e>;
+    weapon: WeaponAvant<CharacterAvant>;
     action: "interact";
     annotation: "draw" | "grip" | "modular" | "pick-up" | "retrieve" | "sheathe";
     hands?: ZeroToTwo;
 }
 
 interface AuxiliaryWeaponParryParams {
-    weapon: WeaponPF2e<CharacterPF2e>;
+    weapon: WeaponAvant<CharacterAvant>;
     action: "parry";
     annotation?: never;
     hands?: never;
 }
 
 interface AuxiliaryShieldParams {
-    weapon: WeaponPF2e<CharacterPF2e>;
+    weapon: WeaponAvant<CharacterAvant>;
     action: "end-cover" | "raise-a-shield" | "take-cover";
     annotation?: "tower-shield";
     hands?: never;
 }
 
 interface AuxiliaryReleaseParams {
-    weapon: WeaponPF2e<CharacterPF2e>;
+    weapon: WeaponAvant<CharacterAvant>;
     action: "release";
     annotation: "grip" | "drop";
     hands: 0 | 1;
@@ -125,7 +125,7 @@ type AuxiliaryActionPurpose = AuxiliaryActionParams["annotation"];
 
 /** Create an "auxiliary" action, an Interact or Release action using a weapon */
 class WeaponAuxiliaryAction {
-    readonly weapon: WeaponPF2e<CharacterPF2e>;
+    readonly weapon: WeaponAvant<CharacterAvant>;
     readonly action: AuxiliaryActionType;
     readonly actions: ZeroToThree;
     readonly carryType: ItemCarryType | null;
@@ -176,7 +176,7 @@ class WeaponAuxiliaryAction {
         this.fullAnnotation = fullPurpose;
     }
 
-    get actor(): CharacterPF2e {
+    get actor(): CharacterAvant {
         return this.weapon.parent;
     }
 
@@ -184,8 +184,8 @@ class WeaponAuxiliaryAction {
         const actionKey = sluggify(this.action, { camel: "bactrian" });
         const purposeKey = this.fullAnnotation ? sluggify(this.fullAnnotation, { camel: "bactrian" }) : null;
         return purposeKey
-            ? game.i18n.localize(`PF2E.Actions.${actionKey}.${purposeKey}.Title`)
-            : game.i18n.localize(`PF2E.Actions.${actionKey}.ShortTitle`);
+            ? game.i18n.localize(`AVANT.Actions.${actionKey}.${purposeKey}.Title`)
+            : game.i18n.localize(`AVANT.Actions.${actionKey}.ShortTitle`);
     }
 
     get glyph(): string {
@@ -196,7 +196,7 @@ class WeaponAuxiliaryAction {
         if (this.annotation === "modular") {
             const toggles = this.weapon.system.traits.toggles;
             return createSheetOptions(
-                R.pick(CONFIG.PF2E.damageTypes, toggles.modular.options),
+                R.pick(CONFIG.AVANT.damageTypes, toggles.modular.options),
                 [toggles.modular.selected ?? []].flat(),
             );
         }
@@ -209,7 +209,7 @@ class WeaponAuxiliaryAction {
      */
     async execute({ selection = null }: { selection?: string | null } = {}): Promise<void> {
         const { actor, weapon } = this;
-        const COVER_UUID = "Compendium.pf2e.other-effects.Item.I9lfZUiCwMiGogVi";
+        const COVER_UUID = "Compendium.avant.other-effects.Item.I9lfZUiCwMiGogVi";
 
         if (this.carryType) {
             await actor.changeCarryType(this.weapon, { carryType: this.carryType, handsHeld: this.hands ?? 0 });
@@ -220,14 +220,14 @@ class WeaponAuxiliaryAction {
             // Apply Effect: Raise a Shield
             const alreadyRaised = actor.itemTypes.effect.some((e) => e.slug === "raise-a-shield");
             if (alreadyRaised) return;
-            const effect = await fromUuid("Compendium.pf2e.equipment-effects.Item.2YgXoHvJfrDHucMr");
-            if (effect instanceof EffectPF2e) {
+            const effect = await fromUuid("Compendium.avant.equipment-effects.Item.2YgXoHvJfrDHucMr");
+            if (effect instanceof EffectAvant) {
                 await actor.createEmbeddedDocuments("Item", [{ ...effect.toObject(), _id: null }]);
             }
         } else if (this.action === "take-cover") {
             // Apply Effect: Cover with a greater-cover selection
             const effect = await fromUuid(COVER_UUID);
-            if (effect instanceof EffectPF2e) {
+            if (effect instanceof EffectAvant) {
                 const data = { ...effect.toObject(), _id: null };
                 data.system.traits.otherTags.push("tower-shield");
                 type ChoiceSetSource = RuleElementSource & { selection?: unknown };
@@ -241,8 +241,8 @@ class WeaponAuxiliaryAction {
             // Apply Effect: Parry
             const alreadyParrying = actor.itemTypes.effect.some((e) => e.slug === "parry");
             if (alreadyParrying) return;
-            const effect = await fromUuid("Compendium.pf2e.equipment-effects.Item.fRlvmul3LbLo2xvR");
-            if (effect instanceof EffectPF2e) {
+            const effect = await fromUuid("Compendium.avant.equipment-effects.Item.fRlvmul3LbLo2xvR");
+            if (effect instanceof EffectAvant) {
                 await actor.createEmbeddedDocuments("Item", [{ ...effect.toObject(), _id: null }]);
             }
         }
@@ -250,26 +250,26 @@ class WeaponAuxiliaryAction {
         if (!game.combat) return; // Only send out messages if in encounter mode
 
         const templates = {
-            flavor: "./systems/pf2e/templates/chat/action/flavor.hbs",
-            content: "./systems/pf2e/templates/chat/action/content.hbs",
+            flavor: "./systems/avant/templates/chat/action/flavor.hbs",
+            content: "./systems/avant/templates/chat/action/content.hbs",
         };
 
         const actionKey = sluggify(this.action, { camel: "bactrian" });
         const annotationKey = this.annotation ? sluggify(this.annotation, { camel: "bactrian" }) : null;
         const fullAnnotationKey = this.fullAnnotation ? sluggify(this.fullAnnotation, { camel: "bactrian" }) : null;
         const flavorAction = {
-            title: `PF2E.Actions.${actionKey}.Title`,
-            subtitle: fullAnnotationKey ? `PF2E.Actions.${actionKey}.${fullAnnotationKey}.Title` : null,
+            title: `AVANT.Actions.${actionKey}.Title`,
+            subtitle: fullAnnotationKey ? `AVANT.Actions.${actionKey}.${fullAnnotationKey}.Title` : null,
             glyph: this.glyph,
         };
 
         const [traits, message] = ["raise-a-shield", "parry"].includes(this.action)
-            ? [[], `PF2E.Actions.${actionKey}.Content`]
+            ? [[], `AVANT.Actions.${actionKey}.Content`]
             : ["take-cover", "end-cover"].includes(this.action)
-              ? [[], `PF2E.Actions.${actionKey}.${annotationKey}.Description`]
+              ? [[], `AVANT.Actions.${actionKey}.${annotationKey}.Description`]
               : [
-                    [traitSlugToObject("manipulate", CONFIG.PF2E.actionTraits)],
-                    `PF2E.Actions.${actionKey}.${fullAnnotationKey}.Description`,
+                    [traitSlugToObject("manipulate", CONFIG.AVANT.actionTraits)],
+                    `AVANT.Actions.${actionKey}.${fullAnnotationKey}.Description`,
                 ];
 
         const flavor = await renderTemplate(templates.flavor, { action: flavorAction, traits });
@@ -280,15 +280,15 @@ class WeaponAuxiliaryAction {
                 actor: actor.name,
                 weapon: weapon.name,
                 shield: weapon.shield?.name ?? weapon.name,
-                damageType: game.i18n.localize(`PF2E.Damage.RollFlavor.${selection}`),
+                damageType: game.i18n.localize(`AVANT.Damage.RollFlavor.${selection}`),
             }),
         });
 
         const token = actor.getActiveTokens(false, true).shift();
 
-        await ChatMessagePF2e.create({
+        await ChatMessageAvant.create({
             content,
-            speaker: ChatMessagePF2e.getSpeaker({ actor, token }),
+            speaker: ChatMessageAvant.getSpeaker({ actor, token }),
             flavor,
             style: CONST.CHAT_MESSAGE_STYLES.EMOTE,
         });
@@ -296,23 +296,23 @@ class WeaponAuxiliaryAction {
 }
 
 /** Make a PC Clumsy 1 when wielding an oversized weapon */
-function imposeOversizedWeaponCondition(actor: CharacterPF2e): void {
+function imposeOversizedWeaponCondition(actor: CharacterAvant): void {
     if (actor.conditions.clumsy) return;
 
     const wieldedOversizedWeapon = actor.itemTypes.weapon.find(
         (w) => w.isEquipped && w.isOversized && w.category !== "unarmed",
     );
-    const compendiumCondition = game.pf2e.ConditionManager.getCondition("clumsy");
+    const compendiumCondition = game.avant.ConditionManager.getCondition("clumsy");
     const conditionSource =
         wieldedOversizedWeapon && actor.conditions.bySlug("clumsy").length === 0
             ? fu.mergeObject(compendiumCondition.toObject(), {
-                  _id: "xxxxOVERSIZExxxx",
+                  _id: "AvantOversized001",
                   system: { slug: "clumsy", references: { parent: { id: wieldedOversizedWeapon.id } } },
               })
             : null;
     if (!conditionSource) return;
 
-    const clumsyOne = new ItemProxyPF2e(conditionSource, { parent: actor }) as ConditionPF2e<CharacterPF2e>;
+    const clumsyOne = new ItemProxyAvant(conditionSource, { parent: actor }) as ConditionAvant<CharacterAvant>;
     clumsyOne.prepareSiblingData();
     clumsyOne.prepareActorData();
     for (const rule of clumsyOne.prepareRuleElements()) {
@@ -322,17 +322,17 @@ function imposeOversizedWeaponCondition(actor: CharacterPF2e): void {
 }
 
 interface CreateAttackModifiersParams {
-    item: AbilityItemPF2e<CharacterPF2e> | WeaponPF2e<CharacterPF2e>;
+    item: AbilityItemAvant<CharacterAvant> | WeaponAvant<CharacterAvant>;
     domains: string[];
 }
 
 /** Create a penalty for attempting to Force Open without a crowbar or equivalent tool */
-function createForceOpenPenalty(actor: CharacterPF2e, domains: string[]): ModifierPF2e {
+function createForceOpenPenalty(actor: CharacterAvant, domains: string[]): ModifierAvant {
     const slug = "no-crowbar";
     const { modifierAdjustments } = actor.synthetics;
-    return new ModifierPF2e({
+    return new ModifierAvant({
         slug,
-        label: "PF2E.Actions.ForceOpen.NoCrowbarPenalty",
+        label: "AVANT.Actions.ForceOpen.NoCrowbarPenalty",
         type: "item",
         modifier: -2,
         predicate: ["action:force-open", "action:force-open:prying"],
@@ -342,16 +342,16 @@ function createForceOpenPenalty(actor: CharacterPF2e, domains: string[]): Modifi
 }
 
 function createShoddyPenalty(
-    actor: ActorPF2e,
-    item: WeaponPF2e | ArmorPF2e | null,
+    actor: ActorAvant,
+    item: WeaponAvant | ArmorAvant | null,
     domains: string[],
-): ModifierPF2e | null {
+): ModifierAvant | null {
     if (!actor.isOfType("character") || !item?.isShoddy) return null;
 
     const slug = "shoddy";
 
-    return new ModifierPF2e({
-        label: "PF2E.Item.Physical.OtherTag.Shoddy",
+    return new ModifierAvant({
+        label: "AVANT.Item.Physical.OtherTag.Shoddy",
         type: "item",
         slug,
         modifier: -2,
@@ -365,11 +365,11 @@ function createShoddyPenalty(
  * the armor's Speed penalty, and affects you even if your Strength or an ability lets you reduce or ignore the armor's
  * Speed penalty."
  */
-function createHinderingPenalty(actor: CharacterPF2e): ModifierPF2e | null {
+function createHinderingPenalty(actor: CharacterAvant): ModifierAvant | null {
     const slug = "hindering";
     return actor.wornArmor?.traits.has(slug)
-        ? new ModifierPF2e({
-              label: "PF2E.TraitHindering",
+        ? new ModifierAvant({
+              label: "AVANT.TraitHindering",
               type: "untyped",
               slug,
               modifier: -5,
@@ -383,15 +383,15 @@ function createHinderingPenalty(actor: CharacterPF2e): ModifierPF2e | null {
  * "While wearing the armor, you take a –1 penalty to initiative checks. If you don't meet the armor's required Strength
  * score, this penalty increases to be equal to the armor's check penalty if it's worse."
  */
-function createPonderousPenalty(actor: CharacterPF2e): ModifierPF2e | null {
+function createPonderousPenalty(actor: CharacterAvant): ModifierAvant | null {
     const armor = actor.wornArmor;
     const slug = "ponderous";
     if (!armor?.traits.has(slug)) return null;
 
     const penaltyValue = actor.abilities.str.mod >= (armor.strength ?? -Infinity) ? -1 : armor.checkPenalty || -1;
 
-    return new ModifierPF2e({
-        label: "PF2E.TraitPonderous",
+    return new ModifierAvant({
+        label: "AVANT.TraitPonderous",
         type: "untyped",
         slug,
         modifier: penaltyValue,

@@ -1,21 +1,21 @@
 <div class="inventory-details">
     {{#unless item.parentItem}}
         <div class="form-group quantity">
-            <label for="{{fieldIdPrefix}}quantity">{{localize "PF2E.QuantityLabel"}}</label>
+            <label for="{{fieldIdPrefix}}quantity">{{localize "AVANT.QuantityLabel"}}</label>
             <input type="number" name="system.quantity" id="{{fieldIdPrefix}}quantity" value="{{data.quantity}}" />
         </div>
     {{/unless}}
 
     {{#if (eq item.type "weapon")}}
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}usage">{{localize "PF2E.Item.Weapon.HandsLabel"}}</label>
+            <label for="{{fieldIdPrefix}}usage">{{localize "AVANT.Item.Weapon.HandsLabel"}}</label>
             <select name="system.usage.value" id="{{fieldIdPrefix}}usage">
                 {{selectOptions usageOptions selected=data.usage.value}}
             </select>
         </div>
     {{else if (nor (eq item.type "armor") (eq item.type "shield") (eq item.type "treasure"))}}
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}usage">{{localize "PF2E.Usage"}}</label>
+            <label for="{{fieldIdPrefix}}usage">{{localize "AVANT.Usage"}}</label>
             <select name="system.usage.value" id="{{fieldIdPrefix}}usage">
                 {{selectOptions usages selected=data.usage.value localize=true}}
             </select>
@@ -24,7 +24,7 @@
 
     <div class="form-group">
         <label for="{{fieldIdPrefix}}bulk">
-            {{~localize "PF2E.Item.Physical.Bulk.Label"}}
+            {{~localize "AVANT.Item.Physical.Bulk.Label"}}
             {{#if adjustedBulkHint}}<i class="fa-solid fa-circle-info" data-tooltip="{{adjustedBulkHint}}"></i>{{/if~}}
         </label>
         <select
@@ -39,7 +39,7 @@
     </div>
 
     <div class="form-group">
-        <label for="{{fieldIdPrefix}}size">{{localize "PF2E.Size"}}</label>
+        <label for="{{fieldIdPrefix}}size">{{localize "AVANT.Size"}}</label>
         <select id="{{fieldIdPrefix}}size" data-property="system.size">
             {{selectOptions sizes selected=data.size localize=true}}
         </select>
@@ -47,7 +47,7 @@
 
     <div class="form-group price">
         <label for="{{fieldIdPrefix}}price">
-            {{localize "PF2E.PriceLabel"}}
+            {{localize "AVANT.PriceLabel"}}
             {{#if adjustedPriceHint}}<i class="fa-solid fa-circle-info" data-tooltip="{{adjustedPriceHint}}"></i>{{/if}}
         </label>
         <div class="form-fields">
@@ -69,7 +69,7 @@
 
     {{#if stackGroups}}
         <div class="form-group">
-            <label for="{{fieldIdPrefix}}stack-group">{{localize "PF2E.StackGroupLabel"}}</label>
+            <label for="{{fieldIdPrefix}}stack-group">{{localize "AVANT.StackGroupLabel"}}</label>
             <select name="system.stackGroup" id="{{filedIdPrefix}}stack-group">
                 {{selectOptions stackGroups selected=data.stackGroup blank="None" localize=true}}
             </select>
@@ -78,7 +78,7 @@
 
     {{#if data.subitems}}
         <div class="form-group subitems">
-            <label>{{localize "PF2E.Item.Physical.Attachments"}}</label>
+            <label>{{localize "AVANT.Item.Physical.Attachments"}}</label>
             <ul data-subitems>
                 {{#each data.subitems as |subitem|}}
                     <li data-subitem-id="{{subitem._id}}">

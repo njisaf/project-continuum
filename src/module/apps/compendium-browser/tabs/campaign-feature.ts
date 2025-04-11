@@ -7,7 +7,7 @@ import { CampaignFeatureFilters, CompendiumBrowserIndexData } from "./data.ts";
 
 export class CompendiumBrowserCampaignFeaturesTab extends CompendiumBrowserTab {
     tabName: ContentTabName = "campaignFeature";
-    tabLabel = "PF2E.CompendiumBrowser.TabCampaign";
+    tabLabel = "AVANT.CompendiumBrowser.TabCampaign";
     declare filterData: CampaignFeatureFilters;
 
     /* MiniSearch */
@@ -22,7 +22,7 @@ export class CompendiumBrowserCampaignFeaturesTab extends CompendiumBrowserTab {
     }
 
     protected override async loadData(): Promise<void> {
-        console.debug("PF2e System | Compendium Browser | Started loading feats");
+        console.debug("Avant System | Compendium Browser | Started loading feats");
 
         const feats: CompendiumBrowserIndexData[] = [];
         const publications = new Set<string>();
@@ -43,7 +43,7 @@ export class CompendiumBrowserCampaignFeaturesTab extends CompendiumBrowserTab {
             this.browser.loadedPacks("campaignFeature"),
             indexFields,
         )) {
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - ${index.size} entries found`);
             for (const featData of index.filter((i) => i.type === "campaignFeature")) {
                 featData.filters = {};
 
@@ -74,11 +74,11 @@ export class CompendiumBrowserCampaignFeaturesTab extends CompendiumBrowserTab {
 
         // Filters
         this.filterData.checkboxes.category.options = this.generateCheckboxOptions(KINGMAKER_CATEGORIES);
-        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.PF2E.rarityTraits);
+        this.filterData.checkboxes.rarity.options = this.generateCheckboxOptions(CONFIG.AVANT.rarityTraits);
         this.filterData.source.options = this.generateSourceCheckboxOptions(publications);
-        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.PF2E.kingmakerTraits);
+        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.AVANT.kingmakerTraits);
 
-        console.debug("PF2e System | Compendium Browser | Finished loading feats");
+        console.debug("Avant System | Compendium Browser | Finished loading feats");
     }
 
     protected override filterIndexData(entry: CompendiumBrowserIndexData): boolean {
@@ -114,20 +114,20 @@ export class CompendiumBrowserCampaignFeaturesTab extends CompendiumBrowserTab {
             checkboxes: {
                 category: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.Categories",
+                    label: "AVANT.CompendiumBrowser.Filter.Categories",
                     options: {},
                     selected: [],
                 },
                 rarity: {
                     isExpanded: false,
-                    label: "PF2E.CompendiumBrowser.Filter.Rarities",
+                    label: "AVANT.CompendiumBrowser.Filter.Rarities",
                     options: {},
                     selected: [],
                 },
             },
             source: {
                 isExpanded: false,
-                label: "PF2E.CompendiumBrowser.Filter.Source",
+                label: "AVANT.CompendiumBrowser.Filter.Source",
                 options: {},
                 selected: [],
             },
@@ -141,7 +141,7 @@ export class CompendiumBrowserCampaignFeaturesTab extends CompendiumBrowserTab {
                 direction: "asc",
                 options: {
                     name: { label: "Name", type: "alpha" },
-                    level: { label: "PF2E.LevelLabel", type: "numeric" },
+                    level: { label: "AVANT.LevelLabel", type: "numeric" },
                 },
                 type: "numeric",
             },

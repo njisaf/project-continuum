@@ -1,25 +1,25 @@
-import type { PhysicalItemPF2e } from "@item";
+import type { PhysicalItemAvant } from "@item";
 import { PickAThingPrompt, PickableThing } from "@module/apps/pick-a-thing-prompt.ts";
-import { RollNotePF2e } from "@module/notes.ts";
+import { RollNoteAvant } from "@module/notes.ts";
 import { StatisticRollParameters } from "@system/statistic/statistic.ts";
-import { ErrorPF2e } from "@util";
+import { ErrorAvant } from "@util";
 
 /** A prompt for the user to select an item to receive an attachment */
-class ItemAttacher<TItem extends PhysicalItemPF2e> extends PickAThingPrompt<TItem, PhysicalItemPF2e> {
+class ItemAttacher<TItem extends PhysicalItemAvant> extends PickAThingPrompt<TItem, PhysicalItemAvant> {
     static override get defaultOptions(): ApplicationOptions {
         return {
             ...super.defaultOptions,
-            template: "systems/pf2e/templates/items/item-attacher.hbs",
+            template: "systems/avant/templates/items/item-attacher.hbs",
         };
     }
 
     constructor({ item }: { item: TItem }) {
         if (!item.isAttachable) {
-            throw ErrorPF2e("Not an attachable item");
+            throw ErrorAvant("Not an attachable item");
         }
         const collection =
             item.actor?.inventory.contents ??
-            game.items.filter((i): i is PhysicalItemPF2e<null> => i.isOfType("physical"));
+            game.items.filter((i): i is PhysicalItemAvant<null> => i.isOfType("physical"));
         const choices = collection
             .filter((i) => i.quantity > 0 && i.acceptsSubitem(item))
             .map((i) => ({ value: i, img: i.img, label: i.name }))
@@ -34,18 +34,18 @@ class ItemAttacher<TItem extends PhysicalItemPF2e> extends PickAThingPrompt<TIte
     }
 
     override get title(): string {
-        return game.i18n.format("PF2E.Item.Physical.Attach.PromptTitle", { item: this.item.name });
+        return game.i18n.format("AVANT.Item.Physical.Attach.PromptTitle", { item: this.item.name });
     }
 
-    protected override getSelection(event: MouseEvent): PickableThing<PhysicalItemPF2e> | null {
+    protected override getSelection(event: MouseEvent): PickableThing<PhysicalItemAvant> | null {
         const selection = super.getSelection(event);
         if (selection) this.#attach(selection.value);
         return selection;
     }
 
-    override async resolveSelection(): Promise<PickableThing<PhysicalItemPF2e> | null> {
+    override async resolveSelection(): Promise<PickableThing<PhysicalItemAvant> | null> {
         if (this.choices.length === 0) {
-            const locKey = "PF2E.Item.Physical.Attach.NoEligibleItem";
+            const locKey = "AVANT.Item.Physical.Attach.NoEligibleItem";
             const message = game.i18n.format(locKey, { attachable: this.item.name });
             ui.notifications.warn(message);
             return null;
@@ -61,7 +61,7 @@ class ItemAttacher<TItem extends PhysicalItemPF2e> extends PickAThingPrompt<TIte
         const attachButton = html.querySelector<HTMLButtonElement>("button[data-action=pick]");
         const selectEl = html.querySelector<HTMLSelectElement>("select[data-choices]");
         if (!(attachButton && selectEl)) {
-            throw ErrorPF2e("Unexpected error adding listeners to item attacher");
+            throw ErrorAvant("Unexpected error adding listeners to item attacher");
         }
 
         selectEl.addEventListener("change", () => {
@@ -73,14 +73,14 @@ class ItemAttacher<TItem extends PhysicalItemPF2e> extends PickAThingPrompt<TIte
      * Attach the attachment to the target item. If a crafting check is requesting, attempt it first and abort on
      * failure.
      */
-    async #attach(attachmentTarget: PhysicalItemPF2e): Promise<boolean> {
+    async #attach(attachmentTarget: PhysicalItemAvant): Promise<boolean> {
         const checkRequested =
             !!this.element[0]?.querySelector<HTMLInputElement>("input[data-crafting-check]")?.checked;
         if (checkRequested && !(await this.#craftingCheck(attachmentTarget))) return false;
 
         const targetSource = attachmentTarget.toObject();
         if (!targetSource.system.subitems) {
-            throw ErrorPF2e("This item does not accept attachments");
+            throw ErrorAvant("This item does not accept attachments");
         }
         const subitems = targetSource.system.subitems;
         const attachmentSource = this.item.toObject();
@@ -100,33 +100,33 @@ class ItemAttacher<TItem extends PhysicalItemPF2e> extends PickAThingPrompt<TIte
         return updated.every((u) => !!u);
     }
 
-    async #craftingCheck(attachmentTarget: PhysicalItemPF2e): Promise<boolean> {
+    async #craftingCheck(attachmentTarget: PhysicalItemAvant): Promise<boolean> {
         const statistic = this.actor?.skills?.crafting;
-        if (!statistic) throw ErrorPF2e("Item not owned by a creature");
+        if (!statistic) throw ErrorAvant("Item not owned by a creature");
 
         const dc = { value: 10, visible: true };
         const args: StatisticRollParameters = {
             dc,
-            label: await renderTemplate("systems/pf2e/templates/chat/action/header.hbs", {
+            label: await renderTemplate("systems/avant/templates/chat/action/header.hbs", {
                 glyph: null,
-                subtitle: game.i18n.format("PF2E.ActionsCheck.x", { type: statistic.label }),
+                subtitle: game.i18n.format("AVANT.ActionsCheck.x", { type: statistic.label }),
                 title: this.title,
             }),
             extraRollNotes: [
-                new RollNotePF2e({
+                new RollNoteAvant({
                     outcome: ["failure", "criticalFailure"],
                     selector: "crafting-check",
-                    text: game.i18n.format("PF2E.Item.Physical.Attach.Outcome.Failure", { attachable: this.item.name }),
-                    title: "PF2E.Check.Result.Degree.Check.failure",
+                    text: game.i18n.format("AVANT.Item.Physical.Attach.Outcome.Failure", { attachable: this.item.name }),
+                    title: "AVANT.Check.Result.Degree.Check.failure",
                 }),
-                new RollNotePF2e({
+                new RollNoteAvant({
                     outcome: ["success", "criticalSuccess"],
                     selector: "crafting-check",
-                    text: game.i18n.format("PF2E.Item.Physical.Attach.Outcome.Success", {
+                    text: game.i18n.format("AVANT.Item.Physical.Attach.Outcome.Success", {
                         attachable: this.item.name,
                         target: attachmentTarget.name,
                     }),
-                    title: "PF2E.Check.Result.Degree.Check.success",
+                    title: "AVANT.Check.Result.Degree.Check.success",
                 }),
             ],
         };

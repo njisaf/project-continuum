@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { FEAT_CATEGORIES } from "@item/feat/values.ts";
 import { setHasElement } from "@util";
 import { MigrationBase } from "../base.ts";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration876FeatLevelTaken extends MigrationBase {
     static override version = 0.876;
 
-    override async updateItem(source: ItemSourcePF2e, actorSource?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actorSource?: ActorSourceAvant): Promise<void> {
         if (source.type !== "feat" || !setHasElement(FEAT_CATEGORIES, source.system.category)) {
             return;
         }

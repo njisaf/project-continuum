@@ -1,7 +1,7 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.js";
 
-const PREFIX = "PF2E.Actions.ForceOpen";
+const PREFIX = "AVANT.Actions.ForceOpen";
 
 function forceOpen(options: SkillActionOptions): void {
     const slug = options?.skill ?? "athletics";
@@ -17,9 +17,9 @@ function forceOpen(options: SkillActionOptions): void {
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.ForceOpen", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.ForceOpen", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.ForceOpen", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.ForceOpen", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.ForceOpen", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.ForceOpen", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);

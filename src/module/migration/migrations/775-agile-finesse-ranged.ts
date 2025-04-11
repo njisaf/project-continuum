@@ -1,4 +1,4 @@
-import { FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { PredicateStatement } from "@system/predication.ts";
 import * as R from "remeda";
@@ -8,11 +8,11 @@ import { MigrationBase } from "../base.ts";
 export class Migration775AgileFinesseRanged extends MigrationBase {
     static override version = 0.775;
 
-    #findDamageDiceRE(source: ItemSourcePF2e): RuleElementSource | null {
+    #findDamageDiceRE(source: ItemSourceAvant): RuleElementSource | null {
         return source.system.rules.find((r) => r.key === "DamageDice") ?? null;
     }
 
-    #isClassFeature(source: ItemSourcePF2e): source is FeatSource & { system: { featType: "classfeature" } } {
+    #isClassFeature(source: ItemSourceAvant): source is FeatSource & { system: { featType: "classfeature" } } {
         return (
             source.type === "feat" &&
             "featType" in source.system &&
@@ -21,7 +21,7 @@ export class Migration775AgileFinesseRanged extends MigrationBase {
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         switch (source.type) {
             case "action": {
                 if (source.system.slug === "sneak-attack") {

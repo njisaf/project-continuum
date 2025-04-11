@@ -1,8 +1,8 @@
 import type { ActorType } from "@actor/types.ts";
-import { ChatMessagePF2e } from "@module/chat-message/index.ts";
+import { ChatMessageAvant } from "@module/chat-message/index.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
 import { localizeList, objectHasKey } from "@util";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
@@ -11,7 +11,7 @@ import fields = foundry.data.fields;
  * Creates a chat card every round of combat.
  * @category RuleElement
  */
-class FastHealingRuleElement extends RuleElementPF2e<FastHealingRuleSchema> {
+class FastHealingRuleElement extends RuleElementAvant<FastHealingRuleSchema> {
     static override validActorTypes: ActorType[] = ["army", "character", "npc", "familiar"];
 
     static override defineSchema(): FastHealingRuleSchema {
@@ -55,13 +55,13 @@ class FastHealingRuleElement extends RuleElementPF2e<FastHealingRuleSchema> {
             }
             if (data.deactivatedBy?.length) {
                 const typesArr = data.deactivatedBy.map((type) =>
-                    objectHasKey(CONFIG.PF2E.weaknessTypes, type)
-                        ? game.i18n.localize(CONFIG.PF2E.weaknessTypes[type])
+                    objectHasKey(CONFIG.AVANT.weaknessTypes, type)
+                        ? game.i18n.localize(CONFIG.AVANT.weaknessTypes[type])
                         : type,
                 );
 
                 const types = localizeList(typesArr);
-                data.details = game.i18n.format("PF2E.Encounter.Broadcast.FastHealing.DeactivatedBy", { types });
+                data.details = game.i18n.format("AVANT.Encounter.Broadcast.FastHealing.DeactivatedBy", { types });
             }
         }
     }
@@ -77,14 +77,14 @@ class FastHealingRuleElement extends RuleElementPF2e<FastHealingRuleSchema> {
             return this.failValidation("value must be a number or a roll formula");
         }
 
-        const receivedMessage = game.i18n.localize(`PF2E.Encounter.Broadcast.FastHealing.${this.type}.ReceivedMessage`);
+        const receivedMessage = game.i18n.localize(`AVANT.Encounter.Broadcast.FastHealing.${this.type}.ReceivedMessage`);
         const postFlavor = `<div data-visibility="owner">${this.details ?? this.getReducedLabel()}</div>`;
         const flavor = `<div>${receivedMessage}</div>${postFlavor}`;
 
         const roll = (await new DamageRoll(`{(${value})[healing]}`).evaluate()).toJSON();
         const rollMode = this.actor.hasPlayerOwner ? "publicroll" : "gmroll";
-        const speaker = ChatMessagePF2e.getSpeaker({ actor: this.actor, token: this.token });
-        ChatMessagePF2e.create({ flavor, speaker, rolls: [roll] }, { rollMode });
+        const speaker = ChatMessageAvant.getSpeaker({ actor: this.actor, token: this.token });
+        ChatMessageAvant.create({ flavor, speaker, rolls: [roll] }, { rollMode });
     }
 }
 
@@ -103,7 +103,7 @@ type FastHealingRuleSchema = RuleElementSchema & {
 };
 
 interface FastHealingRuleElement
-    extends RuleElementPF2e<FastHealingRuleSchema>,
+    extends RuleElementAvant<FastHealingRuleSchema>,
         ModelPropsFromRESchema<FastHealingRuleSchema> {}
 
 type FastHealingType = "fast-healing" | "regeneration";

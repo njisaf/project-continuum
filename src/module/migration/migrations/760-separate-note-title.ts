@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -11,15 +11,15 @@ export class Migration760SeparateNoteTitle extends MigrationBase {
             text
                 .replace(/^@Localize\[(.+)\]$/, "$1")
                 // Replace old critical specialization localization keys
-                .replace(/^PF2E\.WeaponDescription([A-Z][a-z]+)$/, (substring, group) =>
+                .replace(/^AVANT\.WeaponDescription([A-Z][a-z]+)$/, (substring, group) =>
                     typeof group === "string"
-                        ? `PF2E.Item.Weapon.CriticalSpecialization.${group.toLowerCase()}`
+                        ? `AVANT.Item.Weapon.CriticalSpecialization.${group.toLowerCase()}`
                         : substring,
                 )
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const notes = source.system.rules.filter(
             (r: MaybeNoteSource): r is RollNoteSource =>
                 r.key === "Note" && typeof r.text === "string" && !("title" in r),
@@ -91,7 +91,7 @@ export class Migration760SeparateNoteTitle extends MigrationBase {
             if (newTitle === source.name) {
                 note.title = "{item|name}";
             } else if (newTitle === "Critical Specialization") {
-                note.title = "PF2E.Actor.Creature.CriticalSpecialization";
+                note.title = "AVANT.Actor.Creature.CriticalSpecialization";
             } else if (newTitle === "Effect") {
                 note.title = "TYPES.Item.effect";
             } else {

@@ -1,4 +1,4 @@
-import type { DamageDicePF2e } from "@actor/modifiers.ts";
+import type { DamageDiceAvant } from "@actor/modifiers.ts";
 import { DEGREE_OF_SUCCESS, DegreeOfSuccessIndex } from "@system/degree-of-success.ts";
 import { groupBy, tupleHasValue } from "@util";
 import * as R from "remeda";
@@ -33,7 +33,7 @@ function createDamageFormula(
     degree: DegreeOfSuccessIndex = DEGREE_OF_SUCCESS.SUCCESS,
 ): AssembledFormula | null {
     damage = {
-        // TODO: clone the modifiers as well, once ModifierPF2e.clone() can preserve adjustments
+        // TODO: clone the modifiers as well, once ModifierAvant.clone() can preserve adjustments
         ...fu.deepClone(R.omit(damage, ["dice"])),
         dice: damage.dice.map((d) => d.clone()),
     };
@@ -43,7 +43,7 @@ function createDamageFormula(
     if (degree === DEGREE_OF_SUCCESS.CRITICAL_FAILURE) {
         return null;
     } else if (degree === DEGREE_OF_SUCCESS.FAILURE) {
-        damage.dice = damage.dice.filter((d): d is DamageDicePF2e => d.category === "splash");
+        damage.dice = damage.dice.filter((d): d is DamageDiceAvant => d.category === "splash");
         damage.modifiers = damage.modifiers.filter((m) => m.damageCategory === "splash");
     }
 
@@ -90,7 +90,7 @@ function createDamageFormula(
     }
 
     // Sometimes a weapon may add base damage as bonus modifiers or dice. We need to auto-generate these
-    const BONUS_BASE_LABELS = ["PF2E.ConditionTypePersistent"].map((l) => game.i18n.localize(l));
+    const BONUS_BASE_LABELS = ["AVANT.ConditionTypePersistent"].map((l) => game.i18n.localize(l));
 
     // Test that a damage modifier or dice partial is compatible with the prior check result
     const outcomeMatches = (m: { critical: boolean | null }): boolean => critical || m.critical !== true;
@@ -180,7 +180,7 @@ function instancesFromTypeMap(
             const doubleDice =
                 degree === DEGREE_OF_SUCCESS.CRITICAL_SUCCESS &&
                 criticalInclusion.includes(null) &&
-                game.settings.get("pf2e", "critRule") === "doubledice";
+                game.settings.get("avant", "critRule") === "doubledice";
 
             // If dice doubling is enabled, any doubling of dice or constants is handled by `createPartialFormulas`
             const double = degree === DEGREE_OF_SUCCESS.CRITICAL_SUCCESS && !doubleDice;
@@ -222,7 +222,7 @@ function instancesFromTypeMap(
                         p.label === null && (p.modifier || p.dice?.number || partials.every((pp) => pp.label === null)),
                 );
                 if (leadingTerms.length) {
-                    const append = c === "splash" ? ` ${game.i18n.localize("PF2E.TraitSplash")}` : "";
+                    const append = c === "splash" ? ` ${game.i18n.localize("AVANT.TraitSplash")}` : "";
                     const label = createSimpleFormula(leadingTerms) + append;
                     breakdownDamage.unshift({ ...leadingTerms[0], label });
                 }
@@ -239,10 +239,10 @@ function instancesFromTypeMap(
             // Gather label values and assign a damage type string to the first label in the list
             const damageTypeLabel =
                 breakdownDamage[0].category === "persistent"
-                    ? game.i18n.format("PF2E.Damage.PersistentTooltip", {
-                          damageType: game.i18n.localize(CONFIG.PF2E.damageTypes[damageType] ?? damageType),
+                    ? game.i18n.format("AVANT.Damage.PersistentTooltip", {
+                          damageType: game.i18n.localize(CONFIG.AVANT.damageTypes[damageType] ?? damageType),
                       })
-                    : game.i18n.localize(CONFIG.PF2E.damageTypes[damageType] ?? damageType);
+                    : game.i18n.localize(CONFIG.AVANT.damageTypes[damageType] ?? damageType);
             const labelParts = breakdownDamage.map((d) => d.label);
             labelParts[0] = `${labelParts[0].replace(/^\s+\+/, "")} ${damageTypeLabel}`;
 

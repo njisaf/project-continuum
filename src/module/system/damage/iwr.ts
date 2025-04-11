@@ -1,4 +1,4 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { Immunity, NON_DAMAGE_WEAKNESSES, Resistance, Weakness } from "@actor/data/iwr.ts";
 import { ResistanceType } from "@actor/types.ts";
 import { DEGREE_OF_SUCCESS } from "@system/degree-of-success.ts";
@@ -9,13 +9,13 @@ import { DamageInstance, DamageRoll } from "./roll.ts";
 import type { DamageType, ImmunityRedirect, ResistanceRedirect } from "./types.ts";
 
 /** Apply an actor's IWR applications to an evaluated damage roll's instances */
-function applyIWR(actor: ActorPF2e, roll: Rolled<DamageRoll>, rollOptions: Set<string>): IWRApplicationData {
+function applyIWR(actor: ActorAvant, roll: Rolled<DamageRoll>, rollOptions: Set<string>): IWRApplicationData {
     // Skip the whole exercise if the actor is dead
     if (actor.isDead) {
         return { finalDamage: 0, applications: [], persistent: [] };
     }
 
-    if (!game.pf2e.settings.iwr) {
+    if (!game.avant.settings.iwr) {
         return {
             finalDamage: roll.total,
             applications: [],

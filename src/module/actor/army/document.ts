@@ -1,17 +1,17 @@
 import { FeatGroup } from "@actor/character/feats/index.ts";
 import { Sense } from "@actor/creature/sense.ts";
 import { ActorInitiative } from "@actor/initiative.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { Kingdom } from "@actor/party/kingdom/model.ts";
 import { DamageContext } from "@actor/roll-context/damage.ts";
-import { type CampaignFeaturePF2e } from "@item";
-import type { ItemSourcePF2e, ItemType } from "@item/base/data/index.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import { type CampaignFeatureAvant } from "@item";
+import type { ItemSourceAvant, ItemType } from "@item/base/data/index.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { extractDamageDice, extractModifierAdjustments, extractModifiers } from "@module/rules/helpers.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
-import type { UserPF2e } from "@module/user/index.ts";
-import type { TokenDocumentPF2e } from "@scene/index.ts";
-import { DamagePF2e } from "@system/damage/damage.ts";
+import type { UserAvant } from "@module/user/index.ts";
+import type { TokenDocumentAvant } from "@scene/index.ts";
+import { DamageAvant } from "@system/damage/damage.ts";
 import { createDamageFormula } from "@system/damage/formula.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
 import type { DamageDamageContext, SimpleDamageTemplate } from "@system/damage/types.ts";
@@ -19,18 +19,18 @@ import type { AttackRollParams, DamageRollParams } from "@system/rolls.ts";
 import { ArmorStatistic, Statistic, StatisticDifficultyClass } from "@system/statistic/index.ts";
 import { createHTMLElement, signedInteger, tupleHasValue } from "@util";
 import * as R from "remeda";
-import { ActorPF2e, type ActorUpdateOperation, type HitPointsSummary } from "../base.ts";
+import { ActorAvant, type ActorUpdateOperation, type HitPointsSummary } from "../base.ts";
 import type { ArmySource, ArmySystemData } from "./data.ts";
 import type { ArmyStrike } from "./types.ts";
 import { ARMY_STATS, ARMY_TYPES } from "./values.ts";
 
-class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends ActorPF2e<TParent> {
+class ArmyAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends ActorAvant<TParent> {
     declare scouting: Statistic;
     declare maneuver: Statistic;
     declare morale: Statistic;
 
-    declare tactics: FeatGroup<ArmyPF2e, CampaignFeaturePF2e>;
-    declare bonusTactics: FeatGroup<ArmyPF2e, CampaignFeaturePF2e>;
+    declare tactics: FeatGroup<ArmyAvant, CampaignFeatureAvant>;
+    declare bonusTactics: FeatGroup<ArmyAvant, CampaignFeatureAvant>;
 
     declare strikes: Record<string, ArmyStrike | null>;
 
@@ -106,12 +106,12 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
 
         this.tactics = new FeatGroup(this, {
             id: "tactics",
-            label: "PF2E.Kingmaker.Army.Tactics",
+            label: "AVANT.Kingmaker.Army.Tactics",
             slots: R.range(0, this.maxTactics).map((idx) => ({ id: String(idx), label: "" })),
         });
         this.bonusTactics = new FeatGroup(this, {
             id: "bonus",
-            label: "PF2E.Kingmaker.Army.TacticsFree",
+            label: "AVANT.Kingmaker.Army.TacticsFree",
         });
 
         const expectedAC = ARMY_STATS.ac[this.level];
@@ -119,19 +119,19 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
         this.armorClass = new ArmorStatistic(this, {
             attribute: null,
             modifiers: [
-                new ModifierPF2e({
+                new ModifierAvant({
                     slug: "base",
-                    label: "PF2E.ModifierTitle",
+                    label: "AVANT.ModifierTitle",
                     modifier: expectedAC - 10,
                 }),
                 acAdjustment &&
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "adjustment",
-                        label: "PF2E.Kingmaker.Army.Adjustment",
+                        label: "AVANT.Kingmaker.Army.Adjustment",
                         modifier: acAdjustment,
                     }),
                 this.system.ac.potency &&
-                    new ModifierPF2e({ slug: "potency", label: "Potency", modifier: this.system.ac.potency }),
+                    new ModifierAvant({ slug: "potency", label: "Potency", modifier: this.system.ac.potency }),
             ].filter(R.isTruthy),
         }).dc;
         this.system.ac.value = this.armorClass.value;
@@ -140,14 +140,14 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
         const scoutAdjustment = this.system.scouting - baseScouting;
         this.scouting = new Statistic(this, {
             slug: "scouting",
-            label: "PF2E.Kingmaker.Army.Scouting",
+            label: "AVANT.Kingmaker.Army.Scouting",
             domains: ["scouting"],
             modifiers: [
-                new ModifierPF2e({ slug: "base", label: "PF2E.ModifierTitle", modifier: baseScouting }),
+                new ModifierAvant({ slug: "base", label: "AVANT.ModifierTitle", modifier: baseScouting }),
                 scoutAdjustment
-                    ? new ModifierPF2e({
+                    ? new ModifierAvant({
                           slug: "adjustment",
-                          label: "PF2E.Kingmaker.Army.Adjustment",
+                          label: "AVANT.Kingmaker.Army.Adjustment",
                           modifier: scoutAdjustment,
                       })
                     : null,
@@ -164,14 +164,14 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
 
             this[saveType] = new Statistic(this, {
                 slug: saveType,
-                label: `PF2E.Kingmaker.Army.Save.${saveType}`,
+                label: `AVANT.Kingmaker.Army.Save.${saveType}`,
                 domains: ["saving-throw", saveType],
                 modifiers: [
-                    new ModifierPF2e({ slug: "base", label: "PF2E.ModifierTitle", modifier: baseValue }),
+                    new ModifierAvant({ slug: "base", label: "AVANT.ModifierTitle", modifier: baseValue }),
                     adjustment
-                        ? new ModifierPF2e({
+                        ? new ModifierAvant({
                               slug: "adjustment",
-                              label: "PF2E.Kingmaker.Army.Adjustment",
+                              label: "AVANT.Kingmaker.Army.Adjustment",
                               modifier: adjustment,
                           })
                         : null,
@@ -204,18 +204,18 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
             "system.resources.potions.value": newPotions,
         });
 
-        await ChatMessagePF2e.create({
-            speaker: ChatMessagePF2e.getSpeaker({ actor: this as ArmyPF2e, token: this.token }),
+        await ChatMessageAvant.create({
+            speaker: ChatMessageAvant.getSpeaker({ actor: this as ArmyAvant, token: this.token }),
             flavor: createHTMLElement("div", {
                 children: [
                     createHTMLElement("strong", {
-                        children: [game.i18n.localize("PF2E.Kingmaker.Army.Potions.UsedPotionHeader")],
+                        children: [game.i18n.localize("AVANT.Kingmaker.Army.Potions.UsedPotionHeader")],
                     }),
                     document.createElement("hr"),
                 ],
             }).outerHTML,
             content: createHTMLElement("p", {
-                children: [game.i18n.localize("PF2E.Kingmaker.Army.Potions.UsedPotionContent")],
+                children: [game.i18n.localize("AVANT.Kingmaker.Army.Potions.UsedPotionContent")],
             }).outerHTML,
             style: CONST.CHAT_MESSAGE_STYLES.EMOTE,
         });
@@ -232,7 +232,7 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
         const maps = (() => {
             const baseMap = {
                 slug: "multiple-attack-penalty",
-                label: "PF2E.MultipleAttackPenalty",
+                label: "AVANT.MultipleAttackPenalty",
                 map1: -5,
                 map2: -10,
             };
@@ -246,7 +246,7 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
         })();
 
         const createMapModifier = (prop: "map1" | "map2") => {
-            return new ModifierPF2e({
+            return new ModifierAvant({
                 slug: maps.slug,
                 label: maps.label,
                 modifier: maps[prop],
@@ -261,15 +261,15 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
             rollOptions: [`item:${type}`],
             check: { type: "attack-roll" },
             modifiers: [
-                new ModifierPF2e({
+                new ModifierAvant({
                     slug: "base",
-                    label: "PF2E.ModifierTitle",
+                    label: "AVANT.ModifierTitle",
                     modifier: ARMY_STATS.attack[this.level],
                 }),
-                data.potency && new ModifierPF2e({ slug: "potency", label: "Potency", modifier: data.potency }),
-                new ModifierPF2e({
+                data.potency && new ModifierAvant({ slug: "potency", label: "Potency", modifier: data.potency }),
+                new ModifierAvant({
                     slug: "concealed",
-                    label: "PF2E.Kingmaker.Army.Condition.concealed.name",
+                    label: "AVANT.Kingmaker.Army.Condition.concealed.name",
                     type: "circumstance",
                     modifier: -2,
                     predicate: ["target:effect:concealed"],
@@ -327,7 +327,7 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
                 damage: { roll: new DamageRoll(formula), breakdown },
             };
 
-            return DamagePF2e.roll(template, damageContext);
+            return DamageAvant.roll(template, damageContext);
         };
 
         return {
@@ -343,7 +343,7 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
                     label:
                         idx === 0
                             ? signedInteger(statistic.mod)
-                            : game.i18n.format("PF2E.MAPAbbreviationValueLabel", {
+                            : game.i18n.format("AVANT.MAPAbbreviationValueLabel", {
                                   value: signedInteger(statistic.mod + penalty),
                                   penalty,
                               }),
@@ -412,14 +412,14 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
     }
 
     /** Prevent addition of invalid tactic types */
-    override checkItemValidity(source: PreCreate<ItemSourcePF2e>): boolean {
+    override checkItemValidity(source: PreCreate<ItemSourceAvant>): boolean {
         if (source.type === "campaignFeature" && source.system?.category === "army-tactic") {
             const validArmyTypes = ARMY_TYPES.filter((t) => source.system?.traits?.value?.includes(t));
             if (validArmyTypes.length > 0 && !validArmyTypes.includes(this.system.traits.type)) {
                 ui.notifications.error(
-                    game.i18n.format("PF2E.Kingmaker.Army.Error.InvalidTacticType", {
+                    game.i18n.format("AVANT.Kingmaker.Army.Error.InvalidTacticType", {
                         name: source.name,
-                        type: game.i18n.localize(CONFIG.PF2E.kingmakerTraits[this.system.traits.type]),
+                        type: game.i18n.localize(CONFIG.AVANT.kingmakerTraits[this.system.traits.type]),
                     }),
                 );
                 return false;
@@ -441,7 +441,7 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
     override _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: ActorUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         const isFullReplace = !((operation.diff ?? true) && (operation.recursive ?? true));
         if (isFullReplace) return super._preUpdate(changed, operation, user);
@@ -460,7 +460,7 @@ class ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | nu
     }
 }
 
-interface ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends ActorPF2e<TParent> {
+interface ArmyAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends ActorAvant<TParent> {
     readonly _source: ArmySource;
     armorClass: StatisticDifficultyClass<ArmorStatistic>;
     system: ArmySystemData;
@@ -468,4 +468,4 @@ interface ArmyPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e 
     get hitPoints(): HitPointsSummary;
 }
 
-export { ArmyPF2e };
+export { ArmyAvant };

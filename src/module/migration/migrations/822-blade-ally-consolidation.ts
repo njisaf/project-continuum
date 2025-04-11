@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Rename references to retired compendiums */
@@ -32,7 +32,7 @@ export class Migration822BladeAllyConsolidation extends MigrationBase {
             .replace(/\bfeat-effects\.HjfIXg5btodThCTW\b/g, "equipment-srd.oVrVzML63VFvVfKk");
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!source.system.description.value.includes("feat-effects")) {
             return;
         }

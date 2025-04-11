@@ -1,7 +1,7 @@
-import { DamageDicePF2e, MODIFIER_TYPES, ModifierPF2e, applyStackingRules } from "@actor/modifiers.ts";
+import { DamageDiceAvant, MODIFIER_TYPES, ModifierAvant, applyStackingRules } from "@actor/modifiers.ts";
 import { DEGREE_OF_SUCCESS, DEGREE_OF_SUCCESS_STRINGS, DegreeOfSuccessIndex } from "@system/degree-of-success.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     fontAwesomeIcon,
     htmlQuery,
     htmlQueryAll,
@@ -36,8 +36,8 @@ class DamageModifierDialog extends Application {
 
     /** A set of originally enabled modifiers and dice to circumvent hideIfDisabled for manual disables */
     #originallyEnabled: {
-        modifiers: Set<ModifierPF2e>;
-        dice: Set<DamageDicePF2e>;
+        modifiers: Set<ModifierAvant>;
+        dice: Set<DamageDiceAvant>;
     };
 
     constructor(params: DamageDialogParams) {
@@ -57,7 +57,7 @@ class DamageModifierDialog extends Application {
     static override get defaultOptions(): ApplicationOptions {
         return {
             ...super.defaultOptions,
-            template: "systems/pf2e/templates/chat/damage/damage-modifier-dialog.hbs",
+            template: "systems/avant/templates/chat/damage/damage-modifier-dialog.hbs",
             classes: ["roll-modifiers-dialog", "damage-dialog", "dialog"],
             popOut: true,
             width: 440,
@@ -67,8 +67,8 @@ class DamageModifierDialog extends Application {
 
     override get title(): string {
         return this.isCritical
-            ? game.i18n.localize("PF2E.Roll.Dialog.Damage.TitleCritical")
-            : game.i18n.localize("PF2E.Roll.Dialog.Damage.Title");
+            ? game.i18n.localize("AVANT.Roll.Dialog.Damage.TitleCritical")
+            : game.i18n.localize("AVANT.Roll.Dialog.Damage.Title");
     }
 
     get isCritical(): boolean {
@@ -101,16 +101,16 @@ class DamageModifierDialog extends Application {
 
     #getTypeLabel(damageType: DamageType | null, category: DamageCategoryUnique | null): string | null {
         if (category === "precision") {
-            return game.i18n.localize("PF2E.Damage.Precision");
+            return game.i18n.localize("AVANT.Damage.Precision");
         }
         if (!damageType) return null;
-        const typeLabel = game.i18n.localize(CONFIG.PF2E.damageTypes[damageType]);
+        const typeLabel = game.i18n.localize(CONFIG.AVANT.damageTypes[damageType]);
 
         switch (category) {
             case "persistent":
-                return game.i18n.format("PF2E.Damage.PersistentTooltip", { damageType: typeLabel });
+                return game.i18n.format("AVANT.Damage.PersistentTooltip", { damageType: typeLabel });
             case "splash":
-                return game.i18n.format("PF2E.Roll.Dialog.Damage.Splash", { damageType: typeLabel });
+                return game.i18n.format("AVANT.Roll.Dialog.Damage.Splash", { damageType: typeLabel });
             default:
                 return typeLabel;
         }
@@ -140,7 +140,7 @@ class DamageModifierDialog extends Application {
             " + ",
         );
 
-        type DamageDicePF2eWithOverride = DamageDicePF2e & { override: NonNullable<DamageDicePF2e["override"]> };
+        type DamageDiceAvantWithOverride = DamageDiceAvant & { override: NonNullable<DamageDiceAvant["override"]> };
 
         return {
             appId: this.id,
@@ -174,7 +174,7 @@ class DamageModifierDialog extends Application {
             })),
             overrides: R.pipe(
                 visibleDiceAll,
-                R.filter((args): args is [number, DamageDicePF2eWithOverride] => !!args[1].override),
+                R.filter((args): args is [number, DamageDiceAvantWithOverride] => !!args[1].override),
                 R.sortBy(([_, d]) => (d.override.diceNumber && !d.override.dieSize ? 1 : d.override.upgrade ? 2 : 3)),
                 R.map(([idx, d]) => ({
                     idx,
@@ -194,8 +194,8 @@ class DamageModifierDialog extends Application {
                 })),
             ),
             isCritical: this.isCritical,
-            damageTypes: sortStringRecord(CONFIG.PF2E.damageTypes),
-            damageSubtypes: sortStringRecord(R.pick(CONFIG.PF2E.damageCategories, DAMAGE_CATEGORIES_UNIQUE)),
+            damageTypes: sortStringRecord(CONFIG.AVANT.damageTypes),
+            damageSubtypes: sortStringRecord(R.pick(CONFIG.AVANT.damageCategories, DAMAGE_CATEGORIES_UNIQUE)),
             rollModes: CONFIG.Dice.rollModes,
             rollMode: this.context?.rollMode ?? game.settings.get("core", "rollMode"),
             showDamageDialogs: game.user.settings.showDamageDialogs,
@@ -259,18 +259,18 @@ class DamageModifierDialog extends Application {
             }
             if (!setHasElement(MODIFIER_TYPES, type)) {
                 // Select menu should make this impossible
-                throw ErrorPF2e("Unexpected invalid modifier type");
+                throw ErrorAvant("Unexpected invalid modifier type");
             }
 
             const label =
                 String(parent.querySelector<HTMLInputElement>(".add-modifier-name")?.value).trim() ||
-                game.i18n.localize(value < 0 ? `PF2E.PenaltyLabel.${type}` : `PF2E.BonusLabel.${type}`);
+                game.i18n.localize(value < 0 ? `AVANT.PenaltyLabel.${type}` : `AVANT.BonusLabel.${type}`);
 
             if (errors.length > 0) {
                 ui.notifications.error(errors.join(" "));
             } else {
                 this.formulaData.modifiers.push(
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         label,
                         modifier: value,
                         type,
@@ -304,10 +304,10 @@ class DamageModifierDialog extends Application {
             }
             const label =
                 String(parent.querySelector<HTMLInputElement>(".add-dice-name")?.value).trim() ||
-                game.i18n.format("PF2E.Roll.Dialog.Damage.ExtraDice");
+                game.i18n.format("AVANT.Roll.Dialog.Damage.ExtraDice");
             const slug = sluggify(`${label}-${type}`);
             this.formulaData.dice.push(
-                new DamageDicePF2e({
+                new DamageDiceAvant({
                     label,
                     category,
                     diceNumber: count,
@@ -324,7 +324,7 @@ class DamageModifierDialog extends Application {
         rollModeInput?.addEventListener("change", () => {
             const rollMode = rollModeInput.value;
             if (!tupleHasValue(Object.values(CONST.DICE_ROLL_MODES), rollMode)) {
-                throw ErrorPF2e("Unexpected roll mode");
+                throw ErrorAvant("Unexpected roll mode");
             }
             this.context.rollMode = rollMode;
         });
@@ -332,7 +332,7 @@ class DamageModifierDialog extends Application {
         // Toggle show dialog default
         const toggle = htmlQuery<HTMLInputElement>(html, "input[data-action=change-show-default]");
         toggle?.addEventListener("click", async () => {
-            await game.user.update({ "flags.pf2e.settings.showDamageDialogs": toggle.checked });
+            await game.user.update({ "flags.avant.settings.showDamageDialogs": toggle.checked });
         });
     }
 
@@ -398,8 +398,8 @@ interface DamageDialogData {
     dice: DialogDiceData[];
     overrides: DialogDiceData[];
     isCritical: boolean;
-    damageTypes: typeof CONFIG.PF2E.damageTypes;
-    damageSubtypes: Pick<ConfigPF2e["PF2E"]["damageCategories"], DamageCategoryUnique>;
+    damageTypes: typeof CONFIG.AVANT.damageTypes;
+    damageSubtypes: Pick<ConfigAvant["AVANT"]["damageCategories"], DamageCategoryUnique>;
     rollModes: Record<RollMode, string>;
     rollMode: RollMode | "roll" | undefined;
     showDamageDialogs: boolean;

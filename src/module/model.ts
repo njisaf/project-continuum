@@ -3,7 +3,7 @@ import fields = foundry.data.fields;
 
 class RarityField extends fields.StringField<Rarity, Rarity, true, false, true> {
     constructor() {
-        const rarityChoices: Record<Rarity, string> = CONFIG.PF2E.rarityTraits;
+        const rarityChoices: Record<Rarity, string> = CONFIG.AVANT.rarityTraits;
         super({ required: true, nullable: false, choices: rarityChoices, initial: "common" });
     }
 }

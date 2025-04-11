@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 import { sluggify } from "@util";
 import { RuleElementSource } from "@module/rules/index.ts";
@@ -10,7 +10,7 @@ import { RuleElementSource } from "@module/rules/index.ts";
 export class Migration858FakeWeaponSpecialization extends MigrationBase {
     static override version = 0.858;
 
-    #testHasOption(source: ItemSourcePF2e) {
+    #testHasOption(source: ItemSourceAvant) {
         return source.system.rules.some(
             (r) =>
                 r.key === "RollOption" &&
@@ -19,7 +19,7 @@ export class Migration858FakeWeaponSpecialization extends MigrationBase {
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "feat") return;
 
         const slug = source.system.slug ?? sluggify(source.name);

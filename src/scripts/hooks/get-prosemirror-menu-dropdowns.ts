@@ -5,11 +5,11 @@ export const GetProseMirrorMenuDropDowns = {
             const wrapIn = foundry.prosemirror.commands.wrapIn;
             if ("format" in dropdowns) {
                 dropdowns.format.entries.push({
-                    action: "pf2e",
-                    title: "PF2e",
+                    action: "avant",
+                    title: "Avant",
                     children: [
                         {
-                            action: "pf2e-action-glyph",
+                            action: "avant-action-glyph",
                             class: "action-glyph",
                             title: "Icons 1 2 3 F R",
                             mark: menu.schema.marks.span,
@@ -20,7 +20,7 @@ export const GetProseMirrorMenuDropDowns = {
                             }),
                         },
                         {
-                            action: "pf2e-inline-header",
+                            action: "avant-inline-header",
                             class: "inline-header",
                             title: "Inline Header",
                             node: menu.schema.nodes.heading,
@@ -34,7 +34,7 @@ export const GetProseMirrorMenuDropDowns = {
                             },
                         },
                         {
-                            action: "pf2e-info-block",
+                            action: "avant-info-block",
                             class: "info",
                             title: "Info Block",
                             node: menu.schema.nodes.section,
@@ -48,7 +48,7 @@ export const GetProseMirrorMenuDropDowns = {
                             },
                         },
                         {
-                            action: "pf2e-stat-block",
+                            action: "avant-stat-block",
                             class: "statblock",
                             title: "Stat Block",
                             node: menu.schema.nodes.section,
@@ -62,7 +62,7 @@ export const GetProseMirrorMenuDropDowns = {
                             },
                         },
                         {
-                            action: "pf2e-traits",
+                            action: "avant-traits",
                             class: "traits",
                             title: "Trait",
                             node: menu.schema.nodes.section,
@@ -76,7 +76,7 @@ export const GetProseMirrorMenuDropDowns = {
                             },
                         },
                         {
-                            action: "pf2e-written-note",
+                            action: "avant-written-note",
                             class: "message",
                             title: "Written Note",
                             node: menu.schema.nodes.paragraph,
@@ -90,7 +90,7 @@ export const GetProseMirrorMenuDropDowns = {
                             },
                         },
                         {
-                            action: "pf2e-gm-text-block",
+                            action: "avant-gm-text-block",
                             class: "visibility-gm",
                             title: "GM Text Block",
                             node: menu.schema.nodes.div,
@@ -104,7 +104,7 @@ export const GetProseMirrorMenuDropDowns = {
                             },
                         },
                         {
-                            action: "pf2e-gm-text-inline",
+                            action: "avant-gm-text-inline",
                             class: "visibility-gm",
                             title: "GM Text Inline",
                             mark: menu.schema.marks.span,

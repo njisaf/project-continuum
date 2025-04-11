@@ -1,0 +1,160 @@
+{
+    "_id": "fsjO5oTKttsbpaKl",
+    "img": "systems/avant/icons/features/classes/arcane-cascade.webp",
+    "name": "Stance: Arcane Cascade",
+    "system": {
+        "description": {
+            "value": "<p>Granted by @UUID[Compendium.avant.actionsavant.Item.Arcane Cascade]</p>\n<p>Your melee Strikes deal 1 extra force damage. This damage increases to 2 if you have weapon specialization and 3 if you have greater weapon specialization. Any Strike that benefits from this damage gains the arcane trait, making it magical.</p>\n<p>If your most recent spell before entering the stance was one that can deal damage, the damage from the stance is instead the same type that spell could deal (or one type of your choice if the spell could deal multiple types of damage).</p>"
+        },
+        "duration": {
+            "expiry": null,
+            "sustained": false,
+            "unit": "encounter",
+            "value": -1
+        },
+        "level": {
+            "value": 1
+        },
+        "publication": {
+            "license": "OGL",
+            "remaster": false,
+            "title": "Pathfinder Secrets of Magic"
+        },
+        "rules": [
+            {
+                "events": {
+                    "onCreate": true,
+                    "onTurnStart": true
+                },
+                "key": "TempHP",
+                "predicate": [
+                    "feature:inexorable-iron",
+                    "self:weapon:melee",
+                    "self:weapon:hands-held:2"
+                ],
+                "value": "max(floor(@actor.level / 2), 1)"
+            },
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.SpecificRule.Magus.ArcaneCascade.WeaponDamage",
+                        "value": ""
+                    },
+                    {
+                        "label": "AVANT.TraitBludgeoning",
+                        "value": "bludgeoning"
+                    },
+                    {
+                        "label": "AVANT.TraitPiercing",
+                        "value": "piercing"
+                    },
+                    {
+                        "label": "AVANT.TraitSlashing",
+                        "value": "slashing"
+                    },
+                    {
+                        "label": "AVANT.TraitAcid",
+                        "value": "acid"
+                    },
+                    {
+                        "label": "AVANT.TraitCold",
+                        "value": "cold"
+                    },
+                    {
+                        "label": "AVANT.TraitElectricity",
+                        "value": "electricity"
+                    },
+                    {
+                        "label": "AVANT.TraitFire",
+                        "value": "fire"
+                    },
+                    {
+                        "label": "AVANT.TraitForce",
+                        "value": "force"
+                    },
+                    {
+                        "label": "AVANT.TraitMental",
+                        "value": "mental"
+                    },
+                    {
+                        "label": "AVANT.TraitPoison",
+                        "value": "poison"
+                    },
+                    {
+                        "label": "AVANT.TraitSonic",
+                        "value": "sonic"
+                    },
+                    {
+                        "label": "AVANT.TraitSpirit",
+                        "value": "spirit"
+                    },
+                    {
+                        "label": "AVANT.TraitVitality",
+                        "value": "vitality"
+                    },
+                    {
+                        "label": "AVANT.TraitVoid",
+                        "value": "void"
+                    }
+                ],
+                "flag": "stanceArcaneCascade",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.DamageType"
+            },
+            {
+                "definition": [
+                    "item:melee"
+                ],
+                "key": "AdjustStrike",
+                "mode": "add",
+                "property": "traits",
+                "value": "arcane"
+            },
+            {
+                "damageType": "{item|flags.avant.rulesSelections.stanceArcaneCascade}",
+                "key": "FlatModifier",
+                "selector": "melee-strike-damage",
+                "slug": "arcane-cascade-extra-damage",
+                "value": 1
+            },
+            {
+                "key": "AdjustModifier",
+                "mode": "upgrade",
+                "predicate": [
+                    "feature:weapon-specialization"
+                ],
+                "selector": "melee-strike-damage",
+                "slug": "arcane-cascade-extra-damage",
+                "value": 2
+            },
+            {
+                "key": "AdjustModifier",
+                "mode": "upgrade",
+                "predicate": [
+                    "feature:greater-weapon-specialization"
+                ],
+                "selector": "melee-strike-damage",
+                "slug": "arcane-cascade-extra-damage",
+                "value": 3
+            },
+            {
+                "key": "ActiveEffectLike",
+                "mode": "override",
+                "path": "flags.avant.arcaneCascade.damageType",
+                "value": "{item|flags.avant.rulesSelections.stanceArcaneCascade}"
+            }
+        ],
+        "start": {
+            "initiative": null,
+            "value": 0
+        },
+        "tokenIcon": {
+            "show": true
+        },
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "effect"
+}

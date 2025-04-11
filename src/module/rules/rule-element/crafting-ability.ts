@@ -1,15 +1,15 @@
-import type { ActorType, CharacterPF2e } from "@actor";
-import { ItemPF2e } from "@item";
+import type { ActorType, CharacterAvant } from "@actor";
+import { ItemAvant } from "@item";
 import { PredicateField } from "@system/schema-data-fields.ts";
 import { sluggify } from "@util";
-import { RuleElementOptions, RuleElementPF2e } from "./base.ts";
+import { RuleElementOptions, RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, ResolvableValueField, RuleElementSchema, RuleElementSource } from "./data.ts";
 import fields = foundry.data.fields;
 
 /**
  * @category RuleElement
  */
-class CraftingAbilityRuleElement extends RuleElementPF2e<CraftingAbilityRuleSchema> {
+class CraftingAbilityRuleElement extends RuleElementAvant<CraftingAbilityRuleSchema> {
     protected static override validActorTypes: ActorType[] = ["character"];
 
     constructor(data: CraftingAbilityRuleSource, options: RuleElementOptions) {
@@ -142,12 +142,12 @@ class CraftingAbilityRuleElement extends RuleElementPF2e<CraftingAbilityRuleSche
 }
 
 interface CraftingAbilityRuleElement
-    extends RuleElementPF2e<CraftingAbilityRuleSchema>,
+    extends RuleElementAvant<CraftingAbilityRuleSchema>,
         ModelPropsFromRESchema<CraftingAbilityRuleSchema> {
-    readonly parent: ItemPF2e<CharacterPF2e>;
+    readonly parent: ItemAvant<CharacterAvant>;
     slug: string;
 
-    get actor(): CharacterPF2e;
+    get actor(): CharacterAvant;
 }
 
 type CraftingAbilityRuleSchema = RuleElementSchema & {

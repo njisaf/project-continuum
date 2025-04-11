@@ -1,11 +1,11 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { createProficiencyModifier } from "@actor/modifiers.ts";
 import { AttributeString, SkillSlug } from "@actor/types.ts";
-import { SpellPF2e } from "@item";
+import { SpellAvant } from "@item";
 import { MagicTradition } from "@item/spell/types.ts";
 import { extractModifiers } from "@module/rules/helpers.ts";
 import { Statistic } from "@system/statistic/index.ts";
-import { ErrorPF2e } from "@util/misc.ts";
+import { ErrorAvant } from "@util/misc.ts";
 import * as R from "remeda";
 import { createCounteractStatistic } from "./helpers.ts";
 import { CastOptions, SpellcastingEntry, SpellcastingSheetData } from "./types.ts";
@@ -28,7 +28,7 @@ const traditionSkills = {
 } as const;
 
 /** A pseudo spellcasting entry used to trick magic item for a single skill */
-class TrickMagicItemEntry<TActor extends ActorPF2e = ActorPF2e> implements SpellcastingEntry<TActor> {
+class TrickMagicItemEntry<TActor extends ActorAvant = ActorAvant> implements SpellcastingEntry<TActor> {
     readonly id: string;
 
     actor: TActor;
@@ -47,7 +47,7 @@ class TrickMagicItemEntry<TActor extends ActorPF2e = ActorPF2e> implements Spell
 
     constructor(actor: TActor, skill: TrickMagicItemSkill) {
         if (!actor.isOfType("character")) {
-            throw ErrorPF2e("Trick magic entries may only be constructed with PCs");
+            throw ErrorAvant("Trick magic entries may only be constructed with PCs");
         }
         this.actor = actor;
         this.skill = skill;
@@ -80,13 +80,13 @@ class TrickMagicItemEntry<TActor extends ActorPF2e = ActorPF2e> implements Spell
         const skillRank = actor.skills[skill].rank;
         const trickRank = skillRank === 4 ? 2 : skillRank === 3 ? 1 : 0;
         const levelProficiencyBonus =
-            trickRank === 0 && !game.pf2e.settings.variants.pwol.enabled
+            trickRank === 0 && !game.avant.settings.variants.pwol.enabled
                 ? createProficiencyModifier({ actor, rank: 0, domains, addLevel: true })
                 : null;
 
         this.statistic = new Statistic(actor, {
             slug: `trick-${tradition}`,
-            label: CONFIG.PF2E.magicTraditions[tradition],
+            label: CONFIG.AVANT.magicTraditions[tradition],
             attribute: attribute,
             rank: trickRank,
             modifiers: [levelProficiencyBonus, ...extractModifiers(actor.synthetics, domains)].filter(R.isTruthy),
@@ -104,7 +104,7 @@ class TrickMagicItemEntry<TActor extends ActorPF2e = ActorPF2e> implements Spell
     }
 
     get name(): string {
-        return game.i18n.localize("PF2E.TrickMagicItemPopup.Title");
+        return game.i18n.localize("AVANT.TrickMagicItemPopup.Title");
     }
 
     /** Unused since a Trick Magic Item ability isn't displayed in an actor sheet */
@@ -137,7 +137,7 @@ class TrickMagicItemEntry<TActor extends ActorPF2e = ActorPF2e> implements Spell
         return true;
     }
 
-    async cast(spell: SpellPF2e, options: CastOptions = {}): Promise<void> {
+    async cast(spell: SpellAvant, options: CastOptions = {}): Promise<void> {
         const { rollMode, message } = options;
         const castRank = spell.computeCastRank(spell.rank);
         if (message === false) return;

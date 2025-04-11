@@ -1,21 +1,21 @@
 <div class="container">
     {{#if options.troubleshoot}}
-        <h3>{{localize "PF2E.Migrations.Summary.Troubleshoot.Hint" version=systemVersion}}</h3>
+        <h3>{{localize "AVANT.Migrations.Summary.Troubleshoot.Hint" version=systemVersion}}</h3>
     {{else}}
-        <h3>{{localize "PF2E.Migrations.Finished" version=systemVersion}}</h3>
+        <h3>{{localize "AVANT.Migrations.Finished" version=systemVersion}}</h3>
     {{/if}}
     <div class="dialog-content">
         <table>
             <thead>
                 <tr>
-                    <th>{{localize "PF2E.Migrations.Summary.Documents"}}</th>
-                    <th>{{localize "PF2E.Migrations.Summary.Migrated"}} / {{localize "PF2E.Migrations.Summary.Total"}}</th>
+                    <th>{{localize "AVANT.Migrations.Summary.Documents"}}</th>
+                    <th>{{localize "AVANT.Migrations.Summary.Migrated"}} / {{localize "AVANT.Migrations.Summary.Total"}}</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{localize "PF2E.Actor.Plural"}}</td>
+                    <td>{{localize "AVANT.Actor.Plural"}}</td>
                     <td><span class="docs-successful">{{actors.successful}}</span> / {{actors.total}}</td>
                     <td>
                         {{#if (eq actors.successful actors.total)}}
@@ -26,7 +26,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>{{localize "PF2E.Item.Plural"}}</td>
+                    <td>{{localize "AVANT.Item.Plural"}}</td>
                     <td><span class="docs-successful">{{items.successful}}</span> / {{items.total}}</td>
                     <td>
                         {{#if (eq items.successful items.total)}}
@@ -43,7 +43,7 @@
         <p class="help-resources">{{{helpResourcesText}}}</p>
     {{/if}}
     <div class="dialog-buttons">
-        <button type="button" data-action="close">{{localize "PF2E.OK"}}</button>
-        {{#if canRemigrate}}<button type="button" data-action="remigrate" {{disabled helpResources}}>{{localize "PF2E.Migrations.Summary.Remigrate"}}</button>{{/if}}
+        <button type="button" data-action="close">{{localize "AVANT.OK"}}</button>
+        {{#if canRemigrate}}<button type="button" data-action="remigrate" {{disabled helpResources}}>{{localize "AVANT.Migrations.Summary.Remigrate"}}</button>{{/if}}
     </div>
 </div>

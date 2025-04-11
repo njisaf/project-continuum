@@ -9,7 +9,7 @@ import { CheckResultCallback } from "@system/action-macros/types.ts";
 class AidActionVariant extends SingleCheckActionVariant {
     override async use(options: Partial<SingleCheckActionUseOptions>): Promise<CheckResultCallback[]> {
         if (!options?.statistic) {
-            throw new Error(game.i18n.localize("PF2E.Actions.Aid.Warning.NoStatistic"));
+            throw new Error(game.i18n.localize("AVANT.Actions.Aid.Warning.NoStatistic"));
         }
         const rollOption = `action:aid:${options.statistic}`;
         options.rollOptions ??= [];
@@ -24,26 +24,26 @@ class AidAction extends SingleCheckAction {
     constructor() {
         super({
             cost: "reaction",
-            description: "PF2E.Actions.Aid.Description",
+            description: "AVANT.Actions.Aid.Description",
             difficultyClass: {
                 value: 15,
             },
-            name: "PF2E.Actions.Aid.Title",
+            name: "AVANT.Actions.Aid.Title",
             notes: [
                 {
                     outcome: ["criticalFailure"],
-                    text: "PF2E.Actions.Aid.Notes.criticalFailure",
-                    title: "PF2E.Check.Result.Degree.Check.criticalFailure",
+                    text: "AVANT.Actions.Aid.Notes.criticalFailure",
+                    title: "AVANT.Check.Result.Degree.Check.criticalFailure",
                 },
                 {
                     outcome: ["criticalSuccess"],
-                    text: "PF2E.Actions.Aid.Notes.criticalSuccess",
-                    title: "PF2E.Check.Result.Degree.Check.criticalSuccess",
+                    text: "AVANT.Actions.Aid.Notes.criticalSuccess",
+                    title: "AVANT.Check.Result.Degree.Check.criticalSuccess",
                 },
                 {
                     outcome: ["success"],
-                    text: "PF2E.Actions.Aid.Notes.success",
-                    title: "PF2E.Check.Result.Degree.Check.success",
+                    text: "AVANT.Actions.Aid.Notes.success",
+                    title: "AVANT.Check.Result.Degree.Check.success",
                 },
             ],
             rollOptions: ["action:aid"],

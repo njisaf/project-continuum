@@ -1,7 +1,7 @@
 import { SingleCheckAction } from "@actor/actions/index.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-const PREFIX = "PF2E.Actions.Squeeze";
+const PREFIX = "AVANT.Actions.Squeeze";
 
 function squeeze(options: SkillActionOptions): void {
     const slug = options?.skill ?? "acrobatics";
@@ -17,9 +17,9 @@ function squeeze(options: SkillActionOptions): void {
         callback: options.callback,
         difficultyClass: options.difficultyClass,
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Squeeze", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Squeeze", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.Squeeze", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Squeeze", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Squeeze", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.Squeeze", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);

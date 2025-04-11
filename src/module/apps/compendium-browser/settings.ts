@@ -14,25 +14,25 @@ const foundryApp = foundry.applications.api;
 class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin(foundryApp.ApplicationV2) {
     #tabSettings: Record<TabName, CompendiumBrowserSettingsData> = {
         action: {
-            label: "PF2E.CompendiumBrowser.TabAction",
+            label: "AVANT.CompendiumBrowser.TabAction",
         },
         bestiary: {
-            label: "PF2E.CompendiumBrowser.TabBestiary",
+            label: "AVANT.CompendiumBrowser.TabBestiary",
         },
         campaignFeature: {
-            label: "PF2E.CompendiumBrowser.TabCampaign",
+            label: "AVANT.CompendiumBrowser.TabCampaign",
         },
         equipment: {
             label: "TYPES.Item.equipment",
         },
         feat: {
-            label: "PF2E.CompendiumBrowser.TabFeat",
+            label: "AVANT.CompendiumBrowser.TabFeat",
         },
         hazard: {
-            label: "PF2E.Actor.Hazard.Plural",
+            label: "AVANT.Actor.Hazard.Plural",
         },
         spell: {
-            label: "PF2E.Item.Spell.Plural",
+            label: "AVANT.Item.Spell.Plural",
         },
     };
 
@@ -46,7 +46,7 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
         },
         window: {
             resizable: true,
-            title: "PF2E.CompendiumBrowser.Settings.Title",
+            title: "AVANT.CompendiumBrowser.Settings.Title",
         },
         form: {
             submitOnChange: false,
@@ -57,7 +57,7 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
 
     static override PARTS: Record<string, HandlebarsTemplatePart> = {
         mainWindow: {
-            template: "systems/pf2e/templates/compendium-browser/settings/settings.hbs",
+            template: "systems/avant/templates/compendium-browser/settings/settings.hbs",
             scrollable: [".settings-container"],
         },
     };
@@ -71,7 +71,7 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
         options: ApplicationRenderOptions,
     ): Promise<void> {
         await super._preFirstRender(context, options);
-        const browser = game.pf2e.compendiumBrowser;
+        const browser = game.avant.compendiumBrowser;
         return browser.packLoader.updateSources(browser.loadedPacksAll());
     }
 
@@ -108,7 +108,7 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
 
         const deleteButton = htmlQuery<HTMLInputElement>(html, "button[data-action=settings-sources-delete]");
         deleteButton?.addEventListener("click", async () => {
-            const localize = localizer("PF2E.SETTINGS.CompendiumBrowserSources");
+            const localize = localizer("AVANT.SETTINGS.CompendiumBrowserSources");
             const confirm = await Dialog.confirm({
                 title: localize("DeleteAllTitle"),
                 content: `
@@ -122,9 +122,9 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
             });
 
             if (confirm) {
-                const browser = game.pf2e.compendiumBrowser;
+                const browser = game.avant.compendiumBrowser;
                 await browser.packLoader.hardReset(browser.loadedPacksAll());
-                await game.settings.set("pf2e", "compendiumBrowserSources", browser.packLoader.sourcesSettings);
+                await game.settings.set("avant", "compendiumBrowserSources", browser.packLoader.sourcesSettings);
                 await browser.resetInitializedTabs();
                 await this.render();
                 this.changeTab("source", "settings", { force: true });
@@ -134,17 +134,17 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
     }
 
     protected override async _prepareContext(_options: ApplicationRenderOptions): Promise<object> {
-        if (game.settings.get("pf2e", "campaignType") === "none") {
+        if (game.settings.get("avant", "campaignType") === "none") {
             this.#tabSettings.campaignFeature.hidden = true;
         }
-        const browser = game.pf2e.compendiumBrowser;
+        const browser = game.avant.compendiumBrowser;
         for (const [name, settings] of Object.entries(browser.settings)) {
             if (objectHasKey(this.#tabSettings, name)) {
                 const duplicates = new Set<string>();
                 const seen = new Set<string>();
                 // Find multiple entries for the same module
                 for (const setting of Object.values(settings)) {
-                    if (!setting || setting.package === "pf2e") continue;
+                    if (!setting || setting.package === "avant") continue;
                     if (seen.has(setting.package)) {
                         duplicates.add(setting.package);
                         continue;
@@ -153,7 +153,7 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
                 }
                 // Show the full pack id if a module has multiple packs in the same category
                 for (const setting of Object.values(settings)) {
-                    if (!setting || setting.package === "pf2e") continue;
+                    if (!setting || setting.package === "avant") continue;
                     if (duplicates.has(setting.package)) {
                         setting.showFullId = true;
                     }
@@ -176,7 +176,7 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
         _form: HTMLFormElement,
         formData: FormDataExtended,
     ): Promise<void> {
-        const browser = game.pf2e.compendiumBrowser;
+        const browser = game.avant.compendiumBrowser;
         const settings = browser.settings;
         const getCheckboxValue = (key: string): boolean => {
             return formData.get(key) === "true";
@@ -187,7 +187,7 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
                 pack.load = getCheckboxValue(`${t}-${key}`);
             }
         }
-        await game.settings.set("pf2e", "compendiumBrowserPacks", settings);
+        await game.settings.set("avant", "compendiumBrowserPacks", settings);
 
         for (const [key, source] of Object.entries(browser.packLoader.sourcesSettings.sources)) {
             if (!source?.name) {
@@ -200,10 +200,10 @@ class CompendiumBrowserSettingsApp extends foundryApp.HandlebarsApplicationMixin
         browser.packLoader.sourcesSettings.showEmptySources = getCheckboxValue("show-empty-sources");
         browser.packLoader.sourcesSettings.showUnknownSources = getCheckboxValue("show-unknown-sources");
         browser.packLoader.sourcesSettings.ignoreAsGM = getCheckboxValue("ignore-as-gm");
-        await game.settings.set("pf2e", "compendiumBrowserSources", browser.packLoader.sourcesSettings);
+        await game.settings.set("avant", "compendiumBrowserSources", browser.packLoader.sourcesSettings);
 
         await browser.resetInitializedTabs();
-        ui.notifications.info("PF2E.CompendiumBrowser.Settings.Saved", { localize: true });
+        ui.notifications.info("AVANT.CompendiumBrowser.Settings.Saved", { localize: true });
     }
 }
 

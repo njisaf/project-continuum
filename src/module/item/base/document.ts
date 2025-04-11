@@ -1,19 +1,19 @@
-import { ActorPF2e } from "@actor/base.ts";
-import type { ContainerPF2e, PhysicalItemPF2e } from "@item";
+import { ActorAvant } from "@actor/base.ts";
+import type { ContainerAvant, PhysicalItemAvant } from "@item";
 import { createConsumableFromSpell } from "@item/consumable/spell-consumables.ts";
 import { itemIsOfType, markdownToHTML } from "@item/helpers.ts";
 import { ItemOriginFlag } from "@module/chat-message/data.ts";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { preImportJSON } from "@module/doc-helpers.ts";
 import { MigrationList, MigrationRunner } from "@module/migration/index.ts";
 import { MigrationRunnerBase } from "@module/migration/runner/base.ts";
-import { RuleElementOptions, RuleElementPF2e, RuleElementSource, RuleElements } from "@module/rules/index.ts";
+import { RuleElementOptions, RuleElementAvant, RuleElementSource, RuleElements } from "@module/rules/index.ts";
 import { processGrantDeletions } from "@module/rules/rule-element/grant-item/helpers.ts";
 import { eventToRollMode } from "@module/sheet/helpers.ts";
-import type { UserPF2e } from "@module/user/document.ts";
-import { EnrichmentOptionsPF2e } from "@system/text-editor.ts";
+import type { UserAvant } from "@module/user/document.ts";
+import { EnrichmentOptionsAvant } from "@system/text-editor.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     createHTMLElement,
     htmlClosest,
     isObject,
@@ -32,18 +32,18 @@ import type {
     ConditionSource,
     EffectSource,
     FeatSource,
-    ItemFlagsPF2e,
-    ItemSourcePF2e,
+    ItemFlagsAvant,
+    ItemSourceAvant,
     ItemSystemData,
     ItemType,
     RawItemChatData,
     TraitChatData,
 } from "./data/index.ts";
 import type { ItemDescriptionData, ItemTrait } from "./data/system.ts";
-import type { ItemSheetPF2e } from "./sheet/sheet.ts";
+import type { ItemSheetAvant } from "./sheet/sheet.ts";
 
 /** The basic `Item` subclass for the system */
-class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item<TParent> {
+class ItemAvant<TParent extends ActorAvant | null = ActorAvant | null> extends Item<TParent> {
     /** Has this document completed `DataModel` initialization? */
     declare initialized: boolean;
 
@@ -51,10 +51,10 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     declare specialOptions: string[];
 
     /** The item that granted this item, if any */
-    declare grantedBy: ItemPF2e<ActorPF2e> | null;
+    declare grantedBy: ItemAvant<ActorAvant> | null;
 
     static override getDefaultArtwork(itemData: foundry.documents.ItemSource): { img: ImageFilePath } {
-        return { img: `systems/pf2e/icons/default-icons/${itemData.type}.svg` as const };
+        return { img: `systems/avant/icons/default-icons/${itemData.type}.svg` as const };
     }
 
     /** Traits an item of this type can have */
@@ -63,7 +63,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     }
 
     /** Prepared rule elements from this item */
-    declare rules: RuleElementPF2e[];
+    declare rules: RuleElementAvant[];
 
     /** The sluggified name of the item **/
     get slug(): string | null {
@@ -108,7 +108,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     ): Promise<foundry.abstract.Document | undefined> {
         if ("uuid" in data && UUIDUtils.isItemUUID(data.uuid)) {
             const item = await fromUuid(data.uuid);
-            if (item instanceof ItemPF2e && item.parent && !item.sourceId) {
+            if (item instanceof ItemAvant && item.parent && !item.sourceId) {
                 // Upstream would do this via `item.updateSource(...)`, causing a data reset
                 item._source._stats.duplicateSource = item.uuid;
                 item._stats.duplicateSource = item._source._stats.duplicateSource;
@@ -122,11 +122,11 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
 
     /** Check this item's type (or whether it's one among multiple types) without a call to `instanceof` */
     isOfType<T extends ItemType>(...types: T[]): this is ItemInstances<TParent>[T];
-    isOfType(type: "physical"): this is PhysicalItemPF2e<TParent>;
+    isOfType(type: "physical"): this is PhysicalItemAvant<TParent>;
     isOfType<T extends "physical" | ItemType>(
         ...types: T[]
     ): this is T extends "physical"
-        ? PhysicalItemPF2e<TParent>
+        ? PhysicalItemAvant<TParent>
         : T extends ItemType
           ? ItemInstances<TParent>[T]
           : never;
@@ -134,7 +134,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         return types.some((t) => (t === "physical" ? setHasElement(PHYSICAL_ITEM_TYPES, this.type) : this.type === t));
     }
 
-    /** Redirect the deletion of any owned items to ActorPF2e#deleteEmbeddedDocuments for a single workflow */
+    /** Redirect the deletion of any owned items to ActorAvant#deleteEmbeddedDocuments for a single workflow */
     override async delete(operation: Partial<DatabaseDeleteOperation<TParent>> = {}): Promise<this | undefined> {
         if (this.actor) {
             await this.actor.deleteEmbeddedDocuments("Item", [this.id], R.omit(operation, ["parent"]));
@@ -146,12 +146,12 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
 
     /** Generate a list of strings for use in predication */
     getRollOptions(prefix = this.type, { includeGranter = true } = {}): string[] {
-        if (prefix.length === 0) throw ErrorPF2e("`prefix` must be at least one character long");
+        if (prefix.length === 0) throw ErrorAvant("`prefix` must be at least one character long");
 
         const { value: traits = [], rarity = null, otherTags } = this.system.traits;
         const traitOptions = ((): string[] => {
             // Additionally include annotated traits without their annotations
-            const damageType = Object.keys(CONFIG.PF2E.damageTypes).join("|");
+            const damageType = Object.keys(CONFIG.AVANT.damageTypes).join("|");
             const diceOrNumber = /-(?:[0-9]*d)?[0-9]+(?:-min)?$/;
             const versatile = new RegExp(`-(?:b|p|s|${damageType})$`);
             const deannotated = traits
@@ -197,7 +197,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         return rollOptions;
     }
 
-    override getRollData(): NonNullable<EnrichmentOptionsPF2e["rollData"]> {
+    override getRollData(): NonNullable<EnrichmentOptionsAvant["rollData"]> {
         const actorRollData = this.actor?.getRollData() ?? { actor: null };
         return { ...actorRollData, item: this };
     }
@@ -209,11 +209,11 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     async toMessage(
         event?: Maybe<Event | JQuery.TriggeredEvent>,
         options: { rollMode?: RollMode | "roll"; create?: boolean; data?: Record<string, unknown> } = {},
-    ): Promise<ChatMessagePF2e | undefined> {
-        if (!this.actor) throw ErrorPF2e(`Cannot create message for unowned item ${this.name}`);
+    ): Promise<ChatMessageAvant | undefined> {
+        if (!this.actor) throw ErrorAvant(`Cannot create message for unowned item ${this.name}`);
 
         // Basic template rendering data
-        const template = `systems/pf2e/templates/chat/${sluggify(this.type)}-card.hbs`;
+        const template = `systems/avant/templates/chat/${sluggify(this.type)}-card.hbs`;
         const token = this.actor.token;
         const nearestItem = htmlClosest(event?.target, ".item");
         const rollOptions = options.data ?? { ...(nearestItem?.dataset ?? {}) };
@@ -227,27 +227,27 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         // Basic chat message data
         const originalEvent = event instanceof Event ? event : event?.originalEvent;
         const rollMode = options.rollMode ?? eventToRollMode(originalEvent);
-        const chatData = ChatMessagePF2e.applyRollMode(
+        const chatData = ChatMessageAvant.applyRollMode(
             {
                 style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-                speaker: ChatMessagePF2e.getSpeaker({
+                speaker: ChatMessageAvant.getSpeaker({
                     actor: this.actor,
                     token: this.actor.getActiveTokens(false, true).at(0),
                 }),
                 content: await renderTemplate(template, templateData),
-                flags: { pf2e: { origin: this.getOriginData() } },
+                flags: { avant: { origin: this.getOriginData() } },
             },
             rollMode,
         );
 
         // Create the chat message
         return (options.create ?? true)
-            ? ChatMessagePF2e.create(chatData, { rollMode, renderSheet: false })
-            : new ChatMessagePF2e(chatData, { rollMode });
+            ? ChatMessageAvant.create(chatData, { rollMode, renderSheet: false })
+            : new ChatMessageAvant(chatData, { rollMode });
     }
 
     /** A shortcut to `item.toMessage(..., { create: true })`, kept for backward compatibility */
-    async toChat(event?: JQuery.TriggeredEvent): Promise<ChatMessagePF2e | undefined> {
+    async toChat(event?: JQuery.TriggeredEvent): Promise<ChatMessageAvant | undefined> {
         return this.toMessage(event, { create: true });
     }
 
@@ -272,7 +272,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         super.prepareData();
     }
 
-    /** Ensure the presence of the pf2e flag scope with default properties and values */
+    /** Ensure the presence of the avant flag scope with default properties and values */
     override prepareBaseData(): void {
         super.prepareBaseData();
 
@@ -282,7 +282,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         this.system.description.initialized = false;
 
         const flags = this.flags;
-        flags.pf2e = fu.mergeObject(flags.pf2e ?? {}, { rulesSelections: {} });
+        flags.avant = fu.mergeObject(flags.avant ?? {}, { rulesSelections: {} });
 
         const traits = this.system.traits;
         if (traits.value) {
@@ -290,33 +290,33 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         }
 
         // Set item grant default values: pre-migration values will be strings, so temporarily check for objectness
-        if (isObject(flags.pf2e.grantedBy)) {
-            flags.pf2e.grantedBy.onDelete ??= this.isOfType("physical") ? "detach" : "cascade";
+        if (isObject(flags.avant.grantedBy)) {
+            flags.avant.grantedBy.onDelete ??= this.isOfType("physical") ? "detach" : "cascade";
         }
-        const grants = (flags.pf2e.itemGrants ??= {});
+        const grants = (flags.avant.itemGrants ??= {});
         for (const grant of Object.values(grants)) {
             if (isObject(grant)) {
                 grant.onDelete ??= "detach";
             }
         }
 
-        this.grantedBy = this.actor?.items.get(this.flags.pf2e.grantedBy?.id ?? "") ?? null;
+        this.grantedBy = this.actor?.items.get(this.flags.avant.grantedBy?.id ?? "") ?? null;
     }
 
-    prepareRuleElements(options: Omit<RuleElementOptions, "parent"> = {}): RuleElementPF2e[] {
-        if (!this.actor) throw ErrorPF2e("Rule elements may only be prepared from embedded items");
+    prepareRuleElements(options: Omit<RuleElementOptions, "parent"> = {}): RuleElementAvant[] {
+        if (!this.actor) throw ErrorAvant("Rule elements may only be prepared from embedded items");
         return (this.rules = this.actor.canHostRuleElements
-            ? RuleElements.fromOwnedItem({ ...options, parent: this as ItemPF2e<NonNullable<TParent>> })
+            ? RuleElements.fromOwnedItem({ ...options, parent: this as ItemAvant<NonNullable<TParent>> })
             : []);
     }
 
     /** Pull the latest system data from the source compendium and replace this item's with it */
     async refreshFromCompendium(options: RefreshFromCompendiumParams = {}): Promise<this | null> {
         if (this.uuid === this.sourceId) {
-            throw ErrorPF2e(`Item "${this.name}" (${this.uuid}) is its own source.`);
+            throw ErrorAvant(`Item "${this.name}" (${this.uuid}) is its own source.`);
         }
         if (!this.sourceId?.startsWith("Compendium.")) {
-            throw ErrorPF2e(`Item "${this.name}" (${this.uuid}) has no compendium source.`);
+            throw ErrorAvant(`Item "${this.name}" (${this.uuid}) has no compendium source.`);
         }
 
         options.name ??= true;
@@ -324,7 +324,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         options.notify ??= options.update;
 
         const currentSource = this.toObject();
-        const localize = localizer("PF2E.Item.RefreshFromCompendium");
+        const localize = localizer("AVANT.Item.RefreshFromCompendium");
         if (
             currentSource.system.rules.some(
                 (r) => typeof r.key === "string" && ["ChoiceSet", "GrantItem"].includes(r.key),
@@ -343,7 +343,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
             return null;
         }
 
-        const updates: Partial<foundry.documents.ItemSource> & { system: ItemSourcePF2e["system"] } = {
+        const updates: Partial<foundry.documents.ItemSource> & { system: ItemSourceAvant["system"] } = {
             name: options.name ? latestSource.name : currentSource.name,
             img: latestSource.img,
             system: fu.deepClone(latestSource.system),
@@ -391,7 +391,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
                 // If a spell consumable, refresh the spell as well as the consumable
                 const spellSourceId = currentSource._stats.compendiumSource ?? currentSource._stats.duplicateSource;
                 const refreshedSpell = spellSourceId ? await fromUuid(spellSourceId) : null;
-                if (refreshedSpell instanceof ItemPF2e && refreshedSpell.isOfType("spell")) {
+                if (refreshedSpell instanceof ItemAvant && refreshedSpell.isOfType("spell")) {
                     const spellConsumableData = await createConsumableFromSpell(refreshedSpell, {
                         type: currentSource.system.category,
                         heightenedLevel: currentSource.system.spell.system.location.heightenedLevel,
@@ -446,7 +446,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         const actor = this.actor;
         if (!this.system.description.initialized && actor) {
             for (const alteration of actor.synthetics.itemAlterations.filter((i) => i.property === "description")) {
-                alteration.applyAlteration({ singleItem: this as ItemPF2e<ActorPF2e> });
+                alteration.applyAlteration({ singleItem: this as ItemAvant<ActorAvant> });
             }
             this.system.description.initialized = true;
         }
@@ -455,7 +455,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     }
 
     /** Retrieves description and gm notes with all prepends and appends applied, and enriched */
-    async getDescription(htmlOptions: EnrichmentOptionsPF2e & { includeAddendum?: boolean } = {}): Promise<{
+    async getDescription(htmlOptions: EnrichmentOptionsAvant & { includeAddendum?: boolean } = {}): Promise<{
         value: string;
         gm: string;
     }> {
@@ -493,7 +493,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         const addenda = await (async (): Promise<string[]> => {
             if (!includeAddendum || this.system.description.addenda.length === 0) return [];
 
-            const templatePath = "systems/pf2e/templates/items/partials/addendum.hbs";
+            const templatePath = "systems/avant/templates/items/partials/addendum.hbs";
             return Promise.all(
                 description.addenda.flatMap((unfiltered) => {
                     const addendum = {
@@ -527,7 +527,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
      * Currently renders description text using enrichHTML.
      */
     protected async processChatData(
-        htmlOptions: EnrichmentOptionsPF2e = {},
+        htmlOptions: EnrichmentOptionsAvant = {},
         chatData: RawItemChatData,
     ): Promise<RawItemChatData> {
         const description = {
@@ -538,10 +538,10 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     }
 
     async getChatData(
-        htmlOptions: EnrichmentOptionsPF2e = {},
+        htmlOptions: EnrichmentOptionsAvant = {},
         _rollOptions: Record<string, unknown> = {},
     ): Promise<RawItemChatData> {
-        if (!this.actor) throw ErrorPF2e(`Cannot retrieve chat data for unowned item ${this.name}`);
+        if (!this.actor) throw ErrorAvant(`Cannot retrieve chat data for unowned item ${this.name}`);
         const data = fu.deepClone({ ...this.system, traits: this.traitChatData() });
         return this.processChatData(htmlOptions, data);
     }
@@ -553,7 +553,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         const traitChatLabels = traits
             .map((trait) => {
                 const label = game.i18n.localize(dictionary[trait] ?? trait);
-                const traitDescriptions: Record<string, string | undefined> = CONFIG.PF2E.traitsDescriptions;
+                const traitDescriptions: Record<string, string | undefined> = CONFIG.AVANT.traitsDescriptions;
 
                 return {
                     value: trait,
@@ -579,8 +579,8 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     static override async createDialog(
         data: { folder?: string } = {},
         context: {
-            parent?: ActorPF2e | null;
-            pack?: Collection<ItemPF2e<null>> | null;
+            parent?: ActorAvant | null;
+            pack?: Collection<ItemAvant<null>> | null;
             types?: string[];
         } & Partial<FormApplicationOptions> = {},
     ): Promise<Item | null> {
@@ -591,7 +591,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         // Figure out the types to omit
         const omittedTypes: ItemType[] = ["condition", "spellcastingEntry", "lore"];
         if (BUILD_MODE === "production") omittedTypes.push("affliction", "book");
-        if (game.settings.get("pf2e", "campaignType") !== "kingmaker") omittedTypes.push("campaignFeature");
+        if (game.settings.get("avant", "campaignType") !== "kingmaker") omittedTypes.push("campaignFeature");
 
         for (const type of omittedTypes) {
             context.types.findSplice((t) => t === type);
@@ -617,12 +617,12 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         operation?: Partial<DatabaseCreateOperation<TDocument["parent"]>>,
     ): Promise<TDocument[]>;
     static override async createDocuments(
-        data: (ItemPF2e | PreCreate<ItemSourcePF2e>)[] = [],
-        operation: Partial<DatabaseCreateOperation<ActorPF2e | null>> = {},
+        data: (ItemAvant | PreCreate<ItemSourceAvant>)[] = [],
+        operation: Partial<DatabaseCreateOperation<ActorAvant | null>> = {},
     ): Promise<foundry.abstract.Document[]> {
-        // Convert all `ItemPF2e`s to source objects
-        const sources: PreCreate<ItemSourcePF2e>[] = data.map(
-            (d): PreCreate<ItemSourcePF2e> => (d instanceof ItemPF2e ? d.toObject() : d),
+        // Convert all `ItemAvant`s to source objects
+        const sources: PreCreate<ItemSourceAvant>[] = data.map(
+            (d): PreCreate<ItemSourceAvant> => (d instanceof ItemAvant ? d.toObject() : d),
         );
 
         // Migrate source in case of importing from an old compendium
@@ -653,7 +653,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
             ["affliction", "condition", "effect"].includes(s.type),
         );
         for (const source of effectSources) {
-            const effect = new CONFIG.PF2E.Item.documentClasses[source.type](fu.deepClone(source), { parent: actor });
+            const effect = new CONFIG.AVANT.Item.documentClasses[source.type](fu.deepClone(source), { parent: actor });
             const isUnaffected = effect.isOfType("condition") && !actor.isAffectedBy(effect);
             const isImmune = actor.isImmuneTo(effect);
             if (isUnaffected || isImmune) {
@@ -661,7 +661,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
 
                 // Send a notification if the effect wasn't automatically added by an aura
                 if (!(effect.isOfType("effect") && effect.fromAura)) {
-                    const locKey = isUnaffected ? "PF2E.Damage.IWR.ActorIsUnaffected" : "PF2E.Damage.IWR.ActorIsImmune";
+                    const locKey = isUnaffected ? "AVANT.Damage.IWR.ActorIsUnaffected" : "AVANT.Damage.IWR.ActorIsImmune";
                     const message = game.i18n.format(locKey, { actor: actor.name, effect: effect.name });
                     ui.notifications.info(message);
                 }
@@ -674,7 +674,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         const singularTypes = ["ancestry", "background", "class", "heritage", "deity"] as const;
         const singularTypesToDelete = singularTypes.filter((type) => sources.some((s) => s.type === type));
         const preCreateDeletions = singularTypesToDelete.flatMap(
-            (type): ItemPF2e<ActorPF2e>[] => actor.itemTypes[type],
+            (type): ItemAvant<ActorAvant>[] => actor.itemTypes[type],
         );
         const expiredDuplicateEffects = sources
             .filter((s) => s.type === "effect")
@@ -689,25 +689,25 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         }
 
         // Convert all non-kit sources to item objects, and recursively extract the simple grants from ABC items
-        const items = await (async (): Promise<ItemPF2e<ActorPF2e>[]> => {
+        const items = await (async (): Promise<ItemAvant<ActorAvant>[]> => {
             /** Internal function to recursively get all simple granted items */
-            async function getSimpleGrants(item: ItemPF2e<ActorPF2e>): Promise<ItemPF2e<ActorPF2e>[]> {
+            async function getSimpleGrants(item: ItemAvant<ActorAvant>): Promise<ItemAvant<ActorAvant>[]> {
                 const granted = (await item.createGrantedItems?.({ size: operation.parent?.size })) ?? [];
                 if (granted.length === 0) return [];
                 const reparented = granted.map(
-                    (i): ItemPF2e<ActorPF2e> =>
+                    (i): ItemAvant<ActorAvant> =>
                         (i.parent
                             ? i
-                            : new CONFIG.Item.documentClass(i._source, { parent: actor })) as ItemPF2e<ActorPF2e>,
+                            : new CONFIG.Item.documentClass(i._source, { parent: actor })) as ItemAvant<ActorAvant>,
                 );
                 return [...reparented, ...(await Promise.all(reparented.map(getSimpleGrants))).flat()];
             }
 
-            const items = sources.map((source): ItemPF2e<ActorPF2e> => {
+            const items = sources.map((source): ItemAvant<ActorAvant> => {
                 if (!(operation.keepId || operation.keepEmbeddedIds)) {
                     source._id = fu.randomID();
                 }
-                return new CONFIG.Item.documentClass(source, { parent: actor }) as ItemPF2e<ActorPF2e>;
+                return new CONFIG.Item.documentClass(source, { parent: actor }) as ItemAvant<ActorAvant>;
             });
 
             // If any item we plan to add will add new items (such as ABC items), add those too
@@ -765,7 +765,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
                     i.type === "feat" &&
                     typeof i.system?.level?.value === "number" &&
                     i.system.category === "classfeature" &&
-                    !i.flags?.pf2e?.grantedBy,
+                    !i.flags?.avant?.grantedBy,
             );
             for (const feature of classFeatures) {
                 feature.sort = classFeatures.indexOf(feature) * 100 * (feature.system.level?.value ?? 1);
@@ -788,7 +788,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     ): Promise<TDocument[]>;
     static override async deleteDocuments(
         ids: string[] = [],
-        operation: Partial<DatabaseCreateOperation<ActorPF2e | null>> = {},
+        operation: Partial<DatabaseCreateOperation<ActorAvant | null>> = {},
     ): Promise<foundry.abstract.Document[]> {
         ids = Array.from(new Set(ids));
         const actor = operation.parent;
@@ -796,7 +796,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
             const items = ids.flatMap((id) => actor.items.get(id) ?? []);
 
             // If a container is being deleted, its contents need to have their containerId references updated
-            const containers = items.filter((i): i is ContainerPF2e<ActorPF2e> => i.isOfType("backpack"));
+            const containers = items.filter((i): i is ContainerAvant<ActorAvant> => i.isOfType("backpack"));
             for (const container of containers) {
                 await container.ejectContents();
             }
@@ -822,7 +822,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     protected override async _preCreate(
         data: this["_source"],
         options: DatabaseCreateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         // Sort traits
         this._source.system.traits.value?.sort();
@@ -854,7 +854,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     protected override async _preUpdate(
         changed: DeepPartial<this["_source"]>,
         options: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (changed.system?.description?.value === null) {
             changed.system.description.value = "";
@@ -892,7 +892,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     /** Store certain data to be checked in _onUpdateOperation */
     static override async _preUpdateOperation(
         documents: foundry.abstract.Document<foundry.abstract._Document | null, foundry.data.fields.DataSchema>[],
-        operation: ItemPF2eDatabaseUpdateOperation,
+        operation: ItemAvantDatabaseUpdateOperation,
         user: foundry.documents.BaseUser<foundry.documents.BaseActor<null>>,
     ): Promise<boolean | void> {
         if ((await super._preUpdateOperation(documents, operation, user)) === false) {
@@ -900,7 +900,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
         }
 
         // If this item is of a certain type and belongs to a PC, store current hp to be checked later
-        const actor = documents.find((d): d is ItemPF2e => d instanceof ItemPF2e)?.actor;
+        const actor = documents.find((d): d is ItemAvant => d instanceof ItemAvant)?.actor;
         if (actor) {
             operation.previous = fu.mergeObject(operation.previous ?? {}, {
                 maxHitPoints: actor.hitPoints?.max,
@@ -911,14 +911,14 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     /** Overriden to handle max hp updates when certain items changes. These updates should not occur due to temporary changes */
     static override async _onUpdateOperation(
         documents: foundry.abstract.Document<foundry.abstract._Document | null, foundry.data.fields.DataSchema>[],
-        operation: ItemPF2eDatabaseUpdateOperation,
+        operation: ItemAvantDatabaseUpdateOperation,
         user: foundry.documents.BaseUser<foundry.documents.BaseActor<null>>,
     ): Promise<void> {
         await super._onUpdateOperation(documents, operation, user);
 
         const featureItem = documents.find(
-            (d): d is ItemPF2e =>
-                d instanceof ItemPF2e && d.isOfType("ancestry", "background", "class", "feat", "heritage"),
+            (d): d is ItemAvant =>
+                d instanceof ItemAvant && d.isOfType("ancestry", "background", "class", "feat", "heritage"),
         );
         const actor = featureItem?.actor;
         const previousHitPoints = operation.previous?.maxHitPoints;
@@ -933,7 +933,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
 
     /** Call onCreate rule-element hooks */
     protected override _onCreate(
-        data: ItemSourcePF2e,
+        data: ItemSourceAvant,
         operation: DatabaseCreateOperation<TParent>,
         userId: string,
     ): void {
@@ -993,7 +993,7 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
                 }
             } else {
                 // The above method of updating embedded items in an actor update does not work with synthetic actors
-                const promises: Promise<ItemPF2e<ActorPF2e> | undefined>[] = [];
+                const promises: Promise<ItemAvant<ActorAvant> | undefined>[] = [];
                 for (const item of this.actor.itemTypes.melee) {
                     const attackEffects = item.system.attackEffects.value;
                     if (attackEffects.includes(slug)) {
@@ -1038,42 +1038,42 @@ class ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item
     }
 }
 
-interface ItemPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends Item<TParent> {
-    constructor: typeof ItemPF2e;
-    flags: ItemFlagsPF2e;
-    readonly _source: ItemSourcePF2e;
+interface ItemAvant<TParent extends ActorAvant | null = ActorAvant | null> extends Item<TParent> {
+    constructor: typeof ItemAvant;
+    flags: ItemFlagsAvant;
+    readonly _source: ItemSourceAvant;
     system: ItemSystemData;
 
-    _sheet: ItemSheetPF2e<this> | null;
+    _sheet: ItemSheetAvant<this> | null;
 
-    get sheet(): ItemSheetPF2e<this>;
+    get sheet(): ItemSheetAvant<this>;
 
-    prepareSiblingData?(this: ItemPF2e<ActorPF2e>): void;
-    prepareActorData?(this: ItemPF2e<ActorPF2e>): void;
+    prepareSiblingData?(this: ItemAvant<ActorAvant>): void;
+    prepareActorData?(this: ItemAvant<ActorAvant>): void;
     /** Optional data-preparation callback executed after rule-element synthetics are prepared */
-    onPrepareSynthetics?(this: ItemPF2e<ActorPF2e>): void;
+    onPrepareSynthetics?(this: ItemAvant<ActorAvant>): void;
 
     /** Returns items that should also be added when this item is created */
-    createGrantedItems?(options?: object): Promise<ItemPF2e[]>;
+    createGrantedItems?(options?: object): Promise<ItemAvant[]>;
 
     /** Returns items that should also be deleted should this item be deleted */
-    getLinkedItems?(): ItemPF2e<ActorPF2e>[];
+    getLinkedItems?(): ItemAvant<ActorAvant>[];
 }
 
-/** A `Proxy` to to get Foundry to construct `ItemPF2e` subclasses */
-const ItemProxyPF2e = new Proxy(ItemPF2e, {
+/** A `Proxy` to to get Foundry to construct `ItemAvant` subclasses */
+const ItemProxyAvant = new Proxy(ItemAvant, {
     construct(
         _target,
-        args: [source: PreCreate<ItemSourcePF2e>, context?: DocumentConstructionContext<ActorPF2e | null>],
+        args: [source: PreCreate<ItemSourceAvant>, context?: DocumentConstructionContext<ActorAvant | null>],
     ) {
         const source = args[0];
         const type =
             source?.type === "armor" && (source.system?.category as string | undefined) === "shield"
                 ? "shield"
                 : source?.type;
-        const ItemClass: typeof ItemPF2e = CONFIG.PF2E.Item.documentClasses[type];
+        const ItemClass: typeof ItemAvant = CONFIG.AVANT.Item.documentClasses[type];
         if (!ItemClass) {
-            throw ErrorPF2e(`Item type ${type} does not exist and item module sub-types are not supported`);
+            throw ErrorAvant(`Item type ${type} does not exist and item module sub-types are not supported`);
         }
         return new ItemClass(...args);
     },
@@ -1089,8 +1089,8 @@ interface RefreshFromCompendiumParams {
 }
 
 /** An extension of DatabaseUpdateOperation to pass on system specific data between phases */
-type ItemPF2eDatabaseUpdateOperation = DatabaseUpdateOperation<foundry.abstract.Document | null> & {
+type ItemAvantDatabaseUpdateOperation = DatabaseUpdateOperation<foundry.abstract.Document | null> & {
     previous?: { maxHitPoints?: number };
 };
 
-export { ItemPF2e, ItemProxyPF2e };
+export { ItemAvant, ItemProxyAvant };

@@ -1,11 +1,11 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { Immunity, IWRSource, Resistance, Weakness } from "@actor/data/iwr.ts";
 import { ImmunityType, IWRType, ResistanceType, WeaknessType } from "@actor/types.ts";
-import { ErrorPF2e, htmlClosest, htmlQuery, htmlQueryAll } from "@util";
+import { ErrorAvant, htmlClosest, htmlQuery, htmlQueryAll } from "@util";
 import { tagify } from "@util/tags.ts";
 import * as R from "remeda";
 
-class IWREditor<TActor extends ActorPF2e> extends DocumentSheet<TActor, IWREditorOptions> {
+class IWREditor<TActor extends ActorAvant> extends DocumentSheet<TActor, IWREditorOptions> {
     category: ListCategory;
 
     types: Record<string, string>;
@@ -14,13 +14,13 @@ class IWREditor<TActor extends ActorPF2e> extends DocumentSheet<TActor, IWREdito
         super(actor, options);
 
         if (this.actor.isOfType("familiar", "loot")) {
-            throw ErrorPF2e(`Actor ${this.actor.name} (${this.actor.uuid}) may not have stored IWR data`);
+            throw ErrorAvant(`Actor ${this.actor.name} (${this.actor.uuid}) may not have stored IWR data`);
         }
         this.category = options.category;
         this.types = {
-            immunities: R.omit(CONFIG.PF2E.immunityTypes, ["custom"]),
-            weaknesses: R.omit(CONFIG.PF2E.weaknessTypes, ["custom"]),
-            resistances: R.omit(CONFIG.PF2E.resistanceTypes, ["custom"]),
+            immunities: R.omit(CONFIG.AVANT.immunityTypes, ["custom"]),
+            weaknesses: R.omit(CONFIG.AVANT.weaknessTypes, ["custom"]),
+            resistances: R.omit(CONFIG.AVANT.resistanceTypes, ["custom"]),
         }[this.category];
     }
 
@@ -29,7 +29,7 @@ class IWREditor<TActor extends ActorPF2e> extends DocumentSheet<TActor, IWREdito
             ...super.defaultOptions,
             closeOnSubmit: false,
             classes: ["iwr-editor"],
-            template: "systems/pf2e/templates/actors/iwr-editor.hbs",
+            template: "systems/avant/templates/actors/iwr-editor.hbs",
             sheetConfig: false,
             width: 500,
             height: "auto",
@@ -41,7 +41,7 @@ class IWREditor<TActor extends ActorPF2e> extends DocumentSheet<TActor, IWREdito
     }
 
     override get title(): string {
-        return game.i18n.format("PF2E.Actor.IWREditor.Title", {
+        return game.i18n.format("AVANT.Actor.IWREditor.Title", {
             actor: this.actor.name,
             category: game.i18n.localize(this.categoryLabel),
         });
@@ -53,9 +53,9 @@ class IWREditor<TActor extends ActorPF2e> extends DocumentSheet<TActor, IWREdito
 
     get categoryLabel(): string {
         return {
-            immunities: "PF2E.ImmunitiesLabel",
-            weaknesses: "PF2E.WeaknessesLabel",
-            resistances: "PF2E.ResistancesLabel",
+            immunities: "AVANT.ImmunitiesLabel",
+            weaknesses: "AVANT.WeaknessesLabel",
+            resistances: "AVANT.ResistancesLabel",
         }[this.category];
     }
 
@@ -98,7 +98,7 @@ class IWREditor<TActor extends ActorPF2e> extends DocumentSheet<TActor, IWREdito
                     exceptionsData.every((o: unknown): o is { id: string } => R.isPlainObject(o))
                 )
             ) {
-                throw ErrorPF2e("Unexpected data encountered while submitting form");
+                throw ErrorAvant("Unexpected data encountered while submitting form");
             }
             const exceptions = exceptionsData.map((e: { id: string }) => e.id);
 
@@ -130,7 +130,7 @@ class IWREditor<TActor extends ActorPF2e> extends DocumentSheet<TActor, IWREdito
         const data = this.getUpdatedData({ includeNew });
         // The lone named input element that contains the full form data
         const formInput = htmlQuery<HTMLInputElement>(this.element[0], "input[name]");
-        if (!formInput) throw ErrorPF2e("Unexpected error getting for input element");
+        if (!formInput) throw ErrorAvant("Unexpected error getting for input element");
 
         formInput.value = JSON.stringify(data);
         await this.submit({ preventRender: false });
@@ -189,7 +189,7 @@ interface IWREditorConstructorOptions extends Partial<DocumentSheetOptions> {
     category: ListCategory;
 }
 
-interface IWREditorData<TActor extends ActorPF2e> extends DocumentSheetData<TActor> {
+interface IWREditorData<TActor extends ActorAvant> extends DocumentSheetData<TActor> {
     header: string;
     category: ListCategory;
     list: Immunity[] | Weakness[] | Resistance[];

@@ -2,12 +2,12 @@ import { resetActors } from "@actor/helpers.ts";
 import { WorldClock } from "@module/apps/world-clock/app.ts";
 import type { HTMLTagifyTagsElement } from "@system/html-elements/tagify-tags.ts";
 import { SettingsMenuOptions } from "@system/settings/menu.ts";
-import { ErrorPF2e, createHTMLElement, htmlQuery, htmlQueryAll } from "@util";
+import { ErrorAvant, createHTMLElement, htmlQuery, htmlQueryAll } from "@util";
 import { tagify } from "@util/tags.ts";
 import * as R from "remeda";
-import type { ScenePF2e } from "./document.ts";
+import type { SceneAvant } from "./document.ts";
 
-export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TDocument> {
+export class SceneConfigAvant<TDocument extends SceneAvant> extends SceneConfig<TDocument> {
     get scene(): TDocument {
         return this.document;
     }
@@ -21,24 +21,24 @@ export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TD
 
         // Rules-based vision
         const [tab, panel] = await (async (): Promise<HTMLTemplateElement[]> => {
-            const hbsPath = "systems/pf2e/templates/scene/sheet-partials.hbs";
+            const hbsPath = "systems/avant/templates/scene/sheet-partials.hbs";
             const worldDefault = game.i18n.localize(
-                game.pf2e.settings.rbv
-                    ? "PF2E.SETTINGS.EnabledDisabled.Enabled"
-                    : "PF2E.SETTINGS.EnabledDisabled.Disabled",
+                game.avant.settings.rbv
+                    ? "AVANT.SETTINGS.EnabledDisabled.Enabled"
+                    : "AVANT.SETTINGS.EnabledDisabled.Disabled",
             );
             const rbvOptions: FormSelectOption[] = [
                 {
                     value: "",
-                    label: game.i18n.format("PF2E.SETTINGS.EnabledDisabled.Default", { worldDefault }),
+                    label: game.i18n.format("AVANT.SETTINGS.EnabledDisabled.Default", { worldDefault }),
                 },
-                { value: "true", label: game.i18n.localize("PF2E.SETTINGS.EnabledDisabled.Enabled") },
-                { value: "false", label: game.i18n.localize("PF2E.SETTINGS.EnabledDisabled.Disabled") },
+                { value: "true", label: game.i18n.localize("AVANT.SETTINGS.EnabledDisabled.Enabled") },
+                { value: "false", label: game.i18n.localize("AVANT.SETTINGS.EnabledDisabled.Disabled") },
             ];
             const templates = await renderTemplate(hbsPath, {
                 scene: this.scene,
                 rbvOptions,
-                environmentTypes: this.document.flags.pf2e.environmentTypes ?? [],
+                environmentTypes: this.document.flags.avant.environmentTypes ?? [],
             });
 
             return htmlQueryAll(createHTMLElement("div", { innerHTML: templates }), "template");
@@ -47,7 +47,7 @@ export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TD
         const tabs = htmlQuery(html, "nav.tabs");
         const ambientTabContent = htmlQuery(html, ".tab[data-tab=ambience]");
         if (!tabs || !ambientTabContent) {
-            throw ErrorPF2e("Unexpected error in scene configuration");
+            throw ErrorAvant("Unexpected error in scene configuration");
         }
 
         // Add new tab and content, throwing a type error if it fails
@@ -67,7 +67,7 @@ export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TD
 
         // Open world automation settings
         htmlQuery(html, "button[data-action=world-rbv-setting]")?.addEventListener("click", () => {
-            const menu = game.settings.menus.get("pf2e.automation");
+            const menu = game.settings.menus.get("avant.automation");
             if (menu) {
                 const options: Partial<SettingsMenuOptions> = { highlightSetting: "rulesBasedVision" };
                 const app = new menu.type(undefined, options);
@@ -75,8 +75,8 @@ export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TD
             }
         });
 
-        tagify(htmlQuery<HTMLTagifyTagsElement>(html, 'tagify-tags[name="flags.pf2e.environmentTypes"]'), {
-            whitelist: CONFIG.PF2E.environmentTypes,
+        tagify(htmlQuery<HTMLTagifyTagsElement>(html, 'tagify-tags[name="flags.avant.environmentTypes"]'), {
+            whitelist: CONFIG.AVANT.environmentTypes,
             enforceWhitelist: true,
         });
 
@@ -93,7 +93,7 @@ export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TD
             'range-picker[name="environment.globalLight.darkness.max"] > input',
         );
         if (!(globalLight && globalLightThreshold)) {
-            throw ErrorPF2e("Unexpected error retrieving scene global light form elements");
+            throw ErrorAvant("Unexpected error retrieving scene global light form elements");
         }
 
         // Disable all global light settings
@@ -106,7 +106,7 @@ export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TD
         for (const input of [globalLight, globalLightThreshold[0]]) {
             const managedBy = document.createElement("span");
             managedBy.classList.add("managed");
-            managedBy.innerHTML = " ".concat(game.i18n.localize("PF2E.SETTINGS.Automation.RulesBasedVision.ManagedBy"));
+            managedBy.innerHTML = " ".concat(game.i18n.localize("AVANT.SETTINGS.Automation.RulesBasedVision.ManagedBy"));
             const rbvLink = managedBy.querySelector("rbv");
             const anchor = document.createElement("a");
             anchor.innerText = rbvLink?.innerHTML ?? "";
@@ -114,8 +114,8 @@ export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TD
             anchor.addEventListener("click", (event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                const menu = game.settings.menus.get("pf2e.automation");
-                if (!menu) throw ErrorPF2e("Automation Settings application not found");
+                const menu = game.settings.menus.get("avant.automation");
+                if (!menu) throw ErrorAvant("Automation Settings application not found");
                 const app = new menu.type();
                 app.render(true);
             });
@@ -137,16 +137,16 @@ export class SceneConfigPF2e<TDocument extends ScenePF2e> extends SceneConfig<TD
 
     /** Intercept flag update and change to boolean/null. */
     protected override async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
-        const rbvSetting = formData["flags.pf2e.rulesBasedVision"];
-        formData["flags.pf2e.rulesBasedVision"] = rbvSetting === "true" ? true : rbvSetting === "false" ? false : null;
+        const rbvSetting = formData["flags.avant.rulesBasedVision"];
+        formData["flags.avant.rulesBasedVision"] = rbvSetting === "true" ? true : rbvSetting === "false" ? false : null;
 
-        const hearingRange = formData["flags.pf2e.hearingRange"];
-        formData["flags.pf2e.hearingRange"] =
+        const hearingRange = formData["flags.avant.hearingRange"];
+        formData["flags.avant.hearingRange"] =
             typeof hearingRange === "number" ? Math.ceil(Math.clamp(hearingRange || 5, 5, 3000) / 5) * 5 : null;
 
         const terrainChanged = !R.isDeepEqual(
-            formData["flags.pf2e.environmentTypes"],
-            this.scene._source.flags?.pf2e?.environmentTypes ?? [],
+            formData["flags.avant.environmentTypes"],
+            this.scene._source.flags?.avant?.environmentTypes ?? [],
         );
 
         await super._updateObject(event, formData);

@@ -3,7 +3,7 @@ import { ItemTrait } from "@item/base/data/system.ts";
 import { TokenAuraData } from "@scene/token-document/aura/index.ts";
 import { isVideoFilePath } from "@util";
 import type { EffectAreaSquare } from "../../effect-area-square.ts";
-import type { TokenPF2e } from "../index.ts";
+import type { TokenAvant } from "../index.ts";
 import { getAreaSquares } from "./util.ts";
 
 /** Visual rendering of auras emanated by a token's actor */
@@ -11,7 +11,7 @@ class AuraRenderer extends PIXI.Graphics implements TokenAuraData {
     slug: string;
 
     /** The token associated with this aura */
-    token: TokenPF2e;
+    token: TokenAvant;
 
     /** The radius of the aura in feet */
     radius: number;
@@ -205,7 +205,7 @@ class AuraRenderer extends PIXI.Graphics implements TokenAuraData {
 
 interface AuraRendererParams extends Omit<AuraData, "effects" | "traits"> {
     slug: string;
-    token: TokenPF2e;
+    token: TokenAvant;
     traits: ItemTrait[];
 }
 

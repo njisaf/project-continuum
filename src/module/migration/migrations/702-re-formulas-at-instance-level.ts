@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -24,7 +24,7 @@ export class Migration702REFormulasAtInstanceLevel extends MigrationBase {
         });
     }
 
-    override async updateItem(itemSource: ItemSourcePF2e): Promise<void> {
+    override async updateItem(itemSource: ItemSourceAvant): Promise<void> {
         const rules: (RuleElementSource & { value?: JSONValue; text?: string })[] = itemSource.system.rules;
         for (const rule of rules) {
             try {

@@ -1,25 +1,25 @@
 import { AutomaticBonusProgression as ABP } from "@actor/character/automatic-bonus-progression.ts";
 import { ItemSheetOptions } from "@item/base/sheet/sheet.ts";
 import {
-    CoinsPF2e,
+    CoinsAvant,
     MATERIAL_DATA,
     MaterialSheetData,
     PhysicalItemSheetData,
-    PhysicalItemSheetPF2e,
+    PhysicalItemSheetAvant,
     RUNE_DATA,
     getPropertyRuneSlots,
 } from "@item/physical/index.ts";
 import { SheetOptions, createSheetTags } from "@module/sheet/helpers.ts";
 import { sortStringRecord } from "@util";
 import * as R from "remeda";
-import type { ArmorCategory, ArmorGroup, ArmorPF2e, BaseArmorType, SpecificArmorData } from "./index.ts";
+import type { ArmorCategory, ArmorGroup, ArmorAvant, BaseArmorType, SpecificArmorData } from "./index.ts";
 
-class ArmorSheetPF2e extends PhysicalItemSheetPF2e<ArmorPF2e> {
+class ArmorSheetAvant extends PhysicalItemSheetAvant<ArmorAvant> {
     override async getData(options?: Partial<ItemSheetOptions>): Promise<ArmorSheetData> {
         const sheetData = await super.getData(options);
         const armor = this.item;
 
-        const adjustedBulkHint = armor.isEquipped || !armor.actor ? null : "PF2E.Item.Armor.UnequippedHint";
+        const adjustedBulkHint = armor.isEquipped || !armor.actor ? null : "AVANT.Item.Armor.UnequippedHint";
 
         // Armor property runes
         // Limit shown property-rune slots by potency rune level and a material composition of orichalcum
@@ -38,11 +38,11 @@ class ArmorSheetPF2e extends PhysicalItemSheetPF2e<ArmorPF2e> {
             ...sheetData,
             abpEnabled: ABP.isEnabled(this.actor),
             adjustedBulkHint,
-            basePrice: new CoinsPF2e(armor._source.system.price.value),
-            baseTypes: sortStringRecord(CONFIG.PF2E.baseArmorTypes),
-            categories: CONFIG.PF2E.armorCategories,
-            groups: sortStringRecord(CONFIG.PF2E.armorGroups),
-            otherTags: createSheetTags(CONFIG.PF2E.otherArmorTags, sheetData.data.traits.otherTags),
+            basePrice: new CoinsAvant(armor._source.system.price.value),
+            baseTypes: sortStringRecord(CONFIG.AVANT.baseArmorTypes),
+            categories: CONFIG.AVANT.armorCategories,
+            groups: sortStringRecord(CONFIG.AVANT.armorGroups),
+            otherTags: createSheetTags(CONFIG.AVANT.otherArmorTags, sheetData.data.traits.otherTags),
             preciousMaterials: this.getMaterialSheetData(armor, MATERIAL_DATA.armor),
             propertyRuneSlots,
             runeTypes: {
@@ -73,9 +73,9 @@ class ArmorSheetPF2e extends PhysicalItemSheetPF2e<ArmorPF2e> {
     }
 }
 
-interface ArmorSheetData extends PhysicalItemSheetData<ArmorPF2e> {
+interface ArmorSheetData extends PhysicalItemSheetData<ArmorAvant> {
     abpEnabled: boolean;
-    basePrice: CoinsPF2e;
+    basePrice: CoinsAvant;
     baseTypes: Record<BaseArmorType, string>;
     categories: Record<ArmorCategory, string>;
     groups: Record<ArmorGroup, string>;
@@ -92,4 +92,4 @@ interface PropertyRuneSheetSlot {
     disabled: boolean;
 }
 
-export { ArmorSheetPF2e };
+export { ArmorSheetAvant };

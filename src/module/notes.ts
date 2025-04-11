@@ -2,9 +2,9 @@ import { UserVisibility } from "@scripts/ui/user-visibility.ts";
 import { DegreeOfSuccessString } from "@system/degree-of-success.ts";
 import { Predicate, RawPredicate } from "@system/predication.ts";
 import { createHTMLElement } from "@util";
-import type { RuleElementPF2e } from "./rules/index.ts";
+import type { RuleElementAvant } from "./rules/index.ts";
 
-class RollNotePF2e {
+class RollNoteAvant {
     /** The selector used to determine on which rolls the note will be shown for. */
     selector: string;
     /** An optional title for the note */
@@ -18,7 +18,7 @@ class RollNotePF2e {
     /** An optional visibility restriction for the note */
     visibility: UserVisibility | null;
     /** The originating rule element of this modifier, if any: used to retrieve "parent" item roll options */
-    rule: RuleElementPF2e | null;
+    rule: RuleElementAvant | null;
 
     constructor(params: RollNoteParams) {
         this.selector = params.selector;
@@ -31,7 +31,7 @@ class RollNotePF2e {
     }
 
     /** Convert an array of notes to a UL element, or null if the array is empty. */
-    static notesToHTML(notes: RollNotePF2e[]): HTMLUListElement | null {
+    static notesToHTML(notes: RollNoteAvant[]): HTMLUListElement | null {
         if (notes.length === 0) return null;
         return createHTMLElement("ul", {
             classes: ["notes"],
@@ -62,8 +62,8 @@ class RollNotePF2e {
         return element;
     }
 
-    clone(): RollNotePF2e {
-        return new RollNotePF2e({ ...this.toObject(), rule: this.rule });
+    clone(): RollNoteAvant {
+        return new RollNoteAvant({ ...this.toObject(), rule: this.rule });
     }
 
     toObject(): RollNoteSource {
@@ -88,7 +88,7 @@ interface RollNoteSource {
 }
 
 interface RollNoteParams extends RollNoteSource {
-    rule?: RuleElementPF2e | null;
+    rule?: RuleElementAvant | null;
 }
 
-export { RollNotePF2e, type RollNoteSource };
+export { RollNoteAvant, type RollNoteSource };

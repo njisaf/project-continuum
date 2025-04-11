@@ -1,11 +1,11 @@
 import { ArmorSystemSource } from "@item/armor/data.ts";
 import { ARMOR_PROPERTY_RUNE_TYPES } from "@item/armor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { WeaponSystemSource } from "@item/weapon/data.ts";
 import { WEAPON_PROPERTY_RUNE_TYPES } from "@item/weapon/values.ts";
 import { OneToThree } from "@module/data.ts";
-import { ErrorPF2e, setHasElement, tupleHasValue } from "@util";
+import { ErrorAvant, setHasElement, tupleHasValue } from "@util";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -57,7 +57,7 @@ export class Migration907RestructureArmorWeaponRunes extends MigrationBase {
     }
 
     #getRuneValue(system: unknown, key: OldRunePropertyKey): unknown {
-        if (!R.isPlainObject(system)) throw ErrorPF2e("Unexpected system data");
+        if (!R.isPlainObject(system)) throw ErrorAvant("Unexpected system data");
         const runeObject = system[key];
         return R.isPlainObject(runeObject) ? runeObject.value : null;
     }
@@ -125,7 +125,7 @@ type OldRunePropertyKey =
     | "propertyRune3"
     | "propertyRune4";
 
-type MaybeWithRuneDeletions = ItemSourcePF2e & {
+type MaybeWithRuneDeletions = ItemSourceAvant & {
     system: {
         [K in `-=${OldRunePropertyKey}`]?: null;
     };

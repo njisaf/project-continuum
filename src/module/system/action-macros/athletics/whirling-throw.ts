@@ -1,9 +1,9 @@
-import { CreaturePF2e } from "@actor";
-import { ActorSizePF2e } from "@actor/data/size.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { CreatureAvant } from "@actor";
+import { ActorSizeAvant } from "@actor/data/size.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-function determineSizeBonus(actorSize: ActorSizePF2e, targetSize: ActorSizePF2e) {
+function determineSizeBonus(actorSize: ActorSizeAvant, targetSize: ActorSizeAvant) {
     const sizeDifference = actorSize.difference(targetSize);
 
     return Math.clamp(2 * sizeDifference, -4, 4);
@@ -15,13 +15,13 @@ export function whirlingThrow(options: SkillActionOptions): void {
     ActionMacroHelpers.simpleRollActionCheck({
         actors: options.actors,
         actionGlyph: options.glyph ?? "A",
-        title: "PF2E.Actions.WhirlingThrow.Title",
+        title: "AVANT.Actions.WhirlingThrow.Title",
         checkContext: (opts) => {
             const modifiers = options.modifiers?.length ? [...options.modifiers] : [];
-            if (opts.actor instanceof CreaturePF2e && opts.target instanceof CreaturePF2e) {
+            if (opts.actor instanceof CreatureAvant && opts.target instanceof CreatureAvant) {
                 const actorSize = opts.actor.system.traits.size;
                 const targetSize = opts.target.system.traits.size;
-                const sizeModifier = new ModifierPF2e(
+                const sizeModifier = new ModifierAvant(
                     "Size Modifier",
                     determineSizeBonus(actorSize, targetSize),
                     "circumstance",
@@ -37,10 +37,10 @@ export function whirlingThrow(options: SkillActionOptions): void {
         callback: options.callback,
         difficultyClass: options.difficultyClass ?? "fortitude",
         extraNotes: (selector: string) => [
-            ActionMacroHelpers.note(selector, "PF2E.Actions.WhirlingThrow", "criticalSuccess"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.WhirlingThrow", "success"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.WhirlingThrow", "failure"),
-            ActionMacroHelpers.note(selector, "PF2E.Actions.WhirlingThrow", "criticalFailure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.WhirlingThrow", "criticalSuccess"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.WhirlingThrow", "success"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.WhirlingThrow", "failure"),
+            ActionMacroHelpers.note(selector, "AVANT.Actions.WhirlingThrow", "criticalFailure"),
         ],
     }).catch((error: Error) => {
         ui.notifications.error(error.message);

@@ -1,13 +1,13 @@
-import { CharacterPF2e } from "@actor";
+import { CharacterAvant } from "@actor";
 import { ActionDefaultOptions } from "@system/action-macros/index.ts";
 import { localizer } from "@util";
 
 export function steelYourResolve(options: ActionDefaultOptions): void {
-    const localize = localizer("PF2E.Actions.SteelYourResolve");
+    const localize = localizer("AVANT.Actions.SteelYourResolve");
 
     const actors = Array.isArray(options.actors) ? options.actors : [options.actors];
     const actor = actors[0];
-    if (actors.length > 1 || !(actor instanceof CharacterPF2e)) {
+    if (actors.length > 1 || !(actor instanceof CharacterAvant)) {
         ui.notifications.error(localize("BadArgs"));
         return;
     }
@@ -20,7 +20,7 @@ export function steelYourResolve(options: ActionDefaultOptions): void {
         });
     };
 
-    if (!game.pf2e.settings.variants.stamina) {
+    if (!game.avant.settings.variants.stamina) {
         ui.notifications.error(localize("StaminaNotEnabled"));
         return;
     }

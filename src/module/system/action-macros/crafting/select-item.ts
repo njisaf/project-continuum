@@ -1,14 +1,14 @@
-import { PhysicalItemPF2e } from "@item";
+import { PhysicalItemAvant } from "@item";
 import { htmlQuery, sluggify } from "@util";
 
 class SelectItemDialog extends Application {
-    #item: PhysicalItemPF2e | null = null;
+    #item: PhysicalItemAvant | null = null;
 
-    #resolve: (value: PhysicalItemPF2e | null) => void;
+    #resolve: (value: PhysicalItemAvant | null) => void;
 
     #action: ItemAction;
 
-    private constructor(action: ItemAction, resolve: (value: PhysicalItemPF2e | null) => void) {
+    private constructor(action: ItemAction, resolve: (value: PhysicalItemAvant | null) => void) {
         super();
         this.#action = action;
         this.#resolve = resolve;
@@ -20,16 +20,16 @@ class SelectItemDialog extends Application {
 
     override get template(): string {
         return this.#action === "craft"
-            ? "systems/pf2e/templates/system/actions/craft-target-item.hbs"
-            : "systems/pf2e/templates/system/actions/repair/select-item-dialog.hbs";
+            ? "systems/avant/templates/system/actions/craft-target-item.hbs"
+            : "systems/avant/templates/system/actions/repair/select-item-dialog.hbs";
     }
 
     override get title(): string {
         const key = sluggify(this.#action, { camel: "bactrian" });
-        return game.i18n.localize(`PF2E.Actions.${key}.SelectItemDialog.Title`);
+        return game.i18n.localize(`AVANT.Actions.${key}.SelectItemDialog.Title`);
     }
 
-    override async getData(options: Partial<ApplicationOptions> = {}): Promise<{ item: PhysicalItemPF2e | null }> {
+    override async getData(options: Partial<ApplicationOptions> = {}): Promise<{ item: PhysicalItemAvant | null }> {
         options.classes = [`select-${this.#action}-item-dialog`];
 
         return {
@@ -47,17 +47,17 @@ class SelectItemDialog extends Application {
             if (!json?.startsWith("{") || !json.endsWith("}")) return;
 
             const data: Partial<ItemDropData> = JSON.parse(json);
-            const uuid = data.uuid ?? data.pf2e?.itemUuid;
+            const uuid = data.uuid ?? data.avant?.itemUuid;
             const item = uuid ? await fromUuid(uuid) : null;
 
             if (this.#action === "repair" && item && !(item?.isEmbedded && item.isOwner)) {
                 ui.notifications.error("DOCUMENT.UsePermissionWarn", { localize: true });
-            } else if (item instanceof PhysicalItemPF2e) {
+            } else if (item instanceof PhysicalItemAvant) {
                 this.#item = item;
                 this.render();
             } else {
                 const key = sluggify(this.#action, { camel: "bactrian" });
-                ui.notifications.error(game.i18n.localize(`PF2E.Actions.${key}.Error.ItemReferenceMismatch`));
+                ui.notifications.error(game.i18n.localize(`AVANT.Actions.${key}.Error.ItemReferenceMismatch`));
             }
         });
 
@@ -76,7 +76,7 @@ class SelectItemDialog extends Application {
         return super.close(options);
     }
 
-    static async getItem(action: ItemAction): Promise<PhysicalItemPF2e | null> {
+    static async getItem(action: ItemAction): Promise<PhysicalItemAvant | null> {
         return new Promise((resolve) => {
             new this(action, resolve).render(true);
         });
@@ -88,7 +88,7 @@ type ItemAction = "craft" | "repair";
 interface ItemDropData {
     type: "Item";
     uuid?: string;
-    pf2e?: { itemUuid?: string };
+    avant?: { itemUuid?: string };
 }
 
 export { SelectItemDialog };

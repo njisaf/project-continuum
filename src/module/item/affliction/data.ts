@@ -7,16 +7,16 @@ import {
     EffectContextData,
     TimeUnit,
 } from "@item/abstract-effect/index.ts";
-import { BaseItemSourcePF2e, ItemFlagsPF2e } from "@item/base/data/system.ts";
+import { BaseItemSourceAvant, ItemFlagsAvant } from "@item/base/data/system.ts";
 import { ConditionSlug } from "@item/condition/index.ts";
 import { DamageCategoryUnique, DamageType } from "@system/damage/index.ts";
 
-type AfflictionSource = BaseItemSourcePF2e<"affliction", AfflictionSystemSource> & {
+type AfflictionSource = BaseItemSourceAvant<"affliction", AfflictionSystemSource> & {
     flags: DeepPartial<AfflictionFlags>;
 };
 
-type AfflictionFlags = ItemFlagsPF2e & {
-    pf2e: {
+type AfflictionFlags = ItemFlagsAvant & {
+    avant: {
         aura?: EffectAuraData;
     };
 };

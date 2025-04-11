@@ -1,0 +1,69 @@
+{
+    "_id": "BXssJhTJjKrfojwG",
+    "img": "systems/avant/icons/actions/Passive.webp",
+    "name": "Fast Movement",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "familiar",
+        "description": {
+            "value": "<p>Increase one of your familiar's Speeds from 25 to 40 feet.</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "choices": [
+                    {
+                        "label": "AVANT.Actor.Speed.Type.Climb",
+                        "predicate": [
+                            "speed:climb"
+                        ],
+                        "value": "climb"
+                    },
+                    {
+                        "label": "AVANT.Actor.Speed.Type.Fly",
+                        "predicate": [
+                            "speed:fly"
+                        ],
+                        "value": "fly"
+                    },
+                    {
+                        "label": "AVANT.Actor.Speed.Type.Land",
+                        "predicate": [
+                            "speed:land"
+                        ],
+                        "value": "land"
+                    },
+                    {
+                        "label": "AVANT.Actor.Speed.Type.Swim",
+                        "predicate": [
+                            "speed:swim"
+                        ],
+                        "value": "swim"
+                    }
+                ],
+                "flag": "speed",
+                "key": "ChoiceSet",
+                "prompt": "AVANT.SpecificRule.Prompt.MovementType"
+            },
+            {
+                "key": "BaseSpeed",
+                "selector": "{item|flags.avant.rulesSelections.speed}",
+                "value": 40
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "action"
+}

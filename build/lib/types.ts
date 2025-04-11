@@ -1,8 +1,8 @@
-import type { ActorPF2e } from "@actor";
-import type { ItemPF2e } from "@item";
-import type { MacroPF2e } from "@module/macro.ts";
+import type { ActorAvant } from "@actor";
+import type { ItemAvant } from "@item";
+import type { MacroAvant } from "@module/macro.ts";
 
-type CompendiumDocumentPF2e = ActorPF2e | ItemPF2e<ActorPF2e | null> | JournalEntry | MacroPF2e | RollTable;
-type PackEntry = CompendiumDocumentPF2e["_source"];
+type CompendiumDocumentAvant = ActorAvant | ItemAvant<ActorAvant | null> | JournalEntry | MacroAvant | RollTable;
+type PackEntry = CompendiumDocumentAvant["_source"];
 
 export type { PackEntry };

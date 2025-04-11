@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 import { SKILL_DICTIONARY } from "./927-class-background-skill-longform.ts";
@@ -7,7 +7,7 @@ import { SKILL_DICTIONARY } from "./927-class-background-skill-longform.ts";
 export class Migration918DeitySkills extends MigrationBase {
     static override version = 0.918;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         // return if item is not a deity
         if (source.type !== "deity") return;
 

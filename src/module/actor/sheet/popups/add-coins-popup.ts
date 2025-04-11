@@ -1,4 +1,4 @@
-import { ActorPF2e } from "@actor/base.ts";
+import { ActorAvant } from "@actor/base.ts";
 import { Coins } from "@item/physical/data.ts";
 
 interface AddCoinsFormData extends Coins {
@@ -8,13 +8,13 @@ interface AddCoinsFormData extends Coins {
 /**
  * @category Other
  */
-export class AddCoinsPopup extends FormApplication<ActorPF2e> {
+export class AddCoinsPopup extends FormApplication<ActorAvant> {
     static override get defaultOptions(): FormApplicationOptions {
         return {
             ...super.defaultOptions,
             id: "add-coins",
-            title: "PF2E.AddCoinsTitle",
-            template: "systems/pf2e/templates/actors/add-coins.hbs",
+            title: "AVANT.AddCoinsTitle",
+            template: "systems/avant/templates/actors/add-coins.hbs",
         };
     }
 

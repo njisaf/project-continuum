@@ -1,7 +1,7 @@
 <section class="skills">
     <section class="control-dc" data-tooltip="{{kingdom.control.dc.breakdown}}">
         <span class="mod">{{kingdom.control.dc}}</span>
-        {{localize "PF2E.Kingmaker.Kingdom.ControlDC"}}
+        {{localize "AVANT.Kingmaker.Kingdom.ControlDC"}}
     </section>
     <div class="skill-list">
         {{#each skills as |skill|}}
@@ -18,7 +18,7 @@
                 </div>
 
                 {{#with skill}}
-                    {{> "systems/pf2e/templates/actors/partials/modifiers-tooltip.hbs" title=label}}
+                    {{> "systems/avant/templates/actors/partials/modifiers-tooltip.hbs" title=label}}
                 {{/with}}
             </section>
         {{/each}}
@@ -26,7 +26,7 @@
 </section>
 <section class="actions major">
     <header>
-        {{localize "PF2E.Kingmaker.Kingdom.Activities"}}
+        {{localize "AVANT.Kingmaker.Kingdom.Activities"}}
         <span class="tags filters">
             {{#each actionFilterChoices}}
                 <span class="tag choice" data-slug="{{value}}">{{label}}</span>
@@ -36,32 +36,32 @@
     </header>
     <ol class="actions-list item-list directory-list">
         <div class="phase-summary" data-phase="commerce">
-            <header>{{localize "PF2E.Kingmaker.Kingdom.Phases.commerce.Header"}}</header>
-            <p>{{localize "PF2E.Kingmaker.Kingdom.Phases.commerce.Description"}}</p>
+            <header>{{localize "AVANT.Kingmaker.Kingdom.Phases.commerce.Header"}}</header>
+            <p>{{localize "AVANT.Kingmaker.Kingdom.Phases.commerce.Description"}}</p>
             <ol>
-                <li>{{{localize "PF2E.Kingmaker.Kingdom.Phases.commerce.Step1"}}}</li>
-                <li>{{{localize "PF2E.Kingmaker.Kingdom.Phases.commerce.Step2"}}}</li>
-                <li>{{{localize "PF2E.Kingmaker.Kingdom.Phases.commerce.Step3"}}}</li>
-                <li>{{{localize "PF2E.Kingmaker.Kingdom.Phases.commerce.Step4"}}}</li>
+                <li>{{{localize "AVANT.Kingmaker.Kingdom.Phases.commerce.Step1"}}}</li>
+                <li>{{{localize "AVANT.Kingmaker.Kingdom.Phases.commerce.Step2"}}}</li>
+                <li>{{{localize "AVANT.Kingmaker.Kingdom.Phases.commerce.Step3"}}}</li>
+                <li>{{{localize "AVANT.Kingmaker.Kingdom.Phases.commerce.Step4"}}}</li>
             </ol>
         </div>
             <div class="phase-summary" data-phase="leadership">
-            <header>{{localize "PF2E.Kingmaker.Kingdom.Phases.leadership.Header"}}</header>
-            <p>{{localize "PF2E.Kingmaker.Kingdom.Phases.leadership.Description"}}</p>
+            <header>{{localize "AVANT.Kingmaker.Kingdom.Phases.leadership.Header"}}</header>
+            <p>{{localize "AVANT.Kingmaker.Kingdom.Phases.leadership.Description"}}</p>
         </div>
         </div>
             <div class="phase-summary" data-phase="region">
-            <header>{{localize "PF2E.Kingmaker.Kingdom.Phases.region.Header"}}</header>
-            <p>{{localize "PF2E.Kingmaker.Kingdom.Phases.region.Description"}}</p>
+            <header>{{localize "AVANT.Kingmaker.Kingdom.Phases.region.Header"}}</header>
+            <p>{{localize "AVANT.Kingmaker.Kingdom.Phases.region.Description"}}</p>
         </div>
         </div>
         <div class="phase-summary" data-phase="civic">
-            <header>{{localize "PF2E.Kingmaker.Kingdom.Phases.civic.Header"}}</header>
-            <p>{{localize "PF2E.Kingmaker.Kingdom.Phases.civic.Description"}}</p>
+            <header>{{localize "AVANT.Kingmaker.Kingdom.Phases.civic.Header"}}</header>
+            <p>{{localize "AVANT.Kingmaker.Kingdom.Phases.civic.Description"}}</p>
         </div>
         <div class="phase-summary" data-phase="army">
-            <header>{{localize "PF2E.Kingmaker.Kingdom.Phases.army.Header"}}</header>
-            <p>{{localize "PF2E.Kingmaker.Kingdom.Phases.army.Description"}}</p>
+            <header>{{localize "AVANT.Kingmaker.Kingdom.Phases.army.Header"}}</header>
+            <p>{{localize "AVANT.Kingmaker.Kingdom.Phases.army.Description"}}</p>
         </div>
         {{#each actions}}
             <li class="action item" data-item-id="{{item.id}}">
@@ -79,8 +79,8 @@
                 </div>
                 <div class="item-controls">
                     {{#if @root.editable}}
-                        <a data-action="edit-item" data-tooltip="PF2E.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
-                        <a data-action="delete-item" data-tooltip="PF2E.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
+                        <a data-action="edit-item" data-tooltip="AVANT.EditItemTitle"><i class="fa-solid fa-fw fa-edit"></i></a>
+                        <a data-action="delete-item" data-tooltip="AVANT.DeleteItemTitle"><i class="fa-solid fa-fw fa-trash"></i></a>
                     {{/if}}
                 </div>
                 <div class="item-summary" hidden="hidden"></div>
@@ -96,7 +96,7 @@
         </select>
     {{else}}
         <span class="proficiency" data-rank="{{rank}}">
-            {{localize (concat "PF2E.ProficiencyLevel" rank)}}
+            {{localize (concat "AVANT.ProficiencyLevel" rank)}}
         </span>
     {{/if}}
 {{/inline}}

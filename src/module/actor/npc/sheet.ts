@@ -1,6 +1,6 @@
-import type { NPCPF2e } from "@actor";
-import { CreatureSheetPF2e, type CreatureSheetData } from "@actor/creature/sheet.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import type { NPCAvant } from "@actor";
+import { CreatureSheetAvant, type CreatureSheetData } from "@actor/creature/sheet.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { NPCSkillsEditor } from "@actor/npc/skills-editor.ts";
 import { SheetClickActionHandlers } from "@actor/sheet/base.ts";
 import { createAbilityViewData } from "@actor/sheet/helpers.ts";
@@ -8,8 +8,8 @@ import { RecallKnowledgePopup } from "@actor/sheet/popups/recall-knowledge-popup
 import { MovementType } from "@actor/types.ts";
 import { ATTRIBUTE_ABBREVIATIONS, MOVEMENT_TYPES, SAVE_TYPES } from "@actor/values.ts";
 import { createTagifyTraits, eventToRollParams } from "@module/sheet/helpers.ts";
-import type { UserPF2e } from "@module/user/document.ts";
-import { DicePF2e } from "@scripts/dice.ts";
+import type { UserAvant } from "@module/user/document.ts";
+import { DiceAvant } from "@scripts/dice.ts";
 import type { HTMLTagifyTagsElement } from "@system/html-elements/tagify-tags.ts";
 import type { StatisticRollParameters } from "@system/statistic/index.ts";
 import { htmlClosest, htmlQuery, htmlQueryAll, localizeList, setHasElement, sortLabeledRecord } from "@util";
@@ -26,12 +26,12 @@ import {
     NPCSystemSheetData,
 } from "./types.ts";
 
-abstract class AbstractNPCSheet extends CreatureSheetPF2e<NPCPF2e> {
+abstract class AbstractNPCSheet extends CreatureSheetAvant<NPCAvant> {
     protected readonly actorConfigClass = NPCConfig;
 
     static override get defaultOptions(): ActorSheetOptions {
         const options = super.defaultOptions;
-        options.classes.push("pf2e", "npc");
+        options.classes.push("avant", "npc");
 
         return {
             ...options,
@@ -62,7 +62,7 @@ abstract class AbstractNPCSheet extends CreatureSheetPF2e<NPCPF2e> {
 
         sheetData.traitTagifyData = createTagifyTraits(this.actor.system.traits.value, {
             sourceTraits: this.actor._source.system.traits.value,
-            record: CONFIG.PF2E.creatureTraits,
+            record: CONFIG.AVANT.creatureTraits,
         });
 
         const mythicResource = this.actor.getResource("mythic-points");
@@ -84,14 +84,14 @@ abstract class AbstractNPCSheet extends CreatureSheetPF2e<NPCPF2e> {
     #prepareSaves(systemData: NPCSystemSheetData): void {
         for (const saveType of SAVE_TYPES) {
             const save = systemData.saves[saveType];
-            save.labelShort = game.i18n.localize(`PF2E.Saves${saveType.titleCase()}Short`);
+            save.labelShort = game.i18n.localize(`AVANT.Saves${saveType.titleCase()}Short`);
             save.adjustedHigher = save.totalModifier > Number(save.base);
             save.adjustedLower = save.totalModifier < Number(save.base);
         }
     }
 
     /** Players can view the sheets of lootable NPCs. */
-    protected override _canUserView(user: UserPF2e): boolean {
+    protected override _canUserView(user: UserAvant): boolean {
         return super._canUserView(user) || this.isLootSheet;
     }
 
@@ -101,7 +101,7 @@ abstract class AbstractNPCSheet extends CreatureSheetPF2e<NPCPF2e> {
 
         // Tagify the traits selection
         const traitsEl = htmlQuery<HTMLTagifyTagsElement>(html, 'tagify-tags[name="system.traits.value"]');
-        tagify(traitsEl, { whitelist: CONFIG.PF2E.creatureTraits });
+        tagify(traitsEl, { whitelist: CONFIG.AVANT.creatureTraits });
     }
 
     protected override activateClickListener(html: HTMLElement): SheetClickActionHandlers {
@@ -121,7 +121,7 @@ abstract class AbstractNPCSheet extends CreatureSheetPF2e<NPCPF2e> {
             const args: StatisticRollParameters = {
                 ...eventToRollParams(event, { type: "check" }),
                 modifiers: [
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "variant",
                         label: variant.label,
                         modifier: variant.base - skill.base,
@@ -142,7 +142,7 @@ abstract class AbstractNPCSheet extends CreatureSheetPF2e<NPCPF2e> {
     }
 }
 
-class NPCSheetPF2e extends AbstractNPCSheet {
+class NPCSheetAvant extends AbstractNPCSheet {
     static override get defaultOptions(): ActorSheetOptions {
         const options = super.defaultOptions;
         options.scrollY.push(".inventory-list", ".tab:not(.inventory)");
@@ -158,22 +158,22 @@ class NPCSheetPF2e extends AbstractNPCSheet {
     /** Show either the actual NPC sheet or a briefened lootable version if the NPC is dead */
     override get template(): string {
         if (this.isLootSheet) {
-            return "systems/pf2e/templates/actors/npc/loot-sheet.hbs";
+            return "systems/avant/templates/actors/npc/loot-sheet.hbs";
         } else if (this.actor.limited) {
-            return "systems/pf2e/templates/actors/limited/npc-sheet.hbs";
+            return "systems/avant/templates/actors/limited/npc-sheet.hbs";
         }
-        return "systems/pf2e/templates/actors/npc/sheet.hbs";
+        return "systems/avant/templates/actors/npc/sheet.hbs";
     }
 
     /** Use the token name as the title if showing a lootable NPC sheet */
     override get title(): string {
         if (this.isLootSheet || this.actor.limited) {
-            const tokenSetsNameVisibility = game.pf2e.settings.tokens.nameVisibility;
+            const tokenSetsNameVisibility = game.avant.settings.tokens.nameVisibility;
             const canSeeName = !tokenSetsNameVisibility || !this.token || this.token.playersCanSeeName;
             const actorName = canSeeName ? (this.token?.name ?? this.actor.name) : "";
 
             if (this.actor.isDead) {
-                return `${actorName} [${game.i18n.localize("PF2E.NPC.Dead")}]`;
+                return `${actorName} [${game.i18n.localize("AVANT.NPC.Dead")}]`;
             } else {
                 return actorName;
             }
@@ -185,7 +185,7 @@ class NPCSheetPF2e extends AbstractNPCSheet {
         const sheetData = (await super.getData(options)) as PrePrepSheetData;
 
         if (this.isLootSheet || this.actor.limited) {
-            const tokenSetsNameVisibility = game.pf2e.settings.tokens.nameVisibility;
+            const tokenSetsNameVisibility = game.avant.settings.tokens.nameVisibility;
             const canSeeName = !tokenSetsNameVisibility || !this.token || this.token.playersCanSeeName;
             const actorName = canSeeName ? (this.token?.name ?? this.actor.name) : "";
 
@@ -197,21 +197,21 @@ class NPCSheetPF2e extends AbstractNPCSheet {
             const data = this.actor.identificationDCs;
             const skills =
                 data.skills.length > 0
-                    ? localizeList(data.skills.map((s) => game.i18n.localize(CONFIG.PF2E.skills[s].label)))
+                    ? localizeList(data.skills.map((s) => game.i18n.localize(CONFIG.AVANT.skills[s].label)))
                     : null;
             return {
                 standard: skills
-                    ? game.i18n.format("PF2E.Actor.NPC.Identification.Skills.Label", {
+                    ? game.i18n.format("AVANT.Actor.NPC.Identification.Skills.Label", {
                           skills,
                           dc: data.standard.dc,
-                          adjustment: game.i18n.localize(CONFIG.PF2E.dcAdjustments[data.standard.start]),
+                          adjustment: game.i18n.localize(CONFIG.AVANT.dcAdjustments[data.standard.start]),
                       })
                     : null,
-                lore: game.i18n.format("PF2E.Actor.NPC.Identification.Lore.Label", {
+                lore: game.i18n.format("AVANT.Actor.NPC.Identification.Lore.Label", {
                     dc1: data.lore[0].dc,
-                    adjustment1: game.i18n.localize(CONFIG.PF2E.dcAdjustments[data.lore[0].start]),
+                    adjustment1: game.i18n.localize(CONFIG.AVANT.dcAdjustments[data.lore[0].start]),
                     dc2: data.lore[1].dc,
-                    adjustment2: game.i18n.localize(CONFIG.PF2E.dcAdjustments[data.lore[1].start]),
+                    adjustment2: game.i18n.localize(CONFIG.AVANT.dcAdjustments[data.lore[1].start]),
                 }),
             };
         })();
@@ -281,7 +281,7 @@ class NPCSheetPF2e extends AbstractNPCSheet {
         };
 
         sheetData.hasHardness = this.actor.traits.has("construct") || (Number(hardness?.value) || 0) > 0;
-        sheetData.configLootableNpc = game.settings.get("pf2e", "automation.lootableNPCs");
+        sheetData.configLootableNpc = game.settings.get("avant", "automation.lootableNPCs");
 
         return sheetData as NPCSheetData;
     }
@@ -326,7 +326,7 @@ class NPCSheetPF2e extends AbstractNPCSheet {
                 sheetData.data.actions.map(async (attack) => {
                     const item = attack.item;
                     const traits = item.system.traits.value.map((t) =>
-                        traitSlugToObject(t, CONFIG.PF2E.npcAttackTraits),
+                        traitSlugToObject(t, CONFIG.AVANT.npcAttackTraits),
                     );
                     const rollData = item.getRollData();
                     const description = await TextEditor.enrichHTML(item.description, { rollData });
@@ -339,7 +339,7 @@ class NPCSheetPF2e extends AbstractNPCSheet {
                     return {
                         ...R.pick(item, ["id", "name", "sort"]),
                         ...R.pick(attack, ["breakdown", "variants"]),
-                        attackType: item.isMelee ? "PF2E.NPCAttackMelee" : "PF2E.NPCAttackRanged",
+                        attackType: item.isMelee ? "AVANT.NPCAttackMelee" : "AVANT.NPCAttackRanged",
                         traits,
                         effects,
                         description,
@@ -352,8 +352,8 @@ class NPCSheetPF2e extends AbstractNPCSheet {
         );
 
         const actions: NPCActionSheetData = {
-            passive: { label: game.i18n.localize("PF2E.ActionTypePassive"), actions: [] },
-            active: { label: game.i18n.localize("PF2E.ActionTypeAction"), actions: [] },
+            passive: { label: game.i18n.localize("AVANT.ActionTypePassive"), actions: [] },
+            active: { label: game.i18n.localize("AVANT.ActionTypeAction"), actions: [] },
         };
 
         // By default when sort is tied, free comes before reaction which comes before action
@@ -411,11 +411,11 @@ class NPCSheetPF2e extends AbstractNPCSheet {
             if (!setHasElement(ATTRIBUTE_ABBREVIATIONS, attribute)) return;
             const modifier = this.actor.system.abilities[attribute].mod;
             const parts = ["@modifier"];
-            const title = game.i18n.localize(`PF2E.AbilityCheck.${attribute}`);
+            const title = game.i18n.localize(`AVANT.AbilityCheck.${attribute}`);
             const data = { modifier };
             const speaker = ChatMessage.getSpeaker({ token: this.token, actor: this.actor });
 
-            return DicePF2e.d20Roll({ event, parts, data, title, speaker });
+            return DiceAvant.d20Roll({ event, parts, data, title, speaker });
         };
 
         if (this.isEditable) {
@@ -427,12 +427,12 @@ class NPCSheetPF2e extends AbstractNPCSheet {
 
                 // Get confirmation from the user before replacing existing generated attacks
                 const existing = actor.itemTypes.melee
-                    .filter((m) => m.flags.pf2e.linkedWeapon === itemId)
+                    .filter((m) => m.flags.avant.linkedWeapon === itemId)
                     .map((m) => m.id);
                 if (existing.length > 0) {
                     const proceed = await Dialog.confirm({
-                        title: game.i18n.localize("PF2E.Actor.NPC.GenerateAttack.Confirm.Title"),
-                        content: game.i18n.localize("PF2E.Actor.NPC.GenerateAttack.Confirm.Content"),
+                        title: game.i18n.localize("AVANT.Actor.NPC.GenerateAttack.Confirm.Title"),
+                        content: game.i18n.localize("AVANT.Actor.NPC.GenerateAttack.Confirm.Content"),
                         defaultYes: false,
                     });
                     if (proceed) {
@@ -445,7 +445,7 @@ class NPCSheetPF2e extends AbstractNPCSheet {
                 const attacks = item.toNPCAttacks().map((a) => a.toObject());
                 await actor.createEmbeddedDocuments("Item", attacks);
                 ui.notifications.info(
-                    game.i18n.format("PF2E.Actor.NPC.GenerateAttack.Notification", {
+                    game.i18n.format("AVANT.Actor.NPC.GenerateAttack.Notification", {
                         attack: attacks.at(0)?.name ?? "",
                     }),
                 );
@@ -499,11 +499,11 @@ class SimpleNPCSheet extends AbstractNPCSheet {
             width: 650,
             height: 420,
             scrollY: [".sheet-body"],
-            template: "systems/pf2e/templates/actors/npc/simple-sheet.hbs",
+            template: "systems/avant/templates/actors/npc/simple-sheet.hbs",
         };
     }
 }
 
-type PrePrepSheetData = Partial<NPCSheetData> & CreatureSheetData<NPCPF2e>;
+type PrePrepSheetData = Partial<NPCSheetData> & CreatureSheetData<NPCAvant>;
 
-export { AbstractNPCSheet, NPCSheetPF2e, SimpleNPCSheet };
+export { AbstractNPCSheet, NPCSheetAvant, SimpleNPCSheet };

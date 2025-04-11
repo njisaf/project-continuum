@@ -7,7 +7,7 @@ interface CategoryData {
 }
 
 const KINGDOM_CATEGORY_DATA = {
-    "army-tactic": { behavior: "feat", levelLabel: "PF2E.Kingmaker.Feature.Tactic" },
+    "army-tactic": { behavior: "feat", levelLabel: "AVANT.Kingmaker.Feature.Tactic" },
     "army-war-action": { behavior: "activity" },
     "kingdom-feat": { behavior: "feat" },
     "kingdom-feature": { behavior: "feature" },
@@ -18,7 +18,7 @@ const KINGMAKER_CATEGORY_TYPES = Object.keys(KINGDOM_CATEGORY_DATA) as (keyof ty
 
 const KINGMAKER_CATEGORIES: Record<KingmakerCategory, string> = R.mapToObj(KINGMAKER_CATEGORY_TYPES, (type) => [
     type,
-    `PF2E.Kingmaker.Feature.Categories.${type}`,
+    `AVANT.Kingmaker.Feature.Categories.${type}`,
 ]);
 
 export { KINGDOM_CATEGORY_DATA, KINGMAKER_CATEGORIES, KINGMAKER_CATEGORY_TYPES };

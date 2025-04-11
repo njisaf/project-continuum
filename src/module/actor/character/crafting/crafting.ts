@@ -1,19 +1,19 @@
-import { ItemPF2e, type PhysicalItemPF2e } from "@item";
+import { ItemAvant, type PhysicalItemAvant } from "@item";
 import { calculateDC } from "@module/dc.ts";
 import { UUIDUtils } from "@util/uuid.ts";
 import * as R from "remeda";
-import type { CharacterPF2e } from "../document.ts";
+import type { CharacterAvant } from "../document.ts";
 import { CraftingAbility } from "./ability.ts";
 import type { CraftingAbilityData, CraftingFormula } from "./types.ts";
 
 /** Caches and performs operations on elements related to crafting */
 class CharacterCrafting {
-    actor: CharacterPF2e;
+    actor: CharacterAvant;
     abilities = new Collection<CraftingAbility>();
 
     #formulas: CraftingFormula[] | null = null;
 
-    constructor(actor: CharacterPF2e) {
+    constructor(actor: CharacterAvant) {
         this.actor = actor;
     }
 
@@ -52,7 +52,7 @@ class CharacterCrafting {
         const items = await UUIDUtils.fromUUIDs(formulas.map((f) => f.uuid));
 
         const result = items
-            .filter((i): i is PhysicalItemPF2e => i instanceof ItemPF2e && i.isOfType("physical"))
+            .filter((i): i is PhysicalItemAvant => i instanceof ItemAvant && i.isOfType("physical"))
             .map((item): CraftingFormula | null => {
                 const formula = formulaMap.get(item.uuid);
                 if (!formula) return null;
@@ -73,7 +73,7 @@ class CharacterCrafting {
                     item,
                     dc: calculateDC(item.level, {
                         rarity: item.rarity,
-                        pwol: game.pf2e.settings.variants.pwol.enabled,
+                        pwol: game.avant.settings.variants.pwol.enabled,
                     }),
                     batchSize,
                 };
@@ -109,8 +109,8 @@ class CharacterCrafting {
         }
 
         // Update the actor's flags to not be set to complete
-        const wasDailyCraftingComplete = actor.flags.pf2e.dailyCraftingComplete;
-        await actor.update({ "flags.pf2e.dailyCraftingComplete": false }, { render: false });
+        const wasDailyCraftingComplete = actor.flags.avant.dailyCraftingComplete;
+        await actor.update({ "flags.avant.dailyCraftingComplete": false }, { render: false });
 
         // Re-render any actor sheets if anything changed
         if (
@@ -134,7 +134,7 @@ class CharacterCrafting {
 
         // If any of our results is insufficient on its own, return early
         if (results.some((r) => r.insufficient)) {
-            ui.notifications.warn("PF2E.Actor.Character.Crafting.MissingResource", { localize: true });
+            ui.notifications.warn("AVANT.Actor.Character.Crafting.MissingResource", { localize: true });
             return;
         }
 
@@ -152,7 +152,7 @@ class CharacterCrafting {
         for (const [slug, cost] of Object.entries(resourceCosts)) {
             const resource = actor.getResource(slug);
             if (!resource || cost > resource.value) {
-                ui.notifications.warn("PF2E.Actor.Character.Crafting.MissingResource", { localize: true });
+                ui.notifications.warn("AVANT.Actor.Character.Crafting.MissingResource", { localize: true });
                 return;
             }
 
@@ -171,9 +171,9 @@ class CharacterCrafting {
         }
 
         // Add the items. There will always be items to add if it go to here, and that will trigger the re-render
-        await actor.update({ "flags.pf2e.dailyCraftingComplete": true }, { render: false });
+        await actor.update({ "flags.avant.dailyCraftingComplete": true }, { render: false });
         await actor.inventory.add(itemsToAdd, { stack: true });
-        ui.notifications.info("PF2E.Actor.Character.Crafting.Daily.Complete", { localize: true });
+        ui.notifications.info("AVANT.Actor.Character.Crafting.Daily.Complete", { localize: true });
     }
 }
 

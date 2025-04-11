@@ -1,10 +1,10 @@
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
-import { CoinsPF2e, PhysicalItemPF2e } from "@item/physical/index.ts";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
+import { CoinsAvant, PhysicalItemAvant } from "@item/physical/index.ts";
 import { htmlClosest, htmlQueryAll } from "@util";
 import { KitEntryData } from "./data.ts";
-import { KitPF2e } from "./document.ts";
+import { KitAvant } from "./document.ts";
 
-class KitSheetPF2e extends ItemSheetPF2e<KitPF2e> {
+class KitSheetAvant extends ItemSheetAvant<KitAvant> {
     static override get defaultOptions(): ItemSheetOptions {
         return {
             ...super.defaultOptions,
@@ -33,7 +33,7 @@ class KitSheetPF2e extends ItemSheetPF2e<KitPF2e> {
         const dragItem = JSON.parse(dragData ?? "");
         if (dragItem.type !== "Item") return;
         const item = await fromUuid(dragItem.uuid ?? "");
-        if (!(item instanceof PhysicalItemPF2e || item instanceof KitPF2e)) {
+        if (!(item instanceof PhysicalItemAvant || item instanceof KitAvant)) {
             return;
         }
 
@@ -63,7 +63,7 @@ class KitSheetPF2e extends ItemSheetPF2e<KitPF2e> {
         await this.item.update({ [`${pathPrefix}.${id}`]: entry });
     }
 
-    async removeItem(event: MouseEvent): Promise<KitPF2e | null> {
+    async removeItem(event: MouseEvent): Promise<KitAvant | null> {
         const target = htmlClosest(event.currentTarget ?? null, "li");
         const index = target?.dataset.index;
         if (!index) return this.item;
@@ -89,15 +89,15 @@ class KitSheetPF2e extends ItemSheetPF2e<KitPF2e> {
     protected override async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
         // Convert price from a string to an actual object
         if (formData["system.price.value"]) {
-            formData["system.price.value"] = CoinsPF2e.fromString(String(formData["system.price.value"]));
+            formData["system.price.value"] = CoinsAvant.fromString(String(formData["system.price.value"]));
         }
 
         return super._updateObject(event, formData);
     }
 }
 
-interface KitSheetData extends ItemSheetDataPF2e<KitPF2e> {
-    priceString: CoinsPF2e;
+interface KitSheetData extends ItemSheetDataAvant<KitAvant> {
+    priceString: CoinsAvant;
     items: Record<string, KitEntrySheetData>;
 }
 
@@ -105,4 +105,4 @@ interface KitEntrySheetData extends KitEntryData {
     fromWorld: boolean;
 }
 
-export { KitSheetPF2e };
+export { KitSheetAvant };

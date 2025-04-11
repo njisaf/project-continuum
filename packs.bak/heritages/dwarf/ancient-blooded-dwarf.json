@@ -1,0 +1,32 @@
+{
+    "_id": "yL6944LrPo2HNdEJ",
+    "folder": "Z6Ve0qYfgLQLbcOs",
+    "img": "systems/avant/icons/features/ancestry/ancient-blooded-dwarf.webp",
+    "name": "Ancient-Blooded Dwarf",
+    "system": {
+        "ancestry": {
+            "name": "Dwarf",
+            "slug": "dwarf",
+            "uuid": "Compendium.avant.ancestries.Item.BYj5ZvlXZdpaEgA6"
+        },
+        "description": {
+            "value": "<p>Dwarven heroes of old could shrug off their enemies' magic, and some of that resistance manifests in you. You gain the @UUID[Compendium.avant.actionsavant.Item.Call on Ancient Blood] reaction.</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Player Core"
+        },
+        "rules": [
+            {
+                "key": "GrantItem",
+                "uuid": "Compendium.avant.actionsavant.Item.Call on Ancient Blood"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": []
+        }
+    },
+    "type": "heritage"
+}

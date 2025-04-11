@@ -1,18 +1,18 @@
 import { activateActionSheetListeners } from "@item/ability/helpers.ts";
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
 import type { HTMLTagifyTagsElement } from "@system/html-elements/tagify-tags.ts";
 import { htmlQuery } from "@util/dom.ts";
 import { tagify } from "@util/tags.ts";
-import type { CampaignFeaturePF2e } from "./document.ts";
+import type { CampaignFeatureAvant } from "./document.ts";
 import { KINGMAKER_CATEGORIES } from "./values.ts";
 
-class CampaignFeatureSheetPF2e extends ItemSheetPF2e<CampaignFeaturePF2e> {
+class CampaignFeatureSheetAvant extends ItemSheetAvant<CampaignFeatureAvant> {
     static override get defaultOptions(): ItemSheetOptions {
         return { ...super.defaultOptions, hasSidebar: true };
     }
 
     override get validTraits(): Record<string, string> {
-        return CONFIG.PF2E.kingmakerTraits;
+        return CONFIG.AVANT.kingmakerTraits;
     }
 
     override async getData(options?: Partial<ItemSheetOptions>): Promise<CampaignFeatureSheetData> {
@@ -23,9 +23,9 @@ class CampaignFeatureSheetPF2e extends ItemSheetPF2e<CampaignFeaturePF2e> {
             ...sheetData,
             itemType: hasLevel ? game.i18n.localize(this.item.levelLabel) : null,
             categories: KINGMAKER_CATEGORIES,
-            actionTypes: CONFIG.PF2E.actionTypes,
-            actionsNumber: CONFIG.PF2E.actionsNumber,
-            frequencies: CONFIG.PF2E.frequencies,
+            actionTypes: CONFIG.AVANT.actionTypes,
+            actionsNumber: CONFIG.AVANT.actionsNumber,
+            frequencies: CONFIG.AVANT.frequencies,
             prerequisites: JSON.stringify(this.item.system.prerequisites?.value ?? []),
             isFeat: this.item.isFeat,
         };
@@ -50,13 +50,13 @@ class CampaignFeatureSheetPF2e extends ItemSheetPF2e<CampaignFeaturePF2e> {
     }
 }
 
-interface CampaignFeatureSheetData extends ItemSheetDataPF2e<CampaignFeaturePF2e> {
+interface CampaignFeatureSheetData extends ItemSheetDataAvant<CampaignFeatureAvant> {
     categories: Record<string, string>;
-    actionTypes: ConfigPF2e["PF2E"]["actionTypes"];
-    actionsNumber: ConfigPF2e["PF2E"]["actionsNumber"];
-    frequencies: ConfigPF2e["PF2E"]["frequencies"];
+    actionTypes: ConfigAvant["AVANT"]["actionTypes"];
+    actionsNumber: ConfigAvant["AVANT"]["actionsNumber"];
+    frequencies: ConfigAvant["AVANT"]["frequencies"];
     prerequisites: string;
     isFeat: boolean;
 }
 
-export { CampaignFeatureSheetPF2e };
+export { CampaignFeatureSheetAvant };

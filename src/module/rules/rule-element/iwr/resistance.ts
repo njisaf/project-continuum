@@ -17,7 +17,7 @@ class ResistanceRuleElement extends IWRRuleElement<ResistanceRuleSchema> {
     }
 
     static override get dictionary(): Record<ResistanceType, string> {
-        return CONFIG.PF2E.resistanceTypes;
+        return CONFIG.AVANT.resistanceTypes;
     }
 
     get property(): Resistance[] {

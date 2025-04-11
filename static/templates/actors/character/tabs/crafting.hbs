@@ -3,8 +3,8 @@
         <div class="crafting-options item-list">
             <div class="crafting-option item" data-toggle-property="{{toggle.inputName}}" data-toggle-label="{{localize toggle.label}}">
                 <label>
-                    <input type="checkbox" name="flags.pf2e.quickAlchemy" {{checked actor.flags.pf2e.quickAlchemy}} />
-                    <span>{{localize "PF2E.CraftingTab.ToggleQuickAlchemy"}}</span>
+                    <input type="checkbox" name="flags.avant.quickAlchemy" {{checked actor.flags.avant.quickAlchemy}} />
+                    <span>{{localize "AVANT.CraftingTab.ToggleQuickAlchemy"}}</span>
                 </label>
             </div>
         </div>
@@ -12,7 +12,7 @@
     <ol class="directory-list item-list crafting-entry-list">
         {{#if crafting.abilities.alchemical.entries}}
             <li class="crafting-entry item-container" data-container-type="craftingEntryGroup">
-                <div class="action-header">{{localize "PF2E.CraftingTab.Alchemical.AdvancedAlchemy"}}</div>
+                <div class="action-header">{{localize "AVANT.CraftingTab.Alchemical.AdvancedAlchemy"}}</div>
                 <ol class="directory-list item-list formula-list">
                     {{> resourceRow resource=crafting.abilities.alchemical.resource resourceCost=crafting.abilities.alchemical.resourceCost}}
                     {{#each crafting.abilities.alchemical.entries as |ability|}}
@@ -22,12 +22,12 @@
                             <ol class="directory-list item-list formula-list">
                                 <li class="formula-header resource">
                                     <div class="item-name reagent-cost">
-                                        <h3>{{localize "PF2E.CraftingTab.Alchemical.ReagentCost"}}:</h3>
+                                        <h3>{{localize "AVANT.CraftingTab.Alchemical.ReagentCost"}}:</h3>
                                         <span class="formula-number">{{ability.resourceCost}}</span>
                                     </div>
 
                                     <div class="item-name reagent-resource">
-                                        <h3>{{localize "PF2E.CraftingTab.Alchemical.AdvancedAlchemyLevel"}}:</h3>
+                                        <h3>{{localize "AVANT.CraftingTab.Alchemical.AdvancedAlchemyLevel"}}:</h3>
                                         <span class="formula-number">{{ability.maxItemLevel}}</span>
                                     </div>
                                 </li>
@@ -37,7 +37,7 @@
                                 {{/each}}
                                 {{#unless ability.prepared}}
                                     <li class="formula-header empty">
-                                        <h4>{{localize "PF2E.FormulaListEmpty"}}</h4>
+                                        <h4>{{localize "AVANT.FormulaListEmpty"}}</h4>
                                     </li>
                                 {{/unless}}
                             </ol>
@@ -52,10 +52,10 @@
                     <h3 class="item-name hide-container-toggle title">
                         {{ability.label}}
                         {{#if ability.insufficient}}
-                            <i class="fa-solid fa-warning" data-tooltip="PF2E.Actor.Character.Crafting.MissingResource"></i>
+                            <i class="fa-solid fa-warning" data-tooltip="AVANT.Actor.Character.Crafting.MissingResource"></i>
                         {{/if}}
                     </h3>
-                    <span class="level">{{localize "PF2E.LevelN" level=ability.maxItemLevel}}</span>
+                    <span class="level">{{localize "AVANT.LevelN" level=ability.maxItemLevel}}</span>
                 </div>
                 <ol class="directory-list item-list formula-list">
                     {{#if ability.resource}}
@@ -68,12 +68,12 @@
                         <li class="formula-item empty">
                             <a data-action="prepare-formula">
                                 <i class="fa-solid fa-plus"></i>
-                                {{localize "PF2E.Actor.Character.Crafting.RemainingSlots" remaining=remainingSlots}}
+                                {{localize "AVANT.Actor.Character.Crafting.RemainingSlots" remaining=remainingSlots}}
                             </a>
                         </li>
                     {{else if (and ability.resource (not ability.prepared.length))}}
                         <li class="formula-header empty">
-                            <h4>{{localize "PF2E.FormulaListEmpty"}}</h4>
+                            <h4>{{localize "AVANT.FormulaListEmpty"}}</h4>
                         </li>
                     {{/if}}
                 </ol>
@@ -86,7 +86,7 @@
                     class="perform-daily blue"
                     data-action="perform-daily-crafting"
                     {{disabled crafting.dailyCraftingComplete}}
-                >{{localize "PF2E.Actor.Character.Crafting.Daily.Perform"}}</button>
+                >{{localize "AVANT.Actor.Character.Crafting.Daily.Perform"}}</button>
 
                 <button
                     type="button"
@@ -99,14 +99,14 @@
     </ol>
     <section class="major item-container known-formulas" data-container-type="knownFormulas">
         <header>
-            {{localize "PF2E.FormulaKnownTitle"}}
+            {{localize "AVANT.FormulaKnownTitle"}}
             <div class="controls">
-                <button type="button" data-action="toggle-free-crafting" data-tooltip="PF2E.Actor.Character.Crafting.FreeCraftingTooltip">
-                    <input type="checkbox" {{checked actor.flags.pf2e.freeCrafting}} />
-                    {{localize "PF2E.Actor.Character.Crafting.FreeCrafting"}}
+                <button type="button" data-action="toggle-free-crafting" data-tooltip="AVANT.Actor.Character.Crafting.FreeCraftingTooltip">
+                    <input type="checkbox" {{checked actor.flags.avant.freeCrafting}} />
+                    {{localize "AVANT.Actor.Character.Crafting.FreeCrafting"}}
                 </button>
                 <button type="button" data-action="browse-equipment" data-action-type="{{sid}}">
-                    <i class="fa-solid fa-fw fa-search"></i>{{localize "PF2E.BrowseLabel"}}
+                    <i class="fa-solid fa-fw fa-search"></i>{{localize "AVANT.BrowseLabel"}}
                 </button>
             </div>
         </header>
@@ -115,27 +115,27 @@
             {{#each crafting.knownFormulas as |section|}}
                 <li class="formula-level-header formula-header" data-item-type="formulaLevel" data-level="{{section.level}}">
                     <div class="item-name flexrow">
-                        <h3>{{localize "PF2E.LevelN" level=section.level}}</h3>
+                        <h3>{{localize "AVANT.LevelN" level=section.level}}</h3>
                     </div>
 
-                    <div class="formula-dc-header">{{localize "PF2E.CraftDCTitle"}}</div>
-                    <div class="formula-cost-header">{{localize "PF2E.Actor.Character.Crafting.Cost"}}</div>
-                    <div class="formula-quantity-header">{{localize "PF2E.CraftingTab.CraftQuantityTitle"}}</div>
+                    <div class="formula-dc-header">{{localize "AVANT.CraftDCTitle"}}</div>
+                    <div class="formula-cost-header">{{localize "AVANT.Actor.Character.Crafting.Cost"}}</div>
+                    <div class="formula-quantity-header">{{localize "AVANT.CraftingTab.CraftQuantityTitle"}}</div>
 
                     {{!-- Exists only due to localization reasons regarding a resizing button. We hide this button--}}
                     <button type="button" class="craft blue invisible">
-                        {{#if @root.actor.flags.pf2e.freeCrafting}}
+                        {{#if @root.actor.flags.avant.freeCrafting}}
                             <i class="fa-solid fa-plus"></i>
-                            {{localize "PF2E.CreateLabelUniversal"}}
+                            {{localize "AVANT.CreateLabelUniversal"}}
                         {{else}}
                             <i class="fa-solid fa-hammer"></i>
-                            {{localize "PF2E.CraftItemTitle"}}
+                            {{localize "AVANT.CraftItemTitle"}}
                         {{/if}}
                     </button>
 
                     {{#if @root.editable}}
                         <div class="item-controls">
-                            <a data-action="browse-equipment" data-tooltip="PF2E.OpenInventoryBrowser" data-level="{{section.level}}"><i class="fa-solid fa-fw fa-search"></i></a>
+                            <a data-action="browse-equipment" data-tooltip="AVANT.OpenInventoryBrowser" data-level="{{section.level}}"><i class="fa-solid fa-fw fa-search"></i></a>
                         </div>
                     {{/if}}
                 </li>
@@ -159,12 +159,12 @@
                         </div>
 
                         <button type="button" class="craft blue" data-action="craft-item">
-                            {{#if @root.actor.flags.pf2e.freeCrafting}}
+                            {{#if @root.actor.flags.avant.freeCrafting}}
                                 <i class="fa-solid fa-plus"></i>
-                                {{localize "PF2E.Actor.Character.Crafting.Create"}}
+                                {{localize "AVANT.Actor.Character.Crafting.Create"}}
                             {{else}}
                                 <i class="fa-solid fa-hammer"></i>
-                                {{localize "PF2E.CraftItemTitle"}}
+                                {{localize "AVANT.CraftItemTitle"}}
                             {{/if}}
                         </button>
 
@@ -172,7 +172,7 @@
                             <div class="item-controls">
                                 <a
                                     data-action="delete-formula"
-                                    data-tooltip="PF2E.DeleteItemTitle"
+                                    data-tooltip="AVANT.DeleteItemTitle"
                                 ><i class="fa-solid fa-fw fa-trash"></i></a>
                             </div>
                         {{/if}}
@@ -182,7 +182,7 @@
                 {{/each}}
             {{else if @root.editable}}
                 <li class="empty">
-                    <h4>{{localize "PF2E.FormulaListEmpty"}}</h4>
+                    <h4>{{localize "AVANT.FormulaListEmpty"}}</h4>
                 </li>
             {{/each}}
         </ol>
@@ -192,7 +192,7 @@
 {{#*inline "resourceRow"}}
     <li class="formula-header resource">
         <div class="item-name reagent-cost">
-            <h3>{{localize "PF2E.CraftingTab.Alchemical.TotalCost"}}:</h3>
+            <h3>{{localize "AVANT.CraftingTab.Alchemical.TotalCost"}}:</h3>
             <div class="formula-number">{{resourceCost}}</div>
         </div>
 
@@ -239,7 +239,7 @@
                 <input type="number" data-craft-quantity value="{{formula.quantity}}" />
                 <a class="adjust increase" data-action="increase-craft-quantity">+</a>
             {{else}}
-                {{localize "PF2E.Actor.Character.Crafting.BatchQuantity" quantity=formula.quantity}}
+                {{localize "AVANT.Actor.Character.Crafting.BatchQuantity" quantity=formula.quantity}}
             {{/if}}
         </div>
 
@@ -248,7 +248,7 @@
                 {{#if ability.isAlchemical}}
                     <a
                         data-action="toggle-signature-item"
-                        data-tooltip="PF2E.CraftingTab.Alchemical.ToggleSignatureItem"
+                        data-tooltip="AVANT.CraftingTab.Alchemical.ToggleSignatureItem"
                     ><i class="fa-{{#if formula.isSignatureItem}}solid{{else}}regular{{/if}} fa-star"></i></a>
                 {{else if ability.isPrepared}}
                     {{#unless formula.expended}}
@@ -256,17 +256,17 @@
                             data-action="craft-item"
                             data-free="true"
                             data-prepared="true"
-                            data-tooltip="PF2E.CraftItemTitle"
+                            data-tooltip="AVANT.CraftItemTitle"
                         ><i class="fa-solid fa-hammer"></i></a>
                     {{/unless}}
                     <a
                         data-action="toggle-formula-expended"
-                        data-tooltip="PF2E.CraftingTab.ExpendFormula"
+                        data-tooltip="AVANT.CraftingTab.ExpendFormula"
                     ><i class="fa-solid fa-minus-square"></i></a>
                 {{/if}}
                 <a
                     data-action="unprepare-formula"
-                    data-tooltip="PF2E.UnprepareItemTitle"
+                    data-tooltip="AVANT.UnprepareItemTitle"
                 ><i class="fa-solid fa-trash"></i></a>
             </div>
         {{/if}}

@@ -1,13 +1,13 @@
-import { ActorPF2e, CharacterPF2e } from "@actor";
+import { ActorAvant, CharacterAvant } from "@actor";
 import { CreatureTrait } from "@actor/creature/index.ts";
-import { ItemPF2e } from "@item";
+import { ItemAvant } from "@item";
 import { Rarity } from "@module/data.ts";
-import { ErrorPF2e, sluggify } from "@util";
+import { ErrorAvant, sluggify } from "@util";
 import { HeritageSource, HeritageSystemData } from "./data.ts";
 
-class HeritagePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+class HeritageAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     static override get validTraits(): Record<CreatureTrait, string> {
-        return CONFIG.PF2E.creatureTraits;
+        return CONFIG.AVANT.creatureTraits;
     }
 
     get traits(): Set<CreatureTrait> {
@@ -23,16 +23,16 @@ class HeritagePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends 
     }
 
     /** Prepare a character's data derived from their heritage */
-    override prepareActorData(this: HeritagePF2e<ActorPF2e>): void {
-        if (!this.actor.isOfType("character")) throw ErrorPF2e("heritage embedded on non-character");
+    override prepareActorData(this: HeritageAvant<ActorAvant>): void {
+        if (!this.actor.isOfType("character")) throw ErrorAvant("heritage embedded on non-character");
         const slug = this.slug ?? sluggify(this.name);
         // Some abilities allow for a second heritage. If the PC has more than one, set this heritage as the actor's
         // main one only if it wasn't granted by another item.
         if (this.actor.itemTypes.heritage.length === 1 || !this.grantedBy) {
-            this.actor.heritage = this as HeritagePF2e<CharacterPF2e>;
+            this.actor.heritage = this as HeritageAvant<CharacterAvant>;
             this.actor.system.details.heritage = {
                 name: this.name,
-                trait: slug in CONFIG.PF2E.ancestryTraits ? slug : null,
+                trait: slug in CONFIG.AVANT.ancestryTraits ? slug : null,
             };
         }
 
@@ -57,9 +57,9 @@ class HeritagePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends 
     }
 }
 
-interface HeritagePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface HeritageAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: HeritageSource;
     system: HeritageSystemData;
 }
 
-export { HeritagePF2e };
+export { HeritageAvant };

@@ -1,13 +1,13 @@
-import type { LootPF2e } from "@actor";
+import type { LootAvant } from "@actor";
 import { transferItemsBetweenActors } from "@actor/helpers.js";
-import type { ActorSheetDataPF2e, InventoryItem, SheetInventory } from "@actor/sheet/data-types.ts";
-import type { PhysicalItemPF2e } from "@item";
+import type { ActorSheetDataAvant, InventoryItem, SheetInventory } from "@actor/sheet/data-types.ts";
+import type { PhysicalItemAvant } from "@item";
 import { htmlClosest, htmlQuery } from "@util";
-import { ActorSheetPF2e } from "../sheet/base.ts";
+import { ActorSheetAvant } from "../sheet/base.ts";
 import { DistributeCoinsPopup } from "../sheet/popups/distribute-coins-popup.ts";
 import { LootNPCsPopup } from "../sheet/popups/loot-npcs-popup.ts";
 
-export class LootSheetPF2e<TActor extends LootPF2e> extends ActorSheetPF2e<TActor> {
+export class LootSheetAvant<TActor extends LootAvant> extends ActorSheetAvant<TActor> {
     static override get defaultOptions(): ActorSheetOptions {
         const options = super.defaultOptions;
 
@@ -22,10 +22,10 @@ export class LootSheetPF2e<TActor extends LootPF2e> extends ActorSheetPF2e<TActo
     }
 
     override get template(): string {
-        return "systems/pf2e/templates/actors/loot/sheet.hbs";
+        return "systems/avant/templates/actors/loot/sheet.hbs";
     }
 
-    override async getData(): Promise<LootSheetDataPF2e<TActor>> {
+    override async getData(): Promise<LootSheetDataAvant<TActor>> {
         const sheetData = await super.getData();
         const isLoot = this.actor.system.lootSheetType === "Loot";
 
@@ -40,8 +40,8 @@ export class LootSheetPF2e<TActor extends LootPF2e> extends ActorSheetPF2e<TActo
             hasActiveParty: !!game.actors.party,
             isLoot,
             lootSheetTypeOptions: [
-                { value: "Loot", label: "PF2E.loot.LootLabel" },
-                { value: "Merchant", label: "PF2E.loot.MerchantLabel" },
+                { value: "Loot", label: "AVANT.loot.LootLabel" },
+                { value: "Merchant", label: "AVANT.loot.MerchantLabel" },
             ],
         };
     }
@@ -83,7 +83,7 @@ export class LootSheetPF2e<TActor extends LootPF2e> extends ActorSheetPF2e<TActo
     }
 
     /** Hide coin item rows in merchant actors */
-    protected override prepareInventoryItem(item: PhysicalItemPF2e): InventoryItem {
+    protected override prepareInventoryItem(item: PhysicalItemAvant): InventoryItem {
         const isMerchant = this.actor.system.lootSheetType === "Merchant";
         const data = super.prepareInventoryItem(item);
         data.hidden = isMerchant && item.isOfType("treasure") && item.isCoinage && !item.container;
@@ -91,7 +91,7 @@ export class LootSheetPF2e<TActor extends LootPF2e> extends ActorSheetPF2e<TActo
     }
 }
 
-interface LootSheetDataPF2e<TActor extends LootPF2e> extends ActorSheetDataPF2e<TActor> {
+interface LootSheetDataAvant<TActor extends LootAvant> extends ActorSheetDataAvant<TActor> {
     hasActiveParty: boolean;
     isLoot: boolean;
     lootSheetTypeOptions: FormSelectOption[];

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Remove duplicate Recall Knowledge action items */
@@ -6,7 +6,7 @@ export class Migration799RMRecallKnowledgeDuplicates extends MigrationBase {
     static override version = 0.799;
 
     #oldIdsPattern = new RegExp(
-        "pf2e\\.actionspf2e\\.(?:"
+        "avant\\.actionsavant\\.(?:"
             .concat(
                 [
                     "KygTSeDvsFoSO6HW",
@@ -22,11 +22,11 @@ export class Migration799RMRecallKnowledgeDuplicates extends MigrationBase {
         "g",
     );
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.system.description.value ??= ""; // In case of uncorrected `null` value due to upstream bug from V9
         source.system.description.value = source.system.description.value.replace(
             this.#oldIdsPattern,
-            "pf2e.actionspf2e.1OagaWtBpVXExToo",
+            "avant.actionsavant.1OagaWtBpVXExToo",
         );
     }
 }

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import type { AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import { sluggify } from "@util";
 import { MigrationBase } from "../base.ts";
@@ -7,7 +7,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration757HillockHalfling extends MigrationBase {
     static override version = 0.757;
 
-    override async updateItem(itemSource: ItemSourcePF2e): Promise<void> {
+    override async updateItem(itemSource: ItemSourceAvant): Promise<void> {
         if (itemSource.type !== "heritage") return;
 
         const slug = itemSource.system.slug ?? sluggify(itemSource.name);

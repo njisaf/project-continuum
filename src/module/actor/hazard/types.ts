@@ -1,10 +1,10 @@
-import type { HazardPF2e } from "@actor";
+import type { HazardAvant } from "@actor";
 import { TraitViewData } from "@actor/data/base.ts";
-import { ActorSheetDataPF2e } from "@actor/sheet/data-types.ts";
+import { ActorSheetDataAvant } from "@actor/sheet/data-types.ts";
 import { SaveType } from "@actor/types.ts";
-import type { AbilityItemPF2e } from "@item";
+import type { AbilityItemAvant } from "@item";
 
-interface HazardSheetData extends ActorSheetDataPF2e<HazardPF2e> {
+interface HazardSheetData extends ActorSheetDataAvant<HazardAvant> {
     actions: HazardActionSheetData;
     complexityOptions: FormSelectOption[];
     emitsSoundOptions: FormSelectOption[];
@@ -26,8 +26,8 @@ interface HazardSheetData extends ActorSheetDataPF2e<HazardPF2e> {
 }
 
 interface HazardActionSheetData {
-    reaction: AbilityItemPF2e[];
-    action: AbilityItemPF2e[];
+    reaction: AbilityItemAvant[];
+    action: AbilityItemAvant[];
 }
 
 interface HazardSaveSheetData {
@@ -36,6 +36,6 @@ interface HazardSaveSheetData {
     mod?: number;
 }
 
-type HazardTrait = keyof ConfigPF2e["PF2E"]["hazardTraits"];
+type HazardTrait = keyof ConfigAvant["AVANT"]["hazardTraits"];
 
 export type { HazardActionSheetData, HazardSaveSheetData, HazardSheetData, HazardTrait };

@@ -4,17 +4,17 @@ import { EffectSource } from "./data.ts";
 const createDisintegrateEffect = (): PreCreate<EffectSource> => {
     const rule = {
         key: "TokenImage",
-        value: "systems/pf2e/icons/effects/fine-powder.svg",
+        value: "systems/avant/icons/effects/fine-powder.svg",
         animation: { transition: TextureTransitionFilter.TYPES.DOTS },
     };
     return {
         _id: null,
         type: "effect",
-        name: game.i18n.localize("PF2E.Item.Effect.Disintegrated.Name"),
-        img: "systems/pf2e/icons/effects/fine-powder.svg",
+        name: game.i18n.localize("AVANT.Item.Effect.Disintegrated.Name"),
+        img: "systems/avant/icons/effects/fine-powder.svg",
         system: {
             slug: "effect-fine-powder",
-            description: { value: game.i18n.localize("PF2E.Item.Effect.Disintegrated.Description") },
+            description: { value: game.i18n.localize("AVANT.Item.Effect.Disintegrated.Description") },
             rules: [rule],
             tokenIcon: { show: false },
         },

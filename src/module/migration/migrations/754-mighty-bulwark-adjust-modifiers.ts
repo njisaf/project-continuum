@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Add Adjust Modifier REs to Mighty Bulwark to suppress dexterity and standard bulwark modifiers */
 export class Migration754MightyBulwarkAdjustModifiers extends MigrationBase {
     static override version = 0.754;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!(source.type === "feat" && source.system.slug === "mighty-bulwark")) {
             return;
         }

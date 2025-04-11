@@ -1,5 +1,5 @@
-import type { ActorSourcePF2e } from "@actor/data/index.ts";
-import type { ItemSourcePF2e, MeleeSource } from "@item/base/data/index.ts";
+import type { ActorSourceAvant } from "@actor/data/index.ts";
+import type { ItemSourceAvant, MeleeSource } from "@item/base/data/index.ts";
 import { FEAT_OR_FEATURE_CATEGORIES } from "@item/feat/values.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { SIZES } from "@module/data.ts";
@@ -31,13 +31,13 @@ interface REMaybeWithUUIDs extends RuleElementSource {
     uuid?: unknown;
 }
 
-function isActorSource(docSource: PackEntry): docSource is ActorSourcePF2e {
+function isActorSource(docSource: PackEntry): docSource is ActorSourceAvant {
     return (
         "system" in docSource && isObject(docSource.system) && "items" in docSource && Array.isArray(docSource.items)
     );
 }
 
-function isItemSource(docSource: PackEntry): docSource is ItemSourcePF2e {
+function isItemSource(docSource: PackEntry): docSource is ItemSourceAvant {
     return (
         "system" in docSource &&
         "type" in docSource &&
@@ -80,8 +80,8 @@ class CompendiumPack {
     static LINK_PATTERNS = {
         world: /@(?:Item|JournalEntry|Actor)\[[^\]]+\]|@Compendium\[world\.[^\]]{16}\]|@UUID\[(?:Item|JournalEntry|Actor)/g,
         compendium:
-            /@Compendium\[pf2e\.(?<packName>[^.]+)\.(?<docType>Actor|JournalEntry|Item|Macro|RollTable)\.(?<docName>[^\]]+)\]\{?/g,
-        uuid: /@UUID\[Compendium\.pf2e\.(?<packName>[^.]+)\.(?<docType>Actor|JournalEntry|Item|Macro|RollTable)\.(?<docName>[^\]]+)\]\{?/g,
+            /@Compendium\[avant\.(?<packName>[^.]+)\.(?<docType>Actor|JournalEntry|Item|Macro|RollTable)\.(?<docName>[^\]]+)\]\{?/g,
+        uuid: /@UUID\[Compendium\.avant\.(?<packName>[^.]+)\.(?<docType>Actor|JournalEntry|Item|Macro|RollTable)\.(?<docName>[^\]]+)\]\{?/g,
     };
 
     constructor(packDir: string, parsedData: unknown[], parsedFolders: unknown[]) {
@@ -121,7 +121,7 @@ class CompendiumPack {
 
         this.data = parsedData;
 
-        const imagePathsFromItemSystemData = (item: ItemSourcePF2e): string[] => {
+        const imagePathsFromItemSystemData = (item: ItemSourceAvant): string[] => {
             if (itemIsOfType(item, "ancestry", "background", "class", "kit")) {
                 const grants: Record<string, { img: ImageFilePath }> = item.system.items;
                 return Object.values(grants).map((i) => i.img);
@@ -155,7 +155,7 @@ class CompendiumPack {
                     const repoImgPath = path.resolve(
                         process.cwd(),
                         "static",
-                        decodeURIComponent(imgPath).replace("systems/pf2e/", ""),
+                        decodeURIComponent(imgPath).replace("systems/avant/", ""),
                     );
                     if (!isCoreIconPath && !fs.existsSync(repoImgPath)) {
                         throw PackError(`${documentName} (${this.packId}) has an unknown image path: ${imgPath}`);
@@ -174,7 +174,7 @@ class CompendiumPack {
                     // Ensure all linked-weapon IDs point to a weapon
                     const attackItems = docSource.items.filter((i): i is MeleeSource => i.type === "melee");
                     for (const item of attackItems) {
-                        const { linkedWeapon } = item.flags?.pf2e ?? {};
+                        const { linkedWeapon } = item.flags?.avant ?? {};
                         const weaponFound = linkedWeapon
                             ? docSource.items.some((i) => i._id === linkedWeapon && i.type === "weapon")
                             : false;
@@ -252,7 +252,7 @@ class CompendiumPack {
         // Stamp actors and items with partial stats data so the server won't attempt to migrate
         const partialStats = {
             coreVersion: systemJSON.compatibility.minimum,
-            systemId: "pf2e",
+            systemId: "avant",
             systemVersion: systemJSON.version,
         } as DocumentStatsData;
         docSource._stats = { ...partialStats };
@@ -326,7 +326,7 @@ class CompendiumPack {
 
     /** Convert UUIDs in REs to resemble links by name or back again */
     static convertUUIDs(
-        source: ItemSourcePF2e,
+        source: ItemSourceAvant,
         { to, map }: { to: "ids" | "names"; map: Map<string, Map<string, string>> },
     ): void {
         const convertOptions = { to: to === "ids" ? "id" : "name", map } as const;
@@ -366,7 +366,7 @@ class CompendiumPack {
         if (uuid.startsWith("Item.")) {
             throw PackError(`World-item UUID found: ${uuid}`);
         }
-        if (!uuid.startsWith("Compendium.pf2e.")) return uuid;
+        if (!uuid.startsWith("Compendium.avant.")) return uuid;
 
         const toNameRef = (uuid: string): TUUID => {
             const parts = uuid.split(".");
@@ -381,7 +381,7 @@ class CompendiumPack {
         };
 
         const toIDRef = (uuid: string): TUUID => {
-            const match = /(?<=^Compendium\.pf2e\.)([^.]+)\.([^.]+)\.(.+)$/.exec(uuid);
+            const match = /(?<=^Compendium\.avant\.)([^.]+)\.([^.]+)\.(.+)$/.exec(uuid);
             const [, packId, _docType, docName] = match ?? [null, null, null, null];
             const docId = map.get(packId ?? "")?.get(docName ?? "");
             if (docName && docId) {
@@ -473,7 +473,7 @@ class CompendiumPack {
         return folderData.every((maybeFolderData) => this.#isFolderSource(maybeFolderData));
     }
 
-    #assertSizeValid(source: ActorSourcePF2e | ItemSourcePF2e): void {
+    #assertSizeValid(source: ActorSourceAvant | ItemSourceAvant): void {
         if (source.type === "npc" || source.type === "vehicle") {
             if (!tupleHasValue(SIZES, source.system.traits.size.value)) {
                 throw PackError(`Actor size on ${source.name} (${source._id}) is invalid.`);

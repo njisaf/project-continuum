@@ -1,6 +1,6 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { FeatPF2e } from "@item";
-import { EffectSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { FeatAvant } from "@item";
+import { EffectSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { UUIDUtils } from "@util/uuid.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -9,23 +9,23 @@ export class Migration723CumulativeItemBonuses extends MigrationBase {
     static override version = 0.723;
 
     /** Feat items: Animal Skin, Mountance Stance, Mountance Quake, and Mountance Stronghold */
-    private stanceFeats = (async (): Promise<Record<string, FeatPF2e | undefined>> => {
+    private stanceFeats = (async (): Promise<Record<string, FeatAvant | undefined>> => {
         const documents: ClientDocument[] = await UUIDUtils.fromUUIDs([
-            "Compendium.pf2e.feats-srd.ZPclfDmiHzEqblry", // Animal Skin
-            "Compendium.pf2e.feats-srd.ZL5UU9quCTvcWzfY", // Mountain Stance
-            "Compendium.pf2e.feats-srd.n2hawNmzW7DBn1Lm", // Mountain Stronghold
-            "Compendium.pf2e.feats-srd.hO4sKslTrSQMLbGx", // Mountain Quake
+            "Compendium.avant.feats-srd.ZPclfDmiHzEqblry", // Animal Skin
+            "Compendium.avant.feats-srd.ZL5UU9quCTvcWzfY", // Mountain Stance
+            "Compendium.avant.feats-srd.n2hawNmzW7DBn1Lm", // Mountain Stronghold
+            "Compendium.avant.feats-srd.hO4sKslTrSQMLbGx", // Mountain Quake
         ]);
 
-        const feats = documents.filter((d): d is FeatPF2e & { slug: string } => d instanceof FeatPF2e && !!d.slug);
-        return feats.reduce((record: Record<string, FeatPF2e>, f) => ({ ...record, [f.slug]: f }), {});
+        const feats = documents.filter((d): d is FeatAvant & { slug: string } => d instanceof FeatAvant && !!d.slug);
+        return feats.reduce((record: Record<string, FeatAvant>, f) => ({ ...record, [f.slug]: f }), {});
     })();
 
     /** Slug pattern for the same */
     private mountainPattern = /^mountain-(?:stance|stronghold|quake)$/;
 
     /** Remove old Mountain Stance effects */
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type !== "character") return;
 
         const effects = source.items.filter((i): i is EffectSource => i.type === "effect");
@@ -37,7 +37,7 @@ export class Migration723CumulativeItemBonuses extends MigrationBase {
     }
 
     /** Update feat, effect, and equipment items */
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!source.system.slug) return;
 
         switch (source.type) {
@@ -74,10 +74,10 @@ export class Migration723CumulativeItemBonuses extends MigrationBase {
         if (source.type === "script" && source.command.includes("Stance: Mountain Stance")) {
             source.command = String.raw`const actors = game.user.getActiveTokens().flatMap((t) => t.actor ?? []);
 if (actors.length === 0) {
-    return ui.notifications.error("PF2E.ErrorMessage.NoTokenSelected", { localize: true });
+    return ui.notifications.error("AVANT.ErrorMessage.NoTokenSelected", { localize: true });
 }
 
-const ITEM_UUID = "Compendium.pf2e.feat-effects.gYpy9XBPScIlY93p"; // Stance: Mountain Stance
+const ITEM_UUID = "Compendium.avant.feat-effects.gYpy9XBPScIlY93p"; // Stance: Mountain Stance
 const source = (await fromUuid(ITEM_UUID)).toObject();
 source.flags = mergeObject(source.flags ?? {}, { core: { sourceId: ITEM_UUID } });
 

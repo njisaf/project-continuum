@@ -1,5 +1,5 @@
-import { SpellPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { SpellAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { setHasElement } from "@util";
 import { UUIDUtils } from "@util/uuid.ts";
 import { MigrationBase } from "../base.ts";
@@ -9,26 +9,26 @@ export class Migration720UpdateSpellDescriptions extends MigrationBase {
     static override version = 0.72;
 
     private spellUUIDs: Set<CompendiumItemUUID> = new Set([
-        "Compendium.pf2e.spells-srd.Item.GoKkejPj5yWJPIPK", // Adaptive Ablation
-        "Compendium.pf2e.spells-srd.Item.1b55SgYTV65JvmQd", // Blessing of Defiance
-        "Compendium.pf2e.spells-srd.Item.b515AZlB0sridKSq", // Calm Emotions
-        "Compendium.pf2e.spells-srd.Item.NBSBFHxBm88qxQUy", // Chromatic Armor
-        "Compendium.pf2e.spells-srd.Item.9TauMFkIsmvKJNzZ", // Elemental Absorption
-        "Compendium.pf2e.spells-srd.Item.LoBjvguamA12iyW0", // Energy Absorption
-        "Compendium.pf2e.spells-srd.Item.IWUe32Y5k2QFd7YQ", // Gravity Weapon
-        "Compendium.pf2e.spells-srd.Item.WBmvzNDfpwka3qT4", // Light
+        "Compendium.avant.spells-srd.Item.GoKkejPj5yWJPIPK", // Adaptive Ablation
+        "Compendium.avant.spells-srd.Item.1b55SgYTV65JvmQd", // Blessing of Defiance
+        "Compendium.avant.spells-srd.Item.b515AZlB0sridKSq", // Calm Emotions
+        "Compendium.avant.spells-srd.Item.NBSBFHxBm88qxQUy", // Chromatic Armor
+        "Compendium.avant.spells-srd.Item.9TauMFkIsmvKJNzZ", // Elemental Absorption
+        "Compendium.avant.spells-srd.Item.LoBjvguamA12iyW0", // Energy Absorption
+        "Compendium.avant.spells-srd.Item.IWUe32Y5k2QFd7YQ", // Gravity Weapon
+        "Compendium.avant.spells-srd.Item.WBmvzNDfpwka3qT4", // Light
     ]);
 
     private spells = UUIDUtils.fromUUIDs([...this.spellUUIDs]);
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const compendiumSource = source._stats.compendiumSource;
         if (!(source.type === "spell" && setHasElement(this.spellUUIDs, compendiumSource))) {
             return;
         }
 
         const spells: unknown[] = await this.spells;
-        const spell = spells.find((s): s is SpellPF2e => s instanceof SpellPF2e && s.slug === source.system.slug);
+        const spell = spells.find((s): s is SpellAvant => s instanceof SpellAvant && s.slug === source.system.slug);
 
         if (spell) source.system.description.value = spell.description;
     }

@@ -1,17 +1,17 @@
-import type { ActorPF2e, CharacterPF2e } from "@actor";
+import type { ActorAvant, CharacterAvant } from "@actor";
 import { SenseData } from "@actor/creature/index.ts";
 import { CreatureTrait } from "@actor/creature/types.ts";
 import { SIZE_TO_REACH } from "@actor/creature/values.ts";
 import { AttributeString } from "@actor/types.ts";
-import { ABCItemPF2e, type FeatPF2e } from "@item";
+import { ABCItemAvant, type FeatAvant } from "@item";
 import { Size } from "@module/data.ts";
-import type { UserPF2e } from "@module/user/document.ts";
+import type { UserAvant } from "@module/user/document.ts";
 import { sluggify } from "@util";
 import { AncestrySource, AncestrySystemData } from "./data.ts";
 
-class AncestryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABCItemPF2e<TParent> {
+class AncestryAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ABCItemAvant<TParent> {
     static override get validTraits(): Record<CreatureTrait, string> {
-        return CONFIG.PF2E.creatureTraits;
+        return CONFIG.AVANT.creatureTraits;
     }
 
     get traits(): Set<CreatureTrait> {
@@ -43,7 +43,7 @@ class AncestryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends 
     }
 
     /** Include all ancestry features in addition to any with the expected location ID */
-    override getLinkedItems(): FeatPF2e<ActorPF2e>[] {
+    override getLinkedItems(): FeatAvant<ActorAvant>[] {
         if (!this.actor) return [];
 
         return Array.from(
@@ -71,10 +71,10 @@ class AncestryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends 
     }
 
     /** Prepare a character's data derived from their ancestry */
-    override prepareActorData(this: AncestryPF2e<CharacterPF2e>): void {
+    override prepareActorData(this: AncestryAvant<CharacterAvant>): void {
         const { actor } = this;
         if (!actor.isOfType("character")) {
-            console.error("PF2e System | Only a character can have an ancestry");
+            console.error("Avant System | Only a character can have an ancestry");
             return;
         }
 
@@ -117,7 +117,7 @@ class AncestryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends 
         const freeLanguages = this.system.languages.value;
         for (const language of freeLanguages) {
             const alreadyHasLanguage = build.languages.granted.some((l) => l.slug === language);
-            if (language in CONFIG.PF2E.languages && !alreadyHasLanguage) {
+            if (language in CONFIG.AVANT.languages && !alreadyHasLanguage) {
                 build.languages.granted.push({ slug: language, source: this.name });
             }
         }
@@ -154,7 +154,7 @@ class AncestryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends 
     protected override _preUpdate(
         changed: DeepPartial<this["_source"]>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         if (!changed.system) return super._preUpdate(changed, operation, user);
 
@@ -175,9 +175,9 @@ class AncestryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends 
     }
 }
 
-interface AncestryPF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ABCItemPF2e<TParent> {
+interface AncestryAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ABCItemAvant<TParent> {
     readonly _source: AncestrySource;
     system: AncestrySystemData;
 }
 
-export { AncestryPF2e };
+export { AncestryAvant };

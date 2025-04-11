@@ -7,14 +7,14 @@ import {
 } from "@item/ability/helpers.ts";
 import { SelfEffectReference } from "@item/ability/index.ts";
 import { ARMOR_CATEGORIES } from "@item/armor/values.ts";
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
-import type { FeatPF2e } from "@item/feat/document.ts";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
+import type { FeatAvant } from "@item/feat/document.ts";
 import { WEAPON_CATEGORIES } from "@item/weapon/values.ts";
 import { OneToFour } from "@module/data.ts";
 import { getItemFromDragEvent } from "@module/sheet/helpers.ts";
 import type { HTMLTagifyTagsElement } from "@system/html-elements/tagify-tags.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     htmlClosest,
     htmlQuery,
     htmlQueryAll,
@@ -28,7 +28,7 @@ import { UUIDUtils } from "@util/uuid.ts";
 import * as R from "remeda";
 import { featCanHaveKeyOptions } from "./helpers.ts";
 
-class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
+class FeatSheetAvant extends ItemSheetAvant<FeatAvant> {
     static override get defaultOptions(): ItemSheetOptions {
         return {
             ...super.defaultOptions,
@@ -39,8 +39,8 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
 
     override get validTraits(): Record<string, string> {
         return this.item.category === "calling"
-            ? R.omit(CONFIG.PF2E.featTraits, ["calling", "class"])
-            : CONFIG.PF2E.featTraits;
+            ? R.omit(CONFIG.AVANT.featTraits, ["calling", "class"])
+            : CONFIG.AVANT.featTraits;
     }
 
     override async getData(options?: Partial<ItemSheetOptions>): Promise<FeatSheetData> {
@@ -54,14 +54,14 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
 
         return {
             ...sheetData,
-            itemType: game.i18n.localize(feat.isFeature ? "PF2E.LevelLabel" : "PF2E.Item.Feat.LevelLabel"),
-            actionsNumber: CONFIG.PF2E.actionsNumber,
-            actionTypes: CONFIG.PF2E.actionTypes,
-            acuityOptions: CONFIG.PF2E.senseAcuities,
-            attributes: CONFIG.PF2E.abilities,
+            itemType: game.i18n.localize(feat.isFeature ? "AVANT.LevelLabel" : "AVANT.Item.Feat.LevelLabel"),
+            actionsNumber: CONFIG.AVANT.actionsNumber,
+            actionTypes: CONFIG.AVANT.actionTypes,
+            acuityOptions: CONFIG.AVANT.senseAcuities,
+            attributes: CONFIG.AVANT.abilities,
             canHaveKeyOptions: featCanHaveKeyOptions(feat),
-            categories: CONFIG.PF2E.featCategories,
-            frequencies: CONFIG.PF2E.frequencies,
+            categories: CONFIG.AVANT.featCategories,
+            frequencies: CONFIG.AVANT.frequencies,
             hasLanguages: subfeatures.languages.slots > 0 || subfeatures.languages.granted.length > 0,
             hasLineageTrait,
             hasProficiencies: Object.keys(subfeatures.proficiencies).length > 0,
@@ -69,16 +69,16 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             mandatoryTakeOnce: hasLineageTrait || sheetData.data.onlyLevel1,
             maxTakableOptions: [
                 { value: "1", label: "No" },
-                { value: "2", label: "PF2E.Item.Feat.TakeMultiple.Two" },
-                { value: "3", label: "PF2E.Item.Feat.TakeMultiple.Three" },
-                { value: "4", label: "PF2E.Item.Feat.TakeMultiple.Four" },
-                { value: "5", label: "PF2E.Item.Feat.TakeMultiple.Five" },
-                { value: "Infinity", label: "PF2E.Item.Feat.TakeMultiple.NoLimit" },
+                { value: "2", label: "AVANT.Item.Feat.TakeMultiple.Two" },
+                { value: "3", label: "AVANT.Item.Feat.TakeMultiple.Three" },
+                { value: "4", label: "AVANT.Item.Feat.TakeMultiple.Four" },
+                { value: "5", label: "AVANT.Item.Feat.TakeMultiple.Five" },
+                { value: "Infinity", label: "AVANT.Item.Feat.TakeMultiple.NoLimit" },
             ],
             languages: this.#getLanguageOptions(),
             proficiencies: this.#getProficiencyOptions(),
             proficiencyRankOptions: Object.fromEntries(
-                Object.values(CONFIG.PF2E.proficiencyRanks).map((label, i) => [`${i}`, label]),
+                Object.values(CONFIG.AVANT.proficiencyRanks).map((label, i) => [`${i}`, label]),
             ),
             selfEffect: createSelfEffectSheetData(sheetData.data.selfEffect),
             senses: this.#getSenseOptions(),
@@ -91,8 +91,8 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
 
     #getLanguageOptions(): LanguageOptions {
         const subfeatures = this.item.system.subfeatures;
-        const languages = R.keys(CONFIG.PF2E.languages)
-            .map((slug) => ({ slug, label: game.i18n.localize(CONFIG.PF2E.languages[slug]) }))
+        const languages = R.keys(CONFIG.AVANT.languages)
+            .map((slug) => ({ slug, label: game.i18n.localize(CONFIG.AVANT.languages[slug]) }))
             .sort((a, b) => a.label.localeCompare(b.label));
 
         return {
@@ -106,7 +106,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
 
     #getProficiencyOptions(): ProficiencyOptions {
         const feat = this.item;
-        const localize = localizer("PF2E.Actor.Character");
+        const localize = localizer("AVANT.Actor.Character");
         const selectedIncreases = feat.system.subfeatures.proficiencies;
 
         return {
@@ -115,19 +115,19 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
                 options: [
                     {
                         slug: "perception",
-                        label: game.i18n.localize("PF2E.PerceptionLabel"),
+                        label: game.i18n.localize("AVANT.PerceptionLabel"),
                         rank: selectedIncreases.perception?.rank ?? null,
                     },
                     {
                         slug: "spellcasting",
-                        label: game.i18n.localize("PF2E.Actor.Creature.Spellcasting.ShortLabel"),
+                        label: game.i18n.localize("AVANT.Actor.Creature.Spellcasting.ShortLabel"),
                         rank: selectedIncreases.spellcasting?.rank ?? null,
                     },
                 ].sort((a, b) => a.label.localeCompare(b.label)),
             },
             saves: {
                 group: localize("Proficiency.SavingThrow.Title"),
-                options: R.entries(CONFIG.PF2E.saves)
+                options: R.entries(CONFIG.AVANT.saves)
                     .map(([slug, label]) => ({
                         slug,
                         label: game.i18n.localize(label),
@@ -137,7 +137,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             },
             attacks: {
                 group: localize("Proficiency.Attack.Title"),
-                options: R.entries(CONFIG.PF2E.weaponCategories)
+                options: R.entries(CONFIG.AVANT.weaponCategories)
                     .map(([slug, categoryLabel]) => {
                         const label = tupleHasValue(WEAPON_CATEGORIES, slug)
                             ? localize(`Proficiency.Attack.${sluggify(slug, { camel: "bactrian" })}`)
@@ -152,7 +152,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             },
             defenses: {
                 group: localize("Proficiency.Defense.Title"),
-                options: R.entries(CONFIG.PF2E.armorCategories)
+                options: R.entries(CONFIG.AVANT.armorCategories)
                     .map(([slug, categoryLabel]) => {
                         const label = tupleHasValue(ARMOR_CATEGORIES, slug)
                             ? localize(`Proficiency.Defense.${sluggify(slug, { camel: "bactrian" })}`)
@@ -167,7 +167,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             },
             classes: {
                 group: localize("ClassDC.Plural"),
-                options: R.entries(CONFIG.PF2E.classTraits)
+                options: R.entries(CONFIG.AVANT.classTraits)
                     .map(([slug, label]) => ({
                         slug,
                         label: game.i18n.localize(label),
@@ -182,14 +182,14 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
     #getSenseOptions(): SenseOption[] {
         const feat = this.item;
         const selections = feat.system.subfeatures.senses;
-        const senses = R.keys(CONFIG.PF2E.senses);
+        const senses = R.keys(CONFIG.AVANT.senses);
         const sensesWithUnlimitedRange: readonly string[] = SENSES_WITH_UNLIMITED_RANGE;
         return senses
             .map((slug) => {
                 const selection = selections[slug];
                 return {
                     slug,
-                    label: game.i18n.localize(CONFIG.PF2E.senses[slug]),
+                    label: game.i18n.localize(CONFIG.AVANT.senses[slug]),
                     acuity: SENSES_WITH_MANDATORY_ACUITIES[slug] ?? selection?.acuity ?? "precise",
                     range: sensesWithUnlimitedRange.includes(slug) ? null : (selection?.range ?? null),
                     special: slug === "darkvision" ? (selection?.special ?? null) : null,
@@ -215,7 +215,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             htmlQuery<HTMLTagifyTagsElement>(html, `tagify-tags[name="${name}"]`);
 
         tagify(getInput("system.prerequisites.value"), { maxTags: 6, delimiters: ";" });
-        tagify(getInput("system.subfeatures.keyOptions"), { whitelist: CONFIG.PF2E.abilities, maxTags: 3 });
+        tagify(getInput("system.subfeatures.keyOptions"), { whitelist: CONFIG.AVANT.abilities, maxTags: 3 });
 
         // Disable the "add subfeature" anchor unless a corresponding option is selected
         const unselectedOptionsSelects = htmlQueryAll<HTMLSelectElement>(html, "select[data-unselected-options]");
@@ -244,11 +244,11 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             const currentGranted = feat._source.system.subfeatures?.languages?.granted ?? [];
             if (anchor.dataset.action === "add-language") {
                 const slug = newLanguageSelect?.value;
-                if (!slug) throw ErrorPF2e("No option selected");
+                if (!slug) throw ErrorAvant("No option selected");
 
                 if (slug === "slots") {
                     feat.update({ "system.subfeatures.languages.slots": 1 });
-                } else if (objectHasKey(CONFIG.PF2E.languages, slug)) {
+                } else if (objectHasKey(CONFIG.AVANT.languages, slug)) {
                     const options = this.#getLanguageOptions().granted.available;
                     if (options.some((o) => o.slug === slug)) {
                         feat.update({ [`system.subfeatures.languages.granted`]: R.unique([...currentGranted, slug]) });
@@ -272,7 +272,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             if (!anchor) return;
             if (anchor.dataset.action === "add-proficiency") {
                 const slug = newProficiencySelect?.value;
-                if (!slug) throw ErrorPF2e("No option selected");
+                if (!slug) throw ErrorAvant("No option selected");
 
                 const options = Object.values(this.#getProficiencyOptions())
                     .map((o) => o.options)
@@ -280,7 +280,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
                     .filter((o) => !o.rank)
                     .map((o) => o.slug);
                 if (options.includes(slug)) {
-                    const data = slug in CONFIG.PF2E.classTraits ? { rank: 1, attribute: null } : { rank: 1 };
+                    const data = slug in CONFIG.AVANT.classTraits ? { rank: 1, attribute: null } : { rank: 1 };
                     feat.update({ [`system.subfeatures.proficiencies.${slug}`]: data });
                 }
             } else if (anchor.dataset.action === "delete-proficiency") {
@@ -303,7 +303,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             switch (anchor?.dataset.action) {
                 case "add-sense": {
                     const slug = newSenseSelect?.value;
-                    if (!slug) throw ErrorPF2e("No option selected");
+                    if (!slug) throw ErrorAvant("No option selected");
 
                     const options = this.#getSenseOptions()
                         .filter((o) => !o.selected)
@@ -327,7 +327,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
                     const darkvision = feat.system.subfeatures.senses.darkvision;
                     const special = anchor.dataset.special;
                     if (!darkvision || !tupleHasValue(["ancestry", "llv", "second"], special)) {
-                        throw ErrorPF2e("Unexpected failure toggling darkvision special clause");
+                        throw ErrorAvant("Unexpected failure toggling darkvision special clause");
                     }
                     const newSpecial = {
                         ancestry:
@@ -382,7 +382,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
             return;
         }
 
-        throw ErrorPF2e("Invalid item drop");
+        throw ErrorAvant("Invalid item drop");
     }
 
     protected override _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
@@ -414,7 +414,7 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
         const proficiencies = Object.keys(formData).filter((k) => pattern.test(k));
         for (const path of proficiencies) {
             const slug = pattern.exec(path)?.at(1);
-            if (slug && slug in CONFIG.PF2E.classTraits && formData[path] !== 1) {
+            if (slug && slug in CONFIG.AVANT.classTraits && formData[path] !== 1) {
                 delete formData[`system.subfeatures.proficiencies.${slug}.attribute`];
                 formData[`system.subfeatures.proficiencies.${slug}.-=attribute`] = null;
             }
@@ -424,14 +424,14 @@ class FeatSheetPF2e extends ItemSheetPF2e<FeatPF2e> {
     }
 }
 
-interface FeatSheetData extends ItemSheetDataPF2e<FeatPF2e> {
-    actionsNumber: typeof CONFIG.PF2E.actionsNumber;
-    actionTypes: typeof CONFIG.PF2E.actionTypes;
-    acuityOptions: typeof CONFIG.PF2E.senseAcuities;
-    attributes: typeof CONFIG.PF2E.abilities;
+interface FeatSheetData extends ItemSheetDataAvant<FeatAvant> {
+    actionsNumber: typeof CONFIG.AVANT.actionsNumber;
+    actionTypes: typeof CONFIG.AVANT.actionTypes;
+    acuityOptions: typeof CONFIG.AVANT.senseAcuities;
+    attributes: typeof CONFIG.AVANT.abilities;
     canHaveKeyOptions: boolean;
-    categories: typeof CONFIG.PF2E.featCategories;
-    frequencies: typeof CONFIG.PF2E.frequencies;
+    categories: typeof CONFIG.AVANT.featCategories;
+    frequencies: typeof CONFIG.AVANT.frequencies;
     hasLanguages: boolean;
     hasLineageTrait: boolean;
     hasProficiencies: boolean;
@@ -479,4 +479,4 @@ interface SenseOption {
     special: { ancestry: boolean; second: boolean } | null;
 }
 
-export { FeatSheetPF2e };
+export { FeatSheetAvant };

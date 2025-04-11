@@ -1,11 +1,11 @@
-import type { CreaturePF2e, HazardPF2e, VehiclePF2e } from "@actor";
+import type { CreatureAvant, HazardAvant, VehicleAvant } from "@actor";
 import { StatisticModifier, createAttributeModifier } from "@actor/modifiers.ts";
 import { signedInteger } from "@util";
 import * as R from "remeda";
 import { BaseStatistic } from "./base.ts";
 import { BaseStatisticTraceData } from "./data.ts";
 
-type HPStatActor = CreaturePF2e | HazardPF2e | VehiclePF2e;
+type HPStatActor = CreatureAvant | HazardAvant | VehicleAvant;
 
 class HitPointsStatistic<TActor extends HPStatActor = HPStatActor> extends BaseStatistic<TActor> {
     /** The actor's current hit points */
@@ -36,7 +36,7 @@ class HitPointsStatistic<TActor extends HPStatActor = HPStatActor> extends BaseS
 
         super(actor, {
             slug: "hp",
-            label: "PF2E.HitPointsHeader",
+            label: "AVANT.HitPointsHeader",
             domains: actor.isOfType("character", "npc") ? ["con-based", "hp"] : ["hp"],
             modifiers,
         });
@@ -57,7 +57,7 @@ class HitPointsStatistic<TActor extends HPStatActor = HPStatActor> extends BaseS
 
     get breakdown(): string {
         return [
-            this.#baseMax > 0 ? game.i18n.format("PF2E.MaxHitPointsBaseLabel", { base: this.#baseMax }) : null,
+            this.#baseMax > 0 ? game.i18n.format("AVANT.MaxHitPointsBaseLabel", { base: this.#baseMax }) : null,
             ...this.modifiers.filter((m) => m.enabled).map((m) => `${m.label} ${signedInteger(m.modifier)}`),
         ]
             .filter(R.isTruthy)

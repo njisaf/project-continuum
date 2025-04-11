@@ -1,4 +1,4 @@
-import type { TokenPF2e } from "./index.ts";
+import type { TokenAvant } from "./index.ts";
 
 /**
  * Measure the minimum distance between two rectangles
@@ -15,8 +15,8 @@ function measureDistanceCuboid(
         target = null,
     }: {
         reach?: number | null;
-        token?: TokenPF2e | null;
-        target?: TokenPF2e | null;
+        token?: TokenAvant | null;
+        target?: TokenAvant | null;
     } = {},
 ): number {
     if (canvas.grid.type !== CONST.GRID_TYPES.SQUARE) {

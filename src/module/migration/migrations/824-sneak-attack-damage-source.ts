@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Record PC sneak attack damage in an actor flag for reuse by related abilities */
 export class Migration824SneakAttackDamageSource extends MigrationBase {
     static override version = 0.824;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "feat") return;
 
         switch (source.system.slug) {
@@ -14,21 +14,21 @@ export class Migration824SneakAttackDamageSource extends MigrationBase {
                     {
                         key: "ActiveEffectLike",
                         mode: "override",
-                        path: "flags.pf2e.sneakAttackDamage.number",
+                        path: "flags.avant.sneakAttackDamage.number",
                         predicate: ["class:rogue"],
                         value: "ternary(lt(@actor.level, 5), 1, ternary(lt(@actor.level, 11), 2, ternary(lt(@actor.level, 17), 3, 4)))",
                     },
                     {
                         key: "ActiveEffectLike",
                         mode: "override",
-                        path: "flags.pf2e.sneakAttackDamage.faces",
+                        path: "flags.avant.sneakAttackDamage.faces",
                         predicate: ["class:rogue"],
                         value: 6,
                     },
                     {
                         category: "precision",
-                        diceNumber: "@actor.flags.pf2e.sneakAttackDamage.number",
-                        dieSize: "d{actor|flags.pf2e.sneakAttackDamage.faces}",
+                        diceNumber: "@actor.flags.avant.sneakAttackDamage.number",
+                        dieSize: "d{actor|flags.avant.sneakAttackDamage.faces}",
                         key: "DamageDice",
                         predicate: [
                             "target:condition:flat-footed",
@@ -45,7 +45,7 @@ export class Migration824SneakAttackDamageSource extends MigrationBase {
                     {
                         domain: "all",
                         key: "RollOption",
-                        label: "PF2E.SpecificRule.TOTMToggle.FlatFooted",
+                        label: "AVANT.SpecificRule.TOTMToggle.FlatFooted",
                         option: "target:condition:flat-footed",
                         toggleable: "totm",
                     },
@@ -58,10 +58,10 @@ export class Migration824SneakAttackDamageSource extends MigrationBase {
                 const rules = [
                     {
                         category: "precision",
-                        diceNumber: "@actor.flags.pf2e.sneakAttackDamage.number",
-                        dieSize: "d{actor|flags.pf2e.sneakAttackDamage.faces}",
+                        diceNumber: "@actor.flags.avant.sneakAttackDamage.number",
+                        dieSize: "d{actor|flags.avant.sneakAttackDamage.faces}",
                         key: "DamageDice",
-                        label: "PF2E.SpecificRule.SneakAttack",
+                        label: "AVANT.SpecificRule.SneakAttack",
                         predicate: [
                             "target:condition:flat-footed",
                             "item:category:simple",
@@ -104,16 +104,16 @@ export class Migration824SneakAttackDamageSource extends MigrationBase {
                     {
                         key: "ActiveEffectLike",
                         mode: "override",
-                        path: "flags.pf2e.sneakAttackDamage.number",
+                        path: "flags.avant.sneakAttackDamage.number",
                         value: 1,
                     },
                     {
                         key: "ActiveEffectLike",
                         mode: "override",
-                        path: "flags.pf2e.sneakAttackDamage.faces",
+                        path: "flags.avant.sneakAttackDamage.faces",
                         value: "ternary(lt(@actor.level, 6), 4, 6)",
                     },
-                    { key: "GrantItem", uuid: "Compendium.pf2e.classfeatures.Sneak Attack" },
+                    { key: "GrantItem", uuid: "Compendium.avant.classfeatures.Sneak Attack" },
                 ];
                 source.system.rules = rules;
                 return;
@@ -123,20 +123,20 @@ export class Migration824SneakAttackDamageSource extends MigrationBase {
                     {
                         key: "ActiveEffectLike",
                         mode: "override",
-                        path: "flags.pf2e.sneakAttackDamage.number",
+                        path: "flags.avant.sneakAttackDamage.number",
                         value: 1,
                     },
                     {
                         key: "ActiveEffectLike",
                         mode: "override",
-                        path: "flags.pf2e.sneakAttackDamage.faces",
+                        path: "flags.avant.sneakAttackDamage.faces",
                         value: 6,
                     },
-                    { key: "GrantItem", uuid: "Compendium.pf2e.classfeatures.Sneak Attack" },
+                    { key: "GrantItem", uuid: "Compendium.avant.classfeatures.Sneak Attack" },
                     {
                         domain: "all",
                         key: "RollOption",
-                        label: "PF2E.SpecificRule.TOTMToggle.FlatFooted",
+                        label: "AVANT.SpecificRule.TOTMToggle.FlatFooted",
                         option: "target:condition:flat-footed",
                         toggleable: "totm",
                     },
@@ -148,8 +148,8 @@ export class Migration824SneakAttackDamageSource extends MigrationBase {
                 const rules = [
                     {
                         category: "precision",
-                        diceNumber: "@actor.flags.pf2e.sneakAttackDamage.number",
-                        dieSize: "d{actor|flags.pf2e.sneakAttackDamage.faces}",
+                        diceNumber: "@actor.flags.avant.sneakAttackDamage.number",
+                        dieSize: "d{actor|flags.avant.sneakAttackDamage.faces}",
                         key: "DamageDice",
                         predicate: ["item:trait:attack", "target:condition:flat-footed"],
                         selector: "spell-damage",

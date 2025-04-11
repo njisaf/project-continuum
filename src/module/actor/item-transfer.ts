@@ -1,8 +1,8 @@
-import type { PhysicalItemPF2e } from "@item";
-import type { UserPF2e } from "@module/user/document.ts";
+import type { PhysicalItemAvant } from "@item";
+import type { UserAvant } from "@module/user/document.ts";
 import { SocketMessage } from "@scripts/socket.ts";
-import { ErrorPF2e, getActionGlyph, localizer } from "@util";
-import type { ActorPF2e } from "./base.ts";
+import { ErrorAvant, getActionGlyph, localizer } from "@util";
+import type { ActorAvant } from "./base.ts";
 import { TraitViewData } from "./data/base.ts";
 
 export interface ItemTransferData {
@@ -24,8 +24,8 @@ export interface ItemTransferData {
 
 export class ItemTransfer implements ItemTransferData {
     #templatePaths = {
-        flavor: "./systems/pf2e/templates/chat/action/flavor.hbs",
-        content: "./systems/pf2e/templates/chat/action/content.hbs",
+        flavor: "./systems/avant/templates/chat/action/flavor.hbs",
+        content: "./systems/avant/templates/chat/action/content.hbs",
     };
 
     source: ItemTransferData["source"];
@@ -49,31 +49,31 @@ export class ItemTransfer implements ItemTransferData {
             const target = this.#getTarget();
             const loot = [source, target].find((a) => a?.isLootableBy(game.user) && !a.isOwner);
 
-            if (!loot) throw ErrorPF2e("Unexpected missing actor");
+            if (!loot) throw ErrorAvant("Unexpected missing actor");
             ui.notifications.error(
-                game.i18n.format("PF2E.loot.GMSupervisionError", { loot: ItemTransfer.#tokenName(loot) }),
+                game.i18n.format("AVANT.loot.GMSupervisionError", { loot: ItemTransfer.#tokenName(loot) }),
             );
             return;
         }
 
-        console.debug(`PF2e System | Requesting item transfer from GM ${gamemaster.name}`);
-        game.socket.emit("system.pf2e", { request: "itemTransfer", data: this } satisfies SocketMessage);
+        console.debug(`Avant System | Requesting item transfer from GM ${gamemaster.name}`);
+        game.socket.emit("system.avant", { request: "itemTransfer", data: this } satisfies SocketMessage);
     }
 
     // Only a GM can call this method, or else Foundry will block it (or would if we didn't first)
-    async enact(requester: UserPF2e): Promise<void> {
+    async enact(requester: UserAvant): Promise<void> {
         if (!game.user.isGM) {
-            throw ErrorPF2e("Unauthorized item transfer");
+            throw ErrorAvant("Unauthorized item transfer");
         }
 
-        console.debug("PF2e System | Enacting item transfer");
+        console.debug("Avant System | Enacting item transfer");
         const sourceActor = this.#getSource();
         const sourceItem = sourceActor?.inventory.find((i) => i.id === this.source.itemId);
         const targetActor = this.#getTarget();
 
         // Sanity checks
         if (!(sourceActor?.isLootableBy(game.user) && sourceItem && targetActor?.isLootableBy(game.user))) {
-            throw ErrorPF2e("Failed sanity check during item transfer");
+            throw ErrorAvant("Failed sanity check during item transfer");
         }
 
         this.isPurchase ??= sourceActor.isOfType("loot") && sourceActor.isMerchant;
@@ -97,7 +97,7 @@ export class ItemTransfer implements ItemTransferData {
     }
 
     /** Retrieve the full actor from the source or target ID */
-    #getActor(tokenId: string | undefined, actorId: string): ActorPF2e | null {
+    #getActor(tokenId: string | undefined, actorId: string): ActorAvant | null {
         if (typeof tokenId === "string") {
             const token = canvas.tokens.placeables.find((t) => t.id === tokenId);
             return token?.actor ?? null;
@@ -105,19 +105,19 @@ export class ItemTransfer implements ItemTransferData {
         return game.actors.get(actorId) ?? null;
     }
 
-    #getSource(): ActorPF2e | null {
+    #getSource(): ActorAvant | null {
         return this.#getActor(this.source.tokenId, this.source.actorId);
     }
 
-    #getTarget(): ActorPF2e | null {
+    #getTarget(): ActorAvant | null {
         return this.#getActor(this.target.tokenId, this.target.actorId);
     }
 
     // Prefer token names over actor names
-    static #tokenName(document: ActorPF2e | User): string {
+    static #tokenName(document: ActorAvant | User): string {
         if ("items" in document) {
             // Use a special moniker for party actors
-            if (document.isOfType("party")) return game.i18n.localize("PF2E.loot.PartyStash");
+            if (document.isOfType("party")) return game.i18n.localize("AVANT.loot.PartyStash");
             // Synthetic actor: use its token name or, failing that, actor name
             if (document.token) return document.token.name;
 
@@ -141,12 +141,12 @@ export class ItemTransfer implements ItemTransferData {
      * @param item        The item created on the target actor as a result of the drag & drop
      */
     async #sendMessage(
-        requester: UserPF2e,
-        sourceActor: ActorPF2e,
-        targetActor: ActorPF2e,
-        item: PhysicalItemPF2e | null,
+        requester: UserAvant,
+        sourceActor: ActorAvant,
+        targetActor: ActorAvant,
+        item: PhysicalItemAvant | null,
     ): Promise<void> {
-        const localize = localizer("PF2E.loot");
+        const localize = localizer("AVANT.loot");
 
         if (!item) {
             if (this.isPurchase) {
@@ -169,7 +169,7 @@ export class ItemTransfer implements ItemTransferData {
                 });
                 return;
             } else {
-                throw ErrorPF2e("Unexpected item-transfer failure");
+                throw ErrorAvant("Unexpected item-transfer failure");
             }
         }
 
@@ -177,8 +177,8 @@ export class ItemTransfer implements ItemTransferData {
         type PatternMatch = [speaker: string, subtitle: string, formatArgs: Parameters<Localization["format"]>];
 
         const [speaker, subtitle, formatArgs] = ((): PatternMatch => {
-            const isMerchant = (actor: ActorPF2e) => actor.isOfType("loot") && actor.isMerchant;
-            const isWhat = (actor: ActorPF2e) => ({
+            const isMerchant = (actor: ActorAvant) => actor.isOfType("loot") && actor.isMerchant;
+            const isWhat = (actor: ActorAvant) => ({
                 isCharacter: actor.testUserPermission(requester, "OWNER") && actor.isOfType("character"),
                 isMerchant: isMerchant(actor),
                 isNPC:
@@ -305,11 +305,11 @@ export class ItemTransfer implements ItemTransferData {
                 ];
             } else {
                 // Possibly to fill out later: Merchant sells item to character directly from loot container
-                throw ErrorPF2e("Unexpected item-transfer failure");
+                throw ErrorAvant("Unexpected item-transfer failure");
             }
         })();
         const formatProperties = formatArgs[1];
-        if (!formatProperties) throw ErrorPF2e("Unexpected item-transfer failure");
+        if (!formatProperties) throw ErrorAvant("Unexpected item-transfer failure");
         formatProperties.quantity = this.quantity;
         formatProperties.item = await TextEditor.enrichHTML(item.link);
 
@@ -330,14 +330,14 @@ export class ItemTransfer implements ItemTransferData {
         });
     }
 
-    async #messageFlavor(sourceActor: ActorPF2e, targetActor: ActorPF2e, subtitle: string): Promise<string> {
+    async #messageFlavor(sourceActor: ActorAvant, targetActor: ActorAvant, subtitle: string): Promise<string> {
         const glyph = getActionGlyph(sourceActor.isOfType("loot") && targetActor.isOfType("loot") ? 2 : 1);
-        const action = { title: "PF2E.Actions.Interact.Title", subtitle: subtitle, glyph };
+        const action = { title: "AVANT.Actions.Interact.Title", subtitle: subtitle, glyph };
         const traits: TraitViewData[] = [
             {
                 name: "manipulate",
-                label: CONFIG.PF2E.featTraits.manipulate,
-                description: CONFIG.PF2E.traitsDescriptions.manipulate,
+                label: CONFIG.AVANT.featTraits.manipulate,
+                description: CONFIG.AVANT.traitsDescriptions.manipulate,
             },
         ];
 

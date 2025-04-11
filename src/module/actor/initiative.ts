@@ -1,42 +1,42 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import { createPonderousPenalty } from "@actor/character/helpers.ts";
 import { InitiativeData } from "@actor/data/base.ts";
 import { ZeroToTwo } from "@module/data.ts";
-import { CombatantPF2e, EncounterPF2e } from "@module/encounter/index.ts";
+import { CombatantAvant, EncounterAvant } from "@module/encounter/index.ts";
 import { CheckRoll } from "@system/check/index.ts";
 import { Statistic, StatisticData, StatisticRollParameters, StatisticTraceData } from "@system/statistic/index.ts";
 import { AttributeString } from "./types.ts";
 
 interface InitiativeRollResult {
-    combatant: CombatantPF2e<EncounterPF2e>;
+    combatant: CombatantAvant<EncounterAvant>;
     roll: Rolled<CheckRoll>;
 }
 
 interface InitiativeRollParams extends StatisticRollParameters {
-    combatant?: CombatantPF2e<EncounterPF2e>;
+    combatant?: CombatantAvant<EncounterAvant>;
     /** Whether the encounter tracker should be updated with the roll result */
     updateTracker?: boolean;
 }
 
 /** A statistic wrapper used to roll initiative for actors */
 class ActorInitiative {
-    actor: ActorPF2e;
+    actor: ActorAvant;
 
     statistic: Statistic;
 
     tiebreakPriority: ZeroToTwo;
 
-    constructor(actor: ActorPF2e, { statistic, tiebreakPriority }: { statistic: string; tiebreakPriority: ZeroToTwo }) {
+    constructor(actor: ActorAvant, { statistic, tiebreakPriority }: { statistic: string; tiebreakPriority: ZeroToTwo }) {
         this.actor = actor;
         this.tiebreakPriority = tiebreakPriority;
 
         const base = actor.getStatistic(statistic);
         const ponderousPenalty = actor.isOfType("character") ? createPonderousPenalty(actor) : null;
-        const rollLabel = game.i18n.format("PF2E.InitiativeWithSkill", { skillName: base?.label ?? "" });
+        const rollLabel = game.i18n.format("AVANT.InitiativeWithSkill", { skillName: base?.label ?? "" });
 
         const data: StatisticData = {
             slug: "initiative",
-            label: base?.label ?? "PF2E.InitiativeLabel",
+            label: base?.label ?? "AVANT.InitiativeLabel",
             domains: ["initiative"],
             rollOptions: [base?.slug ?? []].flat(),
             check: { type: "initiative", label: rollLabel },
@@ -57,7 +57,7 @@ class ActorInitiative {
     async roll(args: InitiativeRollParams = {}): Promise<InitiativeRollResult | null> {
         // Get or create the combatant
         const combatant =
-            args.combatant?.actor === this.actor ? args.combatant : await CombatantPF2e.fromActor(this.actor, false);
+            args.combatant?.actor === this.actor ? args.combatant : await CombatantAvant.fromActor(this.actor, false);
         if (!combatant) return null;
 
         if (combatant.hidden) {

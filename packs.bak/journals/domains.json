@@ -1,0 +1,1291 @@
+{
+    "_id": "EEZvDB1Z7ezwaxIr",
+    "name": "Domains",
+    "ownership": {
+        "default": 0
+    },
+    "pages": [
+        {
+            "_id": "qMS6QepvY7UQQjcr",
+            "image": {},
+            "name": "Abomination Domain",
+            "sort": 200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You seek to instill abhorrence and horror in those around you.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Lift Nature's Caul]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Fearful Feast]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Shivaska], @UUID[Compendium.avant.deities.Item.Camazotz], @UUID[Compendium.avant.deities.Item.Yamasoth], @UUID[Compendium.avant.deities.Item.Charg]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Lamashtu], @UUID[Compendium.avant.deities.Item.Dagon], @UUID[Compendium.avant.deities.Item.Etaris], @UUID[Compendium.avant.deities.Item.Chavazvug]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "T2y0vuYibZCL7CH0",
+            "image": {},
+            "name": "Air Domain",
+            "sort": 400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You can control winds and the weather.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Pushing Gust]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Disperse into Air]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Apollyon], @UUID[Compendium.avant.deities.Item.Baalzebul], @UUID[Compendium.avant.deities.Item.Onos], @UUID[Compendium.avant.deities.Item.Gozreh], @UUID[Compendium.avant.deities.Item.Rovagug], @UUID[Compendium.avant.deities.Item.Pazuzu], @UUID[Compendium.avant.deities.Item.Hshurha], @UUID[Compendium.avant.deities.Item.Ranginori], @UUID[Compendium.avant.deities.Item.Seramaydiel], @UUID[Compendium.avant.deities.Item.Ylimancha], @UUID[Compendium.avant.deities.Item.Aegirran], @UUID[Compendium.avant.deities.Item.Tjasse], @UUID[Compendium.avant.deities.Item.Horus], @UUID[Compendium.avant.deities.Item.Sturovenen], @UUID[Compendium.avant.deities.Item.Rull], @UUID[Compendium.avant.deities.Item.Ghlaunder], @UUID[Compendium.avant.deities.Item.Hei Feng], @UUID[Compendium.avant.deities.Item.Yelayne], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Faceless Sphinx)], @UUID[Compendium.avant.deities.Item.Isph-Aun-Vuln], @UUID[Compendium.avant.deities.Item.Xiquiripat], @UUID[Compendium.avant.deities.Item.Ragdya]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Areshkagal], @UUID[Compendium.avant.deities.Item.Valani], @UUID[Compendium.avant.deities.Item.Il'Surrish], @UUID[Compendium.avant.deities.Item.Uvuko], @UUID[Compendium.avant.deities.Item.Camazotz], @UUID[Compendium.avant.deities.Item.Alglenweis], @UUID[Compendium.avant.deities.Item.Qi Zhong]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Breath of the Endless Sky], @UUID[Compendium.avant.deities.Item.Green Faith]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Rivethun]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sky Keepers]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Weight of the World]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Tempest]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "yaMJsfYZmWJLqbFE",
+            "image": {},
+            "name": "Ambition Domain",
+            "sort": 600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You strive to keep up with and outpace the competition.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Ignite Ambition]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Competitive Edge]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Szuriel], @UUID[Compendium.avant.deities.Item.Baalzebul], @UUID[Compendium.avant.deities.Item.Mammon], @UUID[Compendium.avant.deities.Item.Lissala (The Order of Virtue)], @UUID[Compendium.avant.deities.Item.Myr], @UUID[Compendium.avant.deities.Item.Sicva], @UUID[Compendium.avant.deities.Item.Zon-Kuthon], @UUID[Compendium.avant.deities.Item.Shax], @UUID[Compendium.avant.deities.Item.Sithhud], @UUID[Compendium.avant.deities.Item.Marishi], @UUID[Compendium.avant.deities.Item.Zohls], @UUID[Compendium.avant.deities.Item.Skode], @UUID[Compendium.avant.deities.Item.Hadregash], @UUID[Compendium.avant.deities.Item.Aroden], @UUID[Compendium.avant.deities.Item.Gyronna], @UUID[Compendium.avant.deities.Item.Ydersius], @UUID[Compendium.avant.deities.Item.Malthus], @UUID[Compendium.avant.deities.Item.Ussharassim], @UUID[Compendium.avant.deities.Item.Lubaiko], @UUID[Compendium.avant.deities.Item.Grask Uldeth], @UUID[Compendium.avant.deities.Item.Wulgren], @UUID[Compendium.avant.deities.Item.Atrogine], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Etaris], @UUID[Compendium.avant.deities.Item.Kurgess], @UUID[Compendium.avant.deities.Item.Obari], @UUID[Compendium.avant.deities.Item.Thamir], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Veiled Voice)], @UUID[Compendium.avant.deities.Item.Aonaurious], @UUID[Compendium.avant.deities.Item.Eiseth], @UUID[Compendium.avant.deities.Item.Enkaar], @UUID[Compendium.avant.deities.Item.Eyes That Watch], @UUID[Compendium.avant.deities.Item.Grasping Iovett], @UUID[Compendium.avant.deities.Item.Husk], @UUID[Compendium.avant.deities.Item.Lady Razor], @UUID[Compendium.avant.deities.Item.Reshmit of the Heavy Voice], @UUID[Compendium.avant.deities.Item.Thalaphyrr], @UUID[Compendium.avant.deities.Item.Fumeiyoshi], @UUID[Compendium.avant.deities.Item.Jin Li], @UUID[Compendium.avant.deities.Item.Mugura and Nrithu], @UUID[Compendium.avant.deities.Item.Srikalis, Sritaming, and Sribaril], @UUID[Compendium.avant.deities.Item.Conqueror Worm]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Ulon], @UUID[Compendium.avant.deities.Item.Anogetz], @UUID[Compendium.avant.deities.Item.Zelishkar], @UUID[Compendium.avant.deities.Item.Haagenti], @UUID[Compendium.avant.deities.Item.Droskar], @UUID[Compendium.avant.deities.Item.Ragathiel], @UUID[Compendium.avant.deities.Item.Casandalee], @UUID[Compendium.avant.deities.Item.Ravithra]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Esoteric Order of the Palatine Eye], @UUID[Compendium.avant.deities.Item.Shadow Cabinet]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Fortune's Fate], @UUID[Compendium.avant.deities.Item.The Divine Dare], @UUID[Compendium.avant.deities.Item.Wheels of Innovation]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Freeing Flame], @UUID[Compendium.avant.deities.Item.The Laborer's Bastion]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "7xrNAgAnBqBgE3yM",
+            "image": {},
+            "name": "Change Domain",
+            "sort": 800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You strive to keep up with and outpace the competition.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Ignite Ambition]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Competitive Edge]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Szuriel], @UUID[Compendium.avant.deities.Item.Baalzebul], @UUID[Compendium.avant.deities.Item.Mammon], @UUID[Compendium.avant.deities.Item.Lissala (The Order of Virtue)], @UUID[Compendium.avant.deities.Item.Myr], @UUID[Compendium.avant.deities.Item.Sicva], @UUID[Compendium.avant.deities.Item.Zon-Kuthon], @UUID[Compendium.avant.deities.Item.Shax], @UUID[Compendium.avant.deities.Item.Sithhud], @UUID[Compendium.avant.deities.Item.Marishi], @UUID[Compendium.avant.deities.Item.Zohls], @UUID[Compendium.avant.deities.Item.Skode], @UUID[Compendium.avant.deities.Item.Hadregash], @UUID[Compendium.avant.deities.Item.Aroden], @UUID[Compendium.avant.deities.Item.Gyronna], @UUID[Compendium.avant.deities.Item.Ydersius], @UUID[Compendium.avant.deities.Item.Malthus], @UUID[Compendium.avant.deities.Item.Ussharassim], @UUID[Compendium.avant.deities.Item.Lubaiko], @UUID[Compendium.avant.deities.Item.Grask Uldeth], @UUID[Compendium.avant.deities.Item.Wulgren], @UUID[Compendium.avant.deities.Item.Atrogine], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Etaris], @UUID[Compendium.avant.deities.Item.Kurgess], @UUID[Compendium.avant.deities.Item.Obari], @UUID[Compendium.avant.deities.Item.Thamir], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Veiled Voice)], @UUID[Compendium.avant.deities.Item.Aonaurious], @UUID[Compendium.avant.deities.Item.Eiseth], @UUID[Compendium.avant.deities.Item.Enkaar], @UUID[Compendium.avant.deities.Item.Eyes That Watch], @UUID[Compendium.avant.deities.Item.Grasping Iovett], @UUID[Compendium.avant.deities.Item.Husk], @UUID[Compendium.avant.deities.Item.Lady Razor], @UUID[Compendium.avant.deities.Item.Reshmit of the Heavy Voice], @UUID[Compendium.avant.deities.Item.Thalaphyrr], @UUID[Compendium.avant.deities.Item.Fumeiyoshi], @UUID[Compendium.avant.deities.Item.Jin Li], @UUID[Compendium.avant.deities.Item.Mugura and Nrithu], @UUID[Compendium.avant.deities.Item.Srikalis, Sritaming, and Sribaril], @UUID[Compendium.avant.deities.Item.Conqueror Worm]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Ulon], @UUID[Compendium.avant.deities.Item.Anogetz], @UUID[Compendium.avant.deities.Item.Zelishkar], @UUID[Compendium.avant.deities.Item.Haagenti], @UUID[Compendium.avant.deities.Item.Droskar], @UUID[Compendium.avant.deities.Item.Ragathiel], @UUID[Compendium.avant.deities.Item.Casandalee], @UUID[Compendium.avant.deities.Item.Ravithra]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Esoteric Order of the Palatine Eye], @UUID[Compendium.avant.deities.Item.Shadow Cabinet]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Fortune's Fate], @UUID[Compendium.avant.deities.Item.The Divine Dare], @UUID[Compendium.avant.deities.Item.Wheels of Innovation]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Freeing Flame], @UUID[Compendium.avant.deities.Item.The Laborer's Bastion], @UUID[Compendium.avant.deities.Item.Touch of the Sun]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Time]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "QSk78hQR3zskMlq2",
+            "image": {},
+            "name": "Cities Domain",
+            "sort": 1000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You have powers over urban environments and denizens.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Face in the Crowd]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Pulse of Civilization]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Dispater], @UUID[Compendium.avant.deities.Item.Elion], @UUID[Compendium.avant.deities.Item.Abadar], @UUID[Compendium.avant.deities.Item.Cayden Cailean], @UUID[Compendium.avant.deities.Item.Faith in the Fallen], @UUID[Compendium.avant.deities.Item.Xoveron], @UUID[Compendium.avant.deities.Item.Folgrit], @UUID[Compendium.avant.deities.Item.Findeladlara], @UUID[Compendium.avant.deities.Item.Thisamet], @UUID[Compendium.avant.deities.Item.Zohls], @UUID[Compendium.avant.deities.Item.Cong], @UUID[Compendium.avant.deities.Item.Malthus], @UUID[Compendium.avant.deities.Item.Chohar], @UUID[Compendium.avant.deities.Item.Luhar], @UUID[Compendium.avant.deities.Item.Mazludeh], @UUID[Compendium.avant.deities.Item.Tlehar], @UUID[Compendium.avant.deities.Item.Grask Uldeth], @UUID[Compendium.avant.deities.Item.Uirch], @UUID[Compendium.avant.deities.Item.Emmeton Galardaria], @UUID[Compendium.avant.deities.Item.Rokoga Gin], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Faceless Sphinx)], @UUID[Compendium.avant.deities.Item.Matravash]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Ayrzul], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Kazutal], @UUID[Compendium.avant.deities.Item.Yamasoth]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Good Neighbors], @UUID[Compendium.avant.deities.Item.Shapes of the Fading Luster]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Urban Prosperity]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Demon Bringers], @UUID[Compendium.avant.deities.Item.The Offering Plate]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "jq9O1tl76g2AzLOh",
+            "image": {},
+            "name": "Cold Domain",
+            "sort": 1200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You control ice, snow, and freezing temperatures.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Winter Bolt]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Diamond Dust]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sithhud], @UUID[Compendium.avant.deities.Item.Hshurha], @UUID[Compendium.avant.deities.Item.Pulura], @UUID[Compendium.avant.deities.Item.Thremyr], @UUID[Compendium.avant.deities.Item.Rull], @UUID[Compendium.avant.deities.Item.Orgesh], @UUID[Compendium.avant.deities.Item.Alglenweis], @UUID[Compendium.avant.deities.Item.The Lady of the North Star], @UUID[Compendium.avant.deities.Item.Yamatsumi], @UUID[Compendium.avant.deities.Item.Kostchtchie]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Uvuko], @UUID[Compendium.avant.deities.Item.Hataam], @UUID[Compendium.avant.deities.Item.Ristrentho]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Breath of the Endless Sky], @UUID[Compendium.avant.deities.Item.Green Faith], @UUID[Compendium.avant.deities.Item.Waves of the Boundless Sea]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Weight of the World]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Tempest]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "flmxRzGxN2rRNyxZ",
+            "image": {},
+            "name": "Confidence Domain",
+            "sort": 1400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You overcome your fear and project pride.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Veil of Confidence]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Delusional Pride]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Dispater], @UUID[Compendium.avant.deities.Item.Arazni], @UUID[Compendium.avant.deities.Item.Asmodeus], @UUID[Compendium.avant.deities.Item.Iomedae], @UUID[Compendium.avant.deities.Item.Vulot], @UUID[Compendium.avant.deities.Item.Bolka], @UUID[Compendium.avant.deities.Item.Trudd], @UUID[Compendium.avant.deities.Item.Count Ranalc], @UUID[Compendium.avant.deities.Item.Arshea], @UUID[Compendium.avant.deities.Item.Eritrice], @UUID[Compendium.avant.deities.Item.Jaidz], @UUID[Compendium.avant.deities.Item.Kelinahat], @UUID[Compendium.avant.deities.Item.Marishi], @UUID[Compendium.avant.deities.Item.Olheon], @UUID[Compendium.avant.deities.Item.Picoperi], @UUID[Compendium.avant.deities.Item.Seramaydiel], @UUID[Compendium.avant.deities.Item.Skode], @UUID[Compendium.avant.deities.Item.Gorum], @UUID[Compendium.avant.deities.Item.Grundinnar], @UUID[Compendium.avant.deities.Item.Smiad], @UUID[Compendium.avant.deities.Item.Sturovenen], @UUID[Compendium.avant.deities.Item.Bifrons], @UUID[Compendium.avant.deities.Item.Titivilus], @UUID[Compendium.avant.deities.Item.Ussharassim], @UUID[Compendium.avant.deities.Item.Grask Uldeth], @UUID[Compendium.avant.deities.Item.Chaldira], @UUID[Compendium.avant.deities.Item.Etaris], @UUID[Compendium.avant.deities.Item.Obari], @UUID[Compendium.avant.deities.Item.Thamir], @UUID[Compendium.avant.deities.Item.General Susumu], @UUID[Compendium.avant.deities.Item.Ragdya], @UUID[Compendium.avant.deities.Item.Raumya]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Barbatos], @UUID[Compendium.avant.deities.Item.Pahti Coatl], @UUID[Compendium.avant.deities.Item.Kols], @UUID[Compendium.avant.deities.Item.Ragathiel], @UUID[Compendium.avant.deities.Item.Aroden], @UUID[Compendium.avant.deities.Item.Adanye], @UUID[Compendium.avant.deities.Item.Izuyaku], @UUID[Compendium.avant.deities.Item.Nivi Rhombodazzle], @UUID[Compendium.avant.deities.Item.Yelayne], @UUID[Compendium.avant.deities.Item.Nameless]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Gravelady's Guard], @UUID[Compendium.avant.deities.Item.The Divine Dare], @UUID[Compendium.avant.deities.Item.The Endless Road], @UUID[Compendium.avant.deities.Item.The Resplendent Court]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Perplexing Jest]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "ydbCjJ9PPmRzZhDN",
+            "image": {},
+            "name": "Creation Domain",
+            "sort": 1600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You have divine abilities related to crafting and art.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Creative Splash]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Artistic Flourish]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Khepri], @UUID[Compendium.avant.deities.Item.Neith], @UUID[Compendium.avant.deities.Item.Ptah], @UUID[Compendium.avant.deities.Item.Mammon], @UUID[Compendium.avant.deities.Item.Aesocar], @UUID[Compendium.avant.deities.Item.Amaznen], @UUID[Compendium.avant.deities.Item.Tolte Coatl], @UUID[Compendium.avant.deities.Item.Shelyn], @UUID[Compendium.avant.deities.Item.Torag], @UUID[Compendium.avant.deities.Item.Laudinmio], @UUID[Compendium.avant.deities.Item.Shumunue], @UUID[Compendium.avant.deities.Item.Verilorn], @UUID[Compendium.avant.deities.Item.Findeladlara], @UUID[Compendium.avant.deities.Item.Yuelral], @UUID[Compendium.avant.deities.Item.Bharnarol], @UUID[Compendium.avant.deities.Item.Falayna], @UUID[Compendium.avant.deities.Item.Seramaydiel], @UUID[Compendium.avant.deities.Item.Soralyon], @UUID[Compendium.avant.deities.Item.Minderhal], @UUID[Compendium.avant.deities.Item.Thremyr], @UUID[Compendium.avant.deities.Item.Zogmugot], @UUID[Compendium.avant.deities.Item.Aroden], @UUID[Compendium.avant.deities.Item.Cormigus], @UUID[Compendium.avant.deities.Item.Malthus], @UUID[Compendium.avant.deities.Item.Il'Surrish], @UUID[Compendium.avant.deities.Item.Liisglan], @UUID[Compendium.avant.deities.Item.Monad], @UUID[Compendium.avant.deities.Item.Phlegyas], @UUID[Compendium.avant.deities.Item.Uvuko], @UUID[Compendium.avant.deities.Item.Varg], @UUID[Compendium.avant.deities.Item.Wulgren], @UUID[Compendium.avant.deities.Item.Aakriti], @UUID[Compendium.avant.deities.Item.Apsu], @UUID[Compendium.avant.deities.Item.Brigh], @UUID[Compendium.avant.deities.Item.Casandalee], @UUID[Compendium.avant.deities.Item.Grandmother Spider], @UUID[Compendium.avant.deities.Item.Immonhiel], @UUID[Compendium.avant.deities.Item.Nocticula], @UUID[Compendium.avant.deities.Item.Yelayne], @UUID[Compendium.avant.deities.Item.Ardad Lili], @UUID[Compendium.avant.deities.Item.Doloras], @UUID[Compendium.avant.deities.Item.Nameless], @UUID[Compendium.avant.deities.Item.Alglenweis], @UUID[Compendium.avant.deities.Item.Daikitsu], @UUID[Compendium.avant.deities.Item.Lady Jingxi], @UUID[Compendium.avant.deities.Item.Likha], @UUID[Compendium.avant.deities.Item.Otolmens]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Hathor], @UUID[Compendium.avant.deities.Item.Elion], @UUID[Compendium.avant.deities.Item.Abadar], @UUID[Compendium.avant.deities.Item.Haagenti], @UUID[Compendium.avant.deities.Item.Magrim], @UUID[Compendium.avant.deities.Item.Sairazul], @UUID[Compendium.avant.deities.Item.Ra], @UUID[Compendium.avant.deities.Item.Inna], @UUID[Compendium.avant.deities.Item.Mrtyu], @UUID[Compendium.avant.deities.Item.Tlehar], @UUID[Compendium.avant.deities.Item.Zjar-Tovan], @UUID[Compendium.avant.deities.Item.Zyphus]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Blooms of the Spreading Weald]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Demon Bringers], @UUID[Compendium.avant.deities.Item.Pillars of Knowledge], @UUID[Compendium.avant.deities.Item.Radiant Prism], @UUID[Compendium.avant.deities.Item.Sovyrian Conclave], @UUID[Compendium.avant.deities.Item.Stone's Blood], @UUID[Compendium.avant.deities.Item.The Curtain Call], @UUID[Compendium.avant.deities.Item.The Enlightened Scholar's Path], @UUID[Compendium.avant.deities.Item.The Resplendent Court], @UUID[Compendium.avant.deities.Item.Wheels of Innovation]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Perplexing Jest]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "CM9ZqWwl7myKn2X1",
+            "image": {},
+            "name": "Darkness Domain",
+            "sort": 1800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You operate in the darkness and take away the light.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Cloak of Shadow]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Darkened Sight]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Apep], @UUID[Compendium.avant.deities.Item.Nephthys], @UUID[Compendium.avant.deities.Item.Set], @UUID[Compendium.avant.deities.Item.Zon-Kuthon], @UUID[Compendium.avant.deities.Item.Tresmalvos], @UUID[Compendium.avant.deities.Item.Shivaska], @UUID[Compendium.avant.deities.Item.Count Ranalc], @UUID[Compendium.avant.deities.Item.Ketephys], @UUID[Compendium.avant.deities.Item.Ashava], @UUID[Compendium.avant.deities.Item.Pulura], @UUID[Compendium.avant.deities.Item.Tanagaar], @UUID[Compendium.avant.deities.Item.Haggakal], @UUID[Compendium.avant.deities.Item.Zugero], @UUID[Compendium.avant.deities.Item.Alazhra], @UUID[Compendium.avant.deities.Item.Vavaalrav], @UUID[Compendium.avant.deities.Item.Luhar], @UUID[Compendium.avant.deities.Item.Ah Pook], @UUID[Compendium.avant.deities.Item.Ahriman], @UUID[Compendium.avant.deities.Item.Aleth], @UUID[Compendium.avant.deities.Item.Camazotz], @UUID[Compendium.avant.deities.Item.Groetus], @UUID[Compendium.avant.deities.Item.Nocticula], @UUID[Compendium.avant.deities.Item.Mhar], @UUID[Compendium.avant.deities.Item.Nyarlathotep (Haunter in the Dark)], @UUID[Compendium.avant.deities.Item.Nyuo-Ogh], @UUID[Compendium.avant.deities.Item.Ardad Lili], @UUID[Compendium.avant.deities.Item.Dachzerul], @UUID[Compendium.avant.deities.Item.Iggeret], @UUID[Compendium.avant.deities.Item.Shawnari], @UUID[Compendium.avant.deities.Item.Enkaar], @UUID[Compendium.avant.deities.Item.Eyes That Watch], @UUID[Compendium.avant.deities.Item.Grasping Iovett], @UUID[Compendium.avant.deities.Item.Husk], @UUID[Compendium.avant.deities.Item.Lady Razor], @UUID[Compendium.avant.deities.Item.Reshmit of the Heavy Voice], @UUID[Compendium.avant.deities.Item.Thalaphyrr], @UUID[Compendium.avant.deities.Item.Lao Shu Po], @UUID[Compendium.avant.deities.Item.The Lady of the North Star], @UUID[Compendium.avant.deities.Item.Kerkamoth]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Lalaci], @UUID[Compendium.avant.deities.Item.Atropos], @UUID[Compendium.avant.deities.Item.Kalekot], @UUID[Compendium.avant.deities.Item.Grandmother Spider], @UUID[Compendium.avant.deities.Item.Nin], @UUID[Compendium.avant.deities.Item.Yaezhing]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Shadow Cabinet]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Children of the Night], @UUID[Compendium.avant.deities.Item.Cosmic Caravan]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Cosmos]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "798PFdS8FmefcOl0",
+            "image": {},
+            "name": "Death Domain",
+            "sort": 2000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You have the power to end lives and destroy undead.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Death's Call]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Eradicate Undeath]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Set], @UUID[Compendium.avant.deities.Item.Charon], @UUID[Compendium.avant.deities.Item.Norgorber], @UUID[Compendium.avant.deities.Item.Pharasma], @UUID[Compendium.avant.deities.Item.Corosbel], @UUID[Compendium.avant.deities.Item.Shax], @UUID[Compendium.avant.deities.Item.Yhidothrus], @UUID[Compendium.avant.deities.Item.Magrim], @UUID[Compendium.avant.deities.Item.Dammerich], @UUID[Compendium.avant.deities.Item.Uskyeria], @UUID[Compendium.avant.deities.Item.Fandarra], @UUID[Compendium.avant.deities.Item.Anubis], @UUID[Compendium.avant.deities.Item.Nergal], @UUID[Compendium.avant.deities.Item.Barzahk], @UUID[Compendium.avant.deities.Item.Imot], @UUID[Compendium.avant.deities.Item.Mother Vulture], @UUID[Compendium.avant.deities.Item.Mrtyu], @UUID[Compendium.avant.deities.Item.Narakaas], @UUID[Compendium.avant.deities.Item.Saloc], @UUID[Compendium.avant.deities.Item.Teshallas], @UUID[Compendium.avant.deities.Item.The Pale Horse], @UUID[Compendium.avant.deities.Item.Vonymos], @UUID[Compendium.avant.deities.Item.Kalekot], @UUID[Compendium.avant.deities.Item.Nulgreth], @UUID[Compendium.avant.deities.Item.Achaekek], @UUID[Compendium.avant.deities.Item.Ah Pook], @UUID[Compendium.avant.deities.Item.Ahriman], @UUID[Compendium.avant.deities.Item.Hanspur], @UUID[Compendium.avant.deities.Item.Naderi], @UUID[Compendium.avant.deities.Item.Zyphus], @UUID[Compendium.avant.deities.Item.Aonaurious], @UUID[Compendium.avant.deities.Item.Chamiaholom], @UUID[Compendium.avant.deities.Item.Kagia], @UUID[Compendium.avant.deities.Item.Yaezhing]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Neith], @UUID[Compendium.avant.deities.Item.Xsistaid], @UUID[Compendium.avant.deities.Item.Chavazvug], @UUID[Compendium.avant.deities.Item.Dachzerul], @UUID[Compendium.avant.deities.Item.Iggeret]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Gravelady's Guard]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Ancestors], @UUID[Compendium.avant.classfeatures.Item.Blight], @UUID[Compendium.avant.classfeatures.Item.Bones], @UUID[Compendium.avant.classfeatures.Item.Life]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "cAxBEZsej32riaY5",
+            "image": {},
+            "name": "Decay Domain",
+            "sort": 2200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You have the power to spoil and deteriorate matter.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Withering Grasp]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Fallow Field]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Apollyon], @UUID[Compendium.avant.deities.Item.Trelmarixian], @UUID[Compendium.avant.deities.Item.Vorasha], @UUID[Compendium.avant.deities.Item.Xsistaid], @UUID[Compendium.avant.deities.Item.Cyth-V'sug], @UUID[Compendium.avant.deities.Item.Yhidothrus], @UUID[Compendium.avant.deities.Item.Shyka], @UUID[Compendium.avant.deities.Item.The Green Mother], @UUID[Compendium.avant.deities.Item.Ferrumnestra], @UUID[Compendium.avant.deities.Item.Zibik], @UUID[Compendium.avant.deities.Item.Nergal], @UUID[Compendium.avant.deities.Item.Mother Vulture], @UUID[Compendium.avant.deities.Item.Teshallas], @UUID[Compendium.avant.deities.Item.Ghlaunder], @UUID[Compendium.avant.deities.Item.Azathoth], @UUID[Compendium.avant.deities.Item.Nhimbaloth], @UUID[Compendium.avant.deities.Item.Rhan-Tegoth], @UUID[Compendium.avant.deities.Item.Xhamen-Dor], @UUID[Compendium.avant.deities.Item.Vermilion Mother], @UUID[Compendium.avant.deities.Item.Kerkamoth]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Sicva], @UUID[Compendium.avant.deities.Item.Urgathoa], @UUID[Compendium.avant.deities.Item.Xoveron], @UUID[Compendium.avant.deities.Item.Groetus], @UUID[Compendium.avant.deities.Item.Treerazer], @UUID[Compendium.avant.deities.Item.Chamiaholom], @UUID[Compendium.avant.deities.Item.Charg], @UUID[Compendium.avant.deities.Item.Zipacna]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Blooms of the Spreading Weald], @UUID[Compendium.avant.deities.Item.Shapes of the Fading Luster]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Green Faith]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Weight of the World]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Blight], @UUID[Compendium.avant.classfeatures.Item.Bones]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "tuThzOCvMLbRVba8",
+            "image": {},
+            "name": "Disorientation Domain",
+            "sort": 2400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You can bewilder and perplex your foes.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Clouded Focus]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Ephemeral Hazards]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Laivatiniel], @UUID[Compendium.avant.deities.Item.Vulot], @UUID[Compendium.avant.deities.Item.Zura], @UUID[Compendium.avant.deities.Item.Shyka], @UUID[Compendium.avant.deities.Item.The Lantern King], @UUID[Compendium.avant.deities.Item.Picoperi], @UUID[Compendium.avant.deities.Item.Thisamet], @UUID[Compendium.avant.deities.Item.Narriseminek], @UUID[Compendium.avant.deities.Item.Sivanah], @UUID[Compendium.avant.deities.Item.Tsukiyo], @UUID[Compendium.avant.deities.Item.Cthulhu], @UUID[Compendium.avant.deities.Item.Isph-Aun-Vuln], @UUID[Compendium.avant.deities.Item.Charg], @UUID[Compendium.avant.deities.Item.Ozranvial], @UUID[Compendium.avant.deities.Item.Vermilion Mother]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Nethys], @UUID[Compendium.avant.deities.Item.Baphomet], @UUID[Compendium.avant.deities.Item.Halcamora], @UUID[Compendium.avant.deities.Item.Alazhra], @UUID[Compendium.avant.deities.Item.Il'Surrish], @UUID[Compendium.avant.deities.Item.Azathoth], @UUID[Compendium.avant.deities.Item.Xhamen-Dor], @UUID[Compendium.avant.deities.Item.Nyuo-Ogh], @UUID[Compendium.avant.deities.Item.Dachzerul]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Pandemonia]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Shadow Cabinet]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Perplexing Jest]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Fortune's Fate]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Blight]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "AOQZjqgfafqqtHOB",
+            "image": {},
+            "name": "Destruction Domain",
+            "sort": 2300000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You are a conduit for divine devastation.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Cry of Destruction]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Destructive Aura]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Apep], @UUID[Compendium.avant.deities.Item.Sekhmet], @UUID[Compendium.avant.deities.Item.Szuriel], @UUID[Compendium.avant.deities.Item.Moloch], @UUID[Compendium.avant.deities.Item.Scal], @UUID[Compendium.avant.deities.Item.Pahti Coatl], @UUID[Compendium.avant.deities.Item.Nethys], @UUID[Compendium.avant.deities.Item.Rovagug], @UUID[Compendium.avant.deities.Item.Zon-Kuthon], @UUID[Compendium.avant.deities.Item.Anogetz], @UUID[Compendium.avant.deities.Item.Zelishkar], @UUID[Compendium.avant.deities.Item.Abraxas], @UUID[Compendium.avant.deities.Item.Angazhan], @UUID[Compendium.avant.deities.Item.Dagon], @UUID[Compendium.avant.deities.Item.Jezelda], @UUID[Compendium.avant.deities.Item.Nurgal], @UUID[Compendium.avant.deities.Item.Xoveron], @UUID[Compendium.avant.deities.Item.Zevgavizeb], @UUID[Compendium.avant.deities.Item.Ragadahn], @UUID[Compendium.avant.deities.Item.Ayrzul], @UUID[Compendium.avant.deities.Item.Ferrumnestra], @UUID[Compendium.avant.deities.Item.Hshurha], @UUID[Compendium.avant.deities.Item.Kelizandri], @UUID[Compendium.avant.deities.Item.Ymeri], @UUID[Compendium.avant.deities.Item.Ragathiel], @UUID[Compendium.avant.deities.Item.Tjasse], @UUID[Compendium.avant.deities.Item.Lurlup], @UUID[Compendium.avant.deities.Item.Telvrys], @UUID[Compendium.avant.deities.Item.Gorum], @UUID[Compendium.avant.deities.Item.Imot], @UUID[Compendium.avant.deities.Item.Inna], @UUID[Compendium.avant.deities.Item.Vonymos], @UUID[Compendium.avant.deities.Item.Kitumu], @UUID[Compendium.avant.deities.Item.Rull], @UUID[Compendium.avant.deities.Item.Varg], @UUID[Compendium.avant.deities.Item.Ah Pook], @UUID[Compendium.avant.deities.Item.Ahriman], @UUID[Compendium.avant.deities.Item.Besmara], @UUID[Compendium.avant.deities.Item.Dahak], @UUID[Compendium.avant.deities.Item.Groetus], @UUID[Compendium.avant.deities.Item.Milani], @UUID[Compendium.avant.deities.Item.The Devourer], @UUID[Compendium.avant.deities.Item.Treerazer], @UUID[Compendium.avant.deities.Item.Azathoth], @UUID[Compendium.avant.deities.Item.Bokrug], @UUID[Compendium.avant.deities.Item.Mhar], @UUID[Compendium.avant.deities.Item.Chavazvug], @UUID[Compendium.avant.deities.Item.Thuskchoon], @UUID[Compendium.avant.deities.Item.Eiseth], @UUID[Compendium.avant.deities.Item.Ozranvial], @UUID[Compendium.avant.deities.Item.Xiquiripat], @UUID[Compendium.avant.deities.Item.Ristrentho], @UUID[Compendium.avant.deities.Item.Fumeiyoshi], @UUID[Compendium.avant.deities.Item.General Susumu], @UUID[Compendium.avant.deities.Item.Lady Nanbyo], @UUID[Compendium.avant.deities.Item.Dhalavei], @UUID[Compendium.avant.deities.Item.Diomazul], @UUID[Compendium.avant.deities.Item.Kerkamoth], @UUID[Compendium.avant.deities.Item.Kostchtchie]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Set], @UUID[Compendium.avant.deities.Item.Cixyron], @UUID[Compendium.avant.deities.Item.Hadregash], @UUID[Compendium.avant.deities.Item.Smiad], @UUID[Compendium.avant.deities.Item.Lubaiko], @UUID[Compendium.avant.deities.Item.Nulgreth], @UUID[Compendium.avant.deities.Item.Hei Feng], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Veiled Voice)], @UUID[Compendium.avant.deities.Item.Ananshea]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Light of the Everlasting Flame]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Freeing Flame], @UUID[Compendium.avant.deities.Item.The Last Breath], @UUID[Compendium.avant.deities.Item.The Perplexing Jest]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Ashes], @UUID[Compendium.avant.classfeatures.Item.Battle]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "0wCEUwABKPdKPj8e",
+            "image": {},
+            "name": "Dreams Domain",
+            "sort": 2800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You have the power to enter and manipulate dreams.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Sweet Dream]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Dreamer's Call]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Desna], @UUID[Compendium.avant.deities.Item.Imbrex], @UUID[Compendium.avant.deities.Item.Aegirran], @UUID[Compendium.avant.deities.Item.Granduncle Taproot], @UUID[Compendium.avant.deities.Item.Alazhra], @UUID[Compendium.avant.deities.Item.Atropos], @UUID[Compendium.avant.deities.Item.Luhar], @UUID[Compendium.avant.deities.Item.Bokrug], @UUID[Compendium.avant.deities.Item.Xhamen-Dor]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Lysianassa], @UUID[Compendium.avant.deities.Item.Aleth], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Faceless Sphinx)]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Pandemonia]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Fortune's Fate]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "6qTjtFWaBO5b60zJ",
+            "image": {},
+            "name": "Dust Domain",
+            "sort": 3000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You have the power to dry and crumble what opposes you.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Parch]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Dust Storm]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Set], @UUID[Compendium.avant.deities.Item.Trelmarixian], @UUID[Compendium.avant.deities.Item.Nurgal], @UUID[Compendium.avant.deities.Item.Hshurha], @UUID[Compendium.avant.deities.Item.Ymeri], @UUID[Compendium.avant.deities.Item.Chavazvug]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Nephthys], @UUID[Compendium.avant.deities.Item.Ayrzul], @UUID[Compendium.avant.deities.Item.Malthus], @UUID[Compendium.avant.deities.Item.Ghlaunder], @UUID[Compendium.avant.deities.Item.Mhar], @UUID[Compendium.avant.deities.Item.Thuskchoon], @UUID[Compendium.avant.deities.Item.Hataam], @UUID[Compendium.avant.deities.Item.Lady Nanbyo]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Breath of the Endless Sky]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Ashes], @UUID[Compendium.avant.classfeatures.Item.Flames]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "uGQKjk2w4whzomky",
+            "image": {},
+            "name": "Duty Domain",
+            "sort": 3200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You defend oaths and carry out your divine missions with great dedication.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Swear Oath]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Dutiful Challenge]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Dispater], @UUID[Compendium.avant.deities.Item.Moloch], @UUID[Compendium.avant.deities.Item.Acavna], @UUID[Compendium.avant.deities.Item.Lissala (The Order of Virtue)], @UUID[Compendium.avant.deities.Item.Myr], @UUID[Compendium.avant.deities.Item.Zelishkar], @UUID[Compendium.avant.deities.Item.Droskar], @UUID[Compendium.avant.deities.Item.Kols], @UUID[Compendium.avant.deities.Item.Magrim], @UUID[Compendium.avant.deities.Item.Trudd], @UUID[Compendium.avant.deities.Item.Arqueros], @UUID[Compendium.avant.deities.Item.Bharnarol], @UUID[Compendium.avant.deities.Item.Dammerich], @UUID[Compendium.avant.deities.Item.Lorris], @UUID[Compendium.avant.deities.Item.Olheon], @UUID[Compendium.avant.deities.Item.Ragathiel], @UUID[Compendium.avant.deities.Item.Reymenda], @UUID[Compendium.avant.deities.Item.Tanagaar], @UUID[Compendium.avant.deities.Item.Vildeis], @UUID[Compendium.avant.deities.Item.Minderhal], @UUID[Compendium.avant.deities.Item.Furcas], @UUID[Compendium.avant.deities.Item.Haborym], @UUID[Compendium.avant.deities.Item.Ceyannan], @UUID[Compendium.avant.deities.Item.Phlegyas], @UUID[Compendium.avant.deities.Item.The Pale Horse], @UUID[Compendium.avant.deities.Item.Vale], @UUID[Compendium.avant.deities.Item.Adanye], @UUID[Compendium.avant.deities.Item.Uirch], @UUID[Compendium.avant.deities.Item.Embaral], @UUID[Compendium.avant.deities.Item.Emmeton Galardaria], @UUID[Compendium.avant.deities.Item.Kaldemash], @UUID[Compendium.avant.deities.Item.Shizuru], @UUID[Compendium.avant.deities.Item.Yaezhing], @UUID[Compendium.avant.deities.Item.Suyuddha], @UUID[Compendium.avant.deities.Item.Vineshvakhi]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Nephthys], @UUID[Compendium.avant.deities.Item.Cihua Coatl], @UUID[Compendium.avant.deities.Item.Pahti Coatl], @UUID[Compendium.avant.deities.Item.Abadar], @UUID[Compendium.avant.deities.Item.Asmodeus], @UUID[Compendium.avant.deities.Item.Erastil], @UUID[Compendium.avant.deities.Item.Iomedae], @UUID[Compendium.avant.deities.Item.Torag], @UUID[Compendium.avant.deities.Item.Angradd], @UUID[Compendium.avant.deities.Item.Folgrit], @UUID[Compendium.avant.deities.Item.Verilorn], @UUID[Compendium.avant.deities.Item.Zohls], @UUID[Compendium.avant.deities.Item.Cormigus], @UUID[Compendium.avant.deities.Item.Vapula], @UUID[Compendium.avant.deities.Item.Chohar], @UUID[Compendium.avant.deities.Item.Walkena], @UUID[Compendium.avant.deities.Item.Achaekek], @UUID[Compendium.avant.deities.Item.Stag Mother of the Forest of Stones], @UUID[Compendium.avant.deities.Item.Baekho], @UUID[Compendium.avant.deities.Item.Srikalis, Sritaming, and Sribaril]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Esoteric Order of the Palatine Eye], @UUID[Compendium.avant.deities.Item.The Readied Strike], @UUID[Compendium.avant.deities.Item.The Spirit Wall]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Immaculate Growth]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sorrow's Sword], @UUID[Compendium.avant.deities.Item.Talons of the Godclaw], @UUID[Compendium.avant.deities.Item.The Offering Plate]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Children of the Night], @UUID[Compendium.avant.deities.Item.Demon Bringers], @UUID[Compendium.avant.deities.Item.Stone's Blood], @UUID[Compendium.avant.deities.Item.The Godclaw], @UUID[Compendium.avant.deities.Item.The Last Breath]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Ancestors]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "zkiLWWYzzqoxmN2J",
+            "image": {},
+            "name": "Earth Domain",
+            "sort": 3400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You control soil and stone.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Hurtling Stone]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Localized Quake]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Bes], @UUID[Compendium.avant.deities.Item.Trelmarixian], @UUID[Compendium.avant.deities.Item.Onos], @UUID[Compendium.avant.deities.Item.Scal], @UUID[Compendium.avant.deities.Item.Abadar], @UUID[Compendium.avant.deities.Item.Erastil], @UUID[Compendium.avant.deities.Item.Rovagug], @UUID[Compendium.avant.deities.Item.Torag], @UUID[Compendium.avant.deities.Item.Xoveron], @UUID[Compendium.avant.deities.Item.Droskar], @UUID[Compendium.avant.deities.Item.Imbrex], @UUID[Compendium.avant.deities.Item.Ayrzul], @UUID[Compendium.avant.deities.Item.Sairazul], @UUID[Compendium.avant.deities.Item.Yuelral], @UUID[Compendium.avant.deities.Item.Keltheald], @UUID[Compendium.avant.deities.Item.Soralyon], @UUID[Compendium.avant.deities.Item.Valani], @UUID[Compendium.avant.deities.Item.Minderhal], @UUID[Compendium.avant.deities.Item.Granduncle Taproot], @UUID[Compendium.avant.deities.Item.Gendowyn], @UUID[Compendium.avant.deities.Item.Vudravati], @UUID[Compendium.avant.deities.Item.Mhar], @UUID[Compendium.avant.deities.Item.Orgesh], @UUID[Compendium.avant.deities.Item.Yamasoth], @UUID[Compendium.avant.deities.Item.Zipacna], @UUID[Compendium.avant.deities.Item.Fumeiyoshi], @UUID[Compendium.avant.deities.Item.Yamatsumi], @UUID[Compendium.avant.deities.Item.Ashukharma], @UUID[Compendium.avant.deities.Item.Diomazul]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Mammon], @UUID[Compendium.avant.deities.Item.Jaidi], @UUID[Compendium.avant.deities.Item.Trudd], @UUID[Compendium.avant.deities.Item.Fandarra], @UUID[Compendium.avant.deities.Item.Vavaalrav], @UUID[Compendium.avant.deities.Item.Brigh], @UUID[Compendium.avant.deities.Item.Nivi Rhombodazzle], @UUID[Compendium.avant.deities.Item.Vermilion Mother], @UUID[Compendium.avant.deities.Item.Kagia], @UUID[Compendium.avant.deities.Item.Lady Nanbyo], @UUID[Compendium.avant.deities.Item.Qi Zhong], @UUID[Compendium.avant.deities.Item.Conqueror Worm]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Green Faith], @UUID[Compendium.avant.deities.Item.Rivethun], @UUID[Compendium.avant.deities.Item.The Spirit Wall], @UUID[Compendium.avant.deities.Item.Treasures of the Eternal Delve]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Immaculate Growth]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Deliberate Journey]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Hearth and Harvest]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "SAnmegCTIqGW9S7S",
+            "image": {},
+            "name": "Family Domain",
+            "sort": 3600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You aid and protect your family and community more effectively.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Soothing Words]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Unity]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Bes], @UUID[Compendium.avant.deities.Item.Hathor], @UUID[Compendium.avant.deities.Item.Nephthys], @UUID[Compendium.avant.deities.Item.Acavna], @UUID[Compendium.avant.deities.Item.Elion], @UUID[Compendium.avant.deities.Item.Jaidi], @UUID[Compendium.avant.deities.Item.Myr], @UUID[Compendium.avant.deities.Item.Erastil], @UUID[Compendium.avant.deities.Item.Lamashtu], @UUID[Compendium.avant.deities.Item.Shelyn], @UUID[Compendium.avant.deities.Item.Torag], @UUID[Compendium.avant.deities.Item.Laivatiniel], @UUID[Compendium.avant.deities.Item.Bolka], @UUID[Compendium.avant.deities.Item.Folgrit], @UUID[Compendium.avant.deities.Item.Imbrex], @UUID[Compendium.avant.deities.Item.Sairazul], @UUID[Compendium.avant.deities.Item.Findeladlara], @UUID[Compendium.avant.deities.Item.Andoletta], @UUID[Compendium.avant.deities.Item.Lorris], @UUID[Compendium.avant.deities.Item.Rowdrosh], @UUID[Compendium.avant.deities.Item.Shei], @UUID[Compendium.avant.deities.Item.Bergelmir], @UUID[Compendium.avant.deities.Item.Fandarra], @UUID[Compendium.avant.deities.Item.Yrmidar], @UUID[Compendium.avant.deities.Item.Teki Stronggut], @UUID[Compendium.avant.deities.Item.Grundinnar], @UUID[Compendium.avant.deities.Item.Isis], @UUID[Compendium.avant.deities.Item.Adanye], @UUID[Compendium.avant.deities.Item.Chohar], @UUID[Compendium.avant.deities.Item.Mazludeh], @UUID[Compendium.avant.deities.Item.Walkena], @UUID[Compendium.avant.deities.Item.Jukha], @UUID[Compendium.avant.deities.Item.Mahja Firehair], @UUID[Compendium.avant.deities.Item.Aleth], @UUID[Compendium.avant.deities.Item.Emmeton Galardaria], @UUID[Compendium.avant.deities.Item.Gendowyn], @UUID[Compendium.avant.deities.Item.Grandmother Spider], @UUID[Compendium.avant.deities.Item.Kazutal], @UUID[Compendium.avant.deities.Item.Nivi Rhombodazzle], @UUID[Compendium.avant.deities.Item.Norns], @UUID[Compendium.avant.deities.Item.Vudravati], @UUID[Compendium.avant.deities.Item.Yig], @UUID[Compendium.avant.deities.Item.Dolok Darkfur], @UUID[Compendium.avant.deities.Item.Stag Mother of the Forest of Stones], @UUID[Compendium.avant.deities.Item.Daikitsu], @UUID[Compendium.avant.deities.Item.Phi Deva]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Ketephys], @UUID[Compendium.avant.deities.Item.Arqueros], @UUID[Compendium.avant.deities.Item.Dalenydra], @UUID[Compendium.avant.deities.Item.Falayna], @UUID[Compendium.avant.deities.Item.Thisamet], @UUID[Compendium.avant.deities.Item.Atropos], @UUID[Compendium.avant.deities.Item.Phlegyas], @UUID[Compendium.avant.deities.Item.Vavaalrav], @UUID[Compendium.avant.deities.Item.Uirch], @UUID[Compendium.avant.deities.Item.Izuyaku], @UUID[Compendium.avant.deities.Item.Iggeret], @UUID[Compendium.avant.deities.Item.Nalinivati], @UUID[Compendium.avant.deities.Item.Ragdya]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Good Neighbors]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Demon Bringers], @UUID[Compendium.avant.deities.Item.Guardians of the Sacred Self], @UUID[Compendium.avant.deities.Item.Hearth and Harvest], @UUID[Compendium.avant.deities.Item.Keepers of the Hearth], @UUID[Compendium.avant.deities.Item.Stone's Blood], @UUID[Compendium.avant.deities.Item.The Curtain Call], @UUID[Compendium.avant.deities.Item.Touch of the Sun], @UUID[Compendium.avant.deities.Item.Wards of the Pharaoh]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Radiant Prism], @UUID[Compendium.avant.deities.Item.The Offering Plate]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Ancestors]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "EC2eB0JglDG5j1gT",
+            "image": {},
+            "name": "Fate Domain",
+            "sort": 3800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You see and understand hidden inevitabilities.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Read Fate]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Tempt Fate]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Neith], @UUID[Compendium.avant.deities.Item.Lissala (The Order of Virtue)], @UUID[Compendium.avant.deities.Item.Pharasma], @UUID[Compendium.avant.deities.Item.Faith in the Fallen], @UUID[Compendium.avant.deities.Item.Yhidothrus], @UUID[Compendium.avant.deities.Item.Angradd], @UUID[Compendium.avant.deities.Item.Magrim], @UUID[Compendium.avant.deities.Item.Magdh], @UUID[Compendium.avant.deities.Item.Shyka], @UUID[Compendium.avant.deities.Item.Lysianassa], @UUID[Compendium.avant.deities.Item.Irez], @UUID[Compendium.avant.deities.Item.Aroden], @UUID[Compendium.avant.deities.Item.Bifrons], @UUID[Compendium.avant.deities.Item.Atropos], @UUID[Compendium.avant.deities.Item.Imot], @UUID[Compendium.avant.deities.Item.Ssila'meshnik], @UUID[Compendium.avant.deities.Item.Telastmar], @UUID[Compendium.avant.deities.Item.Vale], @UUID[Compendium.avant.deities.Item.Aakriti], @UUID[Compendium.avant.deities.Item.Erecura], @UUID[Compendium.avant.deities.Item.Grandmother Spider], @UUID[Compendium.avant.deities.Item.Lissala], @UUID[Compendium.avant.deities.Item.Norns], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Veiled Voice)], @UUID[Compendium.avant.deities.Item.Mahathallah], @UUID[Compendium.avant.deities.Item.Ravithra], @UUID[Compendium.avant.deities.Item.Otolmens], @UUID[Compendium.avant.deities.Item.Valmallos]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Dranngvit], @UUID[Compendium.avant.deities.Item.Phlegyas], @UUID[Compendium.avant.deities.Item.Luhar], @UUID[Compendium.avant.deities.Item.Achaekek], @UUID[Compendium.avant.deities.Item.Yog-Sothoth], @UUID[Compendium.avant.deities.Item.Aonaurious], @UUID[Compendium.avant.deities.Item.Kofusachi]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Waves of the Boundless Sea]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Cosmic Caravan], @UUID[Compendium.avant.deities.Item.Fortune's Fate], @UUID[Compendium.avant.deities.Item.Gravelady's Guard]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Divine Dare]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Time]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "egSErNozlL3HRK1y",
+            "image": {},
+            "name": "Fire Domain",
+            "sort": 4000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You control flame.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Fire Ray]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Flame Barrier]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Ptah], @UUID[Compendium.avant.deities.Item.Szuriel], @UUID[Compendium.avant.deities.Item.Moloch], @UUID[Compendium.avant.deities.Item.Onos], @UUID[Compendium.avant.deities.Item.Asmodeus], @UUID[Compendium.avant.deities.Item.Sarenrae], @UUID[Compendium.avant.deities.Item.Zelishkar], @UUID[Compendium.avant.deities.Item.Nurgal], @UUID[Compendium.avant.deities.Item.Angradd], @UUID[Compendium.avant.deities.Item.Atreia], @UUID[Compendium.avant.deities.Item.Ymeri], @UUID[Compendium.avant.deities.Item.Ragathiel], @UUID[Compendium.avant.deities.Item.Valani], @UUID[Compendium.avant.deities.Item.Zursvaater], @UUID[Compendium.avant.deities.Item.Zarongel], @UUID[Compendium.avant.deities.Item.Ra], @UUID[Compendium.avant.deities.Item.Furcas], @UUID[Compendium.avant.deities.Item.Haborym], @UUID[Compendium.avant.deities.Item.Chohar], @UUID[Compendium.avant.deities.Item.Lubaiko], @UUID[Compendium.avant.deities.Item.Mahja Firehair], @UUID[Compendium.avant.deities.Item.Dahak], @UUID[Compendium.avant.deities.Item.Mhar], @UUID[Compendium.avant.deities.Item.Chavazvug], @UUID[Compendium.avant.deities.Item.Zipacna], @UUID[Compendium.avant.deities.Item.Lady Nanbyo], @UUID[Compendium.avant.deities.Item.Yamatsumi]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Cixyron], @UUID[Compendium.avant.deities.Item.Droskar], @UUID[Compendium.avant.deities.Item.Thisamet], @UUID[Compendium.avant.deities.Item.Inna], @UUID[Compendium.avant.deities.Item.Adanye], @UUID[Compendium.avant.deities.Item.Walkena], @UUID[Compendium.avant.deities.Item.Brigh], @UUID[Compendium.avant.deities.Item.Eiseth], @UUID[Compendium.avant.deities.Item.Qi Zhong]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Green Faith], @UUID[Compendium.avant.deities.Item.Light of the Everlasting Flame]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Ashes], @UUID[Compendium.avant.classfeatures.Item.Flames]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "5MjSsuKOLBoiL8FB",
+            "image": {},
+            "name": "Freedom Domain",
+            "sort": 4200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You liberate yourself and others from shackles and constraints.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Unimpeded Stride]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Word of Freedom]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Scal], @UUID[Compendium.avant.deities.Item.Arazni], @UUID[Compendium.avant.deities.Item.Cayden Cailean], @UUID[Compendium.avant.deities.Item.Anogetz], @UUID[Compendium.avant.deities.Item.Ranginori], @UUID[Compendium.avant.deities.Item.Arshea], @UUID[Compendium.avant.deities.Item.Black Butterfly], @UUID[Compendium.avant.deities.Item.Falayna], @UUID[Compendium.avant.deities.Item.Lorris], @UUID[Compendium.avant.deities.Item.Marishi], @UUID[Compendium.avant.deities.Item.Neshen], @UUID[Compendium.avant.deities.Item.Shei], @UUID[Compendium.avant.deities.Item.Yrmidar], @UUID[Compendium.avant.deities.Item.Cong], @UUID[Compendium.avant.deities.Item.Teki Stronggut], @UUID[Compendium.avant.deities.Item.Narriseminek], @UUID[Compendium.avant.deities.Item.Saloc], @UUID[Compendium.avant.deities.Item.Ssila'meshnik], @UUID[Compendium.avant.deities.Item.Walkena], @UUID[Compendium.avant.deities.Item.Uirch], @UUID[Compendium.avant.deities.Item.Wulgren], @UUID[Compendium.avant.deities.Item.Casandalee], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Kazutal], @UUID[Compendium.avant.deities.Item.Milani], @UUID[Compendium.avant.deities.Item.Rokoga Gin], @UUID[Compendium.avant.deities.Item.Ristrentho], @UUID[Compendium.avant.deities.Item.Mugura and Nrithu]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Ketephys], @UUID[Compendium.avant.deities.Item.Aakriti], @UUID[Compendium.avant.deities.Item.Apsu], @UUID[Compendium.avant.deities.Item.Chaldira], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Embaral], @UUID[Compendium.avant.deities.Item.Hanspur], @UUID[Compendium.avant.deities.Item.The Devourer], @UUID[Compendium.avant.deities.Item.Phi Deva], @UUID[Compendium.avant.deities.Item.Srikalis, Sritaming, and Sribaril], @UUID[Compendium.avant.deities.Item.Sun Wukong], @UUID[Compendium.avant.deities.Item.Chamidu]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Breath of the Endless Sky], @UUID[Compendium.avant.deities.Item.Good Neighbors]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Cosmic Caravan], @UUID[Compendium.avant.deities.Item.Keepers of the Hearth], @UUID[Compendium.avant.deities.Item.The Freeing Flame], @UUID[Compendium.avant.deities.Item.The Laborer's Bastion], @UUID[Compendium.avant.deities.Item.The Last Breath], @UUID[Compendium.avant.deities.Item.The Offering Plate], @UUID[Compendium.avant.deities.Item.The Perplexing Jest], @UUID[Compendium.avant.deities.Item.The Resplendent Court]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Guardians of the Sacred Self], @UUID[Compendium.avant.deities.Item.Sky Keepers]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "9g1dNytABTpmmGkG",
+            "image": {},
+            "name": "Glyph Domain",
+            "sort": 4400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You wield power over written words and symbols.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Redact]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Ghostly Transcription]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Mephistopheles], @UUID[Compendium.avant.deities.Item.Tolte Coatl], @UUID[Compendium.avant.deities.Item.Pavnuri], @UUID[Compendium.avant.deities.Item.Magrim], @UUID[Compendium.avant.deities.Item.Magdh], @UUID[Compendium.avant.deities.Item.Eritrice], @UUID[Compendium.avant.deities.Item.Irez], @UUID[Compendium.avant.deities.Item.Winlas], @UUID[Compendium.avant.deities.Item.Cormigus], @UUID[Compendium.avant.deities.Item.Thoth], @UUID[Compendium.avant.deities.Item.Titivilus], @UUID[Compendium.avant.deities.Item.Imot], @UUID[Compendium.avant.deities.Item.Ydajisk], @UUID[Compendium.avant.deities.Item.Gruhastha], @UUID[Compendium.avant.deities.Item.Lissala], @UUID[Compendium.avant.deities.Item.Nin], @UUID[Compendium.avant.deities.Item.Hastur], @UUID[Compendium.avant.deities.Item.Nyuo-Ogh], @UUID[Compendium.avant.deities.Item.Nameless], @UUID[Compendium.avant.deities.Item.Lady Jingxi], @UUID[Compendium.avant.deities.Item.Valmallos]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Amaznen], @UUID[Compendium.avant.deities.Item.Lissala (The Order of Virtue)], @UUID[Compendium.avant.deities.Item.Asmodeus], @UUID[Compendium.avant.deities.Item.Nethys], @UUID[Compendium.avant.deities.Item.Abraxas], @UUID[Compendium.avant.deities.Item.Areshkagal], @UUID[Compendium.avant.deities.Item.Kols], @UUID[Compendium.avant.deities.Item.Sivanah], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Veiled Voice)], @UUID[Compendium.avant.deities.Item.Nalinivati]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Esoteric Order of the Palatine Eye]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Pillars of Knowledge], @UUID[Compendium.avant.deities.Item.Stone's Blood], @UUID[Compendium.avant.deities.Item.The Enlightened Scholar's Path], @UUID[Compendium.avant.deities.Item.Wards of the Pharaoh]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "A7vErdGAweYsFcW8",
+            "image": {},
+            "name": "Healing Domain",
+            "sort": 4600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>Your healing magic is particularly potent.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Healer's Blessing]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Rebuke Death]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Khepri], @UUID[Compendium.avant.deities.Item.Sekhmet], @UUID[Compendium.avant.deities.Item.Selket], @UUID[Compendium.avant.deities.Item.Aesocar], @UUID[Compendium.avant.deities.Item.Cihua Coatl], @UUID[Compendium.avant.deities.Item.Pahti Coatl], @UUID[Compendium.avant.deities.Item.Pharasma], @UUID[Compendium.avant.deities.Item.Sarenrae], @UUID[Compendium.avant.deities.Item.Bolka], @UUID[Compendium.avant.deities.Item.Atreia], @UUID[Compendium.avant.deities.Item.Dalenydra], @UUID[Compendium.avant.deities.Item.Korada], @UUID[Compendium.avant.deities.Item.Shei], @UUID[Compendium.avant.deities.Item.Aminara], @UUID[Compendium.avant.deities.Item.Green Man], @UUID[Compendium.avant.deities.Item.Zibik], @UUID[Compendium.avant.deities.Item.Isis], @UUID[Compendium.avant.deities.Item.Osiris], @UUID[Compendium.avant.deities.Item.Dammar], @UUID[Compendium.avant.deities.Item.Teshallas], @UUID[Compendium.avant.deities.Item.Tlehar], @UUID[Compendium.avant.deities.Item.Uvuko], @UUID[Compendium.avant.deities.Item.Immonhiel], @UUID[Compendium.avant.deities.Item.Izuyaku], @UUID[Compendium.avant.deities.Item.Oaur-Ooung], @UUID[Compendium.avant.deities.Item.Stag Mother of the Forest of Stones], @UUID[Compendium.avant.deities.Item.Baekho], @UUID[Compendium.avant.deities.Item.Phi Deva], @UUID[Compendium.avant.deities.Item.Qi Zhong], @UUID[Compendium.avant.deities.Item.Arundhat], @UUID[Compendium.avant.deities.Item.Chamidu]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Bes], @UUID[Compendium.avant.deities.Item.Anubis], @UUID[Compendium.avant.deities.Item.Kaldemash], @UUID[Compendium.avant.deities.Item.Milani], @UUID[Compendium.avant.deities.Item.Vudravati]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Blooms of the Spreading Weald], @UUID[Compendium.avant.deities.Item.Good Neighbors], @UUID[Compendium.avant.deities.Item.Immaculate Growth]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Offering Plate], @UUID[Compendium.avant.deities.Item.Touch of the Sun]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Hearth and Harvest], @UUID[Compendium.avant.deities.Item.Radiant Prism], @UUID[Compendium.avant.deities.Item.Urban Prosperity], @UUID[Compendium.avant.deities.Item.Wards of the Pharaoh]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Life]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "GiuzDTtkQAgtGW6n",
+            "image": {},
+            "name": "Indulgence Domain",
+            "sort": 4800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You feast mightily and can shake off the effects of overindulging.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Overstuff]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Take its Course]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sekhmet], @UUID[Compendium.avant.deities.Item.Cayden Cailean], @UUID[Compendium.avant.deities.Item.Urgathoa], @UUID[Compendium.avant.deities.Item.Anogetz], @UUID[Compendium.avant.deities.Item.Tresmalvos], @UUID[Compendium.avant.deities.Item.Baphomet], @UUID[Compendium.avant.deities.Item.Gogunta], @UUID[Compendium.avant.deities.Item.Kabriri], @UUID[Compendium.avant.deities.Item.Xoveron], @UUID[Compendium.avant.deities.Item.Zura], @UUID[Compendium.avant.deities.Item.The Green Mother], @UUID[Compendium.avant.deities.Item.Halcamora], @UUID[Compendium.avant.deities.Item.Thisamet], @UUID[Compendium.avant.deities.Item.Yrmidar], @UUID[Compendium.avant.deities.Item.Lurlup], @UUID[Compendium.avant.deities.Item.Venkelvore], @UUID[Compendium.avant.deities.Item.Zugero], @UUID[Compendium.avant.deities.Item.Ydersius], @UUID[Compendium.avant.deities.Item.Dammar], @UUID[Compendium.avant.deities.Item.Kitumu], @UUID[Compendium.avant.deities.Item.Nulgreth], @UUID[Compendium.avant.deities.Item.Camazotz], @UUID[Compendium.avant.deities.Item.Hei Feng], @UUID[Compendium.avant.deities.Item.Orgesh], @UUID[Compendium.avant.deities.Item.Yig], @UUID[Compendium.avant.deities.Item.Thuskchoon], @UUID[Compendium.avant.deities.Item.Zipacna], @UUID[Compendium.avant.deities.Item.Sun Wukong], @UUID[Compendium.avant.deities.Item.Lahkgya]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Angazhan], @UUID[Compendium.avant.deities.Item.Marishi], @UUID[Compendium.avant.deities.Item.Nergal], @UUID[Compendium.avant.deities.Item.Oaur-Ooung], @UUID[Compendium.avant.deities.Item.Fumeiyoshi]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Children of the Night], @UUID[Compendium.avant.deities.Item.The Curtain Call]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Laborer's Bastion]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "qjnUXickBOBDBu2N",
+            "image": {},
+            "name": "Introspection Domain",
+            "sort": 4900000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You guide others in examining their lives, emotions, and motivations to ultimately become a truer version of themselves—a difficult and often painful process.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Guided Introspection]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Confront Selves]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Keltheald], @UUID[Compendium.avant.deities.Item.Lalaci], @UUID[Compendium.avant.deities.Item.Neshen], @UUID[Compendium.avant.deities.Item.Skrymir], @UUID[Compendium.avant.deities.Item.Jukha], @UUID[Compendium.avant.deities.Item.Zjar-Tovan]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Myr], @UUID[Compendium.avant.deities.Item.Tolte Coatl], @UUID[Compendium.avant.deities.Item.Irori], @UUID[Compendium.avant.deities.Item.The Lost Prince], @UUID[Compendium.avant.deities.Item.Eritrice], @UUID[Compendium.avant.deities.Item.Jaidz], @UUID[Compendium.avant.deities.Item.Korada], @UUID[Compendium.avant.deities.Item.Reymenda], @UUID[Compendium.avant.deities.Item.Shei], @UUID[Compendium.avant.deities.Item.Zohls], @UUID[Compendium.avant.deities.Item.Narakaas], @UUID[Compendium.avant.deities.Item.Saloc], @UUID[Compendium.avant.deities.Item.Apsu], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Gruhastha], @UUID[Compendium.avant.deities.Item.Kurgess], @UUID[Compendium.avant.deities.Item.Nocticula], @UUID[Compendium.avant.deities.Item.Shawnari]</p>",
+                "format": 1,
+                "markdown": ""
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "0GwpYEjCHWyfQvgg",
+            "image": {},
+            "name": "Knowledge Domain",
+            "sort": 5000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You receive divine insights.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Scholarly Recollection]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Know the Enemy]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Charon], @UUID[Compendium.avant.deities.Item.Mephistopheles], @UUID[Compendium.avant.deities.Item.Amaznen], @UUID[Compendium.avant.deities.Item.Lissala (The Order of Virtue)], @UUID[Compendium.avant.deities.Item.Ulon], @UUID[Compendium.avant.deities.Item.Tolte Coatl], @UUID[Compendium.avant.deities.Item.Irori], @UUID[Compendium.avant.deities.Item.Nethys], @UUID[Compendium.avant.deities.Item.Pharasma], @UUID[Compendium.avant.deities.Item.Cixyron], @UUID[Compendium.avant.deities.Item.Pavnuri], @UUID[Compendium.avant.deities.Item.Abraxas], @UUID[Compendium.avant.deities.Item.Areshkagal], @UUID[Compendium.avant.deities.Item.Kabriri], @UUID[Compendium.avant.deities.Item.Dranngvit], @UUID[Compendium.avant.deities.Item.Kols], @UUID[Compendium.avant.deities.Item.Magdh], @UUID[Compendium.avant.deities.Item.Ng], @UUID[Compendium.avant.deities.Item.The Lost Prince], @UUID[Compendium.avant.deities.Item.Yuelral], @UUID[Compendium.avant.deities.Item.Andoletta], @UUID[Compendium.avant.deities.Item.Bharnarol], @UUID[Compendium.avant.deities.Item.Eritrice], @UUID[Compendium.avant.deities.Item.Kelinahat], @UUID[Compendium.avant.deities.Item.Winlas], @UUID[Compendium.avant.deities.Item.Zohls], @UUID[Compendium.avant.deities.Item.Bergelmir], @UUID[Compendium.avant.deities.Item.Fandarra], @UUID[Compendium.avant.deities.Item.Zarongel], @UUID[Compendium.avant.deities.Item.Zogmugot], @UUID[Compendium.avant.deities.Item.Zugero], @UUID[Compendium.avant.deities.Item.Aroden], @UUID[Compendium.avant.deities.Item.Cormigus], @UUID[Compendium.avant.deities.Item.Ma'at], @UUID[Compendium.avant.deities.Item.Thoth], @UUID[Compendium.avant.deities.Item.Titivilus], @UUID[Compendium.avant.deities.Item.Vapula], @UUID[Compendium.avant.deities.Item.Barzahk], @UUID[Compendium.avant.deities.Item.Monad], @UUID[Compendium.avant.deities.Item.Narriseminek], @UUID[Compendium.avant.deities.Item.Phlegyas], @UUID[Compendium.avant.deities.Item.Saloc], @UUID[Compendium.avant.deities.Item.Ssila'meshnik], @UUID[Compendium.avant.deities.Item.Vale], @UUID[Compendium.avant.deities.Item.Ydajisk], @UUID[Compendium.avant.deities.Item.Mazludeh], @UUID[Compendium.avant.deities.Item.Varg], @UUID[Compendium.avant.deities.Item.Atrogine], @UUID[Compendium.avant.deities.Item.Brigh], @UUID[Compendium.avant.deities.Item.Casandalee], @UUID[Compendium.avant.deities.Item.Genzaeri], @UUID[Compendium.avant.deities.Item.Gruhastha], @UUID[Compendium.avant.deities.Item.Kaldemash], @UUID[Compendium.avant.deities.Item.Nin], @UUID[Compendium.avant.deities.Item.Norns], @UUID[Compendium.avant.deities.Item.Nyarlathotep (Haunter in the Dark)], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Crawling Chaos)], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Faceless Sphinx)], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Veiled Voice)], @UUID[Compendium.avant.deities.Item.Yog-Sothoth], @UUID[Compendium.avant.deities.Item.Nyuo-Ogh], @UUID[Compendium.avant.deities.Item.Thuskchoon], @UUID[Compendium.avant.deities.Item.Shawnari], @UUID[Compendium.avant.deities.Item.Velgaas], @UUID[Compendium.avant.deities.Item.Dolok Darkfur], @UUID[Compendium.avant.deities.Item.Lady Jingxi], @UUID[Compendium.avant.deities.Item.Qi Zhong], @UUID[Compendium.avant.deities.Item.Dhalavei], @UUID[Compendium.avant.deities.Item.Likha], @UUID[Compendium.avant.deities.Item.Raumya], @UUID[Compendium.avant.deities.Item.Otolmens], @UUID[Compendium.avant.deities.Item.Valmallos]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Ptah], @UUID[Compendium.avant.deities.Item.Geryon], @UUID[Compendium.avant.deities.Item.Acavna], @UUID[Compendium.avant.deities.Item.Aesocar], @UUID[Compendium.avant.deities.Item.Pahti Coatl], @UUID[Compendium.avant.deities.Item.Angradd], @UUID[Compendium.avant.deities.Item.Malthus], @UUID[Compendium.avant.deities.Item.Aakriti], @UUID[Compendium.avant.deities.Item.Vineshvakhi]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Esoteric Order of the Palatine Eye], @UUID[Compendium.avant.deities.Item.Shapes of the Fading Luster], @UUID[Compendium.avant.deities.Item.The Readied Strike]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Pillars of Knowledge], @UUID[Compendium.avant.deities.Item.The Deliberate Journey], @UUID[Compendium.avant.deities.Item.The Endless Road], @UUID[Compendium.avant.deities.Item.The Enlightened Scholar's Path], @UUID[Compendium.avant.deities.Item.Wards of the Pharaoh], @UUID[Compendium.avant.deities.Item.Wheels of Innovation]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Lore]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "Kca7UPuMm44tOo9n",
+            "image": {},
+            "name": "Lightning Domain",
+            "sort": 5200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You control electricity, thunder, and storms.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Charged Javelin]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Bottle the Storm]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Set], @UUID[Compendium.avant.deities.Item.Cixyron], @UUID[Compendium.avant.deities.Item.Ranginori], @UUID[Compendium.avant.deities.Item.Cernunnos], @UUID[Compendium.avant.deities.Item.Lubaiko], @UUID[Compendium.avant.deities.Item.Rull], @UUID[Compendium.avant.deities.Item.Hei Feng], @UUID[Compendium.avant.deities.Item.Hataam], @UUID[Compendium.avant.deities.Item.Chamidu], @UUID[Compendium.avant.deities.Item.Vineshvakhi]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Casandalee], @UUID[Compendium.avant.deities.Item.Lady Nanbyo]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Breath of the Endless Sky], @UUID[Compendium.avant.deities.Item.Green Faith], @UUID[Compendium.avant.deities.Item.Shapes of the Fading Luster]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Weight of the World]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Sky Keepers]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Tempest]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "L11XsA5G89xVKlDw",
+            "image": {},
+            "name": "Luck Domain",
+            "sort": 5400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You're unnaturally lucky and keep out of harm's way.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Bit of Luck]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Lucky Break]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Bes], @UUID[Compendium.avant.deities.Item.Desna], @UUID[Compendium.avant.deities.Item.Halcamora], @UUID[Compendium.avant.deities.Item.Irez], @UUID[Compendium.avant.deities.Item.Lalaci], @UUID[Compendium.avant.deities.Item.Cong], @UUID[Compendium.avant.deities.Item.Bifrons], @UUID[Compendium.avant.deities.Item.Dammar], @UUID[Compendium.avant.deities.Item.Chaldira], @UUID[Compendium.avant.deities.Item.Gendowyn], @UUID[Compendium.avant.deities.Item.Kaldemash], @UUID[Compendium.avant.deities.Item.Nivi Rhombodazzle], @UUID[Compendium.avant.deities.Item.Dachzerul], @UUID[Compendium.avant.deities.Item.Kofusachi], @UUID[Compendium.avant.deities.Item.Lao Shu Po]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Jin Li]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Pandemonia]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Fortune's Fate], @UUID[Compendium.avant.deities.Item.The Deliberate Journey]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "DS95vr2zmTsjsMhU",
+            "image": {},
+            "name": "Magic Domain",
+            "sort": 5600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You perform the unexpected and inexplicable.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Magic's Vessel]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Mystic Beacon]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Selket], @UUID[Compendium.avant.deities.Item.Baalzebul], @UUID[Compendium.avant.deities.Item.Barbatos], @UUID[Compendium.avant.deities.Item.Amaznen], @UUID[Compendium.avant.deities.Item.Nethys], @UUID[Compendium.avant.deities.Item.Urgathoa], @UUID[Compendium.avant.deities.Item.Vorasha], @UUID[Compendium.avant.deities.Item.Abraxas], @UUID[Compendium.avant.deities.Item.Ng], @UUID[Compendium.avant.deities.Item.Yuelral], @UUID[Compendium.avant.deities.Item.Irez], @UUID[Compendium.avant.deities.Item.Korada], @UUID[Compendium.avant.deities.Item.Soralyon], @UUID[Compendium.avant.deities.Item.Skrymir], @UUID[Compendium.avant.deities.Item.Isis], @UUID[Compendium.avant.deities.Item.Lorthact], @UUID[Compendium.avant.deities.Item.Mestama], @UUID[Compendium.avant.deities.Item.Thoth], @UUID[Compendium.avant.deities.Item.Alseta], @UUID[Compendium.avant.deities.Item.Atrogine], @UUID[Compendium.avant.deities.Item.Lissala], @UUID[Compendium.avant.deities.Item.Sivanah], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Crawling Chaos)], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Faceless Sphinx)], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Veiled Voice)], @UUID[Compendium.avant.deities.Item.Chamiaholom], @UUID[Compendium.avant.deities.Item.Nalinivati], @UUID[Compendium.avant.deities.Item.Qi Zhong], @UUID[Compendium.avant.deities.Item.Arundhat], @UUID[Compendium.avant.deities.Item.Orcus], @UUID[Compendium.avant.deities.Item.Razmir], @UUID[Compendium.avant.deities.Item.Valmallos]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Velgaas], @UUID[Compendium.avant.deities.Item.Sun Wukong]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sovyrian Conclave], @UUID[Compendium.avant.deities.Item.The Enlightened Scholar's Path], @UUID[Compendium.avant.deities.Item.Urban Prosperity], @UUID[Compendium.avant.deities.Item.Wards of the Pharaoh]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Lore]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "MOVMHZU1SfkhNN1K",
+            "image": {},
+            "name": "Might Domain",
+            "sort": 5800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>Your physical power is bolstered by divine strength.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Athletic Rush]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Enduring Might]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sekhmet], @UUID[Compendium.avant.deities.Item.Sobek], @UUID[Compendium.avant.deities.Item.Szuriel], @UUID[Compendium.avant.deities.Item.Geryon], @UUID[Compendium.avant.deities.Item.Moloch], @UUID[Compendium.avant.deities.Item.Jaidi], @UUID[Compendium.avant.deities.Item.Cihua Coatl], @UUID[Compendium.avant.deities.Item.Cayden Cailean], @UUID[Compendium.avant.deities.Item.Iomedae], @UUID[Compendium.avant.deities.Item.Irori], @UUID[Compendium.avant.deities.Item.Lamashtu], @UUID[Compendium.avant.deities.Item.Urgathoa], @UUID[Compendium.avant.deities.Item.Angazhan], @UUID[Compendium.avant.deities.Item.Baphomet], @UUID[Compendium.avant.deities.Item.Gogunta], @UUID[Compendium.avant.deities.Item.Haagenti], @UUID[Compendium.avant.deities.Item.Jezelda], @UUID[Compendium.avant.deities.Item.Zevgavizeb], @UUID[Compendium.avant.deities.Item.Dranngvit], @UUID[Compendium.avant.deities.Item.Kols], @UUID[Compendium.avant.deities.Item.Trudd], @UUID[Compendium.avant.deities.Item.Imbrex], @UUID[Compendium.avant.deities.Item.Ayrzul], @UUID[Compendium.avant.deities.Item.Arqueros], @UUID[Compendium.avant.deities.Item.Falayna], @UUID[Compendium.avant.deities.Item.Marishi], @UUID[Compendium.avant.deities.Item.Neshen], @UUID[Compendium.avant.deities.Item.Minderhal], @UUID[Compendium.avant.deities.Item.Tjasse], @UUID[Compendium.avant.deities.Item.Urazra], @UUID[Compendium.avant.deities.Item.Hadregash], @UUID[Compendium.avant.deities.Item.Teki Stronggut], @UUID[Compendium.avant.deities.Item.Granduncle Taproot], @UUID[Compendium.avant.deities.Item.Green Man], @UUID[Compendium.avant.deities.Item.Telvrys], @UUID[Compendium.avant.deities.Item.Gorum], @UUID[Compendium.avant.deities.Item.Smiad], @UUID[Compendium.avant.deities.Item.Ydersius], @UUID[Compendium.avant.deities.Item.Balumbdar], @UUID[Compendium.avant.deities.Item.Grask Uldeth], @UUID[Compendium.avant.deities.Item.Nulgreth], @UUID[Compendium.avant.deities.Item.Achaekek], @UUID[Compendium.avant.deities.Item.Izuyaku], @UUID[Compendium.avant.deities.Item.Kazutal], @UUID[Compendium.avant.deities.Item.Kurgess], @UUID[Compendium.avant.deities.Item.Zjar-Tovan], @UUID[Compendium.avant.deities.Item.Aonaurious], @UUID[Compendium.avant.deities.Item.Eiseth], @UUID[Compendium.avant.deities.Item.Ananshea], @UUID[Compendium.avant.deities.Item.Charg], @UUID[Compendium.avant.deities.Item.Nameless], @UUID[Compendium.avant.deities.Item.Xiquiripat], @UUID[Compendium.avant.deities.Item.Zipacna], @UUID[Compendium.avant.deities.Item.Alglenweis], @UUID[Compendium.avant.deities.Item.Dolok Darkfur], @UUID[Compendium.avant.deities.Item.General Susumu], @UUID[Compendium.avant.deities.Item.Jin Li], @UUID[Compendium.avant.deities.Item.Sun Wukong], @UUID[Compendium.avant.deities.Item.Yamatsumi], @UUID[Compendium.avant.deities.Item.Ashukharma], @UUID[Compendium.avant.deities.Item.Ragdya], @UUID[Compendium.avant.deities.Item.Raumya], @UUID[Compendium.avant.deities.Item.Alocer], @UUID[Compendium.avant.deities.Item.Kostchtchie], @UUID[Compendium.avant.deities.Item.Orcus]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Belial], @UUID[Compendium.avant.deities.Item.Xoveron], @UUID[Compendium.avant.deities.Item.Ragathiel], @UUID[Compendium.avant.deities.Item.Reymenda], @UUID[Compendium.avant.deities.Item.Furcas], @UUID[Compendium.avant.deities.Item.Haborym], @UUID[Compendium.avant.deities.Item.Genzaeri], @UUID[Compendium.avant.deities.Item.Kagia], @UUID[Compendium.avant.deities.Item.Baekho], @UUID[Compendium.avant.deities.Item.Diomazul]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Readied Strike], @UUID[Compendium.avant.deities.Item.Treasures of the Eternal Delve]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Demon Bringers], @UUID[Compendium.avant.deities.Item.Keepers of the Hearth], @UUID[Compendium.avant.deities.Item.Sorrow's Sword], @UUID[Compendium.avant.deities.Item.Talons of the Godclaw], @UUID[Compendium.avant.deities.Item.The Divine Dare], @UUID[Compendium.avant.deities.Item.The Freeing Flame], @UUID[Compendium.avant.deities.Item.The Laborer's Bastion]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Battle]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "Y3DFBCWiM9GBIlfl",
+            "image": {},
+            "name": "Moon Domain",
+            "sort": 6000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You command powers associated with the moon.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Moonbeam]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Touch of the Moon]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Acavna], @UUID[Compendium.avant.deities.Item.Desna], @UUID[Compendium.avant.deities.Item.Jezelda], @UUID[Compendium.avant.deities.Item.Ketephys], @UUID[Compendium.avant.deities.Item.Ashava], @UUID[Compendium.avant.deities.Item.Yrmidar], @UUID[Compendium.avant.deities.Item.Horus], @UUID[Compendium.avant.deities.Item.Thoth], @UUID[Compendium.avant.deities.Item.Jukha], @UUID[Compendium.avant.deities.Item.Ah Pook], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Tsukiyo]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Telastmar], @UUID[Compendium.avant.deities.Item.Camazotz], @UUID[Compendium.avant.deities.Item.Lady Jingxi]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Green Faith]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Cosmic Caravan], @UUID[Compendium.avant.deities.Item.Radiant Prism], @UUID[Compendium.avant.deities.Item.Sovyrian Conclave], @UUID[Compendium.avant.deities.Item.The Path of the Heavens]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Cosmos]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "QzsUe3Rt3SifTQvb",
+            "image": {},
+            "name": "Naga Domain",
+            "sort": 6200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>Like many nagas, you believe you understand your place in the Universe, try to help those who don't, and dissuade those who would serve to fool others into straying from their purpose.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Chastising Retort]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Show the Path]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Nalinivati], @UUID[Compendium.avant.deities.Item.Ravithra]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Vorasha], @UUID[Compendium.avant.deities.Item.Velgaas]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "wBhgIgt47v9uspp3",
+            "image": {},
+            "name": "Nature Domain",
+            "sort": 6400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You hold power over animals and plants.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Vibrant Thorns]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Nature's Bounty]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Bastet], @UUID[Compendium.avant.deities.Item.Neith], @UUID[Compendium.avant.deities.Item.Selket], @UUID[Compendium.avant.deities.Item.Barbatos], @UUID[Compendium.avant.deities.Item.Jaidi], @UUID[Compendium.avant.deities.Item.Sicva], @UUID[Compendium.avant.deities.Item.Erastil], @UUID[Compendium.avant.deities.Item.Gozreh], @UUID[Compendium.avant.deities.Item.Angazhan], @UUID[Compendium.avant.deities.Item.Cyth-V'sug], @UUID[Compendium.avant.deities.Item.Zevgavizeb], @UUID[Compendium.avant.deities.Item.The Green Mother], @UUID[Compendium.avant.deities.Item.Lysianassa], @UUID[Compendium.avant.deities.Item.Verilorn], @UUID[Compendium.avant.deities.Item.Ketephys], @UUID[Compendium.avant.deities.Item.Halcamora], @UUID[Compendium.avant.deities.Item.Keltheald], @UUID[Compendium.avant.deities.Item.Rowdrosh], @UUID[Compendium.avant.deities.Item.Tanagaar], @UUID[Compendium.avant.deities.Item.Uskyeria], @UUID[Compendium.avant.deities.Item.Ylimancha], @UUID[Compendium.avant.deities.Item.Fandarra], @UUID[Compendium.avant.deities.Item.Tjasse], @UUID[Compendium.avant.deities.Item.Urazra], @UUID[Compendium.avant.deities.Item.Zarongel], @UUID[Compendium.avant.deities.Item.Aminara], @UUID[Compendium.avant.deities.Item.Granduncle Taproot], @UUID[Compendium.avant.deities.Item.Green Man], @UUID[Compendium.avant.deities.Item.Kzininn], @UUID[Compendium.avant.deities.Item.Telvrys], @UUID[Compendium.avant.deities.Item.Zibik], @UUID[Compendium.avant.deities.Item.Cernunnos], @UUID[Compendium.avant.deities.Item.Osiris], @UUID[Compendium.avant.deities.Item.Ra], @UUID[Compendium.avant.deities.Item.Furcas], @UUID[Compendium.avant.deities.Item.Il'Surrish], @UUID[Compendium.avant.deities.Item.Mother Vulture], @UUID[Compendium.avant.deities.Item.Telastmar], @UUID[Compendium.avant.deities.Item.Balumbdar], @UUID[Compendium.avant.deities.Item.Kalekot], @UUID[Compendium.avant.deities.Item.Jukha], @UUID[Compendium.avant.deities.Item.Etaris], @UUID[Compendium.avant.deities.Item.Gendowyn], @UUID[Compendium.avant.deities.Item.Immonhiel], @UUID[Compendium.avant.deities.Item.Treerazer], @UUID[Compendium.avant.deities.Item.Nhimbaloth], @UUID[Compendium.avant.deities.Item.Xhamen-Dor], @UUID[Compendium.avant.deities.Item.Yig], @UUID[Compendium.avant.deities.Item.Hataam], @UUID[Compendium.avant.deities.Item.Vermilion Mother], @UUID[Compendium.avant.deities.Item.Dolok Darkfur], @UUID[Compendium.avant.deities.Item.Kagia], @UUID[Compendium.avant.deities.Item.Stag Mother of the Forest of Stones], @UUID[Compendium.avant.deities.Item.Baekho], @UUID[Compendium.avant.deities.Item.Daikitsu], @UUID[Compendium.avant.deities.Item.Sun Wukong], @UUID[Compendium.avant.deities.Item.Arundhat], @UUID[Compendium.avant.deities.Item.Chamidu], @UUID[Compendium.avant.deities.Item.Lahkgya], @UUID[Compendium.avant.deities.Item.Matravash], @UUID[Compendium.avant.deities.Item.Alocer]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Jezelda], @UUID[Compendium.avant.deities.Item.Ng], @UUID[Compendium.avant.deities.Item.Vonymos], @UUID[Compendium.avant.deities.Item.Mazludeh], @UUID[Compendium.avant.deities.Item.Atrogine], @UUID[Compendium.avant.deities.Item.Gruhastha], @UUID[Compendium.avant.deities.Item.Vudravati], @UUID[Compendium.avant.deities.Item.Oaur-Ooung], @UUID[Compendium.avant.deities.Item.Ananshea], @UUID[Compendium.avant.deities.Item.Lady Jingxi], @UUID[Compendium.avant.deities.Item.Phi Deva], @UUID[Compendium.avant.deities.Item.Qi Zhong]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Blooms of the Spreading Weald], @UUID[Compendium.avant.deities.Item.Green Faith], @UUID[Compendium.avant.deities.Item.Immaculate Growth], @UUID[Compendium.avant.deities.Item.Rivethun]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Hearth and Harvest], @UUID[Compendium.avant.deities.Item.Seafarers' Hope], @UUID[Compendium.avant.deities.Item.Sovyrian Conclave], @UUID[Compendium.avant.deities.Item.Weight of the World]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "R20JXF43vU5RQyUj",
+            "image": {},
+            "name": "Nightmares Domain",
+            "sort": 6600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You fill minds with horror and dread.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Waking Nightmare]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Shared Nightmare]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Trelmarixian], @UUID[Compendium.avant.deities.Item.Lamashtu], @UUID[Compendium.avant.deities.Item.Sifkesh], @UUID[Compendium.avant.deities.Item.Zura], @UUID[Compendium.avant.deities.Item.Kelizandri], @UUID[Compendium.avant.deities.Item.Jaidz], @UUID[Compendium.avant.deities.Item.Haggakal], @UUID[Compendium.avant.deities.Item.Alazhra], @UUID[Compendium.avant.deities.Item.Gyronna], @UUID[Compendium.avant.deities.Item.Mestama], @UUID[Compendium.avant.deities.Item.Kalekot], @UUID[Compendium.avant.deities.Item.Kitumu], @UUID[Compendium.avant.deities.Item.Groetus], @UUID[Compendium.avant.deities.Item.Treerazer], @UUID[Compendium.avant.deities.Item.Azathoth], @UUID[Compendium.avant.deities.Item.Cthulhu], @UUID[Compendium.avant.deities.Item.Nyarlathotep (Haunter in the Dark)], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Crawling Chaos)], @UUID[Compendium.avant.deities.Item.Rhan-Tegoth], @UUID[Compendium.avant.deities.Item.Chamiaholom], @UUID[Compendium.avant.deities.Item.Vermilion Mother], @UUID[Compendium.avant.deities.Item.Enkaar], @UUID[Compendium.avant.deities.Item.Eyes That Watch], @UUID[Compendium.avant.deities.Item.Grasping Iovett], @UUID[Compendium.avant.deities.Item.Husk], @UUID[Compendium.avant.deities.Item.Lady Razor], @UUID[Compendium.avant.deities.Item.Reshmit of the Heavy Voice], @UUID[Compendium.avant.deities.Item.Thalaphyrr], @UUID[Compendium.avant.deities.Item.Chamidu]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Vulot], @UUID[Compendium.avant.deities.Item.Nyuo-Ogh], @UUID[Compendium.avant.deities.Item.Charg], @UUID[Compendium.avant.deities.Item.Ozranvial]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Pandemonia]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Children of the Night]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "FtW1gtbHgO0KofPl",
+            "image": {},
+            "name": "Pain Domain",
+            "sort": 6800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You punish those who displease you with the sharp sting of pain.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Savor the Sting]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Retributive Pain]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Arazni], @UUID[Compendium.avant.deities.Item.Calistria], @UUID[Compendium.avant.deities.Item.Zon-Kuthon], @UUID[Compendium.avant.deities.Item.Xsistaid], @UUID[Compendium.avant.deities.Item.Shax], @UUID[Compendium.avant.deities.Item.Shivaska], @UUID[Compendium.avant.deities.Item.Sifkesh], @UUID[Compendium.avant.deities.Item.Vildeis], @UUID[Compendium.avant.deities.Item.Urazra], @UUID[Compendium.avant.deities.Item.Hadregash], @UUID[Compendium.avant.deities.Item.Venkelvore], @UUID[Compendium.avant.deities.Item.Kzininn], @UUID[Compendium.avant.deities.Item.Gyronna], @UUID[Compendium.avant.deities.Item.Mestama], @UUID[Compendium.avant.deities.Item.Narakaas], @UUID[Compendium.avant.deities.Item.The Pale Horse], @UUID[Compendium.avant.deities.Item.Nulgreth], @UUID[Compendium.avant.deities.Item.Chavazvug], @UUID[Compendium.avant.deities.Item.Yamasoth], @UUID[Compendium.avant.deities.Item.Doloras], @UUID[Compendium.avant.deities.Item.Ananshea], @UUID[Compendium.avant.deities.Item.Stag Mother of the Forest of Stones], @UUID[Compendium.avant.deities.Item.Yaezhing], @UUID[Compendium.avant.deities.Item.Vineshvakhi], @UUID[Compendium.avant.deities.Item.Alocer]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Vorasha], @UUID[Compendium.avant.deities.Item.Ah Pook], @UUID[Compendium.avant.deities.Item.Zyphus], @UUID[Compendium.avant.deities.Item.Srikalis, Sritaming, and Sribaril]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Faith in the Fallen]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Last Breath]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Life]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "ajCEExOaxuB4C1tY",
+            "image": {},
+            "name": "Passion Domain",
+            "sort": 7000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You evoke passion, whether as love or lust.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Charming Touch]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Captivating Adoration]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Bastet], @UUID[Compendium.avant.deities.Item.Hathor], @UUID[Compendium.avant.deities.Item.Belial], @UUID[Compendium.avant.deities.Item.Calistria], @UUID[Compendium.avant.deities.Item.Shelyn], @UUID[Compendium.avant.deities.Item.Bolka], @UUID[Compendium.avant.deities.Item.The Green Mother], @UUID[Compendium.avant.deities.Item.The Lantern King], @UUID[Compendium.avant.deities.Item.Shumunue], @UUID[Compendium.avant.deities.Item.Arshea], @UUID[Compendium.avant.deities.Item.Lymnieris], @UUID[Compendium.avant.deities.Item.Seramaydiel], @UUID[Compendium.avant.deities.Item.Venkelvore], @UUID[Compendium.avant.deities.Item.Cernunnos], @UUID[Compendium.avant.deities.Item.Isis], @UUID[Compendium.avant.deities.Item.Sturovenen], @UUID[Compendium.avant.deities.Item.Ussharassim], @UUID[Compendium.avant.deities.Item.Mrtyu], @UUID[Compendium.avant.deities.Item.Tlehar], @UUID[Compendium.avant.deities.Item.Naderi], @UUID[Compendium.avant.deities.Item.Obari], @UUID[Compendium.avant.deities.Item.Ardad Lili], @UUID[Compendium.avant.deities.Item.Velgaas], @UUID[Compendium.avant.deities.Item.Kofusachi], @UUID[Compendium.avant.deities.Item.Mugura and Nrithu], @UUID[Compendium.avant.deities.Item.Nalinivati], @UUID[Compendium.avant.deities.Item.Srikalis, Sritaming, and Sribaril], @UUID[Compendium.avant.deities.Item.Likha]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Mestama], @UUID[Compendium.avant.deities.Item.Vermilion Mother], @UUID[Compendium.avant.deities.Item.Arundhat]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Light of the Everlasting Flame]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Curtain Call], @UUID[Compendium.avant.deities.Item.Touch of the Sun]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Sovyrian Conclave], @UUID[Compendium.avant.deities.Item.The Enlightened Scholar's Path], @UUID[Compendium.avant.deities.Item.The Resplendent Court]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "Czi3XXuNOSE7ISpd",
+            "image": {},
+            "name": "Perfection Domain",
+            "sort": 7200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You strive to perfect your mind, body, and spirit.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Perfected Mind]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Perfected Body]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Myr], @UUID[Compendium.avant.deities.Item.Scal], @UUID[Compendium.avant.deities.Item.Irori], @UUID[Compendium.avant.deities.Item.Arshea], @UUID[Compendium.avant.deities.Item.Shei], @UUID[Compendium.avant.deities.Item.Furcas], @UUID[Compendium.avant.deities.Item.Dramindyr], @UUID[Compendium.avant.deities.Item.Il'Surrish], @UUID[Compendium.avant.deities.Item.Liisglan], @UUID[Compendium.avant.deities.Item.Narriseminek], @UUID[Compendium.avant.deities.Item.Balumbdar], @UUID[Compendium.avant.deities.Item.Mazludeh], @UUID[Compendium.avant.deities.Item.Mahja Firehair], @UUID[Compendium.avant.deities.Item.Wulgren], @UUID[Compendium.avant.deities.Item.Genzaeri], @UUID[Compendium.avant.deities.Item.Gruhastha], @UUID[Compendium.avant.deities.Item.Nin], @UUID[Compendium.avant.deities.Item.Shizuru], @UUID[Compendium.avant.deities.Item.Srikalis, Sritaming, and Sribaril], @UUID[Compendium.avant.deities.Item.Ragdya], @UUID[Compendium.avant.deities.Item.Suyuddha], @UUID[Compendium.avant.deities.Item.Otolmens]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Dispater], @UUID[Compendium.avant.deities.Item.Shumunue], @UUID[Compendium.avant.deities.Item.Verilorn], @UUID[Compendium.avant.deities.Item.Falayna], @UUID[Compendium.avant.deities.Item.Casandalee]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Immaculate Growth]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Talons of the Godclaw], @UUID[Compendium.avant.deities.Item.The Godclaw]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Pillars of Knowledge]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Battle]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "hGoWOjdsUz16oJUm",
+            "image": {},
+            "name": "Plague Domain",
+            "sort": 7400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You wield disease and pestilence like a weapon.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Divine Plagues]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Foul Miasma]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Apollyon], @UUID[Compendium.avant.deities.Item.Sicva], @UUID[Compendium.avant.deities.Item.Xsistaid], @UUID[Compendium.avant.deities.Item.Cyth-V'sug], @UUID[Compendium.avant.deities.Item.Lurlup], @UUID[Compendium.avant.deities.Item.Nergal], @UUID[Compendium.avant.deities.Item.Ghlaunder], @UUID[Compendium.avant.deities.Item.Isph-Aun-Vuln], @UUID[Compendium.avant.deities.Item.Lady Nanbyo]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Urgathoa], @UUID[Compendium.avant.deities.Item.Tresmalvos]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Blight]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "Dx47K8wpx8KZUa9S",
+            "image": {},
+            "name": "Protection Domain",
+            "sort": 7600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You ward yourself and others.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Protector's Sacrifice]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Protector's Sphere]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Bastet], @UUID[Compendium.avant.deities.Item.Bes], @UUID[Compendium.avant.deities.Item.Khepri], @UUID[Compendium.avant.deities.Item.Nephthys], @UUID[Compendium.avant.deities.Item.Selket], @UUID[Compendium.avant.deities.Item.Sobek], @UUID[Compendium.avant.deities.Item.Wadjet], @UUID[Compendium.avant.deities.Item.Acavna], @UUID[Compendium.avant.deities.Item.Aesocar], @UUID[Compendium.avant.deities.Item.Amaznen], @UUID[Compendium.avant.deities.Item.Cihua Coatl], @UUID[Compendium.avant.deities.Item.Arazni], @UUID[Compendium.avant.deities.Item.Nethys], @UUID[Compendium.avant.deities.Item.Shelyn], @UUID[Compendium.avant.deities.Item.Torag], @UUID[Compendium.avant.deities.Item.Angradd], @UUID[Compendium.avant.deities.Item.Folgrit], @UUID[Compendium.avant.deities.Item.Trudd], @UUID[Compendium.avant.deities.Item.Atreia], @UUID[Compendium.avant.deities.Item.Verilorn], @UUID[Compendium.avant.deities.Item.Andoletta], @UUID[Compendium.avant.deities.Item.Arqueros], @UUID[Compendium.avant.deities.Item.Dalenydra], @UUID[Compendium.avant.deities.Item.Jaidz], @UUID[Compendium.avant.deities.Item.Korada], @UUID[Compendium.avant.deities.Item.Lorris], @UUID[Compendium.avant.deities.Item.Lymnieris], @UUID[Compendium.avant.deities.Item.Olheon], @UUID[Compendium.avant.deities.Item.Rowdrosh], @UUID[Compendium.avant.deities.Item.Soralyon], @UUID[Compendium.avant.deities.Item.Winlas], @UUID[Compendium.avant.deities.Item.Skode], @UUID[Compendium.avant.deities.Item.Teki Stronggut], @UUID[Compendium.avant.deities.Item.Green Man], @UUID[Compendium.avant.deities.Item.Kzininn], @UUID[Compendium.avant.deities.Item.Zibik], @UUID[Compendium.avant.deities.Item.Anubis], @UUID[Compendium.avant.deities.Item.Grundinnar], @UUID[Compendium.avant.deities.Item.Horus], @UUID[Compendium.avant.deities.Item.Ma'at], @UUID[Compendium.avant.deities.Item.Haborym], @UUID[Compendium.avant.deities.Item.Vapula], @UUID[Compendium.avant.deities.Item.Dramindyr], @UUID[Compendium.avant.deities.Item.Vavaalrav], @UUID[Compendium.avant.deities.Item.Adanye], @UUID[Compendium.avant.deities.Item.Balumbdar], @UUID[Compendium.avant.deities.Item.Uirch], @UUID[Compendium.avant.deities.Item.Aleth], @UUID[Compendium.avant.deities.Item.Alseta], @UUID[Compendium.avant.deities.Item.Apsu], @UUID[Compendium.avant.deities.Item.Emmeton Galardaria], @UUID[Compendium.avant.deities.Item.Kazutal], @UUID[Compendium.avant.deities.Item.Rokoga Gin], @UUID[Compendium.avant.deities.Item.Vudravati], @UUID[Compendium.avant.deities.Item.Yelayne], @UUID[Compendium.avant.deities.Item.Yig], @UUID[Compendium.avant.deities.Item.Iggeret], @UUID[Compendium.avant.deities.Item.Phi Deva], @UUID[Compendium.avant.deities.Item.Qi Zhong], @UUID[Compendium.avant.deities.Item.Arundhat], @UUID[Compendium.avant.deities.Item.Ashukharma], @UUID[Compendium.avant.deities.Item.Vineshvakhi]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Neith], @UUID[Compendium.avant.deities.Item.Laivatiniel], @UUID[Compendium.avant.deities.Item.Lysianassa], @UUID[Compendium.avant.deities.Item.Sairazul], @UUID[Compendium.avant.deities.Item.Findeladlara], @UUID[Compendium.avant.deities.Item.Reymenda], @UUID[Compendium.avant.deities.Item.Uskyeria], @UUID[Compendium.avant.deities.Item.Ceyannan], @UUID[Compendium.avant.deities.Item.Dammar], @UUID[Compendium.avant.deities.Item.Kaldemash], @UUID[Compendium.avant.deities.Item.Milani], @UUID[Compendium.avant.deities.Item.Nocticula], @UUID[Compendium.avant.deities.Item.Stag Mother of the Forest of Stones], @UUID[Compendium.avant.deities.Item.Sun Wukong]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Spirit Wall]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Readied Strike], @UUID[Compendium.avant.deities.Item.Treasures of the Eternal Delve]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Demon Bringers], @UUID[Compendium.avant.deities.Item.Gravelady's Guard], @UUID[Compendium.avant.deities.Item.Guardians of the Sacred Self], @UUID[Compendium.avant.deities.Item.Hearth and Harvest], @UUID[Compendium.avant.deities.Item.Keepers of the Hearth], @UUID[Compendium.avant.deities.Item.Radiant Prism], @UUID[Compendium.avant.deities.Item.Sky Keepers], @UUID[Compendium.avant.deities.Item.Stone's Blood], @UUID[Compendium.avant.deities.Item.Talons of the Godclaw], @UUID[Compendium.avant.deities.Item.The Enlightened Scholar's Path], @UUID[Compendium.avant.deities.Item.The Freeing Flame], @UUID[Compendium.avant.deities.Item.The Godclaw], @UUID[Compendium.avant.deities.Item.The Last Breath], @UUID[Compendium.avant.deities.Item.Urban Prosperity], @UUID[Compendium.avant.deities.Item.Wards of the Pharaoh]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "CbsAiY68e8n5vVVN",
+            "image": {},
+            "name": "Repose Domain",
+            "sort": 7800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You ease mental burdens.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Share Burden]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Font of Serenity]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Aesocar], @UUID[Compendium.avant.deities.Item.Folgrit], @UUID[Compendium.avant.deities.Item.The Lost Prince], @UUID[Compendium.avant.deities.Item.Ashava], @UUID[Compendium.avant.deities.Item.Dalenydra], @UUID[Compendium.avant.deities.Item.Lymnieris], @UUID[Compendium.avant.deities.Item.Reymenda], @UUID[Compendium.avant.deities.Item.Bergelmir], @UUID[Compendium.avant.deities.Item.Zugero], @UUID[Compendium.avant.deities.Item.Atropos], @UUID[Compendium.avant.deities.Item.Ceyannan], @UUID[Compendium.avant.deities.Item.Mrtyu], @UUID[Compendium.avant.deities.Item.Phlegyas], @UUID[Compendium.avant.deities.Item.The Pale Horse], @UUID[Compendium.avant.deities.Item.Vavaalrav], @UUID[Compendium.avant.deities.Item.Adanye], @UUID[Compendium.avant.deities.Item.Immonhiel], @UUID[Compendium.avant.deities.Item.Izuyaku], @UUID[Compendium.avant.deities.Item.Tsukiyo], @UUID[Compendium.avant.deities.Item.Vudravati], @UUID[Compendium.avant.deities.Item.Doloras], @UUID[Compendium.avant.deities.Item.Chamiaholom], @UUID[Compendium.avant.deities.Item.Ozranvial], @UUID[Compendium.avant.deities.Item.Kagia], @UUID[Compendium.avant.deities.Item.Lady Jingxi], @UUID[Compendium.avant.deities.Item.Mugura and Nrithu], @UUID[Compendium.avant.deities.Item.Phi Deva], @UUID[Compendium.avant.deities.Item.Ashukharma]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Scal], @UUID[Compendium.avant.deities.Item.Cihua Coatl], @UUID[Compendium.avant.deities.Item.Desna], @UUID[Compendium.avant.deities.Item.Sarenrae], @UUID[Compendium.avant.deities.Item.Shelyn], @UUID[Compendium.avant.deities.Item.Shumunue], @UUID[Compendium.avant.deities.Item.Grundinnar], @UUID[Compendium.avant.deities.Item.Aleth], @UUID[Compendium.avant.deities.Item.Embaral], @UUID[Compendium.avant.deities.Item.Likha]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Waves of the Boundless Sea]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "S1gyomjojgtCdxc3",
+            "image": {},
+            "name": "Secrecy Domain",
+            "sort": 8000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You protect secrets and keep them hidden.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Whispering Quiet]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Safeguard Secret]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Mephistopheles], @UUID[Compendium.avant.deities.Item.Ulon], @UUID[Compendium.avant.deities.Item.Calistria], @UUID[Compendium.avant.deities.Item.Norgorber], @UUID[Compendium.avant.deities.Item.Corosbel], @UUID[Compendium.avant.deities.Item.Pavnuri], @UUID[Compendium.avant.deities.Item.Baphomet], @UUID[Compendium.avant.deities.Item.Vulot], @UUID[Compendium.avant.deities.Item.Ng], @UUID[Compendium.avant.deities.Item.Ayrzul], @UUID[Compendium.avant.deities.Item.Ketephys], @UUID[Compendium.avant.deities.Item.Black Butterfly], @UUID[Compendium.avant.deities.Item.Kelinahat], @UUID[Compendium.avant.deities.Item.Malthus], @UUID[Compendium.avant.deities.Item.Titivilus], @UUID[Compendium.avant.deities.Item.Vapula], @UUID[Compendium.avant.deities.Item.Kalekot], @UUID[Compendium.avant.deities.Item.Aleth], @UUID[Compendium.avant.deities.Item.Erecura], @UUID[Compendium.avant.deities.Item.Etaris], @UUID[Compendium.avant.deities.Item.Sivanah], @UUID[Compendium.avant.deities.Item.Hastur], @UUID[Compendium.avant.deities.Item.Nyuo-Ogh], @UUID[Compendium.avant.deities.Item.Dachzerul], @UUID[Compendium.avant.deities.Item.The Lady of the North Star], @UUID[Compendium.avant.deities.Item.Dhalavei], @UUID[Compendium.avant.deities.Item.Conqueror Worm], @UUID[Compendium.avant.deities.Item.Razmir]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Baalzebul], @UUID[Compendium.avant.deities.Item.Geryon], @UUID[Compendium.avant.deities.Item.Tolte Coatl], @UUID[Compendium.avant.deities.Item.Kols], @UUID[Compendium.avant.deities.Item.Count Ranalc], @UUID[Compendium.avant.deities.Item.Cormigus], @UUID[Compendium.avant.deities.Item.Mestama], @UUID[Compendium.avant.deities.Item.Ah Pook], @UUID[Compendium.avant.deities.Item.Isph-Aun-Vuln], @UUID[Compendium.avant.deities.Item.Shawnari], @UUID[Compendium.avant.deities.Item.Vineshvakhi]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Esoteric Order of the Palatine Eye], @UUID[Compendium.avant.deities.Item.Shadow Cabinet]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Children of the Night], @UUID[Compendium.avant.deities.Item.Pillars of Knowledge]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Deliberate Journey]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Lore]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "5TqEbLR9QT3gJGe3",
+            "image": {},
+            "name": "Sorrow Domain",
+            "sort": 8200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You have a powerful and painful connection to melancholy and sadness.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Lament]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Overflowing Sorrow]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Nephthys], @UUID[Compendium.avant.deities.Item.Faith in the Fallen], @UUID[Compendium.avant.deities.Item.Sifkesh], @UUID[Compendium.avant.deities.Item.Count Ranalc], @UUID[Compendium.avant.deities.Item.The Lost Prince], @UUID[Compendium.avant.deities.Item.Andoletta], @UUID[Compendium.avant.deities.Item.Pulura], @UUID[Compendium.avant.deities.Item.Vildeis], @UUID[Compendium.avant.deities.Item.Mrtyu], @UUID[Compendium.avant.deities.Item.Narakaas], @UUID[Compendium.avant.deities.Item.Vonymos], @UUID[Compendium.avant.deities.Item.Embaral], @UUID[Compendium.avant.deities.Item.Naderi], @UUID[Compendium.avant.deities.Item.Zyphus], @UUID[Compendium.avant.deities.Item.Doloras], @UUID[Compendium.avant.deities.Item.Iggeret], @UUID[Compendium.avant.deities.Item.Ozranvial], @UUID[Compendium.avant.deities.Item.Likha], @UUID[Compendium.avant.deities.Item.Ravithra]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Arazni], @UUID[Compendium.avant.deities.Item.Laivatiniel], @UUID[Compendium.avant.deities.Item.Shivaska], @UUID[Compendium.avant.deities.Item.Folgrit], @UUID[Compendium.avant.deities.Item.Ferrumnestra], @UUID[Compendium.avant.deities.Item.Laudinmio], @UUID[Compendium.avant.deities.Item.Ah Pook], @UUID[Compendium.avant.deities.Item.Etaris], @UUID[Compendium.avant.deities.Item.Shizuru], @UUID[Compendium.avant.deities.Item.Lady Nanbyo]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sorrow's Sword]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "rtobUemb6vF2Yu3Y",
+            "image": {},
+            "name": "Soul Domain",
+            "sort": 8400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You wield power over the spiritual.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Eject Soul]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Ectoplasmic Interstice]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Charon], @UUID[Compendium.avant.deities.Item.Corosbel], @UUID[Compendium.avant.deities.Item.Ashava], @UUID[Compendium.avant.deities.Item.Anubis], @UUID[Compendium.avant.deities.Item.Osiris], @UUID[Compendium.avant.deities.Item.Ceyannan], @UUID[Compendium.avant.deities.Item.Dammar], @UUID[Compendium.avant.deities.Item.Tsukiyo], @UUID[Compendium.avant.deities.Item.Zyphus], @UUID[Compendium.avant.deities.Item.Alglenweis]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Mephistopheles], @UUID[Compendium.avant.deities.Item.Pharasma], @UUID[Compendium.avant.deities.Item.Magrim], @UUID[Compendium.avant.deities.Item.Dalenydra], @UUID[Compendium.avant.deities.Item.Uskyeria], @UUID[Compendium.avant.deities.Item.Alazhra], @UUID[Compendium.avant.deities.Item.Vonymos], @UUID[Compendium.avant.deities.Item.Luhar], @UUID[Compendium.avant.deities.Item.Chamiaholom], @UUID[Compendium.avant.deities.Item.Ozranvial], @UUID[Compendium.avant.deities.Item.Ravithra]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Rivethun]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Guardians of the Sacred Self]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Ancestors], @UUID[Compendium.avant.classfeatures.Item.Life]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "6bDpXy7pQdGrd2og",
+            "image": {},
+            "name": "Star Domain",
+            "sort": 8600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You command the power of the stars.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Zenith Star]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Asterism]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Findeladlara], @UUID[Compendium.avant.deities.Item.Black Butterfly], @UUID[Compendium.avant.deities.Item.Pulura], @UUID[Compendium.avant.deities.Item.Ma'at], @UUID[Compendium.avant.deities.Item.Inna], @UUID[Compendium.avant.deities.Item.Telastmar], @UUID[Compendium.avant.deities.Item.Kaldemash], @UUID[Compendium.avant.deities.Item.The Devourer], @UUID[Compendium.avant.deities.Item.Cthulhu]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Tolte Coatl], @UUID[Compendium.avant.deities.Item.Desna], @UUID[Compendium.avant.deities.Item.Zelishkar], @UUID[Compendium.avant.deities.Item.Luhar], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Rhan-Tegoth], @UUID[Compendium.avant.deities.Item.The Lady of the North Star]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Path of the Heavens]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Cosmic Caravan]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Cosmos], @UUID[Compendium.avant.classfeatures.Item.Flames]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "CkBvj5y1lAm1jnsc",
+            "image": {},
+            "name": "Sun Domain",
+            "sort": 8800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You harness the power of the sun and other light sources, and punish undead.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Dazzling Flash]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Vital Luminance]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Hathor], @UUID[Compendium.avant.deities.Item.Khepri], @UUID[Compendium.avant.deities.Item.Jaidi], @UUID[Compendium.avant.deities.Item.Sarenrae], @UUID[Compendium.avant.deities.Item.Nurgal], @UUID[Compendium.avant.deities.Item.Atreia], @UUID[Compendium.avant.deities.Item.Lalaci], @UUID[Compendium.avant.deities.Item.Horus], @UUID[Compendium.avant.deities.Item.Ra], @UUID[Compendium.avant.deities.Item.Sturovenen], @UUID[Compendium.avant.deities.Item.Inna], @UUID[Compendium.avant.deities.Item.Chohar], @UUID[Compendium.avant.deities.Item.Luhar], @UUID[Compendium.avant.deities.Item.Tlehar], @UUID[Compendium.avant.deities.Item.Walkena], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Shizuru]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Mahja Firehair], @UUID[Compendium.avant.deities.Item.Uirch], @UUID[Compendium.avant.deities.Item.Lady Jingxi]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Light of the Everlasting Flame]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Green Faith]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Radiant Prism], @UUID[Compendium.avant.deities.Item.The Path of the Heavens], @UUID[Compendium.avant.deities.Item.Touch of the Sun]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Flames]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "rd0jQwvTK4jpv95o",
+            "image": {},
+            "name": "Swarm Domain",
+            "sort": 9000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You exert control over masses of creatures.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Swarmsense]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Swarm Form]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Apollyon], @UUID[Compendium.avant.deities.Item.Pazuzu], @UUID[Compendium.avant.deities.Item.Shumunue], @UUID[Compendium.avant.deities.Item.Halcamora], @UUID[Compendium.avant.deities.Item.Kitumu], @UUID[Compendium.avant.deities.Item.Ghlaunder], @UUID[Compendium.avant.deities.Item.Oaur-Ooung], @UUID[Compendium.avant.deities.Item.Ananshea], @UUID[Compendium.avant.deities.Item.Lao Shu Po], @UUID[Compendium.avant.deities.Item.Lahkgya]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Baalzebul], @UUID[Compendium.avant.deities.Item.Rovagug], @UUID[Compendium.avant.deities.Item.Urgathoa], @UUID[Compendium.avant.deities.Item.Anogetz], @UUID[Compendium.avant.deities.Item.Tresmalvos], @UUID[Compendium.avant.deities.Item.Xsistaid], @UUID[Compendium.avant.deities.Item.Nergal], @UUID[Compendium.avant.deities.Item.Dammar], @UUID[Compendium.avant.deities.Item.Suyuddha]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "3P0NWwP3s7bIiidH",
+            "image": {},
+            "name": "Time Domain",
+            "sort": 9200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You reign over the flow of time.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Delay Consequence]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Stasis]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Shivaska], @UUID[Compendium.avant.deities.Item.Yhidothrus], @UUID[Compendium.avant.deities.Item.Shyka], @UUID[Compendium.avant.deities.Item.Lorthact], @UUID[Compendium.avant.deities.Item.Ra], @UUID[Compendium.avant.deities.Item.Atropos], @UUID[Compendium.avant.deities.Item.Liisglan], @UUID[Compendium.avant.deities.Item.Aakriti], @UUID[Compendium.avant.deities.Item.Alseta], @UUID[Compendium.avant.deities.Item.Brigh], @UUID[Compendium.avant.deities.Item.Rhan-Tegoth], @UUID[Compendium.avant.deities.Item.Yog-Sothoth], @UUID[Compendium.avant.deities.Item.Charg], @UUID[Compendium.avant.deities.Item.Shawnari]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Pharasma], @UUID[Compendium.avant.deities.Item.Magdh], @UUID[Compendium.avant.deities.Item.Lysianassa], @UUID[Compendium.avant.deities.Item.Imot], @UUID[Compendium.avant.deities.Item.Ssila'meshnik], @UUID[Compendium.avant.deities.Item.Teshallas], @UUID[Compendium.avant.deities.Item.Ydajisk], @UUID[Compendium.avant.deities.Item.Mahathallah], @UUID[Compendium.avant.deities.Item.Zipacna]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Pillars of Knowledge]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Time]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "EQfZepZX6rxxBRqG",
+            "image": {},
+            "name": "Toil Domain",
+            "sort": 9400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You work constantly and refuse to let anything stand in your way.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Practice Makes Perfect]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Tireless Worker]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Mammon], @UUID[Compendium.avant.deities.Item.Cixyron], @UUID[Compendium.avant.deities.Item.Haagenti], @UUID[Compendium.avant.deities.Item.Sairazul], @UUID[Compendium.avant.deities.Item.Reymenda], @UUID[Compendium.avant.deities.Item.Liisglan], @UUID[Compendium.avant.deities.Item.Mahja Firehair], @UUID[Compendium.avant.deities.Item.Varg], @UUID[Compendium.avant.deities.Item.Lissala], @UUID[Compendium.avant.deities.Item.Yelayne], @UUID[Compendium.avant.deities.Item.Jin Li]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Baalzebul], @UUID[Compendium.avant.deities.Item.Moloch], @UUID[Compendium.avant.deities.Item.Amaznen], @UUID[Compendium.avant.deities.Item.Jaidi], @UUID[Compendium.avant.deities.Item.Abadar], @UUID[Compendium.avant.deities.Item.Asmodeus], @UUID[Compendium.avant.deities.Item.Sithhud], @UUID[Compendium.avant.deities.Item.Bolka], @UUID[Compendium.avant.deities.Item.Bharnarol], @UUID[Compendium.avant.deities.Item.Lorris], @UUID[Compendium.avant.deities.Item.Aroden], @UUID[Compendium.avant.deities.Item.Haborym], @UUID[Compendium.avant.deities.Item.Chohar], @UUID[Compendium.avant.deities.Item.Ghlaunder], @UUID[Compendium.avant.deities.Item.Kurgess], @UUID[Compendium.avant.deities.Item.Yamasoth], @UUID[Compendium.avant.deities.Item.Nameless], @UUID[Compendium.avant.deities.Item.Xiquiripat]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Treasures of the Eternal Delve]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Path of the Heavens], @UUID[Compendium.avant.deities.Item.Wheels of Innovation]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "bTujFcUut9RX4GCy",
+            "image": {},
+            "name": "Travel Domain",
+            "sort": 9600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You have power over movement and journeys.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Agile Feet]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Traveler's Transit]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Wadjet], @UUID[Compendium.avant.deities.Item.Barbatos], @UUID[Compendium.avant.deities.Item.Elion], @UUID[Compendium.avant.deities.Item.Tolte Coatl], @UUID[Compendium.avant.deities.Item.Abadar], @UUID[Compendium.avant.deities.Item.Desna], @UUID[Compendium.avant.deities.Item.Gozreh], @UUID[Compendium.avant.deities.Item.Areshkagal], @UUID[Compendium.avant.deities.Item.Dranngvit], @UUID[Compendium.avant.deities.Item.Count Ranalc], @UUID[Compendium.avant.deities.Item.Ng], @UUID[Compendium.avant.deities.Item.Kelizandri], @UUID[Compendium.avant.deities.Item.Ranginori], @UUID[Compendium.avant.deities.Item.Jaidz], @UUID[Compendium.avant.deities.Item.Keltheald], @UUID[Compendium.avant.deities.Item.Rowdrosh], @UUID[Compendium.avant.deities.Item.Ylimancha], @UUID[Compendium.avant.deities.Item.Aegirran], @UUID[Compendium.avant.deities.Item.Skrymir], @UUID[Compendium.avant.deities.Item.Zarongel], @UUID[Compendium.avant.deities.Item.Telvrys], @UUID[Compendium.avant.deities.Item.Alazhra], @UUID[Compendium.avant.deities.Item.Cormigus], @UUID[Compendium.avant.deities.Item.Barzahk], @UUID[Compendium.avant.deities.Item.Dramindyr], @UUID[Compendium.avant.deities.Item.Apsu], @UUID[Compendium.avant.deities.Item.Hanspur], @UUID[Compendium.avant.deities.Item.Nocticula], @UUID[Compendium.avant.deities.Item.Rokoga Gin], @UUID[Compendium.avant.deities.Item.Yog-Sothoth], @UUID[Compendium.avant.deities.Item.Aonaurious], @UUID[Compendium.avant.deities.Item.Hataam], @UUID[Compendium.avant.deities.Item.Ristrentho], @UUID[Compendium.avant.deities.Item.Kofusachi], @UUID[Compendium.avant.deities.Item.Matravash]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Onos], @UUID[Compendium.avant.deities.Item.Reymenda], @UUID[Compendium.avant.deities.Item.Aroden], @UUID[Compendium.avant.deities.Item.Ceyannan], @UUID[Compendium.avant.deities.Item.Telastmar], @UUID[Compendium.avant.deities.Item.The Pale Horse], @UUID[Compendium.avant.deities.Item.Besmara], @UUID[Compendium.avant.deities.Item.Emmeton Galardaria], @UUID[Compendium.avant.deities.Item.Gruhastha], @UUID[Compendium.avant.deities.Item.Hei Feng], @UUID[Compendium.avant.deities.Item.Obari], @UUID[Compendium.avant.deities.Item.Yelayne], @UUID[Compendium.avant.deities.Item.Thuskchoon], @UUID[Compendium.avant.deities.Item.Sun Wukong], @UUID[Compendium.avant.deities.Item.Suyuddha]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Breath of the Endless Sky], @UUID[Compendium.avant.deities.Item.Waves of the Boundless Sea]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Seafarers' Hope], @UUID[Compendium.avant.deities.Item.The Deliberate Journey], @UUID[Compendium.avant.deities.Item.The Endless Road], @UUID[Compendium.avant.deities.Item.The Path of the Heavens]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Radiant Prism], @UUID[Compendium.avant.deities.Item.The Divine Dare], @UUID[Compendium.avant.deities.Item.The Resplendent Court]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "xJtbGqoz3BcCjUik",
+            "image": {},
+            "name": "Trickery Domain",
+            "sort": 9800000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You deceive others and cause mischief.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Sudden Shift]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Trickster's Twin]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Bastet], @UUID[Compendium.avant.deities.Item.Baalzebul], @UUID[Compendium.avant.deities.Item.Belial], @UUID[Compendium.avant.deities.Item.Ulon], @UUID[Compendium.avant.deities.Item.Asmodeus], @UUID[Compendium.avant.deities.Item.Calistria], @UUID[Compendium.avant.deities.Item.Lamashtu], @UUID[Compendium.avant.deities.Item.Norgorber], @UUID[Compendium.avant.deities.Item.Corosbel], @UUID[Compendium.avant.deities.Item.Laivatiniel], @UUID[Compendium.avant.deities.Item.Areshkagal], @UUID[Compendium.avant.deities.Item.Jezelda], @UUID[Compendium.avant.deities.Item.Pazuzu], @UUID[Compendium.avant.deities.Item.Shax], @UUID[Compendium.avant.deities.Item.Sifkesh], @UUID[Compendium.avant.deities.Item.Vulot], @UUID[Compendium.avant.deities.Item.Droskar], @UUID[Compendium.avant.deities.Item.The Lantern King], @UUID[Compendium.avant.deities.Item.Kelinahat], @UUID[Compendium.avant.deities.Item.Picoperi], @UUID[Compendium.avant.deities.Item.Haggakal], @UUID[Compendium.avant.deities.Item.Skrymir], @UUID[Compendium.avant.deities.Item.Zursvaater], @UUID[Compendium.avant.deities.Item.Cong], @UUID[Compendium.avant.deities.Item.Lorthact], @UUID[Compendium.avant.deities.Item.Mestama], @UUID[Compendium.avant.deities.Item.Ssila'meshnik], @UUID[Compendium.avant.deities.Item.Ydajisk], @UUID[Compendium.avant.deities.Item.Achaekek], @UUID[Compendium.avant.deities.Item.Ahriman], @UUID[Compendium.avant.deities.Item.Atrogine], @UUID[Compendium.avant.deities.Item.Besmara], @UUID[Compendium.avant.deities.Item.Camazotz], @UUID[Compendium.avant.deities.Item.Chaldira], @UUID[Compendium.avant.deities.Item.Erecura], @UUID[Compendium.avant.deities.Item.Grandmother Spider], @UUID[Compendium.avant.deities.Item.Nivi Rhombodazzle], @UUID[Compendium.avant.deities.Item.Sivanah], @UUID[Compendium.avant.deities.Item.Thamir], @UUID[Compendium.avant.deities.Item.Nyarlathotep (Haunter in the Dark)], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Crawling Chaos)], @UUID[Compendium.avant.deities.Item.Isph-Aun-Vuln], @UUID[Compendium.avant.deities.Item.Mahathallah], @UUID[Compendium.avant.deities.Item.Dachzerul], @UUID[Compendium.avant.deities.Item.Velgaas], @UUID[Compendium.avant.deities.Item.Enkaar], @UUID[Compendium.avant.deities.Item.Eyes That Watch], @UUID[Compendium.avant.deities.Item.Grasping Iovett], @UUID[Compendium.avant.deities.Item.Husk], @UUID[Compendium.avant.deities.Item.Lady Razor], @UUID[Compendium.avant.deities.Item.Reshmit of the Heavy Voice], @UUID[Compendium.avant.deities.Item.Thalaphyrr], @UUID[Compendium.avant.deities.Item.Lao Shu Po], @UUID[Compendium.avant.deities.Item.Sun Wukong], @UUID[Compendium.avant.deities.Item.Yaezhing], @UUID[Compendium.avant.deities.Item.Dhalavei], @UUID[Compendium.avant.deities.Item.Lahkgya], @UUID[Compendium.avant.deities.Item.Suyuddha], @UUID[Compendium.avant.deities.Item.Conqueror Worm], @UUID[Compendium.avant.deities.Item.Razmir]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Khepri], @UUID[Compendium.avant.deities.Item.Pavnuri], @UUID[Compendium.avant.deities.Item.Titivilus], @UUID[Compendium.avant.deities.Item.Ah Pook]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Shadow Cabinet], @UUID[Compendium.avant.deities.Item.The Pandemonia]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Seafarers' Hope], @UUID[Compendium.avant.deities.Item.The Perplexing Jest]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "lgsJz7mZ1OTe340e",
+            "image": {},
+            "name": "Truth Domain",
+            "sort": 10000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You pierce lies and discover the truth.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Word of Truth]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Glimpse the Truth]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Ptah], @UUID[Compendium.avant.deities.Item.Geryon], @UUID[Compendium.avant.deities.Item.Ulon], @UUID[Compendium.avant.deities.Item.Pahti Coatl], @UUID[Compendium.avant.deities.Item.Iomedae], @UUID[Compendium.avant.deities.Item.Irori], @UUID[Compendium.avant.deities.Item.Sarenrae], @UUID[Compendium.avant.deities.Item.Kols], @UUID[Compendium.avant.deities.Item.Magdh], @UUID[Compendium.avant.deities.Item.Dammerich], @UUID[Compendium.avant.deities.Item.Eritrice], @UUID[Compendium.avant.deities.Item.Olheon], @UUID[Compendium.avant.deities.Item.Zohls], @UUID[Compendium.avant.deities.Item.Grundinnar], @UUID[Compendium.avant.deities.Item.Ma'at], @UUID[Compendium.avant.deities.Item.Monad], @UUID[Compendium.avant.deities.Item.Erecura], @UUID[Compendium.avant.deities.Item.Gruhastha], @UUID[Compendium.avant.deities.Item.Kurgess], @UUID[Compendium.avant.deities.Item.Norns], @UUID[Compendium.avant.deities.Item.Mahathallah], @UUID[Compendium.avant.deities.Item.Baekho], @UUID[Compendium.avant.deities.Item.Ravithra]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Dranngvit], @UUID[Compendium.avant.deities.Item.Jaidz], @UUID[Compendium.avant.deities.Item.Kelinahat], @UUID[Compendium.avant.deities.Item.Titivilus], @UUID[Compendium.avant.deities.Item.Vale], @UUID[Compendium.avant.deities.Item.Likha]</p><h4><strong>Covenants</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Esoteric Order of the Palatine Eye]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Pillars of Knowledge], @UUID[Compendium.avant.deities.Item.The Endless Road], @UUID[Compendium.avant.deities.Item.The Laborer's Bastion]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Guardians of the Sacred Self]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Lore]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "T0JHj79aGphlZ4Mt",
+            "image": {},
+            "name": "Tyranny Domain",
+            "sort": 10200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You wield power to rule and control others.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Touch of Obedience]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Commanding Lash]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Barbatos], @UUID[Compendium.avant.deities.Item.Dispater], @UUID[Compendium.avant.deities.Item.Mephistopheles], @UUID[Compendium.avant.deities.Item.Sicva], @UUID[Compendium.avant.deities.Item.Asmodeus], @UUID[Compendium.avant.deities.Item.Laivatiniel], @UUID[Compendium.avant.deities.Item.Angazhan], @UUID[Compendium.avant.deities.Item.Gogunta], @UUID[Compendium.avant.deities.Item.Pazuzu], @UUID[Compendium.avant.deities.Item.Droskar], @UUID[Compendium.avant.deities.Item.Zursvaater], @UUID[Compendium.avant.deities.Item.Hadregash], @UUID[Compendium.avant.deities.Item.Lorthact], @UUID[Compendium.avant.deities.Item.Walkena], @UUID[Compendium.avant.deities.Item.Treerazer], @UUID[Compendium.avant.deities.Item.Conqueror Worm]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Corosbel], @UUID[Compendium.avant.deities.Item.Kelizandri], @UUID[Compendium.avant.deities.Item.Minderhal], @UUID[Compendium.avant.deities.Item.Haborym], @UUID[Compendium.avant.deities.Item.Malthus], @UUID[Compendium.avant.deities.Item.Grask Uldeth], @UUID[Compendium.avant.deities.Item.Nin], @UUID[Compendium.avant.deities.Item.Isph-Aun-Vuln], @UUID[Compendium.avant.deities.Item.Xiquiripat]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.The Godclaw]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Talons of the Godclaw]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "RIlgBuWGfHC1rzYu",
+            "image": {},
+            "name": "Undeath Domain",
+            "sort": 10400000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>Your magic carries close ties to the undead.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Touch of Undeath]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Malignant Sustenance]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Urgathoa], @UUID[Compendium.avant.deities.Item.Pavnuri], @UUID[Compendium.avant.deities.Item.Xsistaid], @UUID[Compendium.avant.deities.Item.Kabriri], @UUID[Compendium.avant.deities.Item.Sithhud], @UUID[Compendium.avant.deities.Item.Zura], @UUID[Compendium.avant.deities.Item.Nergal], @UUID[Compendium.avant.deities.Item.Nin], @UUID[Compendium.avant.deities.Item.Zyphus], @UUID[Compendium.avant.deities.Item.Nhimbaloth], @UUID[Compendium.avant.deities.Item.Mahathallah], @UUID[Compendium.avant.deities.Item.Fumeiyoshi], @UUID[Compendium.avant.deities.Item.Orcus]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Yhidothrus], @UUID[Compendium.avant.deities.Item.Ayrzul], @UUID[Compendium.avant.deities.Item.Orgesh]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Children of the Night]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Bones]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "StXN6IHR6evRaeXF",
+            "image": {},
+            "name": "Vigil Domain",
+            "sort": 10600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You watch over those long passed and guard their secrets.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Object Memory]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Remember the Lost]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Faith in the Fallen], @UUID[Compendium.avant.deities.Item.Kabriri], @UUID[Compendium.avant.deities.Item.Dranngvit], @UUID[Compendium.avant.deities.Item.Ragadahn], @UUID[Compendium.avant.deities.Item.The Lost Prince], @UUID[Compendium.avant.deities.Item.Dalenydra], @UUID[Compendium.avant.deities.Item.Dammerich], @UUID[Compendium.avant.deities.Item.Uskyeria], @UUID[Compendium.avant.deities.Item.Winlas], @UUID[Compendium.avant.deities.Item.Bergelmir], @UUID[Compendium.avant.deities.Item.Anubis], @UUID[Compendium.avant.deities.Item.Haborym], @UUID[Compendium.avant.deities.Item.Barzahk], @UUID[Compendium.avant.deities.Item.Ceyannan], @UUID[Compendium.avant.deities.Item.Teshallas], @UUID[Compendium.avant.deities.Item.Vale], @UUID[Compendium.avant.deities.Item.Vavaalrav], @UUID[Compendium.avant.deities.Item.Embaral], @UUID[Compendium.avant.deities.Item.Shizuru], @UUID[Compendium.avant.deities.Item.Kagia], @UUID[Compendium.avant.deities.Item.The Lady of the North Star]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Acavna], @UUID[Compendium.avant.deities.Item.Cihua Coatl], @UUID[Compendium.avant.deities.Item.Irori], @UUID[Compendium.avant.deities.Item.Pharasma], @UUID[Compendium.avant.deities.Item.Sithhud], @UUID[Compendium.avant.deities.Item.Imbrex], @UUID[Compendium.avant.deities.Item.Ferrumnestra], @UUID[Compendium.avant.deities.Item.Ashava], @UUID[Compendium.avant.deities.Item.Lorris], @UUID[Compendium.avant.deities.Item.Olheon], @UUID[Compendium.avant.deities.Item.Soralyon], @UUID[Compendium.avant.deities.Item.Tanagaar], @UUID[Compendium.avant.deities.Item.Teki Stronggut], @UUID[Compendium.avant.deities.Item.Titivilus], @UUID[Compendium.avant.deities.Item.Atropos], @UUID[Compendium.avant.deities.Item.Chohar], @UUID[Compendium.avant.deities.Item.Tlehar], @UUID[Compendium.avant.deities.Item.Uirch], @UUID[Compendium.avant.deities.Item.Alseta], @UUID[Compendium.avant.deities.Item.Kazutal]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Good Neighbors], @UUID[Compendium.avant.deities.Item.Rivethun], @UUID[Compendium.avant.deities.Item.The Spirit Wall]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Touch of the Sun]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Bones]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "xLxrtbsj4acqgsyC",
+            "image": {},
+            "name": "Nothingness Domain",
+            "sort": 6700000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You draw power from emptiness.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Empty Inside]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Door to Beyond]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Ferrumnestra], @UUID[Compendium.avant.deities.Item.Black Butterfly], @UUID[Compendium.avant.deities.Item.Lurlup], @UUID[Compendium.avant.deities.Item.Dramindyr], @UUID[Compendium.avant.deities.Item.Monad], @UUID[Compendium.avant.deities.Item.Telastmar], @UUID[Compendium.avant.deities.Item.Groetus], @UUID[Compendium.avant.deities.Item.The Devourer], @UUID[Compendium.avant.deities.Item.Azathoth], @UUID[Compendium.avant.deities.Item.Cthulhu], @UUID[Compendium.avant.deities.Item.Hastur], @UUID[Compendium.avant.deities.Item.Nhimbaloth], @UUID[Compendium.avant.deities.Item.Rhan-Tegoth], @UUID[Compendium.avant.deities.Item.Yog-Sothoth], @UUID[Compendium.avant.deities.Item.Thuskchoon], @UUID[Compendium.avant.deities.Item.Iggeret], @UUID[Compendium.avant.deities.Item.Shawnari], @UUID[Compendium.avant.deities.Item.Velgaas], @UUID[Compendium.avant.deities.Item.Kerkamoth]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Desna], @UUID[Compendium.avant.deities.Item.Rovagug], @UUID[Compendium.avant.deities.Item.Zon-Kuthon], @UUID[Compendium.avant.deities.Item.Corosbel], @UUID[Compendium.avant.deities.Item.Pavnuri], @UUID[Compendium.avant.deities.Item.Cyth-V'sug], @UUID[Compendium.avant.deities.Item.Vulot], @UUID[Compendium.avant.deities.Item.Yhidothrus], @UUID[Compendium.avant.deities.Item.Alazhra], @UUID[Compendium.avant.deities.Item.Inna], @UUID[Compendium.avant.deities.Item.Mother Vulture], @UUID[Compendium.avant.deities.Item.Ahriman], @UUID[Compendium.avant.deities.Item.Doloras]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Cosmic Caravan], @UUID[Compendium.avant.deities.Item.The Path of the Heavens]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Ashes], @UUID[Compendium.avant.classfeatures.Item.Cosmos], @UUID[Compendium.avant.classfeatures.Item.Time]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "U8WVR6EDfmUaMCbu",
+            "image": {},
+            "name": "Water Domain",
+            "sort": 11000000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You control water and bodies of water.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Tidal Surge]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Downpour]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Apep], @UUID[Compendium.avant.deities.Item.Neith], @UUID[Compendium.avant.deities.Item.Sobek], @UUID[Compendium.avant.deities.Item.Wadjet], @UUID[Compendium.avant.deities.Item.Charon], @UUID[Compendium.avant.deities.Item.Geryon], @UUID[Compendium.avant.deities.Item.Onos], @UUID[Compendium.avant.deities.Item.Gozreh], @UUID[Compendium.avant.deities.Item.Tresmalvos], @UUID[Compendium.avant.deities.Item.Vorasha], @UUID[Compendium.avant.deities.Item.Dagon], @UUID[Compendium.avant.deities.Item.Gogunta], @UUID[Compendium.avant.deities.Item.Sithhud], @UUID[Compendium.avant.deities.Item.Ragadahn], @UUID[Compendium.avant.deities.Item.Kelizandri], @UUID[Compendium.avant.deities.Item.Lysianassa], @UUID[Compendium.avant.deities.Item.Valani], @UUID[Compendium.avant.deities.Item.Ylimancha], @UUID[Compendium.avant.deities.Item.Aegirran], @UUID[Compendium.avant.deities.Item.Thremyr], @UUID[Compendium.avant.deities.Item.Zogmugot], @UUID[Compendium.avant.deities.Item.Aminara], @UUID[Compendium.avant.deities.Item.Besmara], @UUID[Compendium.avant.deities.Item.Embaral], @UUID[Compendium.avant.deities.Item.Hanspur], @UUID[Compendium.avant.deities.Item.Hei Feng], @UUID[Compendium.avant.deities.Item.Izuyaku], @UUID[Compendium.avant.deities.Item.Naderi], @UUID[Compendium.avant.deities.Item.Obari], @UUID[Compendium.avant.deities.Item.Bokrug], @UUID[Compendium.avant.deities.Item.Orgesh], @UUID[Compendium.avant.deities.Item.Oaur-Ooung], @UUID[Compendium.avant.deities.Item.Hataam], @UUID[Compendium.avant.deities.Item.Ristrentho], @UUID[Compendium.avant.deities.Item.Lady Nanbyo], @UUID[Compendium.avant.deities.Item.Diomazul], @UUID[Compendium.avant.deities.Item.Matravash]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Telastmar], @UUID[Compendium.avant.deities.Item.The Pale Horse], @UUID[Compendium.avant.deities.Item.Cthulhu], @UUID[Compendium.avant.deities.Item.Jin Li], @UUID[Compendium.avant.deities.Item.Qi Zhong]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Green Faith], @UUID[Compendium.avant.deities.Item.Waves of the Boundless Sea]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Rivethun]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Seafarers' Hope], @UUID[Compendium.avant.deities.Item.Weight of the World]</p><h4><strong>Oracle Mysteries</strong></h4><p> @UUID[Compendium.avant.classfeatures.Item.Tempest]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "mJBp4KIszuqrmnp5",
+            "image": {},
+            "name": "Wealth Domain",
+            "sort": 11200000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You hold power over wealth, trade, and treasure.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Appearance of Wealth]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Precious Metals]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Hathor], @UUID[Compendium.avant.deities.Item.Mammon], @UUID[Compendium.avant.deities.Item.Abadar], @UUID[Compendium.avant.deities.Item.Erastil], @UUID[Compendium.avant.deities.Item.Norgorber], @UUID[Compendium.avant.deities.Item.Tresmalvos], @UUID[Compendium.avant.deities.Item.Areshkagal], @UUID[Compendium.avant.deities.Item.Haagenti], @UUID[Compendium.avant.deities.Item.Sairazul], @UUID[Compendium.avant.deities.Item.Falayna], @UUID[Compendium.avant.deities.Item.Thisamet], @UUID[Compendium.avant.deities.Item.Zogmugot], @UUID[Compendium.avant.deities.Item.Vapula], @UUID[Compendium.avant.deities.Item.Besmara], @UUID[Compendium.avant.deities.Item.Hanspur], @UUID[Compendium.avant.deities.Item.Nivi Rhombodazzle], @UUID[Compendium.avant.deities.Item.Thamir], @UUID[Compendium.avant.deities.Item.Bokrug], @UUID[Compendium.avant.deities.Item.Hastur], @UUID[Compendium.avant.deities.Item.Kofusachi], @UUID[Compendium.avant.deities.Item.Raumya], @UUID[Compendium.avant.deities.Item.Razmir]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Laudinmio], @UUID[Compendium.avant.deities.Item.Grask Uldeth], @UUID[Compendium.avant.deities.Item.Emmeton Galardaria], @UUID[Compendium.avant.deities.Item.Nyarlathotep (The Faceless Sphinx)], @UUID[Compendium.avant.deities.Item.Lahkgya]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Treasures of the Eternal Delve]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Stone's Blood], @UUID[Compendium.avant.deities.Item.The Offering Plate], @UUID[Compendium.avant.deities.Item.The Resplendent Court]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Deliberate Journey], @UUID[Compendium.avant.deities.Item.Urban Prosperity]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "nuywscaiVGXLQpZ1",
+            "image": {},
+            "name": "Dragon Domain",
+            "sort": 2600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You draw on the power of dragons, linnorms, and other powerful reptilian creatures.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Draconic Barrage]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Roar of the Dragon]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Apep], @UUID[Compendium.avant.deities.Item.Sobek], @UUID[Compendium.avant.deities.Item.Geryon], @UUID[Compendium.avant.deities.Item.Vorasha], @UUID[Compendium.avant.deities.Item.Abraxas], @UUID[Compendium.avant.deities.Item.Zevgavizeb], @UUID[Compendium.avant.deities.Item.Ragadahn], @UUID[Compendium.avant.deities.Item.Smiad], @UUID[Compendium.avant.deities.Item.Uvuko], @UUID[Compendium.avant.deities.Item.Apsu], @UUID[Compendium.avant.deities.Item.Dahak], @UUID[Compendium.avant.deities.Item.Ardad Lili], @UUID[Compendium.avant.deities.Item.Nalinivati]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Kelizandri], @UUID[Compendium.avant.deities.Item.Sturovenen], @UUID[Compendium.avant.deities.Item.Teshallas], @UUID[Compendium.avant.deities.Item.Kalekot], @UUID[Compendium.avant.deities.Item.Shizuru], @UUID[Compendium.avant.deities.Item.Yig]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sky Keepers]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "DI3MYGIK8iEycanU",
+            "image": {},
+            "name": "Zeal Domain",
+            "sort": 11600000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>Your inner fire increases your combat prowess.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Weapon Surge]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Zeal for Battle]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Wadjet], @UUID[Compendium.avant.deities.Item.Belial], @UUID[Compendium.avant.deities.Item.Cihua Coatl], @UUID[Compendium.avant.deities.Item.Pahti Coatl], @UUID[Compendium.avant.deities.Item.Iomedae], @UUID[Compendium.avant.deities.Item.Rovagug], @UUID[Compendium.avant.deities.Item.Anogetz], @UUID[Compendium.avant.deities.Item.Zelishkar], @UUID[Compendium.avant.deities.Item.Baphomet], @UUID[Compendium.avant.deities.Item.Dagon], @UUID[Compendium.avant.deities.Item.Angradd], @UUID[Compendium.avant.deities.Item.Ymeri], @UUID[Compendium.avant.deities.Item.Arqueros], @UUID[Compendium.avant.deities.Item.Ragathiel], @UUID[Compendium.avant.deities.Item.Reymenda], @UUID[Compendium.avant.deities.Item.Tanagaar], @UUID[Compendium.avant.deities.Item.Uskyeria], @UUID[Compendium.avant.deities.Item.Vildeis], @UUID[Compendium.avant.deities.Item.Haggakal], @UUID[Compendium.avant.deities.Item.Skode], @UUID[Compendium.avant.deities.Item.Thremyr], @UUID[Compendium.avant.deities.Item.Urazra], @UUID[Compendium.avant.deities.Item.Zursvaater], @UUID[Compendium.avant.deities.Item.Venkelvore], @UUID[Compendium.avant.deities.Item.Cernunnos], @UUID[Compendium.avant.deities.Item.Gorum], @UUID[Compendium.avant.deities.Item.Gyronna], @UUID[Compendium.avant.deities.Item.Smiad], @UUID[Compendium.avant.deities.Item.Ydersius], @UUID[Compendium.avant.deities.Item.Ussharassim], @UUID[Compendium.avant.deities.Item.Vonymos], @UUID[Compendium.avant.deities.Item.Lubaiko], @UUID[Compendium.avant.deities.Item.Achaekek], @UUID[Compendium.avant.deities.Item.Chaldira], @UUID[Compendium.avant.deities.Item.Dahak], @UUID[Compendium.avant.deities.Item.Genzaeri], @UUID[Compendium.avant.deities.Item.Kurgess], @UUID[Compendium.avant.deities.Item.Milani], @UUID[Compendium.avant.deities.Item.The Devourer], @UUID[Compendium.avant.deities.Item.Zjar-Tovan], @UUID[Compendium.avant.deities.Item.Eiseth], @UUID[Compendium.avant.deities.Item.Ananshea], @UUID[Compendium.avant.deities.Item.Xiquiripat], @UUID[Compendium.avant.deities.Item.General Susumu], @UUID[Compendium.avant.deities.Item.Srikalis, Sritaming, and Sribaril], @UUID[Compendium.avant.deities.Item.Diomazul], @UUID[Compendium.avant.deities.Item.Suyuddha], @UUID[Compendium.avant.deities.Item.Alocer], @UUID[Compendium.avant.deities.Item.Kostchtchie], @UUID[Compendium.avant.deities.Item.Orcus]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Neith], @UUID[Compendium.avant.deities.Item.Scal], @UUID[Compendium.avant.deities.Item.Angazhan], @UUID[Compendium.avant.deities.Item.Trudd], @UUID[Compendium.avant.deities.Item.Kelizandri], @UUID[Compendium.avant.deities.Item.Marishi], @UUID[Compendium.avant.deities.Item.Valani], @UUID[Compendium.avant.deities.Item.Sturovenen], @UUID[Compendium.avant.deities.Item.Haborym], @UUID[Compendium.avant.deities.Item.Mrtyu], @UUID[Compendium.avant.deities.Item.Vale], @UUID[Compendium.avant.deities.Item.Chohar], @UUID[Compendium.avant.deities.Item.Luhar], @UUID[Compendium.avant.deities.Item.Tlehar], @UUID[Compendium.avant.deities.Item.Dajermube], @UUID[Compendium.avant.deities.Item.Obari], @UUID[Compendium.avant.deities.Item.Aonaurious], @UUID[Compendium.avant.deities.Item.Ardad Lili], @UUID[Compendium.avant.deities.Item.Alglenweis]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Light of the Everlasting Flame], @UUID[Compendium.avant.deities.Item.The Readied Strike]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Spirit Wall]</p><h4><strong>Pantheons</strong></h4><p>@UUID[Compendium.avant.deities.Item.Sorrow's Sword], @UUID[Compendium.avant.deities.Item.The Divine Dare], @UUID[Compendium.avant.deities.Item.The Godclaw], @UUID[Compendium.avant.deities.Item.The Laborer's Bastion], @UUID[Compendium.avant.deities.Item.The Last Breath]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Talons of the Godclaw], @UUID[Compendium.avant.deities.Item.The Freeing Flame], @UUID[Compendium.avant.deities.Item.Touch of the Sun]</p><h4><strong>Oracle Mysteries</strong></h4><p>@UUID[Compendium.avant.classfeatures.Item.Battle]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "FXOdRGOSdQJNprPx",
+            "image": {},
+            "name": "Metal Domain",
+            "sort": 5700000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You manipulate flexible mutable metal.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Serrate]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Repel Metal]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Ptah], @UUID[Compendium.avant.deities.Item.Cixyron], @UUID[Compendium.avant.deities.Item.Ferrumnestra], @UUID[Compendium.avant.deities.Item.Laudinmio], @UUID[Compendium.avant.deities.Item.Inna], @UUID[Compendium.avant.deities.Item.Brigh], @UUID[Compendium.avant.deities.Item.Casandalee], @UUID[Compendium.avant.deities.Item.Zjar-Tovan]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Mammon], @UUID[Compendium.avant.deities.Item.Moloch], @UUID[Compendium.avant.deities.Item.Amaznen], @UUID[Compendium.avant.deities.Item.Onos], @UUID[Compendium.avant.deities.Item.Abadar], @UUID[Compendium.avant.deities.Item.Torag], @UUID[Compendium.avant.deities.Item.Shivaska], @UUID[Compendium.avant.deities.Item.Droskar], @UUID[Compendium.avant.deities.Item.Magrim], @UUID[Compendium.avant.deities.Item.Ayrzul], @UUID[Compendium.avant.deities.Item.Orgesh]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Green Faith], @UUID[Compendium.avant.deities.Item.Shapes of the Fading Luster]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.The Spirit Wall]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Wheels of Innovation]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        },
+        {
+            "_id": "WEchjDynqZNfik35",
+            "image": {},
+            "name": "Wood Domain",
+            "sort": 11300000,
+            "src": null,
+            "system": {},
+            "text": {
+                "content": "<p>You command the indomitable power of wood.</p><p><strong>Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Arms of Nature]</p><p><strong>Advanced Domain Spell</strong> @UUID[Compendium.avant.spells-srd.Item.Wood Walk]</p><hr /><h4><strong>Deities</strong></h4><p>@UUID[Compendium.avant.deities.Item.Shumunue], @UUID[Compendium.avant.deities.Item.Verilorn], @UUID[Compendium.avant.deities.Item.Kzininn]</p><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Onos]</p><h4><strong>Covenants</strong></h4><p>@UUID[Compendium.avant.deities.Item.Blooms of the Spreading Weald], @UUID[Compendium.avant.deities.Item.Green Faith], @UUID[Compendium.avant.deities.Item.Immaculate Growth]</p><h4><strong>Pantheons</strong></h4><p><em>Alternate Domain</em></p><p>@UUID[Compendium.avant.deities.Item.Sovyrian Conclave]</p>",
+                "format": 1
+            },
+            "title": {
+                "level": 1,
+                "show": true
+            },
+            "type": "text",
+            "video": {
+                "controls": true,
+                "volume": 0.5
+            }
+        }
+    ]
+}

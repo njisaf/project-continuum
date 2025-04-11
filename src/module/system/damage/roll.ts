@@ -1,8 +1,8 @@
 import { DamageRollFlag } from "@module/chat-message/index.ts";
-import type { UserPF2e } from "@module/user/index.ts";
+import type { UserAvant } from "@module/user/index.ts";
 import { DegreeOfSuccessIndex } from "@system/degree-of-success.ts";
-import { RollDataPF2e } from "@system/rolls.ts";
-import { ErrorPF2e, fontAwesomeIcon, tupleHasValue } from "@util";
+import { RollDataAvant } from "@system/rolls.ts";
+import { ErrorAvant, fontAwesomeIcon, tupleHasValue } from "@util";
 import type Peggy from "peggy";
 import * as R from "remeda";
 import type { RollParseNode } from "types/foundry/client-esm/dice/_types.d.mts";
@@ -38,9 +38,9 @@ abstract class AbstractDamageRoll extends Roll {
 }
 
 class DamageRoll extends AbstractDamageRoll {
-    static override CHAT_TEMPLATE = "systems/pf2e/templates/dice/damage-roll.hbs";
+    static override CHAT_TEMPLATE = "systems/avant/templates/dice/damage-roll.hbs";
 
-    static override TOOLTIP_TEMPLATE = "systems/pf2e/templates/dice/damage-tooltip.hbs";
+    static override TOOLTIP_TEMPLATE = "systems/avant/templates/dice/damage-tooltip.hbs";
 
     static override parse(formula: string, data: Record<string, unknown>): InstancePool[] {
         const replaced = this.replaceFormulaData(formula, data, { missing: "0" });
@@ -56,7 +56,7 @@ class DamageRoll extends AbstractDamageRoll {
         if (!poolData) {
             return [];
         } else if (!["PoolTerm", "InstancePool"].includes(poolData.class ?? "")) {
-            throw ErrorPF2e("A damage roll must consist of a single InstancePool");
+            throw ErrorAvant("A damage roll must consist of a single InstancePool");
         }
 
         this.classifyDice(poolData);
@@ -88,7 +88,7 @@ class DamageRoll extends AbstractDamageRoll {
         }
     }
 
-    get roller(): UserPF2e | null {
+    get roller(): UserAvant | null {
         return game.users.get(this.options.rollerId ?? "") ?? null;
     }
 
@@ -131,7 +131,7 @@ class DamageRoll extends AbstractDamageRoll {
                 term.class = "Die";
             } else if (typeof term.faces === "string") {
                 const termClassName = CONFIG.Dice.terms[term.faces]?.name;
-                if (!termClassName) throw ErrorPF2e(`No matching DiceTerm class for "${term.faces}"`);
+                if (!termClassName) throw ErrorAvant(`No matching DiceTerm class for "${term.faces}"`);
                 term.class = termClassName;
             }
         }
@@ -271,7 +271,7 @@ class DamageRoll extends AbstractDamageRoll {
             showBreakdown,
             showButtons: !isPrivate,
             showTotalInstances,
-            showTripleDamage: game.pf2e.settings.critFumble.buttons,
+            showTripleDamage: game.avant.settings.critFumble.buttons,
             user: game.user,
         };
 
@@ -349,10 +349,10 @@ class DamageInstance extends AbstractDamageRoll {
         super(formula.trim(), data, { flavor, ...options });
 
         const flavorIdentifiers = flavor.replace(/[^a-z,_-]/g, "").split(",");
-        this.type = flavorIdentifiers.find((i): i is DamageType => i in CONFIG.PF2E.damageTypes) ?? "untyped";
+        this.type = flavorIdentifiers.find((i): i is DamageType => i in CONFIG.AVANT.damageTypes) ?? "untyped";
         this.persistent = flavorIdentifiers.includes("persistent") || flavorIdentifiers.includes("bleed");
         this.materials = new Set(
-            flavorIdentifiers.filter((i): i is MaterialDamageEffect => i in CONFIG.PF2E.materialDamageEffects),
+            flavorIdentifiers.filter((i): i is MaterialDamageEffect => i in CONFIG.AVANT.materialDamageEffects),
         );
 
         const canBeHealing =
@@ -448,10 +448,10 @@ class DamageInstance extends AbstractDamageRoll {
     }
 
     override get formula(): string {
-        const typeFlavor = game.i18n.localize(CONFIG.PF2E.damageRollFlavors[this.type] ?? this.type);
+        const typeFlavor = game.i18n.localize(CONFIG.AVANT.damageRollFlavors[this.type] ?? this.type);
         const damageType =
             this.persistent && this.type !== "bleed"
-                ? game.i18n.format("PF2E.Damage.RollFlavor.persistent", { damageType: typeFlavor })
+                ? game.i18n.format("AVANT.Damage.RollFlavor.persistent", { damageType: typeFlavor })
                 : this.type !== "untyped"
                   ? typeFlavor
                   : "";
@@ -564,9 +564,9 @@ class DamageInstance extends AbstractDamageRoll {
     }
 
     get typeLabel(): string {
-        const damageType = game.i18n.localize(CONFIG.PF2E.damageTypes[this.type]);
+        const damageType = game.i18n.localize(CONFIG.AVANT.damageTypes[this.type]);
         return this.persistent && this.type !== "bleed"
-            ? game.i18n.format("PF2E.Damage.PersistentTooltip", { damageType })
+            ? game.i18n.format("AVANT.Damage.PersistentTooltip", { damageType })
             : damageType;
     }
 
@@ -592,7 +592,7 @@ class DamageInstance extends AbstractDamageRoll {
 
     componentTotal(component: "precision" | "splash"): number {
         if (!this._evaluated) {
-            throw ErrorPF2e("Component totals may only be accessed from an evaluated damage instance");
+            throw ErrorAvant("Component totals may only be accessed from an evaluated damage instance");
         }
 
         const terms = deepFindTerms(this.head, { flavor: component });
@@ -644,7 +644,7 @@ interface AbstractDamageRollData extends RollOptions {
     evaluatePersistent?: boolean;
 }
 
-interface DamageRollData extends RollDataPF2e, AbstractDamageRollData {
+interface DamageRollData extends RollDataAvant, AbstractDamageRollData {
     /** Whether to double dice or total on critical hits */
     critRule?: Maybe<CriticalDoublingRule>;
     /** Data used to construct the damage formula and options */

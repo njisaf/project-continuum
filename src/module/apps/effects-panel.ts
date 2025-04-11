@@ -1,16 +1,16 @@
-import type { ActorPF2e } from "@actor";
-import { AbstractEffectPF2e, AfflictionPF2e, ConditionPF2e, EffectPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import { AbstractEffectAvant, AfflictionAvant, ConditionAvant, EffectAvant } from "@item";
 import { PersistentDialog } from "@item/condition/persistent-damage-dialog.ts";
 import { createTooltipListener } from "@module/sheet/helpers.ts";
-import type { TokenDocumentPF2e } from "@scene/token-document/document.ts";
-import { ErrorPF2e, createHTMLElement, htmlQuery, htmlQueryAll } from "@util";
+import type { TokenDocumentAvant } from "@scene/token-document/document.ts";
+import { ErrorAvant, createHTMLElement, htmlQuery, htmlQueryAll } from "@util";
 
 export class EffectsPanel extends Application {
-    private get token(): TokenDocumentPF2e | null {
+    private get token(): TokenDocumentAvant | null {
         return canvas.tokens.controlled.at(0)?.document ?? null;
     }
 
-    private get actor(): ActorPF2e | null {
+    private get actor(): ActorAvant | null {
         return this.token?.actor ?? game.user?.character ?? null;
     }
 
@@ -23,9 +23,9 @@ export class EffectsPanel extends Application {
     static override get defaultOptions(): ApplicationOptions {
         return {
             ...super.defaultOptions,
-            id: "pf2e-effects-panel",
+            id: "avant-effects-panel",
             popOut: false,
-            template: "systems/pf2e/templates/system/effects/panel.hbs",
+            template: "systems/avant/templates/system/effects/panel.hbs",
             // foundry does not let scrollY be the root component, so we wrap it
             scrollY: [".effects-list"],
         };
@@ -68,14 +68,14 @@ export class EffectsPanel extends Application {
             iconElem.addEventListener("click", async () => {
                 if (actor && effect.isOfType("condition") && effect.slug === "persistent-damage") {
                     await effect.onEndTurn({ token: this.token });
-                } else if (effect instanceof AbstractEffectPF2e) {
+                } else if (effect instanceof AbstractEffectAvant) {
                     await effect.increase();
                 }
             });
 
             // Remove effect or decrease its badge value on right-click
             iconElem.addEventListener("contextmenu", async () => {
-                if (effect instanceof AbstractEffectPF2e) {
+                if (effect instanceof AbstractEffectAvant) {
                     await effect.decrease();
                 } else {
                     // Failover in case of a stale effect
@@ -112,7 +112,7 @@ export class EffectsPanel extends Application {
             selector: ".effect-item[data-item-id]",
             locked: true,
             direction: "LEFT",
-            cssClass: "pf2e effect-info",
+            cssClass: "avant effect-info",
             align: "top",
             render: async (effectEl) => {
                 const actor = this.actor;
@@ -121,10 +121,10 @@ export class EffectsPanel extends Application {
                 if (!actor || !effect) return null;
 
                 const viewData = (await this.#getViewData([effect]))[0];
-                if (!viewData) throw ErrorPF2e("Error creating view data for effect");
+                if (!viewData) throw ErrorAvant("Error creating view data for effect");
 
                 const content = createHTMLElement("div", {
-                    innerHTML: await renderTemplate("systems/pf2e/templates/system/effects/tooltip.hbs", viewData),
+                    innerHTML: await renderTemplate("systems/avant/templates/system/effects/tooltip.hbs", viewData),
                 }).firstElementChild;
                 if (!(content instanceof HTMLElement)) return null;
 
@@ -152,18 +152,18 @@ export class EffectsPanel extends Application {
         });
     }
 
-    #getRemainingDurationLabel(effect: EffectPF2e): string {
+    #getRemainingDurationLabel(effect: EffectAvant): string {
         const system = effect.system;
         if (effect.totalDuration === Infinity) {
             if (system.duration.unit === "encounter") {
                 return system.expired
-                    ? game.i18n.localize("PF2E.EffectPanel.Expired")
-                    : game.i18n.localize("PF2E.EffectPanel.UntilEncounterEnds");
+                    ? game.i18n.localize("AVANT.EffectPanel.Expired")
+                    : game.i18n.localize("AVANT.EffectPanel.UntilEncounterEnds");
             } else {
-                return game.i18n.localize("PF2E.EffectPanel.UnlimitedDuration");
+                return game.i18n.localize("AVANT.EffectPanel.UnlimitedDuration");
             }
         } else if (system.expired) {
-            return game.i18n.localize("PF2E.EffectPanel.Expired");
+            return game.i18n.localize("AVANT.EffectPanel.Expired");
         }
 
         const remaining = effect.remainingDuration.remaining;
@@ -172,60 +172,60 @@ export class EffectsPanel extends Application {
 
         if (remaining >= 63_072_000) {
             // two years
-            return game.i18n.format("PF2E.EffectPanel.RemainingDuration.MultipleYears", {
+            return game.i18n.format("AVANT.EffectPanel.RemainingDuration.MultipleYears", {
                 years: Math.floor(remaining / 31_536_000),
             });
         } else if (remaining >= 31_536_000) {
             // one year
-            return game.i18n.localize("PF2E.EffectPanel.RemainingDuration.SingleYear");
+            return game.i18n.localize("AVANT.EffectPanel.RemainingDuration.SingleYear");
         } else if (remaining >= 1_209_600) {
             // two weeks
-            return game.i18n.format("PF2E.EffectPanel.RemainingDuration.MultipleWeeks", {
+            return game.i18n.format("AVANT.EffectPanel.RemainingDuration.MultipleWeeks", {
                 weeks: Math.floor(remaining / 604_800),
             });
         } else if (remaining > 604_800) {
             // one week
-            return game.i18n.localize("PF2E.EffectPanel.RemainingDuration.SingleWeek");
+            return game.i18n.localize("AVANT.EffectPanel.RemainingDuration.SingleWeek");
         } else if (remaining >= 172_800) {
             // two days
-            return game.i18n.format("PF2E.EffectPanel.RemainingDuration.MultipleDays", {
+            return game.i18n.format("AVANT.EffectPanel.RemainingDuration.MultipleDays", {
                 days: Math.floor(remaining / 86_400),
             });
         } else if (remaining > 7_200) {
             // two hours
-            return game.i18n.format("PF2E.EffectPanel.RemainingDuration.MultipleHours", {
+            return game.i18n.format("AVANT.EffectPanel.RemainingDuration.MultipleHours", {
                 hours: Math.floor(remaining / 3_600),
             });
         } else if (remaining > 120) {
             // two minutes
-            return game.i18n.format("PF2E.EffectPanel.RemainingDuration.MultipleMinutes", {
+            return game.i18n.format("AVANT.EffectPanel.RemainingDuration.MultipleMinutes", {
                 minutes: Math.floor(remaining / 60),
             });
         } else if (remaining >= 12) {
             // two rounds
-            return game.i18n.format("PF2E.EffectPanel.RemainingDuration.MultipleRounds", {
+            return game.i18n.format("AVANT.EffectPanel.RemainingDuration.MultipleRounds", {
                 rounds: Math.floor(remaining / 6),
             });
         } else if (remaining >= 6) {
             // one round
-            return game.i18n.localize("PF2E.EffectPanel.RemainingDuration.SingleRound");
+            return game.i18n.localize("AVANT.EffectPanel.RemainingDuration.SingleRound");
         } else if (remaining >= 2) {
             // two seconds
-            return game.i18n.format("PF2E.EffectPanel.RemainingDuration.MultipleSeconds", { seconds: remaining });
+            return game.i18n.format("AVANT.EffectPanel.RemainingDuration.MultipleSeconds", { seconds: remaining });
         } else if (remaining === 1) {
             // one second
-            return game.i18n.localize("PF2E.EffectPanel.RemainingDuration.SingleSecond");
+            return game.i18n.localize("AVANT.EffectPanel.RemainingDuration.SingleSecond");
         } else {
             // zero rounds
             const key =
                 expiry === "turn-end"
-                    ? "PF2E.EffectPanel.RemainingDuration.ZeroRoundsExpireTurnEnd"
-                    : "PF2E.EffectPanel.RemainingDuration.ZeroRoundsExpireTurnStart";
+                    ? "AVANT.EffectPanel.RemainingDuration.ZeroRoundsExpireTurnEnd"
+                    : "AVANT.EffectPanel.RemainingDuration.ZeroRoundsExpireTurnStart";
             return game.i18n.format(key, { initiative });
         }
     }
 
-    async #getViewData(effects: AfflictionPF2e[] | EffectPF2e[] | ConditionPF2e[]): Promise<EffectViewData[]> {
+    async #getViewData(effects: AfflictionAvant[] | EffectAvant[] | ConditionAvant[]): Promise<EffectViewData[]> {
         return await Promise.all(
             effects.map(async (effect) => {
                 const actor = "actor" in effect ? effect.actor : null;
@@ -234,7 +234,7 @@ export class EffectsPanel extends Application {
                     description: await TextEditor.enrichHTML(effect.description, {
                         rollData: { actor, item: effect },
                     }),
-                    remaining: effect instanceof EffectPF2e ? this.#getRemainingDurationLabel(effect) : null,
+                    remaining: effect instanceof EffectAvant ? this.#getRemainingDurationLabel(effect) : null,
                 };
             }),
         );
@@ -249,12 +249,12 @@ interface EffectsPanelViewData {
     afflictions: EffectViewData[];
     conditions: EffectViewData[];
     effects: EffectViewData[];
-    actor: ActorPF2e | null;
+    actor: ActorAvant | null;
     user: { isGM: boolean };
 }
 
 interface EffectViewData {
-    effect: AbstractEffectPF2e;
+    effect: AbstractEffectAvant;
     description: string;
     remaining: string | null;
 }

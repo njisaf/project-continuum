@@ -1,7 +1,7 @@
 import { SingleCheckAction } from "@actor/actions/index.ts";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 
-const PREFIX = "PF2E.Actions.TumbleThrough";
+const PREFIX = "AVANT.Actions.TumbleThrough";
 
 function tumbleThrough(options: SkillActionOptions): void {
     const slug = options?.skill ?? "acrobatics";

@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RawPredicate } from "@system/predication.ts";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration879DeviseAStratagemAndFriends extends MigrationBase {
     static override version = 0.879;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type === "action" && source.system.slug === "devise-a-stratagem") {
             const rules = [
                 {
@@ -93,7 +93,7 @@ export class Migration879DeviseAStratagemAndFriends extends MigrationBase {
                 key: "Note",
                 predicate: ["target:mark:devise-a-stratagem"],
                 selector: "strike-attack-roll",
-                text: "PF2E.SpecificRule.Investigator.SharedStratagem.Note",
+                text: "AVANT.SpecificRule.Investigator.SharedStratagem.Note",
                 title: "{item|name}",
                 outcome: ["success", "criticalSuccess"],
             };

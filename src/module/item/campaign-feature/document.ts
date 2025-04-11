@@ -1,26 +1,26 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { FeatGroup } from "@actor/character/feats/index.ts";
-import { ItemPF2e } from "@item";
+import { ItemAvant } from "@item";
 import { normalizeActionChangeData } from "@item/ability/helpers.ts";
 import { ActionCost, Frequency } from "@item/base/data/index.ts";
-import type { UserPF2e } from "@module/user/index.ts";
+import type { UserAvant } from "@module/user/index.ts";
 import { sluggify, tupleHasValue } from "@util";
 import * as R from "remeda";
 import { CampaignFeatureSource, CampaignFeatureSystemData } from "./data.ts";
 import type { BehaviorType, KingmakerCategory, KingmakerTrait } from "./types.ts";
 import { CategoryData, KINGDOM_CATEGORY_DATA, KINGMAKER_CATEGORY_TYPES } from "./values.ts";
 
-class CampaignFeaturePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
-    declare group: FeatGroup<ActorPF2e, CampaignFeaturePF2e> | null;
-    declare grants: CampaignFeaturePF2e[];
+class CampaignFeatureAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
+    declare group: FeatGroup<ActorAvant, CampaignFeatureAvant> | null;
+    declare grants: CampaignFeatureAvant[];
     declare behavior: BehaviorType;
     declare levelLabel: string;
 
     /** The item that granted this feature */
-    granter: CampaignFeaturePF2e | null = null;
+    granter: CampaignFeatureAvant | null = null;
 
     static override get validTraits(): Record<KingmakerTrait, string> {
-        return CONFIG.PF2E.kingmakerTraits;
+        return CONFIG.AVANT.kingmakerTraits;
     }
 
     get category(): KingmakerCategory {
@@ -69,11 +69,11 @@ class CampaignFeaturePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> e
             KINGDOM_CATEGORY_DATA[this.category] ?? Object.values(KINGDOM_CATEGORY_DATA)[0];
         this.behavior = categoryData.behavior;
         this.group = null;
-        this.levelLabel = categoryData.levelLabel ?? (this.isFeat ? "PF2E.Item.Feat.LevelLabel" : "PF2E.LevelLabel");
+        this.levelLabel = categoryData.levelLabel ?? (this.isFeat ? "AVANT.Item.Feat.LevelLabel" : "AVANT.LevelLabel");
     }
 
     /** Set a self roll option for this feat(ure). Skip for actions */
-    override prepareActorData(this: CampaignFeaturePF2e<ActorPF2e>): void {
+    override prepareActorData(this: CampaignFeatureAvant<ActorAvant>): void {
         const prefix = this.isFeature ? "feature" : this.isFeat ? "feat" : null;
         if (prefix) {
             const slug = this.slug ?? sluggify(this.name);
@@ -82,7 +82,7 @@ class CampaignFeaturePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> e
     }
 
     override prepareSiblingData(): void {
-        const itemGrants = this.flags.pf2e.itemGrants;
+        const itemGrants = this.flags.avant.itemGrants;
         this.grants = Object.values(itemGrants).flatMap((grant) => {
             const item = this.actor?.items.get(grant.id);
             if (item?.isOfType("campaignFeature")) {
@@ -110,7 +110,7 @@ class CampaignFeaturePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> e
     protected override async _preCreate(
         data: this["_source"],
         operation: DatabaseCreateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         // In case this was copied from an actor, clear the location if there's no parent.
         if (!this.parent) {
@@ -126,7 +126,7 @@ class CampaignFeaturePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> e
     protected override async _preUpdate(
         changed: DeepPartial<CampaignFeatureSource>,
         operation: DatabaseUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         // Ensure an empty-string `location` property is null
         if (typeof changed.system?.location === "string") {
@@ -155,16 +155,16 @@ class CampaignFeaturePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> e
         const list = this.system.prerequisites?.value?.map((item) => item.value).join(", ") ?? "";
         return (
             (list
-                ? `<p><strong>${game.i18n.localize("PF2E.FeatPrereqLabel")}</strong> ${list}</p>` +
+                ? `<p><strong>${game.i18n.localize("AVANT.FeatPrereqLabel")}</strong> ${list}</p>` +
                   (_config.hr === false ? "" : "<hr>")
                 : "") + this.description
         );
     }
 }
 
-interface CampaignFeaturePF2e<TParent extends ActorPF2e | null = ActorPF2e | null> extends ItemPF2e<TParent> {
+interface CampaignFeatureAvant<TParent extends ActorAvant | null = ActorAvant | null> extends ItemAvant<TParent> {
     readonly _source: CampaignFeatureSource;
     system: CampaignFeatureSystemData;
 }
 
-export { CampaignFeaturePF2e };
+export { CampaignFeatureAvant };

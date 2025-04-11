@@ -1,0 +1,66 @@
+{
+    "_id": "UVgRZf3zHV8aXa5L",
+    "folder": "3oq6iE8irLjlLcEE",
+    "img": "icons/sundries/books/book-red-exclamation.webp",
+    "name": "Palatine Enchantment",
+    "system": {
+        "actionType": {
+            "value": "passive"
+        },
+        "actions": {
+            "value": null
+        },
+        "category": "class",
+        "description": {
+            "value": "<p>You have found yourself facing supernatural beings often and have learned how to combat them. Whenever you @UUID[Compendium.avant.actionsavant.Item.Devise a Stratagem] against a creature about which you could Recall Knowledge using Occultism or Religion, you can make the subsequent Strike against that creature as if the weapon has either a @UUID[Compendium.avant.equipment-srd.Item.Ghost Touch] or @UUID[Compendium.avant.equipment-srd.Item.Vitalizing] property rune.</p>"
+        },
+        "level": {
+            "value": 6
+        },
+        "prerequisites": {
+            "value": [
+                {
+                    "value": "Palatine Detective Dedication"
+                }
+            ]
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder Lost Omens Divine Mysteries"
+        },
+        "rules": [
+            {
+                "key": "RollOption",
+                "option": "palatine-enchantment",
+                "suboptions": [
+                    {
+                        "label": "AVANT.WeaponPropertyRune.ghostTouch.Name",
+                        "value": "ghost-touch"
+                    },
+                    {
+                        "label": "AVANT.WeaponPropertyRune.disrupting.Name",
+                        "value": "disrupting"
+                    }
+                ],
+                "toggleable": true
+            },
+            {
+                "key": "AdjustStrike",
+                "mode": "add",
+                "predicate": [
+                    "palatine-enchantment"
+                ],
+                "property": "property-runes",
+                "value": "{item|flags.avant.rulesSelections.palatineEnchantment}"
+            }
+        ],
+        "traits": {
+            "rarity": "common",
+            "value": [
+                "archetype"
+            ]
+        }
+    },
+    "type": "feat"
+}

@@ -1,13 +1,13 @@
-import { DamageDicePF2e, ModifierPF2e, RawDamageDice, RawModifier } from "@actor/modifiers.ts";
+import { DamageDiceAvant, ModifierAvant, RawDamageDice, RawModifier } from "@actor/modifiers.ts";
 import { createHTMLElement, htmlQuery, htmlQueryAll, signedInteger } from "@util";
 import * as R from "remeda";
-import type { ChatContextFlag, ChatMessagePF2e } from "./index.ts";
+import type { ChatContextFlag, ChatMessageAvant } from "./index.ts";
 import { getDamageDiceOverrideLabel, getDamageDiceValueLabel } from "@system/damage/helpers.ts";
 
 class RollInspector extends Application {
-    message: ChatMessagePF2e;
+    message: ChatMessageAvant;
 
-    constructor(message: ChatMessagePF2e, options: Partial<ApplicationOptions> = {}) {
+    constructor(message: ChatMessageAvant, options: Partial<ApplicationOptions> = {}) {
         super(options);
         this.message = message;
     }
@@ -15,8 +15,8 @@ class RollInspector extends Application {
     static override get defaultOptions(): ApplicationOptions {
         return {
             ...super.defaultOptions,
-            title: "PF2E.ChatRollDetails.Title",
-            template: "systems/pf2e/templates/chat/roll-inspector.hbs",
+            title: "AVANT.ChatRollDetails.Title",
+            template: "systems/avant/templates/chat/roll-inspector.hbs",
             classes: ["roll-inspector"],
             filters: [{ inputSelector: "input[type=search]", contentSelector: ".roll-options > ul" }],
             resizable: true,
@@ -26,15 +26,15 @@ class RollInspector extends Application {
     }
 
     get dice(): RawDamageDice[] {
-        return this.message.flags.pf2e.dice ?? [];
+        return this.message.flags.avant.dice ?? [];
     }
 
     get modifiers(): RawModifier[] {
-        return this.message.flags.pf2e.modifiers ?? [];
+        return this.message.flags.avant.modifiers ?? [];
     }
 
     override getData(): ChatRollDetailsData {
-        const context = this.message.flags.pf2e.context;
+        const context = this.message.flags.avant.context;
         const contextualOptions = context && "contextualOptions" in context ? context.contextualOptions : {};
 
         const rollOptions = R.sortBy(context?.options?.sort() ?? [], (o) => o.includes(":"));
@@ -46,7 +46,7 @@ class RollInspector extends Application {
                 .join(" "),
             critical:
                 typeof dice.critical === "boolean"
-                    ? game.i18n.localize(`PF2E.RuleEditor.General.CriticalBehavior.${dice.critical}`)
+                    ? game.i18n.localize(`AVANT.RuleEditor.General.CriticalBehavior.${dice.critical}`)
                     : null,
         }));
 
@@ -55,7 +55,7 @@ class RollInspector extends Application {
             value: signedInteger(mod.modifier),
             critical:
                 typeof mod.critical === "boolean"
-                    ? game.i18n.localize(`PF2E.RuleEditor.General.CriticalBehavior.${mod.critical}`)
+                    ? game.i18n.localize(`AVANT.RuleEditor.General.CriticalBehavior.${mod.critical}`)
                     : null,
         }));
 
@@ -67,7 +67,7 @@ class RollInspector extends Application {
             rollOptions,
             contextualOptions: Object.entries(contextualOptions ?? {})
                 .map(([key, value]) => ({
-                    header: game.i18n.localize(`PF2E.ChatRollDetails.ContextualOptions.${key}`),
+                    header: game.i18n.localize(`AVANT.ChatRollDetails.ContextualOptions.${key}`),
                     options: value ?? [],
                 }))
                 .filter((o) => !!o.options.length),
@@ -83,10 +83,10 @@ class RollInspector extends Application {
                 const index = Number(element.dataset.idx);
                 if (element.dataset.type === "modifier") {
                     const raw = this.modifiers.at(index);
-                    return raw ? new ModifierPF2e(raw) : null;
+                    return raw ? new ModifierAvant(raw) : null;
                 } else {
                     const raw = this.dice.at(index);
-                    return raw ? new DamageDicePF2e(raw) : null;
+                    return raw ? new DamageDiceAvant(raw) : null;
                 }
             })();
 
@@ -95,8 +95,8 @@ class RollInspector extends Application {
             const rollOptions = R.sortBy(object.getRollOptions().sort(), (o) => o.includes(":"));
 
             htmlQuery(element, "h4 .fa-solid")?.addEventListener("pointerenter", async () => {
-                const content = await renderTemplate("systems/pf2e/templates/system/roll-options-tooltip.hbs", {
-                    description: game.i18n.localize("PF2E.ChatRollDetails.DiceRollOptionsHint"),
+                const content = await renderTemplate("systems/avant/templates/system/roll-options-tooltip.hbs", {
+                    description: game.i18n.localize("AVANT.ChatRollDetails.DiceRollOptionsHint"),
                     rollOptions,
                 });
                 game.tooltip.dismissLockedTooltips();

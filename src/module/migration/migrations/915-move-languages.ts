@@ -1,6 +1,6 @@
 import { LANGUAGES } from "@actor/creature/values.ts";
-import { ActorSourcePF2e, CharacterSource } from "@actor/data/index.ts";
-import { FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant, CharacterSource } from "@actor/data/index.ts";
+import { FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { AELikeSchema, AELikeSource } from "@module/rules/rule-element/ae-like.ts";
 import * as R from "remeda";
 import { Migration914MovePerceptionSenses } from "./914-move-perception-senses.ts";
@@ -9,9 +9,9 @@ import { Migration914MovePerceptionSenses } from "./914-move-perception-senses.t
 export class Migration915MoveLanguages extends Migration914MovePerceptionSenses {
     static override version = 0.915;
 
-    #allLanguages: Set<string> = new Set("game" in globalThis ? Object.keys(CONFIG.PF2E.languages) : LANGUAGES);
+    #allLanguages: Set<string> = new Set("game" in globalThis ? Object.keys(CONFIG.AVANT.languages) : LANGUAGES);
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type === "character" || source.type === "npc") {
             const system: WithMisplacedLanguages = source.system;
             system.details.languages ??= { value: [], details: "" };
@@ -39,7 +39,7 @@ export class Migration915MoveLanguages extends Migration914MovePerceptionSenses 
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         const languageAELikes = source.system.rules.filter(
             (r: AELikeSource): r is Partial<SourceFromSchema<AELikeSchema>> =>
                 r.key === "ActiveEffectLike" &&

@@ -12,13 +12,13 @@ export const GetSceneControlButtons = {
                 icon: "fa-solid fa-clock",
                 button: true,
                 visible:
-                    game.settings.get("pf2e", "worldClock.showClockButton") &&
-                    (game.user.isGM || game.settings.get("pf2e", "worldClock.playersCanView")),
+                    game.settings.get("avant", "worldClock.showClockButton") &&
+                    (game.user.isGM || game.settings.get("avant", "worldClock.playersCanView")),
                 onClick: () => {
-                    if (game.pf2e.worldClock.rendered) {
-                        game.pf2e.worldClock.close({ force: true });
+                    if (game.avant.worldClock.rendered) {
+                        game.avant.worldClock.close({ force: true });
                     } else {
-                        game.pf2e.worldClock.render(true);
+                        game.avant.worldClock.render(true);
                     }
                 },
             });
@@ -29,7 +29,7 @@ export const GetSceneControlButtons = {
             if (!(lightingControls && lightingTools && dayTool)) return;
 
             // Indicate GM vision is on
-            if (game.pf2e.settings.gmVision && game.user.isGM) {
+            if (game.avant.settings.gmVision && game.user.isGM) {
                 lightingControls.icon = "fa-solid fa-lightbulb-cfl-on gm-vision";
             }
 
@@ -41,7 +41,7 @@ export const GetSceneControlButtons = {
                 name: "darkness-adjuster",
                 title: "CONTROLS.AdjustSceneDarkness",
                 icon: "fa-solid fa-circle-half-stroke",
-                visible: game.user.isGM && game.pf2e.settings.rbv,
+                visible: game.user.isGM && game.avant.settings.rbv,
                 toggle: true,
                 active: false,
                 onClick: (): void => {
@@ -56,12 +56,12 @@ export const GetSceneControlButtons = {
 
             // GM Vision
             const gmVisionTool = ((): SceneControlTool | null => {
-                const binding = game.keybindings.actions.get("pf2e.gm-vision")?.editable?.[0];
+                const binding = game.keybindings.actions.get("avant.gm-vision")?.editable?.[0];
                 if (!(binding && game.user.isGM)) return null;
 
-                const gmVisionLabel = game.i18n.localize("PF2E.Keybinding.GMVision.Label");
+                const gmVisionLabel = game.i18n.localize("AVANT.Keybinding.GMVision.Label");
                 const bindingLabel = KeybindingsConfig._humanizeBinding(binding);
-                const gmVisionIcon = (active = game.settings.get("pf2e", "gmVision")): string =>
+                const gmVisionIcon = (active = game.settings.get("avant", "gmVision")): string =>
                     active ? "fa-solid fa-lightbulb-cfl-on" : "fa-solid fa-lightbulb-cfl";
 
                 return {
@@ -70,10 +70,10 @@ export const GetSceneControlButtons = {
                     icon: gmVisionIcon(),
                     visible: game.user.isGM,
                     toggle: true,
-                    active: game.settings.get("pf2e", "gmVision"),
+                    active: game.settings.get("avant", "gmVision"),
                     onClick: (): void => {
-                        const newStatus = !game.settings.get("pf2e", "gmVision");
-                        game.settings.set("pf2e", "gmVision", newStatus);
+                        const newStatus = !game.settings.get("avant", "gmVision");
+                        game.settings.set("avant", "gmVision", newStatus);
                         const toggle = ui.controls.control?.tools.find((t) => t.name === "gm-vision");
                         if (toggle) {
                             toggle.active = newStatus;

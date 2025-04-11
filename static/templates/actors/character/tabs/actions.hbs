@@ -1,26 +1,26 @@
 <div class="tab actions actions-pane" data-group="primary" data-tab="actions">
     <nav class="actions-nav sub-nav" data-group="actions-tabs">
-        <a class="tab" data-tab="encounter" data-group="actions-tabs">{{localize "PF2E.TabActionsEncounterLabel"}}</a>
-        <a class="tab" data-tab="exploration" data-group="actions-tabs">{{localize "PF2E.TabActionsExplorationLabel"}}</a>
-        <a class="tab" data-tab="downtime" data-group="actions-tabs">{{localize "PF2E.TabActionsDowntimeLabel"}}</a>
+        <a class="tab" data-tab="encounter" data-group="actions-tabs">{{localize "AVANT.TabActionsEncounterLabel"}}</a>
+        <a class="tab" data-tab="exploration" data-group="actions-tabs">{{localize "AVANT.TabActionsExplorationLabel"}}</a>
+        <a class="tab" data-tab="downtime" data-group="actions-tabs">{{localize "AVANT.TabActionsDowntimeLabel"}}</a>
     </nav>
 
     <div class="actions-container tab-content">
         <div class="actions-tabs-wrapper">
             <section class="actions-panels">
                 <section class="actions-panel tab major" data-tab="encounter" data-group="actions-tabs">
-                    {{#if toggles.actions}}{{> "systems/pf2e/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}{{/if}}
+                    {{#if toggles.actions}}{{> "systems/avant/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}{{/if}}
 
                     <header>
-                        {{localize "PF2E.Actor.Attacks"}}
+                        {{localize "AVANT.Actor.Attacks"}}
                         {{#if inventory.hasStowedWeapons}}
                             <button
                                 type="button"
                                 data-action="toggle-hide-stowed"
-                                {{#if actor.flags.pf2e.hideStowed}}class="inactive"{{/if}}
+                                {{#if actor.flags.avant.hideStowed}}class="inactive"{{/if}}
                             >
-                                <input type="checkbox" {{checked (not actor.flags.pf2e.hideStowed)}} />
-                                {{localize "PF2E.CarryType.stowed"}}
+                                <input type="checkbox" {{checked (not actor.flags.avant.hideStowed)}} />
+                                {{localize "AVANT.CarryType.stowed"}}
                             </button>
                         {{/if}}
                     </header>
@@ -29,14 +29,14 @@
                         {{!-- ELEMENTAL BLASTS --}}
                         <ol class="actions-list directory-list elemental-blasts" data-elemental-blasts>
                             {{#each elementalBlasts as |blast|}}
-                                {{> "systems/pf2e/templates/actors/character/partials/elemental-blast.hbs" action=blast}}
+                                {{> "systems/avant/templates/actors/character/partials/elemental-blast.hbs" action=blast}}
                             {{/each}}
                         </ol>
                     {{/if}}
 
                     <ol class="actions-list item-list directory-list strikes-list" data-strikes>
                         {{#each data.actions as |strike ai|}}
-                            {{> "systems/pf2e/templates/actors/character/partials/strike.hbs" action=strike index=ai}}
+                            {{> "systems/avant/templates/actors/character/partials/strike.hbs" action=strike index=ai}}
                         {{/each}}
                     </ol>
 
@@ -46,10 +46,10 @@
                             {{#if @root.options.editable}}
                                 <div class="controls">
                                     <button type="button" data-action="create-item" data-type="action" data-action-type="{{sid}}">
-                                        <i class="fa-solid fa-fw fa-plus"></i>{{localize "PF2E.CreateActionTitle"}}
+                                        <i class="fa-solid fa-fw fa-plus"></i>{{localize "AVANT.CreateActionTitle"}}
                                     </button>
                                     <button type="button" data-action="browse-abilities" data-action-type="{{sid}}">
-                                        <i class="fa-solid fa-fw fa-search"></i>{{localize "PF2E.BrowseLabel"}}
+                                        <i class="fa-solid fa-fw fa-search"></i>{{localize "AVANT.BrowseLabel"}}
                                     </button>
                                 </div>
                             {{/if}}
@@ -57,7 +57,7 @@
 
                         <ol class="actions-list item-list directory-list">
                             {{#each section.actions as |action|}}
-                                {{> "systems/pf2e/templates/actors/partials/action.hbs" action=action}}
+                                {{> "systems/avant/templates/actors/partials/action.hbs" action=action}}
                             {{/each}}
                         </ol>
                     {{/each}}
@@ -67,11 +67,11 @@
                     {{!# Active exploration activities are only shown if one exists}}
                     {{#if actions.exploration.active}}
                         <header>
-                            {{localize "PF2E.Actor.Character.ActiveHeader"}}
+                            {{localize "AVANT.Actor.Character.ActiveHeader"}}
                             {{#if @root.options.editable}}
                                 <div class="controls">
                                     <button type="button" data-action="clear-exploration">
-                                        <i class="fa-solid fa-fw fa-times"></i>{{localize "PF2E.Actor.Character.Clear"}}
+                                        <i class="fa-solid fa-fw fa-times"></i>{{localize "AVANT.Actor.Character.Clear"}}
                                     </button>
                                 </div>
                             {{/if}}
@@ -79,20 +79,20 @@
 
                         <ol class="actions-list item-list directory-list">
                             {{#each actions.exploration.active as |action|}}
-                                {{> "systems/pf2e/templates/actors/partials/action.hbs" action=action}}
+                                {{> "systems/avant/templates/actors/partials/action.hbs" action=action}}
                             {{/each}}
                         </ol>
                     {{/if}}
 
                     <header>
-                        {{localize "PF2E.ActionsActionsHeader"}}
+                        {{localize "AVANT.ActionsActionsHeader"}}
                         {{#if @root.editable}}
                             <div class="controls">
                                 <button type="button" data-action="create-item" data-type="action" data-action-type="free" data-traits="exploration">
-                                    <i class="fa-solid fa-fw fa-plus"></i>{{localize "PF2E.CreateActionTitle"}}
+                                    <i class="fa-solid fa-fw fa-plus"></i>{{localize "AVANT.CreateActionTitle"}}
                                 </button>
                                 <button type="button" data-action="browse-abilities" data-action-trait="exploration">
-                                    <i class="fa-solid fa-fw fa-search"></i>{{localize "PF2E.BrowseLabel"}}
+                                    <i class="fa-solid fa-fw fa-search"></i>{{localize "AVANT.BrowseLabel"}}
                                 </button>
                             </div>
                         {{/if}}
@@ -100,21 +100,21 @@
 
                     <ol class="actions-list item-list directory-list">
                         {{#each actions.exploration.other as |action|}}
-                            {{> "systems/pf2e/templates/actors/partials/action.hbs" action=action}}
+                            {{> "systems/avant/templates/actors/partials/action.hbs" action=action}}
                         {{/each}}
                     </ol>
                 </section>
 
                 <section class="actions-panel tab major" data-tab="downtime" data-group="actions-tabs">
                     <header>
-                        {{localize "PF2E.ActionsActionsHeader"}}
+                        {{localize "AVANT.ActionsActionsHeader"}}
                         {{#if @root.editable}}
                             <div class="controls">
                                 <button type="button" data-action="create-item" data-type="action" data-action-type="free" data-traits="downtime">
-                                    <i class="fa-solid fa-fw fa-plus"></i>{{localize "PF2E.CreateActionTitle"}}
+                                    <i class="fa-solid fa-fw fa-plus"></i>{{localize "AVANT.CreateActionTitle"}}
                                 </button>
                                 <button type="button" data-action="browse-abilities" data-action-trait="downtime">
-                                    <i class="fa-solid fa-fw fa-search"></i>{{localize "PF2E.BrowseLabel"}}
+                                    <i class="fa-solid fa-fw fa-search"></i>{{localize "AVANT.BrowseLabel"}}
                                 </button>
                             </div>
                         {{/if}}
@@ -122,7 +122,7 @@
 
                     <ol class="actions-list item-list directory-list">
                         {{#each actions.downtime as |action aid|}}
-                            {{> "systems/pf2e/templates/actors/partials/action.hbs" action=action}}
+                            {{> "systems/avant/templates/actors/partials/action.hbs" action=action}}
                         {{/each}}
                     </ol>
                 </section>

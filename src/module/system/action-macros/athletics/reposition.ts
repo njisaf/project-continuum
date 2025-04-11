@@ -1,15 +1,15 @@
-import { ActorPF2e } from "@actor";
-import { WeaponPF2e } from "@item";
+import { ActorAvant } from "@actor";
+import { WeaponAvant } from "@item";
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.Reposition";
+const PREFIX = "AVANT.Actions.Reposition";
 
 function reposition(options: SkillActionOptions): void {
     const slug = options?.skill ?? "athletics";
     const modifiers = options?.modifiers;
     const rollOptions = ["action:reposition"];
-    ActionMacroHelpers.simpleRollActionCheck<WeaponPF2e<ActorPF2e>>({
+    ActionMacroHelpers.simpleRollActionCheck<WeaponAvant<ActorAvant>>({
         actors: options.actors,
         actionGlyph: options.glyph ?? "A",
         title: `${PREFIX}.Title`,

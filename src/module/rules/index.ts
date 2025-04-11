@@ -1,5 +1,5 @@
 import { LaxSchemaField } from "@system/schema-data-fields.ts";
-import { RuleElementPF2e } from "./rule-element/base.ts";
+import { RuleElementAvant } from "./rule-element/base.ts";
 
 import { ActorTraitsRuleElement } from "./rule-element/actor-traits.ts";
 import { AdjustDegreeOfSuccessRuleElement } from "./rule-element/adjust-degree-of-success.ts";
@@ -101,25 +101,25 @@ class RuleElements {
         return { ...this.builtin, ...this.custom };
     }
 
-    static fromOwnedItem(options: RuleElementOptions): RuleElementPF2e[] {
-        const rules: RuleElementPF2e[] = [];
+    static fromOwnedItem(options: RuleElementOptions): RuleElementAvant[] {
+        const rules: RuleElementAvant[] = [];
         const item = options.parent;
         for (const [sourceIndex, source] of item.system.rules.entries()) {
             if (typeof source.key !== "string") {
                 console.error(
-                    `PF2e System | Missing key in rule element ${source.key} on item ${item.name} (${item.uuid})`,
+                    `Avant System | Missing key in rule element ${source.key} on item ${item.name} (${item.uuid})`,
                 );
                 continue;
             }
             const REConstructor = this.custom[source.key] ?? this.custom[source.key] ?? this.builtin[source.key];
             if (REConstructor) {
-                const rule = ((): RuleElementPF2e | null => {
+                const rule = ((): RuleElementAvant | null => {
                     try {
                         return new REConstructor(source, { ...options, sourceIndex });
                     } catch (error) {
                         if (!options?.suppressWarnings) {
                             console.warn(
-                                `PF2e System | Failed to construct rule element ${source.key} on item ${item.name}`,
+                                `Avant System | Failed to construct rule element ${source.key} on item ${item.name}`,
                                 `(${item.uuid})`,
                             );
                             console.warn(error);
@@ -130,7 +130,7 @@ class RuleElements {
                 if (rule) rules.push(rule);
             } else {
                 const { name, uuid } = item;
-                console.warn(`PF2e System | Unrecognized rule element ${source.key} on item ${name} (${uuid})`);
+                console.warn(`Avant System | Unrecognized rule element ${source.key} on item ${name} (${uuid})`);
             }
         }
         return rules;
@@ -140,6 +140,6 @@ class RuleElements {
 type RuleElementConstructor = { schema: LaxSchemaField<RuleElementSchema> } & (new (
     data: RuleElementSource,
     options: RuleElementOptions,
-) => RuleElementPF2e);
+) => RuleElementAvant);
 
-export { RuleElementOptions, RuleElementPF2e, RuleElementSource, RuleElements };
+export { RuleElementOptions, RuleElementAvant, RuleElementSource, RuleElements };

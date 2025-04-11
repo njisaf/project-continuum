@@ -1,4 +1,4 @@
-import { FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
 
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration705GunslingerCatchUp extends MigrationBase {
     static override version = 0.705;
 
-    #isClassFeature(source: ItemSourcePF2e): source is FeatSource & { system: { featType: "classfeature" } } {
+    #isClassFeature(source: ItemSourceAvant): source is FeatSource & { system: { featType: "classfeature" } } {
         return (
             source.type === "feat" &&
             "featType" in source.system &&
@@ -15,7 +15,7 @@ export class Migration705GunslingerCatchUp extends MigrationBase {
         );
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (!this.#isClassFeature(source)) return;
 
         switch (source.system.slug) {

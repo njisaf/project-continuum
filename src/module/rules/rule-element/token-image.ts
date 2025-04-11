@@ -1,5 +1,5 @@
 import { isImageOrVideoPath } from "@util";
-import { RuleElementPF2e } from "./base.ts";
+import { RuleElementAvant } from "./base.ts";
 import { ModelPropsFromRESchema, RuleElementSchema } from "./data.ts";
 import fields = foundry.data.fields;
 
@@ -7,7 +7,7 @@ import fields = foundry.data.fields;
  * Change the image representing an actor's token
  * @category RuleElement
  */
-class TokenImageRuleElement extends RuleElementPF2e<TokenImageRuleSchema> {
+class TokenImageRuleElement extends RuleElementAvant<TokenImageRuleSchema> {
     static override defineSchema(): TokenImageRuleSchema {
         return {
             ...super.defineSchema(),
@@ -19,7 +19,7 @@ class TokenImageRuleElement extends RuleElementPF2e<TokenImageRuleSchema> {
             }),
             tint: new fields.ColorField({ label: "TOKEN.TintColor" }),
             alpha: new fields.AlphaField({
-                label: "PF2E.RuleEditor.General.Opacity",
+                label: "AVANT.RuleEditor.General.Opacity",
                 required: false,
                 nullable: true,
                 initial: null,
@@ -47,7 +47,7 @@ class TokenImageRuleElement extends RuleElementPF2e<TokenImageRuleSchema> {
                                 nullable: false,
                                 min: 0.8,
                                 initial: 1,
-                                label: "PF2E.RuleEditor.TokenImage.Ring.ScaleCorrection",
+                                label: "AVANT.RuleEditor.TokenImage.Ring.ScaleCorrection",
                             }),
                         },
                         { required: true, nullable: false, initial: undefined },
@@ -148,7 +148,7 @@ class TokenImageRuleElement extends RuleElementPF2e<TokenImageRuleSchema> {
 }
 
 interface TokenImageRuleElement
-    extends RuleElementPF2e<TokenImageRuleSchema>,
+    extends RuleElementAvant<TokenImageRuleSchema>,
         ModelPropsFromRESchema<TokenImageRuleSchema> {}
 
 type TokenImageRuleSchema = RuleElementSchema & {

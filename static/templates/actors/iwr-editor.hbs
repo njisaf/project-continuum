@@ -5,7 +5,7 @@
         <section class="new entry">
 
             <div class="form-group">
-                <label for="{{options.id}}-new-type">{{localize "PF2E.Actor.IWREditor.Type"}}</label>
+                <label for="{{options.id}}-new-type">{{localize "AVANT.Actor.IWREditor.Type"}}</label>
                 <div class="form-fields">
                     <select id="{{options.id}}-new-type" class="iwr-type" data-property="type">
                         <option value=""></option>
@@ -19,17 +19,17 @@
             </div>
 
             <div class="form-group">
-                <label for="{{@root.options.id}}-new-exceptions">{{localize "PF2E.Actor.IWREditor.Exceptions"}}</label>
+                <label for="{{@root.options.id}}-new-exceptions">{{localize "AVANT.Actor.IWREditor.Exceptions"}}</label>
                 <div class="form-fields">
-                    <input type="text" id="{{@root.options.id}}-new-exceptions" class="pf2e-tagify" data-property="exceptions" />
+                    <input type="text" id="{{@root.options.id}}-new-exceptions" class="avant-tagify" data-property="exceptions" />
                 </div>
             </div>
 
             {{#if (eq @root.category "resistances")}}
                 <div class="form-group">
-                    <label for="{{@root.options.id}}-new-double-vs">{{localize "PF2E.Actor.IWREditor.DoubleVs"}}</label>
+                    <label for="{{@root.options.id}}-new-double-vs">{{localize "AVANT.Actor.IWREditor.DoubleVs"}}</label>
                     <div class="form-fields">
-                        <input type="text" id="{{@root.options.id}}-new-double-vs" class="pf2e-tagify" data-property="doubleVs" />
+                        <input type="text" id="{{@root.options.id}}-new-double-vs" class="avant-tagify" data-property="doubleVs" />
                     </div>
                 </div>
             {{/if}}
@@ -42,7 +42,7 @@
             {{#each list as |iwr index|}}
                 <section class="entry"{{#if iwr.source}} data-synthetic="true"{{/if}}>
                     <div class="form-group">
-                        <label for="{{@root.options.id}}-{{index}}-type">{{localize "PF2E.Actor.IWREditor.Type"}}</label>
+                        <label for="{{@root.options.id}}-{{index}}-type">{{localize "AVANT.Actor.IWREditor.Type"}}</label>
                         <div class="form-fields">
                         <select id="{{@root.options.id}}-{{index}}-type" class="iwr-type" data-property="type" {{disabled iwr.source}}>
                             {{#if iwr.source}}
@@ -67,17 +67,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="{{@root.options.id}}-{{index}}-exceptions">{{localize "PF2E.Actor.IWREditor.Exceptions"}}</label>
+                        <label for="{{@root.options.id}}-{{index}}-exceptions">{{localize "AVANT.Actor.IWREditor.Exceptions"}}</label>
                         <div class="form-fields">
-                            <input type="text" id="{{@root.options.id}}-{{index}}-exceptions" value="{{json iwr.exceptions}}" class="pf2e-tagify" data-property="exceptions" {{disabled iwr.source}} />
+                            <input type="text" id="{{@root.options.id}}-{{index}}-exceptions" value="{{json iwr.exceptions}}" class="avant-tagify" data-property="exceptions" {{disabled iwr.source}} />
                         </div>
                     </div>
 
                     {{#if (eq @root.category "resistances")}}
                         <div class="form-group">
-                            <label for="{{@root.options.id}}-{{index}}-double-vs">{{localize "PF2E.Actor.IWREditor.DoubleVs"}}</label>
+                            <label for="{{@root.options.id}}-{{index}}-double-vs">{{localize "AVANT.Actor.IWREditor.DoubleVs"}}</label>
                             <div class="form-fields">
-                                <input type="text" id="{{@root.options.id}}-{{index}}-double-vs" value="{{json iwr.doubleVs}}" class="pf2e-tagify" data-property="doubleVs" {{disabled iwr.source}} />
+                                <input type="text" id="{{@root.options.id}}-{{index}}-double-vs" value="{{json iwr.doubleVs}}" class="avant-tagify" data-property="doubleVs" {{disabled iwr.source}} />
                             </div>
                         </div>
                     {{/if}}

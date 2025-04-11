@@ -1,12 +1,12 @@
 {{#if withoutResources}}
-    <div class="notification warning">{{localize "PF2E.Item.Ability.CraftedItem.CraftedWithoutResources"}}</div>
+    <div class="notification warning">{{localize "AVANT.Item.Ability.CraftedItem.CraftedWithoutResources"}}</div>
 {{/if}}
 
 {{#if description.full~}}
     <div class="description">{{{description.full}}}</div>
 {{~else if description.preview~}}
-    <div class="description" data-tooltip-class="pf2e">
-        <a class="preview" data-action="expand-description" data-tooltip="{{localize "PF2E.Action.ExpandDescription"}}">{{description.preview}}</a>
+    <div class="description" data-tooltip-class="avant">
+        <a class="preview" data-action="expand-description" data-tooltip="{{localize "AVANT.Action.ExpandDescription"}}">{{description.preview}}</a>
         <div class="shadow"></div>
     </div>
 {{~/if}}
@@ -15,12 +15,12 @@
     <div class="message-buttons">
         {{#if craftedItem}}
             <div class="crafted-item">
-                {{{localize "PF2E.Item.Ability.CraftedItem.Crafted" item=craftedItem}}}
+                {{{localize "AVANT.Item.Ability.CraftedItem.Crafted" item=craftedItem}}}
             </div>
         {{/if}}
         {{#if selfEffect}}
             <button type="button" data-action="apply-effect" data-targets="{{actor.uuid}}" data-visibility="owner">
-                {{localize "PF2E.Action.ApplyEffect"}}
+                {{localize "AVANT.Action.ApplyEffect"}}
             </button>
         {{/if}}
     </div>

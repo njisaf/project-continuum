@@ -1,4 +1,4 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { ConsumableSystemSource } from "@item/consumable/data.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -6,7 +6,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration804RemoveConsumableProperties extends MigrationBase {
     static override version = 0.804;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "consumable") return;
 
         const system: MaybeWithConsumableOldData = source.system;

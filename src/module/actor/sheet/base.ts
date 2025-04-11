@@ -1,19 +1,19 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { StrikeData } from "@actor/data/base.ts";
 import { iterateAllItems } from "@actor/helpers.js";
 import type { InitiativeRollResult } from "@actor/initiative.ts";
-import type { PhysicalItemPF2e } from "@item";
-import { AbstractEffectPF2e, ItemPF2e, SpellPF2e } from "@item";
+import type { PhysicalItemAvant } from "@item";
+import { AbstractEffectAvant, ItemAvant, SpellAvant } from "@item";
 import type { AbilityTrait, ActionCategory } from "@item/ability/types.ts";
 import type { EffectTrait } from "@item/abstract-effect/types.ts";
-import type { ActionType, ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ActionType, ItemSourceAvant } from "@item/base/data/index.ts";
 import { createConsumableFromSpell } from "@item/consumable/spell-consumables.ts";
 import { isContainerCycle } from "@item/container/helpers.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import type { Coins } from "@item/physical/data.ts";
 import { detachSubitem, sizeItemForActor } from "@item/physical/helpers.ts";
 import { DENOMINATIONS, PHYSICAL_ITEM_TYPES } from "@item/physical/values.ts";
-import { DropCanvasItemDataPF2e } from "@module/canvas/drop-canvas-data.ts";
+import { DropCanvasItemDataAvant } from "@module/canvas/drop-canvas-data.ts";
 import { createUseActionMessage } from "@module/chat-message/helpers.ts";
 import { createSheetTags, eventToRollMode, eventToRollParams, maintainFocusInRender } from "@module/sheet/helpers.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
@@ -32,7 +32,7 @@ import {
     TagSelectorType,
 } from "@system/tag-selector/index.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     SORTABLE_BASE_OPTIONS,
     fontAwesomeIcon,
     htmlClosest,
@@ -47,10 +47,10 @@ import { createSortable } from "@util/destroyables.ts";
 import MiniSearch from "minisearch";
 import * as R from "remeda";
 import Sortable from "sortablejs";
-import { ActorSizePF2e } from "../data/size.ts";
+import { ActorSizeAvant } from "../data/size.ts";
 import type {
-    ActorSheetDataPF2e,
-    ActorSheetRenderOptionsPF2e,
+    ActorSheetDataAvant,
+    ActorSheetRenderOptionsAvant,
     CoinageSummary,
     InventoryItem,
     SheetInventory,
@@ -65,13 +65,13 @@ import { IWREditor } from "./popups/iwr-editor.ts";
 import { RemoveCoinsPopup } from "./popups/remove-coins-popup.ts";
 
 /**
- * Extend the basic ActorSheet class to do all the PF2e things!
+ * Extend the basic ActorSheet class to do all the Avant things!
  * This sheet is an Abstract layer which is not used.
  * @category Actor
  */
-abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActor, ItemPF2e> {
+abstract class ActorSheetAvant<TActor extends ActorAvant> extends ActorSheet<TActor, ItemAvant> {
     /** Index all items and subitems in this actor for searching. Indexed by UUID because subitems may share ids across different parents */
-    #inventorySearchEngine = new MiniSearch<Pick<PhysicalItemPF2e<TActor>, "uuid" | "name">>({
+    #inventorySearchEngine = new MiniSearch<Pick<PhysicalItemAvant<TActor>, "uuid" | "name">>({
         fields: ["name"],
         idField: "uuid",
         processTerm: (t) => (t.length > 1 ? t.toLocaleLowerCase(game.i18n.lang) : null),
@@ -107,14 +107,14 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
     }
 
     /** Implementation used to handle the toggling and rendering of item summaries */
-    itemRenderer: ItemSummaryRenderer<TActor, ActorSheetPF2e<TActor>> = new ItemSummaryRenderer(this);
+    itemRenderer: ItemSummaryRenderer<TActor, ActorSheetAvant<TActor>> = new ItemSummaryRenderer(this);
 
     /** Is this sheet one in which the actor is not owned by the user, but the user can still take and deposit items? */
     get isLootSheet(): boolean {
         return !this.actor.isOwner && this.actor.isLootableBy(game.user);
     }
 
-    override async getData(options: Partial<ActorSheetOptions> = this.options): Promise<ActorSheetDataPF2e<TActor>> {
+    override async getData(options: Partial<ActorSheetOptions> = this.options): Promise<ActorSheetDataAvant<TActor>> {
         options.id ||= this.id;
         options.editable = this.isEditable;
         options.sheetConfig &&=
@@ -137,7 +137,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
 
         // Calculate financial and total wealth
         const coins = actor.inventory.coins;
-        const totalCoinage = ActorSheetPF2e.coinsToSheetData(coins);
+        const totalCoinage = ActorSheetAvant.coinsToSheetData(coins);
         const totalCoinageGold = (coins.copperValue / 100).toFixed(2);
 
         const totalWealth = actor.inventory.totalWealth;
@@ -146,11 +146,11 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         const traitsMap = ((): Record<string, string> => {
             switch (actor.type) {
                 case "hazard":
-                    return CONFIG.PF2E.hazardTraits;
+                    return CONFIG.AVANT.hazardTraits;
                 case "vehicle":
-                    return CONFIG.PF2E.vehicleTraits;
+                    return CONFIG.AVANT.vehicleTraits;
                 default:
-                    return CONFIG.PF2E.creatureTraits;
+                    return CONFIG.AVANT.creatureTraits;
             }
         })();
 
@@ -160,7 +160,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             (t) => t.placement,
         );
 
-        const sheetData: ActorSheetDataPF2e<TActor> = {
+        const sheetData: ActorSheetDataAvant<TActor> = {
             actor: actorData,
             cssClass: this.actor.isOwner ? "editable" : "locked",
             data: actorData.system,
@@ -184,8 +184,8 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             traits: createSheetTags(traitsMap, { value: Array.from(this.actor.traits) }),
             user: { isGM: game.user.isGM },
             publicationLicenses: [
-                { label: "PF2E.Publication.License.OGL", value: "OGL" },
-                { label: "PF2E.Publication.License.ORC", value: "ORC" },
+                { label: "AVANT.Publication.License.OGL", value: "OGL" },
+                { label: "AVANT.Publication.License.ORC", value: "ORC" },
             ],
         };
 
@@ -201,19 +201,19 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
 
         const sections: SheetInventory["sections"] = [
             {
-                label: game.i18n.localize("PF2E.Actor.Inventory.Section.WeaponsAndShields"),
+                label: game.i18n.localize("AVANT.Actor.Inventory.Section.WeaponsAndShields"),
                 types: ["weapon", "shield"],
                 items: [],
             },
             { label: game.i18n.localize("TYPES.Item.armor"), types: ["armor"], items: [] },
             { label: game.i18n.localize("TYPES.Item.equipment"), types: ["equipment"], items: [] },
             {
-                label: game.i18n.localize("PF2E.Item.Consumable.Plural"),
+                label: game.i18n.localize("AVANT.Item.Consumable.Plural"),
                 types: ["consumable"],
                 items: [],
             },
             { label: game.i18n.localize("TYPES.Item.treasure"), types: ["treasure"], items: [] },
-            { label: game.i18n.localize("PF2E.Item.Container.Plural"), types: ["backpack"], items: [] },
+            { label: game.i18n.localize("AVANT.Item.Container.Plural"), types: ["backpack"], items: [] },
         ];
 
         const actor = this.actor.clone({}, { keepId: true });
@@ -235,14 +235,14 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         };
     }
 
-    protected prepareInventoryItem(item: PhysicalItemPF2e): InventoryItem {
+    protected prepareInventoryItem(item: PhysicalItemAvant): InventoryItem {
         const editable = game.user.isGM || item.isIdentified;
         const heldItems = item.isOfType("backpack") ? item.contents.map((i) => this.prepareInventoryItem(i)) : null;
         heldItems?.sort((a, b) => (a.item.sort || 0) - (b.item.sort || 0));
 
         const actor = this.actor;
-        const actorSize = new ActorSizePF2e({ value: actor.size });
-        const itemSize = new ActorSizePF2e({ value: item.size });
+        const actorSize = new ActorSizeAvant({ value: actor.size });
+        const itemSize = new ActorSizeAvant({ value: item.size });
         const sizeDifference = itemSize.difference(actorSize, { smallIsMedium: true });
 
         return {
@@ -268,13 +268,13 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         super._onSearchFilter(event, query, rgx, html);
 
         // Gets all parents, including containers and parent items
-        const getAllParents = (item: PhysicalItemPF2e): PhysicalItemPF2e[] => {
-            const parents = [item.container, item.parentItem].filter((i): i is PhysicalItemPF2e => !!i);
+        const getAllParents = (item: PhysicalItemAvant): PhysicalItemAvant[] => {
+            const parents = [item.container, item.parentItem].filter((i): i is PhysicalItemAvant => !!i);
             return [...parents, ...parents.flatMap((p) => getAllParents(p))];
         };
 
         // Gets all children, including container contents and sub items
-        const getAllChildren = (item: PhysicalItemPF2e): PhysicalItemPF2e[] => {
+        const getAllChildren = (item: PhysicalItemAvant): PhysicalItemAvant[] => {
             const contents = [...(item.isOfType("backpack") ? item.contents : []), ...item.subitems];
             return [...contents, ...contents.flatMap((c) => getAllChildren(c))];
         };
@@ -284,8 +284,8 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             if (html?.classList.contains("inventory-list") && query.length > 1) {
                 const baseMatches = this.#inventorySearchEngine.search(query).map((s) => String(s.id));
                 const allItems = [...iterateAllItems(this.actor)];
-                const itemsByUuid: Record<string, PhysicalItemPF2e<TActor>> = R.mapToObj(
-                    allItems.filter((i): i is PhysicalItemPF2e<TActor> => i.isOfType("physical")),
+                const itemsByUuid: Record<string, PhysicalItemAvant<TActor>> = R.mapToObj(
+                    allItems.filter((i): i is PhysicalItemAvant<TActor> => i.isOfType("physical")),
                     (i) => [i.uuid, i],
                 );
                 const baseItems = baseMatches.map((uuid) => itemsByUuid[uuid]).filter((i) => !!i);
@@ -307,7 +307,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         return DENOMINATIONS.reduce(
             (accumulated, d) => ({
                 ...accumulated,
-                [d]: { value: coins[d], label: CONFIG.PF2E.currencies[d] },
+                [d]: { value: coins[d], label: CONFIG.AVANT.currencies[d] },
             }),
             {} as CoinageSummary,
         );
@@ -453,7 +453,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             for (const button of htmlQueryAll(strikeElem, attackSelectors)) {
                 button.addEventListener("click", async (event) => {
                     if (!Array.isArray(this.actor.system.actions)) {
-                        throw ErrorPF2e("Strikes are not supported on this actor");
+                        throw ErrorAvant("Strikes are not supported on this actor");
                     }
 
                     const altUsage = tupleHasValue(["thrown", "melee"] as const, button.dataset.altUsage)
@@ -497,7 +497,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             effectDecrement.addEventListener("click", (event) => {
                 const parent = htmlClosest(event.currentTarget, ".item");
                 const effect = this.actor.items.get(parent?.dataset.itemId ?? "");
-                if (effect instanceof AbstractEffectPF2e) {
+                if (effect instanceof AbstractEffectAvant) {
                     effect.decrease();
                 }
             });
@@ -508,7 +508,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             effectIncrement.addEventListener("click", (event) => {
                 const parent = htmlClosest(event.currentTarget, ".item");
                 const effect = this.actor?.items.get(parent?.dataset.itemId ?? "");
-                if (effect instanceof AbstractEffectPF2e) {
+                if (effect instanceof AbstractEffectAvant) {
                     effect.increase();
                 }
             });
@@ -539,7 +539,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
 
     /** Sheet-wide click listeners for elements selectable as `a[data-action]` */
     protected activateClickListener(html: HTMLElement): SheetClickActionHandlers {
-        const inventoryItemFromDOM = (event: MouseEvent): PhysicalItemPF2e<TActor> => {
+        const inventoryItemFromDOM = (event: MouseEvent): PhysicalItemAvant<TActor> => {
             const itemId = htmlClosest(event.target, "[data-item-id]")?.dataset.itemId;
             const subitemId = htmlClosest(event.target, "[data-subitem-id]")?.dataset.subitemId;
             const parentItem = this.actor.inventory.get(itemId, { strict: true });
@@ -587,7 +587,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
                 const actor = this.actor;
                 const itemEl = htmlClosest(anchor, "[data-item-id]");
                 const collectionId = itemEl?.dataset.entryId;
-                const collection: { get: Collection<ItemPF2e>["get"] } = collectionId
+                const collection: { get: Collection<ItemAvant>["get"] } = collectionId
                     ? (actor.spellcasting?.collections.get(collectionId, { strict: true }) ?? actor.items)
                     : actor.items;
 
@@ -631,9 +631,9 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             "use-action": (event, anchor) => {
                 const actionSlug = htmlClosest(anchor, "[data-action-slug]")?.dataset.actionSlug;
                 if (actionSlug) {
-                    const action = game.pf2e.actions[actionSlug ?? ""];
+                    const action = game.avant.actions[actionSlug ?? ""];
                     if (!action) {
-                        throw ErrorPF2e(`Unexpecteed error retrieving action ${actionSlug}`);
+                        throw ErrorAvant(`Unexpecteed error retrieving action ${actionSlug}`);
                     }
                     return action({ event, actors: [this.actor] });
                 }
@@ -670,7 +670,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             },
             "repair-item": (event) => {
                 const item = inventoryItemFromDOM(event);
-                return game.pf2e.actions.repair({ event, item });
+                return game.avant.actions.repair({ event, item });
             },
             "sell-all-treasure": () => {
                 return this.#onClickSellAllTreasure();
@@ -687,9 +687,9 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
                 if (event.ctrlKey) return sellItem();
 
                 const content = document.createElement("p");
-                content.innerText = game.i18n.format("PF2E.SellItemQuestion", { item: item.name });
+                content.innerText = game.i18n.format("AVANT.SellItemQuestion", { item: item.name });
                 return new Dialog({
-                    title: game.i18n.localize("PF2E.SellItemConfirmHeader"),
+                    title: game.i18n.localize("AVANT.SellItemConfirmHeader"),
                     content: content.outerHTML,
                     buttons: {
                         Yes: {
@@ -780,7 +780,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         const isSeparateSheet = htmlClosest(event.target, "form") !== htmlClosest(event.related, "form");
         if (!this.isEditable || isSeparateSheet) return false;
 
-        const sourceItem: PhysicalItemPF2e<ActorPF2e> | undefined = this.actor.inventory.get(
+        const sourceItem: PhysicalItemAvant<ActorAvant> | undefined = this.actor.inventory.get(
             event.dragged?.dataset.itemId,
             { strict: true },
         );
@@ -796,7 +796,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
 
         if (targetSection.includes("backpack")) {
             const openContainerId = htmlClosest(event.related, "ul[data-container-id]")?.dataset.containerId ?? "";
-            const openContainer: PhysicalItemPF2e<ActorPF2e> | undefined = this.actor.inventory.get(openContainerId);
+            const openContainer: PhysicalItemAvant<ActorAvant> | undefined = this.actor.inventory.get(openContainerId);
             const targetItemRow = htmlClosest(event.related, "li[data-item-id]");
             const targetItem = this.actor.inventory.get(targetItemRow?.dataset.itemId ?? "");
             if (targetItem?.isOfType("backpack")) {
@@ -833,7 +833,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         const targetItem = this.actor.inventory.get(targetItemId);
 
         // Determine if the "real" drop target is a stackable item
-        const stackTarget = ((): PhysicalItemPF2e | null => {
+        const stackTarget = ((): PhysicalItemAvant | null => {
             return targetItem?.isStackableWith(sourceItem) ? targetItem : null;
         })();
         if (stackTarget) return sourceItem.move({ toStack: stackTarget });
@@ -843,7 +843,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         const containerId = containerElem?.dataset.containerId ?? "";
         const container = targetItem?.isOfType("backpack") ? targetItem : inventory.get(containerId);
         if (container && !container.isOfType("backpack")) {
-            throw ErrorPF2e("Unexpected non-container retrieved while sorting items");
+            throw ErrorAvant("Unexpected non-container retrieved while sorting items");
         }
 
         if (container && isContainerCycle(sourceItem, container)) {
@@ -870,7 +870,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         await this.actor.updateEmbeddedDocuments("Item", sortingUpdates);
     }
 
-    protected deleteItem<TItem extends ItemPF2e>(item: TItem, event?: MouseEvent): Promise<TItem | undefined> {
+    protected deleteItem<TItem extends ItemAvant>(item: TItem, event?: MouseEvent): Promise<TItem | undefined> {
         return event?.ctrlKey ? item.delete() : item.deleteDialog();
     }
 
@@ -878,7 +878,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         const types = (anchor.dataset.actionType || "").split(",") as ActionType[];
         const traits = (anchor.dataset.actionTrait || "").split(",") as AbilityTrait[];
         const categories = (anchor.dataset.actionCategory || "").split(",") as ActionCategory[];
-        game.pf2e.compendiumBrowser.openActionTab({ types, traits, categories });
+        game.avant.compendiumBrowser.openActionTab({ types, traits, categories });
     }
 
     async #onClickBrowseEquipment(element: HTMLElement): Promise<void> {
@@ -887,7 +887,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             .map((s) => s.trim())
             .filter((s) => !!s);
         const levelString = element.dataset.level;
-        const tab = game.pf2e.compendiumBrowser.tabs.equipment;
+        const tab = game.avant.compendiumBrowser.tabs.equipment;
         const filter = await tab.getFilterData();
         const checkboxes = filter.checkboxes;
 
@@ -994,7 +994,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             // ... a crafting formula?
             if ("isFormula" in baseDragData) {
                 return {
-                    pf2e: {
+                    avant: {
                         type: "CraftingFormula",
                         itemUuid: itemId,
                     },
@@ -1022,10 +1022,10 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             // Add persistent damage. If the actor type doesn't support conditions, it'll be rejected
             const roll = new DamageRoll(String(dropData.formula));
             if (roll.instances.length === 0 || roll.instances.some((i) => !i.persistent)) {
-                throw ErrorPF2e("Unexpected error adding persistent damage: all instances must be persistent");
+                throw ErrorAvant("Unexpected error adding persistent damage: all instances must be persistent");
             }
 
-            const baseConditionSource = game.pf2e.ConditionManager.getCondition("persistent-damage").toObject();
+            const baseConditionSource = game.avant.ConditionManager.getCondition("persistent-damage").toObject();
             const conditions = roll.instances.map((i) =>
                 fu.mergeObject(baseConditionSource, {
                     system: {
@@ -1041,10 +1041,10 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
 
     protected override async _onDropItem(
         event: DragEvent,
-        data: DropCanvasItemDataPF2e & { fromInventory?: boolean },
-    ): Promise<ItemPF2e[]> {
+        data: DropCanvasItemDataAvant & { fromInventory?: boolean },
+    ): Promise<ItemAvant[]> {
         event.preventDefault();
-        const item = await ItemPF2e.fromDropData(data);
+        const item = await ItemAvant.fromDropData(data);
         if (!item) return [];
 
         if (item.actor?.uuid === this.actor.uuid) {
@@ -1064,24 +1064,24 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
      * Prevent a Foundry permission error from being thrown when a player moves an item from and to the sheet of the
      * same lootable actor.
      */
-    protected override async _onSortItem(event: DragEvent, itemData: ItemSourcePF2e): Promise<ItemPF2e[]> {
+    protected override async _onSortItem(event: DragEvent, itemData: ItemSourceAvant): Promise<ItemAvant[]> {
         return this.actor.isOwner ? super._onSortItem(event, itemData) : [];
     }
 
     /**
-     * PF2e specific method called by _onDropItem() when this is a new item that needs to be dropped into the actor
+     * Avant specific method called by _onDropItem() when this is a new item that needs to be dropped into the actor
      * that isn't already on the actor or transferring to another actor.
      */
     protected async _handleDroppedItem(
         event: DragEvent,
-        item: ItemPF2e<ActorPF2e | null>,
-        data: DropCanvasItemDataPF2e,
-    ): Promise<ItemPF2e<ActorPF2e | null>[]>;
+        item: ItemAvant<ActorAvant | null>,
+        data: DropCanvasItemDataAvant,
+    ): Promise<ItemAvant<ActorAvant | null>[]>;
     protected async _handleDroppedItem(
         event: DragEvent,
-        item: ItemPF2e<ActorPF2e | null>,
-        data: DropCanvasItemDataPF2e,
-    ): Promise<Item<ActorPF2e | null>[]> {
+        item: ItemAvant<ActorAvant | null>,
+        data: DropCanvasItemDataAvant,
+    ): Promise<Item<ActorAvant | null>[]> {
         const actor = this.actor;
 
         // Get the item source.
@@ -1145,7 +1145,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             }
 
             if (!actor.canUserModify(game.user, "update")) {
-                ui.notifications.error("PF2E.ErrorMessage.NoUpdatePermission", { localize: true });
+                ui.notifications.error("AVANT.ErrorMessage.NoUpdatePermission", { localize: true });
                 return [];
             } else {
                 const updated = await actor.increaseCondition(itemSource.system.slug, { value });
@@ -1166,9 +1166,9 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             }
             itemSource.system.context = context ?? null;
             const originItem = fromUuidSync(context?.origin.item ?? "");
-            if (itemSource.system.traits?.value.length === 0 && originItem instanceof SpellPF2e) {
+            if (itemSource.system.traits?.value.length === 0 && originItem instanceof SpellAvant) {
                 const spellTraits: string[] = originItem.system.traits.value;
-                const effectTraits = spellTraits.filter((t): t is EffectTrait => t in CONFIG.PF2E.effectTraits);
+                const effectTraits = spellTraits.filter((t): t is EffectTrait => t in CONFIG.AVANT.effectTraits);
                 itemSource.system.traits.value.push(...effectTraits);
             }
         } else if (item.isOfType("physical") && actor.isOfType("character") && craftingTab) {
@@ -1198,13 +1198,13 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
     protected override async _onDropFolder(
         _event: DragEvent,
         data: DropCanvasData<"Folder", Folder>,
-    ): Promise<ItemPF2e<TActor>[]>;
+    ): Promise<ItemAvant<TActor>[]>;
     protected override async _onDropFolder(
         _event: DragEvent,
         data: DropCanvasData<"Folder", Folder>,
     ): Promise<Item<TActor>[]> {
         if (!(this.actor.isOwner && data.documentName === "Item")) return [];
-        const folder = (await Folder.fromDropData(data)) as Folder<ItemPF2e<null>> | undefined;
+        const folder = (await Folder.fromDropData(data)) as Folder<ItemAvant<null>> | undefined;
         if (!folder) return [];
         const itemSources = [folder, ...folder.getSubfolders()].flatMap((f) => f.contents).map((i) => i.toObject());
         return this._onDropItemCreate(itemSources);
@@ -1227,10 +1227,10 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
      * @param targetActorId ID of the actor where the item will be stored.
      * @param itemId           ID of the item to move between the two actors.
      */
-    async moveItemBetweenActors(event: DragEvent, item: PhysicalItemPF2e, targetActor: ActorPF2e): Promise<void> {
+    async moveItemBetweenActors(event: DragEvent, item: PhysicalItemAvant, targetActor: ActorAvant): Promise<void> {
         const sourceActor = item.actor;
         if (!sourceActor || !targetActor) {
-            throw ErrorPF2e("Unexpected missing actor(s)");
+            throw ErrorAvant("Unexpected missing actor(s)");
         }
 
         const containerId = htmlClosest(event.target, "[data-is-container]")?.dataset.containerId?.trim();
@@ -1247,7 +1247,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         if (result !== null) {
             sourceActor.transferItemToActor(
                 targetActor,
-                item as PhysicalItemPF2e<ActorPF2e>,
+                item as PhysicalItemAvant<ActorAvant>,
                 result.quantity,
                 containerId,
                 result.newStack,
@@ -1263,40 +1263,40 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
             .flat()
             .filter(R.isTruthy)
             .find((t) => t !== "shield");
-        if (!objectHasKey(CONFIG.PF2E.Item.documentClasses, itemType)) {
-            throw ErrorPF2e(`Unrecognized item type: types`);
+        if (!objectHasKey(CONFIG.AVANT.Item.documentClasses, itemType)) {
+            throw ErrorAvant(`Unrecognized item type: types`);
         }
 
         if (itemType === "spell") {
             return onClickCreateSpell(this.actor, dataset);
         }
 
-        const itemSource = ((): DeepPartial<ItemSourcePF2e> | null => {
+        const itemSource = ((): DeepPartial<ItemSourceAvant> | null => {
             switch (itemType) {
                 case "action": {
                     const { actionType } = dataset;
-                    if (!objectHasKey(CONFIG.PF2E.actionTypes, actionType)) {
-                        throw ErrorPF2e(`Action type not recognized: ${actionType}`);
+                    if (!objectHasKey(CONFIG.AVANT.actionTypes, actionType)) {
+                        throw ErrorAvant(`Action type not recognized: ${actionType}`);
                     }
-                    const name = game.i18n.localize(`PF2E.ActionType${actionType.capitalize()}`);
+                    const name = game.i18n.localize(`AVANT.ActionType${actionType.capitalize()}`);
                     return { type: itemType, name, system: { actionType: { value: actionType } } };
                 }
                 case "melee": {
-                    const name = game.i18n.localize(`PF2E.NewPlaceholders.${itemType.capitalize()}`);
+                    const name = game.i18n.localize(`AVANT.NewPlaceholders.${itemType.capitalize()}`);
                     return { type: itemType, name };
                 }
                 case "lore": {
                     const name =
                         this.actor.type === "npc"
-                            ? game.i18n.localize("PF2E.SkillLabel")
-                            : game.i18n.localize("PF2E.NewPlaceholders.Lore");
+                            ? game.i18n.localize("AVANT.SkillLabel")
+                            : game.i18n.localize("AVANT.NewPlaceholders.Lore");
                     return { type: itemType, name };
                 }
                 default: {
                     if (!setHasElement(PHYSICAL_ITEM_TYPES, itemType)) {
-                        throw ErrorPF2e(`Unsupported item type: ${itemType}`);
+                        throw ErrorAvant(`Unsupported item type: ${itemType}`);
                     }
-                    const name = game.i18n.localize(`PF2E.NewPlaceholders.${itemType.capitalize()}`);
+                    const name = game.i18n.localize(`AVANT.NewPlaceholders.${itemType.capitalize()}`);
                     return { name, type: itemType };
                 }
             }
@@ -1314,10 +1314,10 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
 
     /** Render confirmation dialog to sell all treasure */
     async #onClickSellAllTreasure(): Promise<void> {
-        const content = await renderTemplate("systems/pf2e/templates/actors/sell-all-treasure-dialog.hbs");
+        const content = await renderTemplate("systems/avant/templates/actors/sell-all-treasure-dialog.hbs");
 
         new Dialog({
-            title: game.i18n.localize("PF2E.SellAllTreasureTitle"),
+            title: game.i18n.localize("AVANT.SellAllTreasureTitle"),
             content,
             buttons: {
                 yes: {
@@ -1337,7 +1337,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
     protected openTagSelector(anchor: HTMLElement, options: Partial<TagSelectorOptions> = {}): void {
         const selectorType = anchor.dataset.tagSelector;
         if (!tupleHasValue(TAG_SELECTOR_TYPES, selectorType)) {
-            throw ErrorPF2e(`Unrecognized tag selector type "${selectorType}"`);
+            throw ErrorAvant(`Unrecognized tag selector type "${selectorType}"`);
         }
         if (selectorType === "basic") {
             const objectProperty = anchor.dataset.property ?? "";
@@ -1367,7 +1367,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
         if (selectorType === "basic" && options?.objectProperty) {
             new TagSelectorBasic(this.object, options as BasicSelectorOptions).render(true);
         } else if (selectorType === "basic") {
-            throw ErrorPF2e("Insufficient options provided to render basic tag selector");
+            throw ErrorAvant("Insufficient options provided to render basic tag selector");
         } else {
             const TagSelector = {
                 languages: LanguageSelector,
@@ -1391,7 +1391,7 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
     }
 
     /** Overriden _render to maintain focus on tagify elements */
-    protected override async _render(force?: boolean, options?: ActorSheetRenderOptionsPF2e): Promise<void> {
+    protected override async _render(force?: boolean, options?: ActorSheetRenderOptionsAvant): Promise<void> {
         await maintainFocusInRender(this, () => super._render(force, options));
         if (options?.tab) {
             this.openTab(options.tab);
@@ -1428,9 +1428,9 @@ abstract class ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActo
     }
 }
 
-interface ActorSheetPF2e<TActor extends ActorPF2e> extends ActorSheet<TActor, ItemPF2e> {
-    prepareItems?(sheetData: ActorSheetDataPF2e<TActor>): Promise<void>;
-    render(force?: boolean, options?: ActorSheetRenderOptionsPF2e): this;
+interface ActorSheetAvant<TActor extends ActorAvant> extends ActorSheet<TActor, ItemAvant> {
+    prepareItems?(sheetData: ActorSheetDataAvant<TActor>): Promise<void>;
+    render(force?: boolean, options?: ActorSheetRenderOptionsAvant): this;
 }
 
 type SheetClickActionHandlers = Record<
@@ -1438,4 +1438,4 @@ type SheetClickActionHandlers = Record<
     ((event: MouseEvent, actionTarget: HTMLElement) => Promise<void | unknown> | void | unknown) | undefined
 >;
 
-export { ActorSheetPF2e, type SheetClickActionHandlers };
+export { ActorSheetAvant, type SheetClickActionHandlers };

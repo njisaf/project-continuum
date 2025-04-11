@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { SpellcastingEntrySource } from "@item/spellcasting-entry/index.ts";
 import * as R from "remeda";
 import { MigrationBase } from "../base.ts";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration829RMRitualEntries extends MigrationBase {
     static override version = 0.829;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         for (const item of source.items.filter((i): i is SpellcastingEntrySource => i.type === "spellcastingEntry")) {
             if (item.system.prepared.value === "ritual") {
                 source.items.splice(source.items.indexOf(item), 1);
@@ -23,7 +23,7 @@ export class Migration829RMRitualEntries extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (
             !("category" in source.system) ||
             !R.isPlainObject(source.system.category) ||

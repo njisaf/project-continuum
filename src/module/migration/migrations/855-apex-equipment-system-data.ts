@@ -1,5 +1,5 @@
 import { ATTRIBUTE_ABBREVIATIONS } from "@actor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { RuleElementSource } from "@module/rules/index.ts";
 import { setHasElement } from "@util";
 import { MigrationBase } from "../base.ts";
@@ -8,7 +8,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration855ApexEquipmentSystemData extends MigrationBase {
     static override version = 0.855;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         if (source.type !== "equipment" || !source.system.traits.value.includes("apex")) {
             return;
         }

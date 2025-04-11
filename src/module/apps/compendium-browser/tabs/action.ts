@@ -7,7 +7,7 @@ import { ActionFilters, CompendiumBrowserIndexData } from "./data.ts";
 
 export class CompendiumBrowserActionTab extends CompendiumBrowserTab {
     tabName: ContentTabName = "action";
-    tabLabel = "PF2E.Item.Ability.Plural";
+    tabLabel = "AVANT.Item.Ability.Plural";
     declare filterData: ActionFilters;
 
     /* MiniSearch */
@@ -22,7 +22,7 @@ export class CompendiumBrowserActionTab extends CompendiumBrowserTab {
     }
 
     protected override async loadData(): Promise<void> {
-        console.debug("PF2e System | Compendium Browser | Started loading actions");
+        console.debug("Avant System | Compendium Browser | Started loading actions");
 
         const actions: CompendiumBrowserIndexData[] = [];
         const indexFields = [
@@ -41,7 +41,7 @@ export class CompendiumBrowserActionTab extends CompendiumBrowserTab {
             this.browser.loadedPacks("action"),
             indexFields,
         )) {
-            console.debug(`PF2e System | Compendium Browser | ${pack.metadata.label} - Loading`);
+            console.debug(`Avant System | Compendium Browser | ${pack.metadata.label} - Loading`);
             for (const actionData of index) {
                 if (actionData.type === "action") {
                     if (!this.hasAllIndexFields(actionData, indexFields)) {
@@ -78,14 +78,14 @@ export class CompendiumBrowserActionTab extends CompendiumBrowserTab {
         this.indexData = actions;
 
         // Set Filters
-        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.PF2E.actionTraits);
-        this.filterData.checkboxes.types.options = this.generateCheckboxOptions(CONFIG.PF2E.actionTypes);
+        this.filterData.traits.options = this.generateMultiselectOptions(CONFIG.AVANT.actionTraits);
+        this.filterData.checkboxes.types.options = this.generateCheckboxOptions(CONFIG.AVANT.actionTypes);
         this.filterData.checkboxes.category.options = this.generateCheckboxOptions(
-            R.pick(CONFIG.PF2E.actionCategories, ["familiar"]),
+            R.pick(CONFIG.AVANT.actionCategories, ["familiar"]),
         );
         this.filterData.source.options = this.generateSourceCheckboxOptions(publications);
 
-        console.debug("PF2e System | Compendium Browser | Finished loading actions");
+        console.debug("Avant System | Compendium Browser | Finished loading actions");
     }
 
     protected override filterIndexData(entry: CompendiumBrowserIndexData): boolean {
@@ -114,20 +114,20 @@ export class CompendiumBrowserActionTab extends CompendiumBrowserTab {
             checkboxes: {
                 types: {
                     isExpanded: true,
-                    label: "PF2E.ActionActionTypeLabel",
+                    label: "AVANT.ActionActionTypeLabel",
                     options: {},
                     selected: [],
                 },
                 category: {
                     isExpanded: true,
-                    label: "PF2E.CompendiumBrowser.Filter.Categories",
+                    label: "AVANT.CompendiumBrowser.Filter.Categories",
                     options: {},
                     selected: [],
                 },
             },
             source: {
                 isExpanded: false,
-                label: "PF2E.CompendiumBrowser.Filter.Source",
+                label: "AVANT.CompendiumBrowser.Filter.Source",
                 options: {},
                 selected: [],
             },

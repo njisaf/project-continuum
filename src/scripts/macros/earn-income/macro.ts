@@ -1,8 +1,8 @@
-import type { ActorPF2e } from "@actor";
-import { ErrorPF2e, fontAwesomeIcon } from "@util";
+import type { ActorAvant } from "@actor";
+import { ErrorAvant, fontAwesomeIcon } from "@util";
 import { askSkillPopupTemplate, runEarnIncome } from "./helpers.ts";
 
-function showEarnIncomePopup(actor: ActorPF2e | undefined): void {
+function showEarnIncomePopup(actor: ActorAvant | undefined): void {
     if (!actor?.isOfType("character")) {
         ui.notifications.error(`You must select at least one PC`);
         return;
@@ -27,7 +27,7 @@ function showEarnIncomePopup(actor: ActorPF2e | undefined): void {
                     const days = Number(html.querySelector<HTMLInputElement>("[name=days]")?.value) || 1;
                     const skillAcronym = html.querySelector<HTMLSelectElement>("[name=skillAcronym]")?.value ?? "soc";
                     const skill = skills.find((s) => s.slug === skillAcronym);
-                    if (!skill) throw ErrorPF2e("Skill not found");
+                    if (!skill) throw ErrorAvant("Skill not found");
 
                     localStorage.setItem("earnIncomeLevel", level.toString());
                     localStorage.setItem("earnIncomeDays", days.toString());

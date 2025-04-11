@@ -1,13 +1,13 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { SkillSlug } from "@actor/types.ts";
-import type { TokenDocumentPF2e } from "@scene/index.ts";
-import { ErrorPF2e } from "@util";
+import type { TokenDocumentAvant } from "@scene/index.ts";
+import { ErrorAvant } from "@util";
 import type { CombatantSource } from "types/foundry/common/documents/combatant.d.ts";
-import type { EncounterPF2e } from "./index.ts";
+import type { EncounterAvant } from "./index.ts";
 
-class CombatantPF2e<
-    TParent extends EncounterPF2e | null = EncounterPF2e | null,
-    TTokenDocument extends TokenDocumentPF2e | null = TokenDocumentPF2e | null,
+class CombatantAvant<
+    TParent extends EncounterAvant | null = EncounterAvant | null,
+    TTokenDocument extends TokenDocumentAvant | null = TokenDocumentAvant | null,
 > extends Combatant<TParent, TTokenDocument> {
     /** Has this document completed `DataModel` initialization? */
     declare initialized: boolean;
@@ -18,8 +18,8 @@ class CombatantPF2e<
         operation?: Partial<DatabaseCreateOperation<TDocument["parent"]>>,
     ): Promise<TDocument[]>;
     static override async createDocuments(
-        data: (CombatantPF2e | PreCreate<CombatantSource>)[] = [],
-        operation: Partial<DatabaseCreateOperation<EncounterPF2e>> = {},
+        data: (CombatantAvant | PreCreate<CombatantSource>)[] = [],
+        operation: Partial<DatabaseCreateOperation<EncounterAvant>> = {},
     ): Promise<Combatant[]> {
         this.#swapPartyForMembers(data, operation);
         return super.createDocuments(data, operation);
@@ -27,8 +27,8 @@ class CombatantPF2e<
 
     /** Remove any party to be added to an encounter and instead add its members */
     static #swapPartyForMembers(
-        data: (CombatantPF2e | PreCreate<CombatantSource>)[],
-        operation: Partial<DatabaseCreateOperation<EncounterPF2e>>,
+        data: (CombatantAvant | PreCreate<CombatantSource>)[],
+        operation: Partial<DatabaseCreateOperation<EncounterAvant>>,
     ): void {
         for (const datum of [...data]) {
             const actor = game.actors.get(datum.actorId ?? "");
@@ -55,12 +55,12 @@ class CombatantPF2e<
 
     /** Get the active Combatant for the given actor, creating one if necessary */
     static async fromActor(
-        actor: ActorPF2e,
+        actor: ActorAvant,
         render = true,
-        options: { combat?: EncounterPF2e } = {},
-    ): Promise<CombatantPF2e<EncounterPF2e> | null> {
+        options: { combat?: EncounterAvant } = {},
+    ): Promise<CombatantAvant<EncounterAvant> | null> {
         if (!game.combat) {
-            ui.notifications.error(game.i18n.localize("PF2E.Encounter.NoActiveEncounter"));
+            ui.notifications.error(game.i18n.localize("AVANT.Encounter.NoActiveEncounter"));
             return null;
         }
         const token = actor.getActiveTokens().pop();
@@ -83,7 +83,7 @@ class CombatantPF2e<
             );
             return combatants.at(0) ?? null;
         }
-        ui.notifications.error(game.i18n.format("PF2E.Encounter.NoTokenInScene", { actor: actor.name }));
+        ui.notifications.error(game.i18n.format("AVANT.Encounter.NoTokenInScene", { actor: actor.name }));
         return null;
     }
 
@@ -93,7 +93,7 @@ class CombatantPF2e<
 
     /** The round this combatant last had a turn */
     get roundOfLastTurn(): number | null {
-        return this.flags.pf2e.roundOfLastTurn;
+        return this.flags.avant.roundOfLastTurn;
     }
 
     /** Can the user see this combatant's name? */
@@ -102,7 +102,7 @@ class CombatantPF2e<
     }
 
     overridePriority(initiative: number): number | null {
-        return this.flags.pf2e.overridePriority[initiative] ?? null;
+        return this.flags.avant.overridePriority[initiative] ?? null;
     }
 
     hasHigherInitiative(
@@ -110,7 +110,7 @@ class CombatantPF2e<
         { than }: { than: RolledCombatant<NonNullable<TParent>> },
     ): boolean {
         if (this.parent.id !== than.parent.id) {
-            throw ErrorPF2e("The initiative of Combatants from different combats cannot be compared");
+            throw ErrorAvant("The initiative of Combatants from different combats cannot be compared");
         }
 
         return this.parent.getCombatantWithHigherInit(this, than) === this;
@@ -120,7 +120,7 @@ class CombatantPF2e<
         const { actor, encounter } = this;
         if (!encounter || !actor) return;
 
-        this.update({ "flags.pf2e.roundOfLastTurn": encounter.round }, { render: false });
+        this.update({ "flags.avant.roundOfLastTurn": encounter.round }, { render: false });
 
         // Run any turn start events before the effect tracker updates
         const eventType = "turn-start";
@@ -136,7 +136,7 @@ class CombatantPF2e<
             }
         }
 
-        Hooks.callAll("pf2e.startTurn", this, encounter, game.user.id);
+        Hooks.callAll("avant.startTurn", this, encounter, game.user.id);
     }
 
     async endTurn(options: { round: number }): Promise<void> {
@@ -161,8 +161,8 @@ class CombatantPF2e<
             }
         }
 
-        await this.update({ "flags.pf2e.roundOfLastTurnEnd": round });
-        Hooks.callAll("pf2e.endTurn", this, encounter, game.user.id);
+        await this.update({ "flags.avant.roundOfLastTurnEnd": round });
+        Hooks.callAll("avant.endTurn", this, encounter, game.user.id);
     }
 
     protected override _initialize(options?: Record<string, unknown>): void {
@@ -185,9 +185,9 @@ class CombatantPF2e<
     override prepareBaseData(): void {
         super.prepareBaseData();
 
-        this.flags.pf2e = fu.mergeObject(this.flags.pf2e ?? {}, { overridePriority: {} });
-        this.flags.pf2e.roundOfLastTurn ??= null;
-        this.flags.pf2e.initiativeStatistic ??= null;
+        this.flags.avant = fu.mergeObject(this.flags.avant ?? {}, { overridePriority: {} });
+        this.flags.avant.roundOfLastTurn ??= null;
+        this.flags.avant.initiativeStatistic ??= null;
     }
 
     /** Toggle the defeated status of this combatant, applying or removing the overlay icon on its token */
@@ -303,15 +303,15 @@ class CombatantPF2e<
     }
 }
 
-interface CombatantPF2e<
-    TParent extends EncounterPF2e | null = EncounterPF2e | null,
-    TTokenDocument extends TokenDocumentPF2e | null = TokenDocumentPF2e | null,
+interface CombatantAvant<
+    TParent extends EncounterAvant | null = EncounterAvant | null,
+    TTokenDocument extends TokenDocumentAvant | null = TokenDocumentAvant | null,
 > extends Combatant<TParent, TTokenDocument> {
     flags: CombatantFlags;
 }
 
 interface CombatantFlags extends DocumentFlags {
-    pf2e: {
+    avant: {
         initiativeStatistic: SkillSlug | "perception" | null;
         roundOfLastTurn: number | null;
         roundOfLastTurnEnd: number | null;
@@ -319,9 +319,9 @@ interface CombatantFlags extends DocumentFlags {
     };
 }
 
-type RolledCombatant<TEncounter extends EncounterPF2e> = CombatantPF2e<TEncounter, TokenDocumentPF2e> & {
+type RolledCombatant<TEncounter extends EncounterAvant> = CombatantAvant<TEncounter, TokenDocumentAvant> & {
     initiative: number;
 };
 
-export { CombatantPF2e };
+export { CombatantAvant };
 export type { CombatantFlags, RolledCombatant };

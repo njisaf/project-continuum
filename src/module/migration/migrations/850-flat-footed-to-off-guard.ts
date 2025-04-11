@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { recursiveReplaceString } from "@util";
 import * as R from "remeda";
 import type { JournalEntrySource } from "types/foundry/common/documents/journal-entry.d.ts";
@@ -13,9 +13,9 @@ export class Migration850FlatFootedToOffGuard extends MigrationBase {
 
     #newName = "Off-Guard";
 
-    #imgPattern = /(?<=systems\/pf2e\/icons\/conditions(?:-2)?\/)flat-?footed.webp$/i;
+    #imgPattern = /(?<=systems\/avant\/icons\/conditions(?:-2)?\/)flat-?footed.webp$/i;
 
-    #aToAnUUIDPatern = /\ba(?= @UUID\[Compendium\.pf2e\.conditionitems\.Item\.(?:Flat-Footed|AJh5ex99aV6VTggg)\])/g;
+    #aToAnUUIDPatern = /\ba(?= @UUID\[Compendium\.avant\.conditionitems\.Item\.(?:Flat-Footed|AJh5ex99aV6VTggg)\])/g;
 
     #replace(text: string): string {
         return (
@@ -42,7 +42,7 @@ export class Migration850FlatFootedToOffGuard extends MigrationBase {
         );
     }
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type === "hazard") {
             source.system.details.routine &&= this.#replace(source.system.details.routine);
         }
@@ -58,7 +58,7 @@ export class Migration850FlatFootedToOffGuard extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         source.name = source.name.replace(this.#oldNamePattern, this.#newName);
         source.img = source.img.replace(this.#imgPattern, "off-guard.webp") as ImageFilePath;
         source.system = recursiveReplaceString(source.system, (s) => this.#replace(s));

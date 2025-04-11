@@ -1,19 +1,19 @@
 import { ZeroToThree } from "@module/data.ts";
-import { UserPF2e } from "@module/user/index.ts";
+import { UserAvant } from "@module/user/index.ts";
 import { DegreeOfSuccessIndex } from "@system/degree-of-success.ts";
-import { RollDataPF2e } from "@system/rolls.ts";
+import { RollDataAvant } from "@system/rolls.ts";
 import { CheckType } from "./types.ts";
 
 /** A foundry `Roll` subclass representing a Pathfinder 2e check */
 class CheckRoll extends Roll {
-    static override CHAT_TEMPLATE = "systems/pf2e/templates/chat/check/roll.hbs";
+    static override CHAT_TEMPLATE = "systems/avant/templates/chat/check/roll.hbs";
 
-    constructor(formula: string, data?: Record<string, unknown>, options?: CheckRollDataPF2e) {
+    constructor(formula: string, data?: Record<string, unknown>, options?: CheckRollDataAvant) {
         super(formula, data, options);
         this.options.showBreakdown ??= true;
     }
 
-    get roller(): UserPF2e | null {
+    get roller(): UserAvant | null {
         return game.users.get(this.options.rollerId ?? "") ?? null;
     }
 
@@ -40,7 +40,7 @@ class CheckRoll extends Roll {
         const { type, identifier, action, damaging } = this.options;
         const canRollDamage = !!(damaging && identifier && (this.roller === game.user || game.user.isGM));
         const showBreakdown = this.options.showBreakdown;
-        const showDamageCue = canRollDamage && game.pf2e.settings.metagame.results;
+        const showDamageCue = canRollDamage && game.avant.settings.metagame.results;
         const tooltip = isPrivate || !(showBreakdown || game.user.isGM) ? "" : await this.getTooltip();
 
         const chatData: Record<string, unknown> = {
@@ -69,13 +69,13 @@ class CheckRoll extends Roll {
 }
 
 interface CheckRoll extends Roll {
-    options: CheckRollDataPF2e & { showBreakdown: boolean };
+    options: CheckRollDataAvant & { showBreakdown: boolean };
 }
 
 /** A legacy class kept to allow chat messages to reconstruct rolls */
 class StrikeAttackRoll extends CheckRoll {}
 
-interface CheckRollDataPF2e extends RollDataPF2e {
+interface CheckRollDataAvant extends RollDataAvant {
     type?: CheckType;
     /** A string of some kind to help system API identify the roll */
     identifier?: Maybe<string>;
@@ -88,4 +88,4 @@ interface CheckRollDataPF2e extends RollDataPF2e {
     domains?: string[];
 }
 
-export { CheckRoll, StrikeAttackRoll, type CheckRollDataPF2e };
+export { CheckRoll, StrikeAttackRoll, type CheckRollDataAvant };

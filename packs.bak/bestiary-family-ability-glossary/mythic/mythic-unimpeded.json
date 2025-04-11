@@ -1,0 +1,28 @@
+{
+    "_id": "pC1w0DC8tcgfhiRv",
+    "folder": "63FzE1sSn3PK5yy4",
+    "img": "systems/avant/icons/actions/OneAction.webp",
+    "name": "(Mythic) Unimpeded",
+    "system": {
+        "actionType": {
+            "value": "action"
+        },
+        "actions": {
+            "value": 1
+        },
+        "category": "offensive",
+        "description": {
+            "value": "<p><strong>Cost</strong> 1 Mythic Point</p><hr /><p><strong>Effect</strong> The mythic striker automatically ends one effect that would give it a circumstance penalty to Speed. When it attempts to @UUID[Compendium.avant.actionsavant.Item.Escape] an effect that has it @UUID[Compendium.avant.conditionitems.Item.Immobilized], @UUID[Compendium.avant.conditionitems.Item.Grabbed], or @UUID[Compendium.avant.conditionitems.Item.Restrained], it automatically succeeds.</p>"
+        },
+        "publication": {
+            "license": "ORC",
+            "remaster": true,
+            "title": "Pathfinder War of Immortals"
+        },
+        "rules": [],
+        "traits": {
+            "value": []
+        }
+    },
+    "type": "action"
+}

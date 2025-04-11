@@ -1,12 +1,12 @@
-import type { ActorPF2e } from "@actor";
-import type { PhysicalItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import type { PhysicalItemAvant } from "@item";
 import { SlugField } from "@system/schema-data-fields.ts";
-import { RuleElementOptions, RuleElementPF2e } from "../base.ts";
+import { RuleElementOptions, RuleElementAvant } from "../base.ts";
 import type { ModelPropsFromRESchema, RuleElementSchema, RuleElementSource } from "../data.ts";
 import { EffectSpinoff } from "./spinoff.ts";
 import fields = foundry.data.fields;
 
-class EffectSpinoffRuleElement extends RuleElementPF2e<EffectSpinoffSchema> {
+class EffectSpinoffRuleElement extends RuleElementAvant<EffectSpinoffSchema> {
     constructor(source: RuleElementSource, options: RuleElementOptions) {
         super(source, options);
 
@@ -87,11 +87,11 @@ class EffectSpinoffRuleElement extends RuleElementPF2e<EffectSpinoffSchema> {
 }
 
 interface EffectSpinoffRuleElement
-    extends RuleElementPF2e<EffectSpinoffSchema>,
+    extends RuleElementAvant<EffectSpinoffSchema>,
         ModelPropsFromRESchema<EffectSpinoffSchema> {
     slug: string;
 
-    get item(): PhysicalItemPF2e<ActorPF2e>;
+    get item(): PhysicalItemAvant<ActorAvant>;
 }
 
 type ActivateTimeUnit = "actions" | "reaction" | "minutes" | "hours";

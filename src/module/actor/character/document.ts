@@ -1,9 +1,9 @@
-import { CreaturePF2e, type FamiliarPF2e } from "@actor";
+import { CreatureAvant, type FamiliarAvant } from "@actor";
 import { Abilities, CreatureSpeeds, LabeledSpeed } from "@actor/creature/data.ts";
 import { CreatureUpdateOperation, ResourceData } from "@actor/creature/types.ts";
 import { ALLIANCES, SAVING_THROW_ATTRIBUTES } from "@actor/creature/values.ts";
 import { StrikeData } from "@actor/data/base.ts";
-import { ActorSizePF2e } from "@actor/data/size.ts";
+import { ActorSizeAvant } from "@actor/data/size.ts";
 import {
     MultipleAttackPenaltyData,
     calculateMAPs,
@@ -15,7 +15,7 @@ import {
 import { ActorInitiative } from "@actor/initiative.ts";
 import {
     CheckModifier,
-    ModifierPF2e,
+    ModifierAvant,
     PROFICIENCY_RANK_OPTION,
     StatisticModifier,
     adjustModifiers,
@@ -26,8 +26,8 @@ import { CheckContext } from "@actor/roll-context/check.ts";
 import { DamageContext } from "@actor/roll-context/damage.ts";
 import { AttributeString, MovementType, SkillSlug } from "@actor/types.ts";
 import { ATTRIBUTE_ABBREVIATIONS, SAVE_TYPES } from "@actor/values.ts";
-import type { AncestryPF2e, BackgroundPF2e, ClassPF2e, ConsumablePF2e, DeityPF2e, FeatPF2e, HeritagePF2e } from "@item";
-import { WeaponPF2e } from "@item";
+import type { AncestryAvant, BackgroundAvant, ClassAvant, ConsumableAvant, DeityAvant, FeatAvant, HeritageAvant } from "@item";
+import { WeaponAvant } from "@item";
 import { AbilityTrait } from "@item/ability/types.ts";
 import { ARMOR_CATEGORIES } from "@item/armor/values.ts";
 import type { ItemType } from "@item/base/data/index.ts";
@@ -45,17 +45,17 @@ import {
     extractRollTwice,
 } from "@module/rules/helpers.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
-import type { UserPF2e } from "@module/user/document.ts";
-import { TokenDocumentPF2e } from "@scene/index.ts";
-import { CheckCheckContext, CheckPF2e, CheckRoll } from "@system/check/index.ts";
-import { DamageDamageContext, DamagePF2e, DamageType } from "@system/damage/index.ts";
+import type { UserAvant } from "@module/user/document.ts";
+import { TokenDocumentAvant } from "@scene/index.ts";
+import { CheckCheckContext, CheckAvant, CheckRoll } from "@system/check/index.ts";
+import { DamageDamageContext, DamageAvant, DamageType } from "@system/damage/index.ts";
 import { DamageRoll } from "@system/damage/roll.ts";
 import { DAMAGE_TYPE_ICONS } from "@system/damage/values.ts";
-import { WeaponDamagePF2e } from "@system/damage/weapon.ts";
+import { WeaponDamageAvant } from "@system/damage/weapon.ts";
 import { Predicate } from "@system/predication.ts";
 import { AttackRollParams, DamageRollParams, RollParameters } from "@system/rolls.ts";
 import { ArmorStatistic, PerceptionStatistic, Statistic } from "@system/statistic/index.ts";
-import { ErrorPF2e, setHasElement, signedInteger, sluggify } from "@util/misc.ts";
+import { ErrorAvant, setHasElement, signedInteger, sluggify } from "@util/misc.ts";
 import { traitSlugToObject } from "@util/tags.ts";
 import * as R from "remeda";
 import { CharacterCrafting } from "./crafting/index.ts";
@@ -91,20 +91,20 @@ import {
 } from "./types.ts";
 import { CHARACTER_SHEET_TABS } from "./values.ts";
 
-class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends CreaturePF2e<TParent> {
+class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends CreatureAvant<TParent> {
     /** Core singular embeds for PCs */
-    declare ancestry: AncestryPF2e<this> | null;
-    declare heritage: HeritagePF2e<this> | null;
-    declare background: BackgroundPF2e<this> | null;
-    declare class: ClassPF2e<this> | null;
-    declare deity: DeityPF2e<this> | null;
+    declare ancestry: AncestryAvant<this> | null;
+    declare heritage: HeritageAvant<this> | null;
+    declare background: BackgroundAvant<this> | null;
+    declare class: ClassAvant<this> | null;
+    declare deity: DeityAvant<this> | null;
 
     /** A cached reference to this PC's familiar */
-    declare familiar: FamiliarPF2e | null;
+    declare familiar: FamiliarAvant | null;
 
     declare feats: CharacterFeats<this>;
-    declare pfsBoons: FeatPF2e<this>[];
-    declare divineIntercessions: FeatPF2e<this>[];
+    declare pfsBoons: FeatAvant<this>[];
+    declare divineIntercessions: FeatAvant<this>[];
 
     /** The primary class DC */
     declare classDC: Statistic | null;
@@ -224,15 +224,15 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         this.system.traits = {
             value: [],
             rarity: "unique", // 🦋
-            size: new ActorSizePF2e({ value: "med" }),
+            size: new ActorSizeAvant({ value: "med" }),
         };
 
         // Flags
         const flags = this.flags;
-        flags.pf2e.favoredWeaponRank = 0;
-        flags.pf2e.freeCrafting ??= false;
-        flags.pf2e.quickAlchemy ??= false;
-        flags.pf2e.sheetTabs = fu.mergeObject(
+        flags.avant.favoredWeaponRank = 0;
+        flags.avant.freeCrafting ??= false;
+        flags.avant.quickAlchemy ??= false;
+        flags.avant.sheetTabs = fu.mergeObject(
             CHARACTER_SHEET_TABS.reduce(
                 (tabs, tab) => ({
                     ...tabs,
@@ -240,13 +240,13 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                 }),
                 {} as CharacterSheetTabVisibility,
             ),
-            flags.pf2e.sheetTabs ?? {},
+            flags.avant.sheetTabs ?? {},
         );
-        flags.pf2e.showBasicUnarmed ??= true;
-        flags.pf2e.featLimits ??= {};
+        flags.avant.showBasicUnarmed ??= true;
+        flags.avant.featLimits ??= {};
 
         // Build selections: boosts and skill trainings
-        const isGradual = game.pf2e.settings.variants.gab;
+        const isGradual = game.avant.settings.variants.gab;
         const boostLevels = [1, 5, 10, 15, 20] as const;
         const allowedBoosts = boostLevels.reduce(
             (result, level) => {
@@ -276,7 +276,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         > & { abilities: Abilities };
         const system: SystemDataPartial = this.system;
         const existingBoosts = system.build?.attributes?.boosts;
-        const isABP = game.pf2e.variantRules.AutomaticBonusProgression.isEnabled(this);
+        const isABP = game.avant.variantRules.AutomaticBonusProgression.isEnabled(this);
 
         system.build = {
             attributes: {
@@ -284,7 +284,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                 keyOptions: [],
                 boosts: {
                     ancestry: [],
-                    background: [],
+                    background: [], // Keep using the original 'background' property name here, not 'vocation'
                     class: null,
                     1: existingBoosts?.[1]?.slice(0, allowedBoosts[1]) ?? [],
                     5: existingBoosts?.[5]?.slice(0, allowedBoosts[5]) ?? [],
@@ -313,7 +313,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                     secondary: null,
                     domains: {},
                 };
-            } else if (property !== "background") {
+            } else if (property !== "background") { // Keep using "background" here, not "vocation"
                 details[property] = null;
             }
         }
@@ -341,7 +341,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         attributes.classhp = 0;
 
         // Skills
-        system.skills = R.mapToObj(R.entries(CONFIG.PF2E.skills), ([key, { attribute }]) => {
+        system.skills = R.mapToObj(R.entries(CONFIG.AVANT.skills), ([key, { attribute }]) => {
             const rank = Math.clamp(this._source.system.skills[key]?.rank || 0, 0, 4) as ZeroToFour;
             return [key, { rank, attribute, armor: ["dex", "str"].includes(attribute) }];
         });
@@ -359,7 +359,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         // Resources (Mythic points replace hero points if the character is mythic)
         const { resources } = this.system;
         const isMythic =
-            game.pf2e.settings.campaign.mythic !== "disabled" &&
+            game.avant.settings.campaign.mythic !== "disabled" &&
             this.itemTypes.feat.some((f) => f.category === "calling");
         resources.heroPoints.max = isMythic ? 0 : 3;
         resources.investiture = { value: 0, max: 10 };
@@ -373,7 +373,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         resources.mythicPoints = { value: resources.mythicPoints?.value ?? 0, max: isMythic ? 3 : 0 };
 
         // Size
-        this.system.traits.size = new ActorSizePF2e({ value: "med" });
+        this.system.traits.size = new ActorSizeAvant({ value: "med" });
 
         // Attack and defense proficiencies
         type PartialMartialProficiency = Record<string, Partial<MartialProficiency> | undefined>;
@@ -383,7 +383,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             attack.visible = true;
         }
 
-        for (const category of Object.keys(CONFIG.PF2E.weaponCategories)) {
+        for (const category of Object.keys(CONFIG.AVANT.weaponCategories)) {
             attacks[category] = {
                 rank: attacks[category]?.rank ?? 0,
                 visible: true,
@@ -429,13 +429,13 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
         const build = this.system.build;
         // Remove any unrecognized languages
-        const sourceLanguages = this._source.system.details.languages.value.filter((l) => l in CONFIG.PF2E.languages);
-        build.languages.granted = build.languages.granted.filter((l) => l.slug in CONFIG.PF2E.languages);
+        const sourceLanguages = this._source.system.details.languages.value.filter((l) => l in CONFIG.AVANT.languages);
+        build.languages.granted = build.languages.granted.filter((l) => l.slug in CONFIG.AVANT.languages);
         const grantedLanguages = build.languages.granted.map((g) => g.slug);
         this.system.details.languages.value = R.unique([...sourceLanguages, ...grantedLanguages]);
 
         // When tallying the number of languages taken, make sure Common and its actual language aren't counted twice
-        const commonAndCommon = (["common", game.pf2e.settings.campaign.languages.commonLanguage] as const).filter(
+        const commonAndCommon = (["common", game.avant.settings.campaign.languages.commonLanguage] as const).filter(
             R.isTruthy,
         );
         const hasCommonTwice =
@@ -450,7 +450,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
     }
 
     /**
-     * Immediately after boosts from this PC's ancestry, background, and class have been acquired, set attribute
+     * Immediately after boosts from this PC's ancestry, vocation, and class have been acquired, set attribute
      * modifiers according to them.
      */
     override prepareDataFromItems(): void {
@@ -471,7 +471,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         this.crafting.initialize();
 
         imposeOversizedWeaponCondition(this);
-        game.pf2e.variantRules.AutomaticBonusProgression.concatModifiers(this);
+        game.avant.variantRules.AutomaticBonusProgression.concatModifiers(this);
         const { synthetics, system } = this;
 
         // Update experience percentage from raw experience amounts.
@@ -479,9 +479,9 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
         // PFS Level Bump - check and DC modifiers
         if (system.pfs.levelBump) {
-            const params = { slug: "level-bump", label: "PF2E.PFS.LevelBump", modifier: 1 };
-            this.synthetics.modifiers.all.push(() => new ModifierPF2e(params));
-            this.synthetics.modifiers.damage.push(() => new ModifierPF2e(params));
+            const params = { slug: "level-bump", label: "AVANT.PFS.LevelBump", modifier: 1 };
+            this.synthetics.modifiers.all.push(() => new ModifierAvant(params));
+            this.synthetics.modifiers.damage.push(() => new ModifierAvant(params));
         }
 
         // Calculate HP and SP
@@ -489,9 +489,9 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             const ancestryHP = system.attributes.ancestryhp;
             const classHP = system.attributes.classhp;
             const hitPoints = system.attributes.hp;
-            const modifiers = [new ModifierPF2e("PF2E.AncestryHP", ancestryHP, "untyped")];
+            const modifiers = [new ModifierAvant("AVANT.AncestryHP", ancestryHP, "untyped")];
 
-            if (game.pf2e.settings.variants.stamina) {
+            if (game.avant.settings.variants.stamina) {
                 const halfClassHp = Math.floor(classHP / 2);
                 system.attributes.hp.sp = {
                     value: system.attributes.hp.sp?.value ?? 0,
@@ -502,17 +502,17 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                     max: system.abilities[system.details.keyability.value].mod,
                 };
 
-                modifiers.push(new ModifierPF2e("PF2E.ClassHP", halfClassHp * this.level, "untyped"));
+                modifiers.push(new ModifierAvant("AVANT.ClassHP", halfClassHp * this.level, "untyped"));
             } else {
-                modifiers.push(new ModifierPF2e("PF2E.ClassHP", classHP * this.level, "untyped"));
+                modifiers.push(new ModifierAvant("AVANT.ClassHP", classHP * this.level, "untyped"));
                 delete system.resources.resolve;
 
                 // Facilitate level-zero variant play by always adding the constitution modifier at at least level 1
                 const conHP = system.abilities.con.mod * Math.max(this.level, 1);
                 modifiers.push(
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "hp-con",
-                        label: "PF2E.AbilityCon",
+                        label: "AVANT.AbilityCon",
                         ability: "con",
                         type: "ability",
                         modifier: conHP,
@@ -541,7 +541,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             // PFS Level Bump - hit points
             if (system.pfs.levelBump) {
                 const hitPointsBump = Math.max(10, Math.floor(stat.totalModifier * 0.1));
-                stat.push(new ModifierPF2e("PF2E.PFS.LevelBump", hitPointsBump, "untyped"));
+                stat.push(new ModifierAvant("AVANT.PFS.LevelBump", hitPointsBump, "untyped"));
             }
 
             stat.max = stat.totalModifier;
@@ -562,7 +562,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         // Perception
         this.perception = new PerceptionStatistic(this, {
             slug: "perception",
-            label: "PF2E.PerceptionLabel",
+            label: "AVANT.PerceptionLabel",
             attribute: "wis",
             rank: system.perception.rank,
             domains: ["perception", "all"],
@@ -603,7 +603,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         // Apply the speed penalty from this character's held shield
         const heldShield = this.heldShield;
         if (heldShield?.speedPenalty) {
-            const speedPenalty = new ModifierPF2e({
+            const speedPenalty = new ModifierAvant({
                 slug: "shield-speed-penalty",
                 label: heldShield.name,
                 modifier: heldShield.speedPenalty,
@@ -619,7 +619,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
         // Strike actions
         system.actions = this.prepareStrikes();
-        this.flags.pf2e.highestWeaponDamageDice = Math.max(
+        this.flags.avant.highestWeaponDamageDice = Math.max(
             ...system.actions.filter((s) => s.ready).map((s) => s.item.system.damage.dice),
             0,
         );
@@ -666,7 +666,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             }
 
             // Apply Attribute Apex increase: property already nulled out if ABP is disabled
-            const isABP = game.pf2e.variantRules.AutomaticBonusProgression.isEnabled(this);
+            const isABP = game.avant.variantRules.AutomaticBonusProgression.isEnabled(this);
             if (build.attributes.apex && (!isABP || this.level >= 17)) {
                 const attribute = this.system.abilities[build.attributes.apex];
                 attribute.mod = Math.max(attribute.mod + 1, 4);
@@ -694,12 +694,12 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             rollOptionsAll[`attribute:${key}:mod:${mod}`] = true;
         }
 
-        for (const key of R.keys(CONFIG.PF2E.skills)) {
+        for (const key of R.keys(CONFIG.AVANT.skills)) {
             const rank = this.system.skills[key].rank;
             rollOptionsAll[`skill:${key}:rank:${rank}`] = true;
         }
 
-        for (const key of R.keys(CONFIG.PF2E.weaponCategories)) {
+        for (const key of R.keys(CONFIG.AVANT.weaponCategories)) {
             const rank = this.system.proficiencies.attacks[key].rank;
             rollOptionsAll[`attack:${key}:rank:${rank}`] = true;
         }
@@ -732,7 +732,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                 ? (Math.max(this.system.proficiencies.defenses["light-barding"].rank, 1) as ZeroToFour)
                 : 0;
 
-        const modifiers: ModifierPF2e[] = [];
+        const modifiers: ModifierAvant[] = [];
         const dexCapSources: DexterityModifierCapData[] = [
             { value: Infinity, source: "" },
             ...synthetics.dexterityModifierCaps,
@@ -779,15 +779,15 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
         this.saves = R.mapToObj(SAVE_TYPES, (saveType) => {
             const save = this.system.saves[saveType];
-            const saveName = game.i18n.localize(CONFIG.PF2E.saves[saveType]);
-            const modifiers: ModifierPF2e[] = [];
+            const saveName = game.i18n.localize(CONFIG.AVANT.saves[saveType]);
+            const modifiers: ModifierAvant[] = [];
             const selectors = [saveType, `${save.attribute}-based`, "saving-throw", "all"];
 
             // Add resilient bonuses for wearing armor with a resilient rune.
             if (wornArmor?.system.runes.resilient && wornArmor.isInvested) {
                 const slug = "resilient";
                 modifiers.push(
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug,
                         type: "item",
                         label: wornArmor.name,
@@ -800,10 +800,10 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             const affectedByBulwark = saveType === "reflex" && wornArmor?.traits.has("bulwark");
             if (affectedByBulwark) {
                 const slug = "bulwark";
-                const bulwarkModifier = new ModifierPF2e({
+                const bulwarkModifier = new ModifierAvant({
                     slug,
                     type: "untyped",
-                    label: CONFIG.PF2E.armorTraits.bulwark,
+                    label: CONFIG.AVANT.armorTraits.bulwark,
                     modifier: 3,
                     predicate: ["damaging-effect"],
                     adjustments: extractModifierAdjustments(this.synthetics.modifierAdjustments, selectors, slug),
@@ -838,17 +838,17 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
     private prepareSkills() {
         const { synthetics, system, wornArmor } = this;
 
-        this.skills = R.mapToObj(R.entries(CONFIG.PF2E.skills), ([skillSlug, { label, attribute }]) => {
+        this.skills = R.mapToObj(R.entries(CONFIG.AVANT.skills), ([skillSlug, { label, attribute }]) => {
             const skill = system.skills[skillSlug];
 
             const domains = [skillSlug, `${attribute}-based`, "skill-check", `${attribute}-skill-check`, "all"];
-            const modifiers: ModifierPF2e[] = [];
+            const modifiers: ModifierAvant[] = [];
 
             if (skill.armor && typeof wornArmor?.strength === "number" && wornArmor.checkPenalty < 0) {
                 const slug = "armor-check-penalty";
-                const armorCheckPenalty = new ModifierPF2e({
+                const armorCheckPenalty = new ModifierAvant({
                     slug,
-                    label: "PF2E.ArmorCheckPenalty",
+                    label: "AVANT.ArmorCheckPenalty",
                     modifier: wornArmor.checkPenalty,
                     type: "untyped",
                     adjustments: extractModifierAdjustments(synthetics.modifierAdjustments, domains, slug),
@@ -939,11 +939,11 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             0,
         );
         const derivedFromLand = !!("derivedFromLand" in statistic && statistic.derivedFromLand);
-        const modifierName = wornArmor?.name ?? "PF2E.ArmorSpeedLabel";
+        const modifierName = wornArmor?.name ?? "AVANT.ArmorSpeedLabel";
         const slug = "armor-speed-penalty";
         const armorPenalty =
             penaltyValue && !derivedFromLand
-                ? new ModifierPF2e({
+                ? new ModifierAvant({
                       slug,
                       label: modifierName,
                       modifier: penaltyValue,
@@ -974,7 +974,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         this.divineIntercessions = [];
         this.feats = new CharacterFeats(this);
 
-        for (const section of game.pf2e.settings.campaign.feats.sections) {
+        for (const section of game.avant.settings.campaign.feats.sections) {
             this.feats.createGroup(section);
         }
 
@@ -1005,7 +1005,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         classDC.rank ??= 0;
         classDC.primary ??= false;
 
-        const classNames: Record<string, string | undefined> = CONFIG.PF2E.classTraits;
+        const classNames: Record<string, string | undefined> = CONFIG.AVANT.classTraits;
         classDC.label = classDC.label ?? classNames[slug] ?? slug.titleCase();
 
         return new Statistic(this, {
@@ -1034,10 +1034,10 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
         // Add a basic unarmed strike
         const basicUnarmed = includeBasicUnarmed
-            ? ((): WeaponPF2e<this> => {
+            ? ((): WeaponAvant<this> => {
                   const source: PreCreate<WeaponSource> = {
-                      _id: "xxPF2ExUNARMEDxx",
-                      name: game.i18n.localize("PF2E.WeaponTypeUnarmed"),
+                      _id: "AvantUnarmed0001",
+                      name: game.i18n.localize("AVANT.WeaponTypeUnarmed"),
                       type: "weapon",
                       img: "icons/skills/melee/unarmed-punch-fist.webp",
                       system: {
@@ -1059,7 +1059,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                   };
 
                   // No handwraps, so generate straight from source
-                  const attack = new WeaponPF2e(source, { parent: this });
+                  const attack = new WeaponAvant(source, { parent: this });
                   for (const rule of this.synthetics.itemAlterations) {
                       rule.applyAlteration({ singleItem: attack });
                   }
@@ -1071,7 +1071,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             ...itemTypes.consumable.filter((i) => i.category === "ammo" && !i.isStowed),
             ...itemTypes.weapon.filter((w) => w.system.usage.canBeAmmo),
         ];
-        const offensiveCategories = R.keys(CONFIG.PF2E.weaponCategories);
+        const offensiveCategories = R.keys(CONFIG.AVANT.weaponCategories);
         const syntheticWeapons = Object.values(synthetics.strikes)
             .map((s) => s(unarmedRunes))
             .filter(R.isNonNull);
@@ -1085,11 +1085,11 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                 .filter((s) => !s.isStowed && !s.isBroken && !s.isDestroyed)
                 .map((s) => s.generateWeapon()),
             this.inventory.flatMap((i) =>
-                i.isEquipped ? i.subitems.filter((i): i is WeaponPF2e<this> => i.isOfType("weapon")) : [],
+                i.isEquipped ? i.subitems.filter((i): i is WeaponAvant<this> => i.isOfType("weapon")) : [],
             ),
         ]
             .flat()
-            .filter(R.isTruthy) as WeaponPF2e<this>[];
+            .filter(R.isTruthy) as WeaponAvant<this>[];
 
         // Sort alphabetically, force basic unarmed attack to end, move all held items to the beginning, and then move
         // all readied strikes to beginning
@@ -1121,11 +1121,11 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
     /** Prepare a strike action from a weapon */
     private prepareStrike(
-        weapon: WeaponPF2e<CharacterPF2e>,
+        weapon: WeaponAvant<CharacterAvant>,
         { categories, handsReallyFree, ammos = [] }: PrepareStrikeOptions,
     ): CharacterStrike {
         const synthetics = this.synthetics;
-        const modifiers: ModifierPF2e[] = [];
+        const modifiers: ModifierAvant[] = [];
 
         // Apply strike adjustments affecting the weapon
         const strikeAdjustments = [
@@ -1147,7 +1147,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         const groupRank = proficiencies.attacks[`weapon-group-${weapon.group}`]?.rank ?? 0;
 
         // Weapons that are interchangeable for all rules purposes (e.g., longbow and composite longbow)
-        const equivalentWeapons: Record<string, string | undefined> = CONFIG.PF2E.equivalentWeapons;
+        const equivalentWeapons: Record<string, string | undefined> = CONFIG.AVANT.equivalentWeapons;
         const baseWeapon = equivalentWeapons[weapon.baseType ?? ""] ?? weapon.baseType;
         const baseWeaponRank = proficiencies.attacks[`weapon-base-${baseWeapon}`]?.rank ?? 0;
         const syntheticRanks = Object.values(proficiencies.attacks)
@@ -1188,12 +1188,12 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         ]);
 
         // Extract weapon roll notes
-        const ABP = game.pf2e.variantRules.AutomaticBonusProgression;
+        const ABP = game.avant.variantRules.AutomaticBonusProgression;
 
         if (weapon.group === "bomb" && !ABP.isEnabled(this)) {
             const attackBonus = Number(weapon.system.bonus?.value) || 0;
             if (attackBonus !== 0) {
-                modifiers.push(new ModifierPF2e("PF2E.ItemBonusLabel", attackBonus, "item"));
+                modifiers.push(new ModifierAvant("AVANT.ItemBonusLabel", attackBonus, "item"));
             }
         }
 
@@ -1205,7 +1205,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
             if (weapon.system.runes.potency > 0) {
                 potency.push({
-                    label: "PF2E.Item.Weapon.Rune.Potency",
+                    label: "AVANT.Item.Weapon.Rune.Potency",
                     bonus: weapon.system.runes.potency,
                     type: "item",
                     predicate: new Predicate(),
@@ -1220,7 +1220,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         if (weaponPotency) {
             const slug = weaponPotency.type === "item" ? "weapon-potency" : "attack-potency";
             modifiers.push(
-                new ModifierPF2e({
+                new ModifierAvant({
                     slug,
                     type: weaponPotency.type,
                     label: weaponPotency.label,
@@ -1234,7 +1234,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             }
 
             // Update logged value in case a rule element has changed it
-            weapon.flags.pf2e.attackItemBonus = weaponPotency.bonus;
+            weapon.flags.avant.attackItemBonus = weaponPotency.bonus;
         }
 
         const shoddyPenalty = createShoddyPenalty(this, weapon, attackDomains);
@@ -1343,14 +1343,14 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         const versatileLabel = (damageType: DamageType): string => {
             switch (damageType) {
                 case "bludgeoning":
-                    return CONFIG.PF2E.weaponTraits["versatile-b"];
+                    return CONFIG.AVANT.weaponTraits["versatile-b"];
                 case "piercing":
-                    return CONFIG.PF2E.weaponTraits["versatile-p"];
+                    return CONFIG.AVANT.weaponTraits["versatile-p"];
                 case "slashing":
-                    return CONFIG.PF2E.weaponTraits["versatile-s"];
+                    return CONFIG.AVANT.weaponTraits["versatile-s"];
                 default: {
-                    const weaponTraits: Record<string, string | undefined> = CONFIG.PF2E.weaponTraits;
-                    return weaponTraits[`versatile-${damageType}`] ?? CONFIG.PF2E.damageTypes[damageType];
+                    const weaponTraits: Record<string, string | undefined> = CONFIG.AVANT.weaponTraits;
+                    return weaponTraits[`versatile-${damageType}`] ?? CONFIG.AVANT.damageTypes[damageType];
                 }
             }
         };
@@ -1383,8 +1383,8 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                       glyph: DAMAGE_TYPE_ICONS[o],
                   }));
 
-        const hiddenCauseStowed = weapon.isStowed && this.flags.pf2e.hideStowed;
-        const hiddenCauseUnarmed = weapon.slug === "basic-unarmed" && !this.flags.pf2e.showBasicUnarmed;
+        const hiddenCauseStowed = weapon.isStowed && this.flags.avant.hideStowed;
+        const hiddenCauseUnarmed = weapon.slug === "basic-unarmed" && !this.flags.avant.showBasicUnarmed;
         const action: CharacterStrike = fu.mergeObject(strikeStat, {
             label: weapon.name,
             quantity: weapon.quantity,
@@ -1396,10 +1396,10 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             type: "strike" as const,
             ...flavor,
             options: Array.from(baseOptions),
-            traits: actionTraits.map((t) => traitSlugToObject(t, CONFIG.PF2E.actionTraits)),
+            traits: actionTraits.map((t) => traitSlugToObject(t, CONFIG.AVANT.actionTraits)),
             handsAvailable,
             weaponTraits: Array.from(weaponTraits)
-                .map((t) => traitSlugToObject(t, CONFIG.PF2E.npcAttackTraits))
+                .map((t) => traitSlugToObject(t, CONFIG.AVANT.npcAttackTraits))
                 .sort((a, b) => a.label.localeCompare(b.label)),
             variants: [],
             selectedAmmoId: weapon.system.selectedAmmoId,
@@ -1414,7 +1414,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
             action.versatileOptions.unshift({
                 value: weapon.system.damage.damageType,
                 selected: traitToggles.versatile.selected === null,
-                label: CONFIG.PF2E.damageTypes[weapon.system.damage.damageType],
+                label: CONFIG.AVANT.damageTypes[weapon.system.damage.damageType],
                 glyph: DAMAGE_TYPE_ICONS[weapon.system.damage.damageType],
             });
         }
@@ -1440,7 +1440,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         // Multiple attack penalty
         const createMAPenalty = (data: MultipleAttackPenaltyData, increases: ZeroToTwo) => {
             if (increases === 0) return null;
-            const penalty = new ModifierPF2e({
+            const penalty = new ModifierAvant({
                 slug: data.slug,
                 label: data.label,
                 modifier: data[`map${increases}`],
@@ -1451,11 +1451,11 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         const initialMAPs = calculateMAPs(weapon, { domains: attackDomains, options: initialRollOptions });
 
         const checkModifiers = [
-            (statistic: StrikeData, otherModifiers: ModifierPF2e[]) =>
+            (statistic: StrikeData, otherModifiers: ModifierAvant[]) =>
                 new CheckModifier("strike", statistic, otherModifiers),
-            (statistic: StrikeData, otherModifiers: ModifierPF2e[]) =>
+            (statistic: StrikeData, otherModifiers: ModifierAvant[]) =>
                 new CheckModifier("strike-map1", statistic, otherModifiers),
-            (statistic: StrikeData, otherModifiers: ModifierPF2e[]) =>
+            (statistic: StrikeData, otherModifiers: ModifierAvant[]) =>
                 new CheckModifier("strike-map2", statistic, otherModifiers),
         ];
 
@@ -1465,7 +1465,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                 adjustModifiers([penalty].filter(R.isTruthy), initialRollOptions);
 
                 return penalty
-                    ? game.i18n.format("PF2E.MAPAbbreviationValueLabel", {
+                    ? game.i18n.format("AVANT.MAPAbbreviationValueLabel", {
                           value: signedInteger(action.totalModifier + penalty.value),
                           penalty: penalty.value,
                       })
@@ -1485,7 +1485,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
                 if (params.consumeAmmo && ammoRequired > ammoRemaining) {
                     ui.notifications.warn(
-                        game.i18n.format("PF2E.Strike.Ranged.NoAmmo", { weapon: weapon.name, actor: this.name }),
+                        game.i18n.format("AVANT.Strike.Ranged.NoAmmo", { weapon: weapon.name, actor: this.name }),
                     );
                     return null;
                 }
@@ -1502,7 +1502,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                     viewOnly: params.getFormula,
                     traits: actionTraits,
                 }).resolve();
-                action.traits = context.traits.map((t) => traitSlugToObject(t, CONFIG.PF2E.actionTraits));
+                action.traits = context.traits.map((t) => traitSlugToObject(t, CONFIG.AVANT.actionTraits));
                 if (!context.origin) return null;
 
                 const statistic = context.origin.statistic ?? action;
@@ -1515,7 +1515,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                 if (context.origin.item.isRanged && typeof context.target?.distance === "number") {
                     const maxRange = context.origin.item.range?.max ?? 10;
                     if (context.target.distance > maxRange) {
-                        ui.notifications.warn("PF2E.Action.Strike.OutOfRange", { localize: true });
+                        ui.notifications.warn("AVANT.Action.Strike.OutOfRange", { localize: true });
                         return null;
                     }
                 }
@@ -1542,7 +1542,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                 ].flat();
 
                 const title = game.i18n.format(
-                    weapon.isMelee ? "PF2E.Action.Strike.MeleeLabel" : "PF2E.Action.Strike.RangedLabel",
+                    weapon.isMelee ? "AVANT.Action.Strike.MeleeLabel" : "AVANT.Action.Strike.RangedLabel",
                     { weapon: weapon.name },
                 );
 
@@ -1575,7 +1575,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                     return null;
                 }
 
-                const roll = await CheckPF2e.roll(check, checkContext, params.event, params.callback);
+                const roll = await CheckAvant.roll(check, checkContext, params.event, params.callback);
 
                 if (roll) {
                     for (const rule of context.origin.actor.rules.filter((r) => !r.ignored)) {
@@ -1618,7 +1618,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
                 if (!weaponClone.dealsDamage) {
                     if (!params.getFormula) {
-                        ui.notifications.warn("PF2E.ErrorMessage.WeaponNoDamage", { localize: true });
+                        ui.notifications.warn("AVANT.ErrorMessage.WeaponNoDamage", { localize: true });
                         return null;
                     }
                     return "";
@@ -1647,7 +1647,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
 
                 if (params.getFormula) damageContext.skipDialog = true;
 
-                const damage = await WeaponDamagePF2e.calculate({
+                const damage = await WeaponDamageAvant.calculate({
                     weapon: weaponClone,
                     actor: context.origin.actor,
                     weaponPotency,
@@ -1659,7 +1659,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
                     const formula = damage.damage.formula[outcome];
                     return formula ? new DamageRoll(formula).formula : "";
                 } else {
-                    return DamagePF2e.roll(damage, damageContext, params.callback);
+                    return DamageAvant.roll(damage, damageContext, params.callback);
                 }
             };
         }
@@ -1667,35 +1667,35 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         return action;
     }
 
-    getStrikeDescription(weapon: WeaponPF2e): { description: string; criticalSuccess: string; success: string } {
+    getStrikeDescription(weapon: WeaponAvant): { description: string; criticalSuccess: string; success: string } {
         const flavor = {
-            description: "PF2E.Strike.Default.Description",
-            criticalSuccess: "PF2E.Strike.Default.CriticalSuccess",
-            success: "PF2E.Strike.Default.Success",
+            description: "AVANT.Strike.Default.Description",
+            criticalSuccess: "AVANT.Strike.Default.CriticalSuccess",
+            success: "AVANT.Strike.Default.Success",
         };
         const traits = weapon.traits;
         if (traits.has("unarmed")) {
-            flavor.description = "PF2E.Strike.Unarmed.Description";
-            flavor.success = "PF2E.Strike.Unarmed.Success";
+            flavor.description = "AVANT.Strike.Unarmed.Description";
+            flavor.success = "AVANT.Strike.Unarmed.Success";
         } else if ([...traits].some((trait) => trait.startsWith("thrown-") || trait === "combination")) {
-            flavor.description = "PF2E.Strike.Combined.Description";
-            flavor.success = "PF2E.Strike.Combined.Success";
+            flavor.description = "AVANT.Strike.Combined.Description";
+            flavor.success = "AVANT.Strike.Combined.Success";
         } else if (weapon.isMelee) {
-            flavor.description = "PF2E.Strike.Melee.Description";
-            flavor.success = "PF2E.Strike.Melee.Success";
+            flavor.description = "AVANT.Strike.Melee.Description";
+            flavor.success = "AVANT.Strike.Melee.Success";
         } else {
-            flavor.description = "PF2E.Strike.Ranged.Description";
-            flavor.success = "PF2E.Strike.Ranged.Success";
+            flavor.description = "AVANT.Strike.Ranged.Description";
+            flavor.success = "AVANT.Strike.Ranged.Success";
         }
         return flavor;
     }
 
-    consumeAmmo(weapon: WeaponPF2e<CharacterPF2e>, params: RollParameters): boolean {
+    consumeAmmo(weapon: WeaponAvant<CharacterAvant>, params: RollParameters): boolean {
         const ammo = weapon.ammo;
         if (!ammo) {
             return true;
         } else if (ammo.quantity < 1) {
-            ui.notifications.warn(game.i18n.localize("PF2E.ErrorMessage.NotEnoughAmmo"));
+            ui.notifications.warn(game.i18n.localize("AVANT.ErrorMessage.NotEnoughAmmo"));
             return false;
         } else {
             const existingCallback = params.callback;
@@ -1758,7 +1758,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
     async toggleInvested(itemId: string): Promise<boolean> {
         const item = this.inventory.get(itemId);
         if (!item?.traits.has("invested")) {
-            throw ErrorPF2e("Unexpected error toggling item investment");
+            throw ErrorAvant("Unexpected error toggling item investment");
         }
 
         const invested = item.isInvested;
@@ -1791,16 +1791,16 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
     protected override async _preUpdate(
         changed: DeepPartial<CharacterSource>,
         options: CreatureUpdateOperation<TParent>,
-        user: UserPF2e,
+        user: UserAvant,
     ): Promise<boolean | void> {
         const isFullReplace = !((options.diff ?? true) && (options.recursive ?? true));
         if (isFullReplace) return super._preUpdate(changed, options, user);
 
         // Allow only one free crafting and quick alchemy to be enabled
-        if (changed.flags?.pf2e?.freeCrafting) {
-            changed.flags.pf2e.quickAlchemy = false;
-        } else if (changed.flags?.pf2e?.quickAlchemy) {
-            changed.flags.pf2e.freeCrafting = false;
+        if (changed.flags?.avant?.freeCrafting) {
+            changed.flags.avant.quickAlchemy = false;
+        } else if (changed.flags?.avant?.quickAlchemy) {
+            changed.flags.avant.freeCrafting = false;
         }
 
         if (!changed.system) return super._preUpdate(changed, options, user);
@@ -1840,7 +1840,7 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
         }
 
         // Clamp Stamina and Resolve
-        if (game.pf2e.settings.variants.stamina) {
+        if (game.avant.settings.variants.stamina) {
             // Do not allow stamina to go over max
             if (changed.system.attributes?.hp?.sp) {
                 changed.system.attributes.hp.sp.value =
@@ -1906,8 +1906,8 @@ class CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e
     }
 }
 
-interface CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null>
-    extends CreaturePF2e<TParent> {
+interface CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null>
+    extends CreatureAvant<TParent> {
     flags: CharacterFlags;
     readonly _source: CharacterSource;
     system: CharacterSystemData;
@@ -1919,7 +1919,7 @@ interface CharacterPF2e<TParent extends TokenDocumentPF2e | null = TokenDocument
 interface PrepareStrikeOptions {
     categories: WeaponCategory[];
     handsReallyFree: ZeroToTwo;
-    ammos?: (ConsumablePF2e<CharacterPF2e> | WeaponPF2e<CharacterPF2e>)[];
+    ammos?: (ConsumableAvant<CharacterAvant> | WeaponAvant<CharacterAvant>)[];
 }
 
-export { CharacterPF2e };
+export { CharacterAvant };

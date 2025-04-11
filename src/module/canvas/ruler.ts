@@ -1,10 +1,10 @@
-import type { UserPF2e } from "@module/user/document.ts";
-import type { RegionDocumentPF2e, ScenePF2e } from "@scene";
+import type { UserAvant } from "@module/user/document.ts";
+import type { RegionDocumentAvant, SceneAvant } from "@scene";
 import type { EnvironmentFeatureRegionBehavior } from "@scene/region-behavior/types.ts";
 import * as R from "remeda";
-import type { TokenPF2e } from "./token/object.ts";
+import type { TokenAvant } from "./token/object.ts";
 
-class RulerPF2e<TToken extends TokenPF2e | null = TokenPF2e | null> extends Ruler<TToken, UserPF2e> {
+class RulerAvant<TToken extends TokenAvant | null = TokenAvant | null> extends Ruler<TToken, UserAvant> {
     static override get canMeasure(): boolean {
         return this.#dragMeasurement ? game.activeTool === "ruler" : super.canMeasure;
     }
@@ -13,12 +13,12 @@ class RulerPF2e<TToken extends TokenPF2e | null = TokenPF2e | null> extends Rule
     static get #dragMeasurement(): boolean {
         const pointer = canvas.app.renderer.events.pointer;
         if (pointer.ctrlKey || pointer.metaKey) return false;
-        const setting = game.pf2e.settings.dragMeasurement;
+        const setting = game.avant.settings.dragMeasurement;
         return setting === "always" || (setting === "encounters" && !!game.combat?.active);
     }
 
     static get hasModuleConflict(): boolean {
-        return ["drag-ruler", "elevationruler", "pf2e-ruler"].some((id) => game.modules.get(id)?.active);
+        return ["drag-ruler", "elevationruler", "avant-ruler"].some((id) => game.modules.get(id)?.active);
     }
 
     /** The footprint of the drag-measured token relative to the origin center */
@@ -45,13 +45,13 @@ class RulerPF2e<TToken extends TokenPF2e | null = TokenPF2e | null> extends Rule
 
     /** Whether drag measurement is enabled */
     get dragMeasurement(): boolean {
-        if (!RulerPF2e.#dragMeasurement) return false;
+        if (!RulerAvant.#dragMeasurement) return false;
         if (this.isMeasuring && !this.isDragMeasuring) return false;
         return game.activeTool === "ruler" || canvas.tokens.controlled.length <= 1;
     }
 
     get isMeasuring(): boolean {
-        return this.state === RulerPF2e.STATES.MEASURING;
+        return this.state === RulerAvant.STATES.MEASURING;
     }
 
     /** Add a waypoint at the currently-drawn destination. */
@@ -159,7 +159,7 @@ class RulerPF2e<TToken extends TokenPF2e | null = TokenPF2e | null> extends Rule
                 )
                 .flatMap((r) =>
                     r.document.behaviors.filter(
-                        (b): b is EnvironmentFeatureRegionBehavior<RegionDocumentPF2e<ScenePF2e>> =>
+                        (b): b is EnvironmentFeatureRegionBehavior<RegionDocumentAvant<SceneAvant>> =>
                             !b.disabled && b.type === "environmentFeature" && b.system.terrain.difficult > 0,
                     ),
                 );
@@ -291,4 +291,4 @@ class RulerPF2e<TToken extends TokenPF2e | null = TokenPF2e | null> extends Rule
     }
 }
 
-export { RulerPF2e };
+export { RulerAvant };

@@ -1,16 +1,16 @@
-import type { ActorPF2e } from "@actor";
+import type { ActorAvant } from "@actor";
 import type { StrikeData } from "@actor/data/base.ts";
 import { calculateRangePenalty } from "@actor/helpers.ts";
-import type { ItemPF2e } from "@item";
+import type { ItemAvant } from "@item";
 import { CheckDC } from "@system/degree-of-success.ts";
 import type { Statistic } from "@system/statistic/statistic.ts";
 import { RollContext } from "./base.ts";
 import { CheckContextConstructorParams, CheckContextData } from "./types.ts";
 
 class CheckContext<
-    TSelf extends ActorPF2e,
+    TSelf extends ActorAvant,
     TStatistic extends Statistic | StrikeData,
-    TItem extends ItemPF2e<ActorPF2e> | null,
+    TItem extends ItemAvant<ActorAvant> | null,
 > extends RollContext<TSelf, TStatistic, TItem> {
     /** The slug of a `Statistic` for use in building a DC */
     against: string | null;

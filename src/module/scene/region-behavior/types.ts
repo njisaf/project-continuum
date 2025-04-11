@@ -1,70 +1,70 @@
-import type { UserPF2e } from "@module/user/document.ts";
+import type { UserAvant } from "@module/user/document.ts";
 import type {
     EnvironmentBehaviorType,
     EnvironmentFeatureBehaviorType,
-    RegionBehaviorPF2e,
-    RegionDocumentPF2e,
+    RegionBehaviorAvant,
+    RegionDocumentAvant,
 } from "@scene";
 import type { DIFFICULT_TERRAIN_GRADES } from "./values.ts";
 import coreBehaviors = foundry.data.regionBehaviors;
 
-type RegionEventPF2e = RegionEvent<RegionDocumentPF2e, UserPF2e>;
+type RegionEventAvant = RegionEvent<RegionDocumentAvant, UserAvant>;
 
-interface AdjustDarknessLevelRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface AdjustDarknessLevelRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "adjustDarknessLevel";
     system: coreBehaviors.AdjustDarknessLevelRegionBehaviorType;
 }
 
-interface ExecuteMacroRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface ExecuteMacroRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "executeMacro";
     system: coreBehaviors.ExecuteMacroRegionBehaviorType;
 }
 
-interface ExecuteScriptRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface ExecuteScriptRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "executeScript";
     system: coreBehaviors.ExecuteScriptRegionBehaviorType;
 }
 
-interface PauseGameRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface PauseGameRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "pauseGame";
     system: coreBehaviors.PauseGameRegionBehaviorType;
 }
 
-interface SuppressWeatherRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface SuppressWeatherRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "suppressWeather";
     system: coreBehaviors.SuppressWeatherRegionBehaviorType;
 }
 
-interface TeleportTokenRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface TeleportTokenRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "teleportToken";
     system: coreBehaviors.TeleportTokenRegionBehaviorType;
 }
 
-interface ToggleBehaviorRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface ToggleBehaviorRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "toggleBehavior";
     system: coreBehaviors.ToggleBehaviorRegionBehaviorType;
 }
 
-interface EnvironmentRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface EnvironmentRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "environment";
     system: EnvironmentBehaviorType;
 }
 
-interface EnvironmentFeatureRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null>
-    extends RegionBehaviorPF2e<TParent> {
+interface EnvironmentFeatureRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null>
+    extends RegionBehaviorAvant<TParent> {
     type: "environmentFeature";
     system: EnvironmentFeatureBehaviorType;
 }
 
-type SpecificRegionBehavior<TParent extends RegionDocumentPF2e | null = RegionDocumentPF2e | null> =
+type SpecificRegionBehavior<TParent extends RegionDocumentAvant | null = RegionDocumentAvant | null> =
     | AdjustDarknessLevelRegionBehavior<TParent>
     | ExecuteMacroRegionBehavior<TParent>
     | ExecuteScriptRegionBehavior<TParent>
@@ -81,6 +81,6 @@ export type {
     DifficultTerrainGrade,
     EnvironmentFeatureRegionBehavior,
     EnvironmentRegionBehavior,
-    RegionEventPF2e,
+    RegionEventAvant,
     SpecificRegionBehavior,
 };

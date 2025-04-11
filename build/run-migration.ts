@@ -1,6 +1,6 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { CREATURE_ACTOR_TYPES } from "@actor/values.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { PHYSICAL_ITEM_TYPES } from "@item/physical/values.ts";
 import { MigrationBase } from "@module/migration/base.ts";
@@ -89,11 +89,11 @@ const itemTypes = new Set([
     "spellcastingEntry",
 ]);
 
-const isActorData = (docSource: CompendiumSource): docSource is ActorSourcePF2e => {
+const isActorData = (docSource: CompendiumSource): docSource is ActorSourceAvant => {
     return "type" in docSource && actorTypes.has(docSource.type);
 };
 
-const isItemData = (docSource: CompendiumSource): docSource is ItemSourcePF2e => {
+const isItemData = (docSource: CompendiumSource): docSource is ItemSourceAvant => {
     return "type" in docSource && itemTypes.has(docSource.type);
 };
 
@@ -169,8 +169,8 @@ async function migrate() {
         const content = await fs.readFile(filePath, { encoding: "utf-8" });
 
         let source:
-            | ActorSourcePF2e
-            | ItemSourcePF2e
+            | ActorSourceAvant
+            | ItemSourceAvant
             | foundry.documents.JournalEntrySource
             | foundry.documents.MacroSource
             | foundry.documents.RollTableSource;
@@ -185,8 +185,8 @@ async function migrate() {
         }
 
         const updated = await (async (): Promise<
-            | ActorSourcePF2e
-            | ItemSourcePF2e
+            | ActorSourceAvant
+            | ItemSourceAvant
             | foundry.documents.JournalEntrySource
             | foundry.documents.MacroSource
             | foundry.documents.RollTableSource
@@ -250,11 +250,11 @@ async function migrate() {
 
 /** Prune several default properties from a document source that would otherwise bloat the compendium. */
 function pruneDefaults(
-    source: { type?: string; items?: ItemSourcePF2e[]; flags?: Record<string, Record<string, unknown> | undefined> },
+    source: { type?: string; items?: ItemSourceAvant[]; flags?: Record<string, Record<string, unknown> | undefined> },
     { deleteSlug = true } = {},
 ): void {
-    if (source.flags && Object.keys(source.flags.pf2e ?? {}).length === 0) {
-        delete source.flags.pf2e;
+    if (source.flags && Object.keys(source.flags.avant ?? {}).length === 0) {
+        delete source.flags.avant;
     }
     if (Object.keys(source.flags ?? {}).length === 0) {
         delete source.flags;

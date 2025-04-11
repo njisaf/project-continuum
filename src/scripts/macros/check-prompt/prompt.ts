@@ -1,5 +1,5 @@
-import type { CharacterPF2e } from "@actor";
-import { ChatMessagePF2e } from "@module/chat-message/document.ts";
+import type { CharacterAvant } from "@actor";
+import { ChatMessageAvant } from "@module/chat-message/document.ts";
 import { PROFICIENCY_RANKS } from "@module/data.ts";
 import { adjustDC, calculateDC, calculateSimpleDC, DCAdjustment } from "@module/dc.ts";
 import { ActionDefaultOptions } from "@system/action-macros/types.ts";
@@ -9,7 +9,7 @@ import * as R from "remeda";
 import { getActions, loreSkillsFromActors } from "./helpers.ts";
 
 interface CheckPromptDialogOptions extends ApplicationOptions {
-    actors: CharacterPF2e[];
+    actors: CharacterAvant[];
 }
 
 interface CheckPromptDialogData {
@@ -41,8 +41,8 @@ class CheckPromptDialog extends Application<CheckPromptDialogOptions> {
                 { navSelector: ".skill-save-navigation", contentSelector: ".check-prompt-content", initial: "skills" },
                 { navSelector: ".dc-navigation", contentSelector: ".dc-content", initial: "set-dc" },
             ],
-            template: "systems/pf2e/templates/gm/check-prompt.hbs",
-            title: game.i18n.localize("PF2E.Actor.Party.CheckPrompt.Title"),
+            template: "systems/avant/templates/gm/check-prompt.hbs",
+            title: game.i18n.localize("AVANT.Actor.Party.CheckPrompt.Title"),
             width: 400,
             height: "auto",
         };
@@ -60,7 +60,7 @@ class CheckPromptDialog extends Application<CheckPromptDialogOptions> {
     }
 
     #prepareProficiencyRanks(): SelectData[] {
-        const pwol = game.pf2e.settings.variants.pwol.enabled;
+        const pwol = game.avant.settings.variants.pwol.enabled;
         return PROFICIENCY_RANKS.map((value) => ({
             value,
             label: `${value} (${calculateSimpleDC(value, { pwol })})`,
@@ -68,7 +68,7 @@ class CheckPromptDialog extends Application<CheckPromptDialogOptions> {
     }
 
     #prepareDCAdjustments(): SelectData[] {
-        return Object.entries(CONFIG.PF2E.dcAdjustments)
+        return Object.entries(CONFIG.AVANT.dcAdjustments)
             .filter(([value, _]) => value !== "normal")
             .map(([value, name]) => {
                 return {
@@ -85,13 +85,13 @@ class CheckPromptDialog extends Application<CheckPromptDialogOptions> {
 
         const skillEl = html.querySelector<HTMLInputElement>("input#check-prompt-skills");
         const skills = {
-            ...R.mapValues(CONFIG.PF2E.skills, (s) => s.label),
-            perception: "PF2E.PerceptionLabel",
+            ...R.mapValues(CONFIG.AVANT.skills, (s) => s.label),
+            perception: "AVANT.PerceptionLabel",
         };
         tagify(skillEl, { whitelist: skills });
 
         const saveEl = html.querySelector<HTMLInputElement>("input#check-prompt-saves");
-        tagify(saveEl, { whitelist: CONFIG.PF2E.saves });
+        tagify(saveEl, { whitelist: CONFIG.AVANT.saves });
 
         const loreEl = html.querySelector<HTMLInputElement>("input#check-prompt-lores");
         const loreOptions = R.isEmpty(this.#lores || {}) ? {} : { whitelist: this.#lores };
@@ -104,7 +104,7 @@ class CheckPromptDialog extends Application<CheckPromptDialogOptions> {
         tagify(actionEl, actionOptions);
 
         const traitEl = html.querySelector<HTMLInputElement>("input#check-prompt-traits");
-        tagify(traitEl, { whitelist: CONFIG.PF2E.actionTraits, enforceWhitelist: false });
+        tagify(traitEl, { whitelist: CONFIG.AVANT.actionTraits, enforceWhitelist: false });
 
         // Show or hide Roll Options
         html.querySelector("div.form-group a.add-roll-options")?.addEventListener("click", () => {
@@ -156,7 +156,7 @@ class CheckPromptDialog extends Application<CheckPromptDialogOptions> {
             const dc = this.#getDC(html);
             const content = types.map((type) => this.#constructCheck(type, dc, traits, extras)).join("");
 
-            ChatMessagePF2e.create({ author: game.user.id, flavor, content });
+            ChatMessageAvant.create({ author: game.user.id, flavor, content });
         }
     }
 
@@ -178,7 +178,7 @@ class CheckPromptDialog extends Application<CheckPromptDialogOptions> {
 
     #getDC(html: HTMLElement): number | null {
         const dc = ((): number => {
-            const pwol = game.pf2e.settings.variants.pwol.enabled;
+            const pwol = game.avant.settings.variants.pwol.enabled;
             const activeDCTab = htmlQuery(html, "section.dc-content section.tab.active");
             if (activeDCTab?.dataset.tab === "set-dc") {
                 return Number(htmlQuery<HTMLInputElement>(html, "input#check-prompt-dc")?.value || NaN);
@@ -216,5 +216,5 @@ class CheckPromptDialog extends Application<CheckPromptDialogOptions> {
 }
 
 export async function checkPrompt(options: ActionDefaultOptions = {}): Promise<void> {
-    new CheckPromptDialog(options.actors ? { actors: options.actors as CharacterPF2e[] } : {}).render(true);
+    new CheckPromptDialog(options.actors ? { actors: options.actors as CharacterAvant[] } : {}).render(true);
 }

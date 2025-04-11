@@ -1,22 +1,22 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { InitiativeData } from "@actor/data/base.ts";
 import { Immunity } from "@actor/data/iwr.ts";
 import { setHitPointsRollOptions, strikeFromMeleeItem } from "@actor/helpers.ts";
 import { ActorInitiative } from "@actor/initiative.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { SaveType } from "@actor/types.ts";
 import { SAVE_TYPES } from "@actor/values.ts";
-import { ConditionPF2e } from "@item";
+import { ConditionAvant } from "@item";
 import { ItemType } from "@item/base/data/index.ts";
 import { Rarity } from "@module/data.ts";
-import { TokenDocumentPF2e } from "@scene/index.ts";
+import { TokenDocumentAvant } from "@scene/index.ts";
 import { DamageType } from "@system/damage/index.ts";
 import { ArmorStatistic, Statistic } from "@system/statistic/index.ts";
 import { isObject, objectHasKey } from "@util";
 import * as R from "remeda";
 import { HazardSource, HazardSystemData } from "./data.ts";
 
-class HazardPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends ActorPF2e<TParent> {
+class HazardAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends ActorAvant<TParent> {
     declare skills: Record<"stealth", Statistic<this>>;
 
     override get allowedItemTypes(): (ItemType | "physical")[] {
@@ -51,9 +51,9 @@ class HazardPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | 
             : !!game.combats.active?.started && game.combats.active.combatants.some((c) => c.actor === this);
     }
 
-    override isAffectedBy(effect: DamageType | ConditionPF2e): boolean {
+    override isAffectedBy(effect: DamageType | ConditionAvant): boolean {
         // Hazards without hit points are unaffected by damage
-        const damageType = objectHasKey(CONFIG.PF2E.damageTypes, effect)
+        const damageType = objectHasKey(CONFIG.AVANT.damageTypes, effect)
             ? effect
             : isObject(effect)
               ? (effect.system.persistent?.damageType ?? null)
@@ -109,11 +109,11 @@ class HazardPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | 
         this.skills = {
             stealth: new Statistic(this, {
                 slug: "stealth",
-                label: CONFIG.PF2E.skills.stealth.label,
+                label: CONFIG.AVANT.skills.stealth.label,
                 domains: ["stealth", `dex-based`, "skill-check", `dex-skill-check`, "all"],
                 modifiers: [
-                    new ModifierPF2e({
-                        label: "PF2E.ModifierTitle",
+                    new ModifierAvant({
+                        label: "AVANT.ModifierTitle",
                         slug: "base",
                         type: "untyped",
                         modifier: system.attributes.stealth.value ?? 0,
@@ -139,9 +139,9 @@ class HazardPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | 
 
         // Armor Class
         if (this.hasDefenses) {
-            const baseModifier = new ModifierPF2e({
+            const baseModifier = new ModifierAvant({
                 slug: "base",
-                label: "PF2E.BaseModifier",
+                label: "AVANT.BaseModifier",
                 modifier: system.attributes.ac.value - 10,
             });
             const statistic = new ArmorStatistic(this, { rank: 1, modifiers: [baseModifier] });
@@ -183,7 +183,7 @@ class HazardPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | 
         // Saving Throws
         return SAVE_TYPES.reduce((saves: { [K in SaveType]?: Statistic }, saveType) => {
             const save = system.saves[saveType];
-            const label = game.i18n.localize(CONFIG.PF2E.saves[saveType]);
+            const label = game.i18n.localize(CONFIG.AVANT.saves[saveType]);
             const base = save.value;
 
             // Saving Throws with a value of 0 are not usable by the hazard
@@ -193,12 +193,12 @@ class HazardPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | 
             const statistic = new Statistic(this, {
                 slug: saveType,
                 label,
-                attribute: CONFIG.PF2E.savingThrowDefaultAttributes[saveType],
+                attribute: CONFIG.AVANT.savingThrowDefaultAttributes[saveType],
                 domains: [saveType, "saving-throw"],
                 modifiers: [
-                    new ModifierPF2e({
+                    new ModifierAvant({
                         slug: "base",
-                        label: "PF2E.ModifierTitle",
+                        label: "AVANT.ModifierTitle",
                         modifier: base,
                     }),
                 ],
@@ -213,11 +213,11 @@ class HazardPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | 
     }
 }
 
-interface HazardPF2e<TParent extends TokenDocumentPF2e | null = TokenDocumentPF2e | null> extends ActorPF2e<TParent> {
+interface HazardAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAvant | null> extends ActorAvant<TParent> {
     readonly _source: HazardSource;
     system: HazardSystemData;
 
     saves: { [K in SaveType]?: Statistic };
 }
 
-export { HazardPF2e };
+export { HazardAvant };

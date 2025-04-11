@@ -1,7 +1,7 @@
-import type { ActorPF2e } from "@actor";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import type { ItemPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ActorAvant } from "@actor";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import type { ItemAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { ValuesList } from "@module/data.ts";
 import { htmlQuery, sortStringRecord } from "@util";
 import * as R from "remeda";
@@ -19,11 +19,11 @@ function isValuesList(obj: unknown): obj is ValuesList {
     );
 }
 
-class TagSelectorBasic<TDocument extends ActorPF2e | ItemPF2e> extends BaseTagSelector<TDocument> {
+class TagSelectorBasic<TDocument extends ActorAvant | ItemAvant> extends BaseTagSelector<TDocument> {
     static override get defaultOptions(): TagSelectorOptions {
         return {
             ...super.defaultOptions,
-            template: "systems/pf2e/templates/system/tag-selector/basic.hbs",
+            template: "systems/avant/templates/system/tag-selector/basic.hbs",
             filters: [{ inputSelector: "input[type=search]", contentSelector: "ul", delay: 150 }],
             scrollY: ["ul"],
         };
@@ -47,7 +47,7 @@ class TagSelectorBasic<TDocument extends ActorPF2e | ItemPF2e> extends BaseTagSe
 
     override async getData(options?: Partial<TagSelectorOptions>): Promise<TagSelectorBasicData<TDocument>> {
         const { chosen, flat, disabled } = (() => {
-            const document: { toObject(): ActorSourcePF2e | ItemSourcePF2e } = this.document;
+            const document: { toObject(): ActorSourceAvant | ItemSourceAvant } = this.document;
             // Compare source and prepared properties to determine which tags were automatically selected
             const sourceProperty: unknown = fu.getProperty(document.toObject(), this.objectProperty);
             const preparedProperty: unknown = fu.getProperty(document, this.objectProperty);
@@ -128,7 +128,7 @@ class TagSelectorBasic<TDocument extends ActorPF2e | ItemPF2e> extends BaseTagSe
     }
 }
 
-interface TagSelectorBasic<TDocument extends ActorPF2e | ItemPF2e> extends BaseTagSelector<TDocument> {
+interface TagSelectorBasic<TDocument extends ActorAvant | ItemAvant> extends BaseTagSelector<TDocument> {
     options: BasicSelectorOptions;
 }
 
@@ -136,11 +136,11 @@ interface TagSelectorBasic<TDocument extends ActorPF2e | ItemPF2e> extends BaseT
 interface BasicSelectorOptions extends TagSelectorOptions {
     /* The actor value object to update; e.g., "system.traits" */
     objectProperty: string;
-    /* An array of keys from CONFIG.PF2E */
+    /* An array of keys from CONFIG.AVANT */
     configTypes: SelectableTagField[];
 }
 
-interface TagSelectorBasicData<TDocument extends ActorPF2e | ItemPF2e> extends TagSelectorData<TDocument> {
+interface TagSelectorBasicData<TDocument extends ActorAvant | ItemAvant> extends TagSelectorData<TDocument> {
     choices: Record<string, { label: string; selected: boolean; disabled: boolean }>;
     hasCustomChoices: boolean;
     details: { path: string; placeholder: string; value: string } | null;

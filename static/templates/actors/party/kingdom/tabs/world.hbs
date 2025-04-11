@@ -1,5 +1,5 @@
 <section class="sidebar major">
-    <header>{{localize "PF2E.Kingmaker.WorkSites.Label"}}</header>
+    <header>{{localize "AVANT.Kingmaker.WorkSites.Label"}}</header>
     <section class="work-sites">
         {{#each commodities as |commodity|}}
             <div class="row">
@@ -9,7 +9,7 @@
                 </label>
                 {{#if commodity.workSites.hasResource}}
                     <label class="resource">
-                        <span data-tooltip="{{localize "PF2E.Kingmaker.WorkSites.Resource"}}">2x</span>
+                        <span data-tooltip="{{localize "AVANT.Kingmaker.WorkSites.Resource"}}">2x</span>
                         <input type="number" value="{{commodity.workSites.resource}}" name="resources.workSites.{{commodity.type}}.resource" />
                     </label>
                 {{/if}}
@@ -18,7 +18,7 @@
     </section>
 
     <header class="army-header">
-        {{localize "PF2E.Kingmaker.Kingdom.ArmyConsumption"}}
+        {{localize "AVANT.Kingmaker.Kingdom.ArmyConsumption"}}
         <span class="consumption">{{kingdom.consumption.army}}</span>
     </header>
     <section class="armies">
@@ -32,14 +32,14 @@
 </section>
 <section class="content major">
     <header>
-        {{localize "PF2E.Kingmaker.Settlement.Header"}}
+        {{localize "AVANT.Kingmaker.Settlement.Header"}}
         <button type="button" data-action="add-settlement">
-            <i class="fa-solid fa-fw fa-plus"></i>{{localize "PF2E.AddShortLabel"}}
+            <i class="fa-solid fa-fw fa-plus"></i>{{localize "AVANT.AddShortLabel"}}
         </button>
     </header>
     <ol class="directory-list settlement-list">
         {{#each settlements as |settlement|}}
-            {{> "systems/pf2e/templates/actors/party/kingdom/partials/settlement.hbs" settlement=settlement }}
+            {{> "systems/avant/templates/actors/party/kingdom/partials/settlement.hbs" settlement=settlement }}
         {{/each}}
     </ol>
 </section>

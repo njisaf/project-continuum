@@ -1,4 +1,4 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { NPCSkillSource, NPCSpecialSkillSource } from "@actor/npc/data.ts";
 import { SkillSlug } from "@actor/types.ts";
 import { CORE_SKILL_SLUGS } from "@actor/values.ts";
@@ -13,7 +13,7 @@ export class Migration932NPCSystemSkills extends MigrationBase {
 
     #MOD_STRING_RE = /^\+(\d+)\s(.*)/;
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         if (source.type !== "npc") return;
 
         // Pull all lores that should be in actor system data. If none, exit

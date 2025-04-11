@@ -1,8 +1,8 @@
-import { AncestryPF2e, ItemPF2e, type HeritagePF2e } from "@item";
-import { ItemSheetDataPF2e, ItemSheetOptions, ItemSheetPF2e } from "@item/base/sheet/sheet.ts";
-import { ErrorPF2e, sluggify } from "@util";
+import { AncestryAvant, ItemAvant, type HeritageAvant } from "@item";
+import { ItemSheetDataAvant, ItemSheetOptions, ItemSheetAvant } from "@item/base/sheet/sheet.ts";
+import { ErrorAvant, sluggify } from "@util";
 
-export class HeritageSheetPF2e extends ItemSheetPF2e<HeritagePF2e> {
+export class HeritageSheetAvant extends ItemSheetAvant<HeritageAvant> {
     static override get defaultOptions(): ItemSheetOptions {
         return {
             ...super.defaultOptions,
@@ -14,9 +14,9 @@ export class HeritageSheetPF2e extends ItemSheetPF2e<HeritagePF2e> {
     override async getData(options?: Partial<ItemSheetOptions>): Promise<HeritageSheetData> {
         const sheetData = await super.getData(options);
 
-        const ancestry = await (async (): Promise<AncestryPF2e | null> => {
+        const ancestry = await (async (): Promise<AncestryAvant | null> => {
             const item = this.item.system.ancestry ? await fromUuid(this.item.system.ancestry.uuid) : null;
-            return item instanceof AncestryPF2e ? item : null;
+            return item instanceof AncestryAvant ? item : null;
         })();
 
         return {
@@ -36,17 +36,17 @@ export class HeritageSheetPF2e extends ItemSheetPF2e<HeritagePF2e> {
     }
 
     override async _onDrop(event: DragEvent): Promise<void> {
-        const item = await (async (): Promise<ItemPF2e | null> => {
+        const item = await (async (): Promise<ItemAvant | null> => {
             try {
                 const dataString = event.dataTransfer?.getData("text/plain");
                 const dropData = JSON.parse(dataString ?? "");
-                return (await ItemPF2e.fromDropData(dropData)) ?? null;
+                return (await ItemAvant.fromDropData(dropData)) ?? null;
             } catch {
                 return null;
             }
         })();
-        if (!(item instanceof AncestryPF2e)) {
-            throw ErrorPF2e("Invalid item drop on heritage sheet");
+        if (!(item instanceof AncestryAvant)) {
+            throw ErrorAvant("Invalid item drop on heritage sheet");
         }
 
         const ancestryReference = {
@@ -59,7 +59,7 @@ export class HeritageSheetPF2e extends ItemSheetPF2e<HeritagePF2e> {
     }
 }
 
-interface HeritageSheetData extends ItemSheetDataPF2e<HeritagePF2e> {
-    ancestry: AncestryPF2e | null;
+interface HeritageSheetData extends ItemSheetDataAvant<HeritageAvant> {
+    ancestry: AncestryAvant | null;
     ancestryRefBroken: boolean;
 }

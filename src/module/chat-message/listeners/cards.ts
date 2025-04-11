@@ -1,17 +1,17 @@
-import { ActorPF2e } from "@actor";
+import { ActorAvant } from "@actor";
 import { craftItem, craftSpellConsumable } from "@actor/character/crafting/helpers.ts";
 import { ElementalBlast } from "@actor/character/elemental-blast.ts";
 import { SAVE_TYPES } from "@actor/values.ts";
-import { EffectPF2e, PhysicalItemPF2e, type ItemPF2e } from "@item";
+import { EffectAvant, PhysicalItemAvant, type ItemAvant } from "@item";
 import { isSpellConsumable } from "@item/consumable/spell-consumables.ts";
 import { EffectSource } from "@item/effect/data.ts";
-import { CoinsPF2e } from "@item/physical/helpers.ts";
+import { CoinsAvant } from "@item/physical/helpers.ts";
 import { eventToRollParams } from "@module/sheet/helpers.ts";
 import { effectTraits } from "@scripts/config/traits.ts";
 import { onRepairChatCardEvent } from "@system/action-macros/crafting/repair.ts";
 import { CheckRoll } from "@system/check/index.ts";
 import {
-    ErrorPF2e,
+    ErrorAvant,
     createHTMLElement,
     htmlClosest,
     htmlQuery,
@@ -20,12 +20,12 @@ import {
     sluggify,
     tupleHasValue,
 } from "@util";
-import { ChatMessagePF2e, CheckContextChatFlag } from "../index.ts";
+import { ChatMessageAvant, CheckContextChatFlag } from "../index.ts";
 
 class ChatCards {
     static #lastClick = 0;
 
-    static listen(message: ChatMessagePF2e, html: HTMLElement): void {
+    static listen(message: ChatMessageAvant, html: HTMLElement): void {
         const selector = ["a[data-action], button[data-action]"].join(",");
         for (const button of htmlQueryAll<HTMLButtonElement>(html, selector)) {
             button.addEventListener("click", async (event) => this.#onClickButton({ message, event, html, button }));
@@ -56,7 +56,7 @@ class ChatCards {
         const strikeAction = message._strike;
         if (strikeAction && action?.startsWith("strike-")) {
             const context = (
-                message.rolls.some((r) => r instanceof CheckRoll) ? (message.flags.pf2e.context ?? null) : null
+                message.rolls.some((r) => r instanceof CheckRoll) ? (message.flags.avant.context ?? null) : null
             ) as CheckContextChatFlag | null;
             const mapIncreases =
                 context && "mapIncreases" in context && tupleHasValue([0, 1, 2], context.mapIncreases)
@@ -167,7 +167,7 @@ class ChatCards {
                                 `${consumable.name} - ${consumableString} (${currentQuant})`,
                             );
                             if (currentQuant === 0) {
-                                const buttonStr = `>${game.i18n.localize("PF2E.Item.Consumable.Uses.Use")}</button>`;
+                                const buttonStr = `>${game.i18n.localize("AVANT.Item.Consumable.Uses.Use")}</button>`;
                                 flavor = flavor?.replace(buttonStr, ` disabled${buttonStr}`);
                             }
                             await message.update({ flavor });
@@ -191,8 +191,8 @@ class ChatCards {
                         item.isOfType("action", "feat") && item.system.selfEffect
                             ? await fromUuid(item.system.selfEffect.uuid)
                             : null;
-                    if (target instanceof ActorPF2e && effect instanceof EffectPF2e) {
-                        const traits = item.system.traits.value?.filter((t) => t in EffectPF2e.validTraits) ?? [];
+                    if (target instanceof ActorAvant && effect instanceof EffectAvant) {
+                        const traits = item.system.traits.value?.filter((t) => t in EffectAvant.validTraits) ?? [];
                         const effectSource: EffectSource = fu.mergeObject(effect.toObject(), {
                             _id: null,
                             system: {
@@ -225,7 +225,7 @@ class ChatCards {
                         if (buttons) {
                             const span = createHTMLElement("span", { classes: ["effect-applied"] });
                             const anchor = effect.toAnchor({ attrs: { draggable: "true" } });
-                            const locKey = "PF2E.Item.Ability.SelfAppliedEffect.Applied";
+                            const locKey = "AVANT.Item.Ability.SelfAppliedEffect.Applied";
                             const statement = game.i18n.format(locKey, { effect: anchor.outerHTML });
                             span.innerHTML = statement;
                             htmlQuery(buttons, "button[data-action=apply-effect]")?.replaceWith(span);
@@ -240,12 +240,12 @@ class ChatCards {
                         (r): r is Rolled<CheckRoll> => r instanceof CheckRoll && r.options.action === "elemental-blast",
                     );
                     const checkContext = (
-                        roll ? (message.flags.pf2e.context ?? null) : null
+                        roll ? (message.flags.avant.context ?? null) : null
                     ) as CheckContextChatFlag | null;
                     const outcome = button.dataset.outcome === "success" ? "success" : "criticalSuccess";
                     const [element, damageType, meleeOrRanged, actionCost]: (string | undefined)[] =
                         roll?.options.identifier?.split(".") ?? [];
-                    if (objectHasKey(effectTraits, element) && objectHasKey(CONFIG.PF2E.damageTypes, damageType)) {
+                    if (objectHasKey(effectTraits, element) && objectHasKey(CONFIG.AVANT.damageTypes, damageType)) {
                         await new ElementalBlast(actor).damage({
                             element,
                             damageType,
@@ -260,10 +260,10 @@ class ChatCards {
             }
         } else if (action && actor.isOfType("character", "npc")) {
             const buttonGroup = htmlClosest(button, ".chat-card, .message-buttons");
-            const physicalItem = await (async (): Promise<PhysicalItemPF2e | null> => {
+            const physicalItem = await (async (): Promise<PhysicalItemAvant | null> => {
                 const itemUuid = buttonGroup?.dataset.itemUuid ?? "";
                 const maybeItem = await fromUuid(itemUuid);
-                return maybeItem instanceof PhysicalItemPF2e ? maybeItem : null;
+                return maybeItem instanceof PhysicalItemAvant ? maybeItem : null;
             })();
             const quantity = Number(buttonGroup?.dataset.craftingQuantity) || 1;
 
@@ -271,18 +271,18 @@ class ChatCards {
                 await onRepairChatCardEvent(event, message, buttonGroup);
             } else if (physicalItem && action === "pay-crafting-costs") {
                 const quantity = Number(buttonGroup?.dataset.craftingQuantity) || 1;
-                const craftingCost = CoinsPF2e.fromPrice(physicalItem.price, quantity);
+                const craftingCost = CoinsAvant.fromPrice(physicalItem.price, quantity);
                 const coinsToRemove = button.classList.contains("full") ? craftingCost : craftingCost.scale(0.5);
                 if (!(await actor.inventory.removeCoins(coinsToRemove))) {
-                    ui.notifications.warn(game.i18n.localize("PF2E.Actions.Craft.Warning.InsufficientCoins"));
+                    ui.notifications.warn(game.i18n.localize("AVANT.Actions.Craft.Warning.InsufficientCoins"));
                     return;
                 }
 
                 if (isSpellConsumable(physicalItem.id) && physicalItem.isOfType("consumable")) {
                     craftSpellConsumable(physicalItem, quantity, actor);
-                    ChatMessagePF2e.create({
+                    ChatMessageAvant.create({
                         author: game.user.id,
-                        content: game.i18n.format("PF2E.Actions.Craft.Information.PayAndReceive", {
+                        content: game.i18n.format("AVANT.Actions.Craft.Information.PayAndReceive", {
                             actorName: actor.name,
                             cost: coinsToRemove.toString(),
                             quantity: quantity,
@@ -298,13 +298,13 @@ class ChatCards {
 
                 const result = await actor.addToInventory(itemObject, undefined);
                 if (!result) {
-                    ui.notifications.warn(game.i18n.localize("PF2E.Actions.Craft.Warning.CantAddItem"));
+                    ui.notifications.warn(game.i18n.localize("AVANT.Actions.Craft.Warning.CantAddItem"));
                     return;
                 }
 
-                ChatMessagePF2e.create({
+                ChatMessageAvant.create({
                     author: game.user.id,
-                    content: game.i18n.format("PF2E.Actions.Craft.Information.LoseMaterials", {
+                    content: game.i18n.format("AVANT.Actions.Craft.Information.LoseMaterials", {
                         actorName: actor.name,
                         cost: coinsToRemove.toString(),
                         quantity: quantity,
@@ -313,15 +313,15 @@ class ChatCards {
                     speaker: { alias: actor.name },
                 });
             } else if (physicalItem && action === "lose-materials") {
-                const craftingCost = CoinsPF2e.fromPrice(physicalItem.price, quantity);
+                const craftingCost = CoinsAvant.fromPrice(physicalItem.price, quantity);
                 const materialCosts = craftingCost.scale(0.5);
                 const coinsToRemove = materialCosts.scale(0.1);
                 if (!(await actor.inventory.removeCoins(coinsToRemove))) {
-                    ui.notifications.warn(game.i18n.localize("PF2E.Actions.Craft.Warning.InsufficientCoins"));
+                    ui.notifications.warn(game.i18n.localize("AVANT.Actions.Craft.Warning.InsufficientCoins"));
                 } else {
-                    ChatMessagePF2e.create({
+                    ChatMessageAvant.create({
                         author: game.user.id,
-                        content: game.i18n.format("PF2E.Actions.Craft.Information.PayAndReceive", {
+                        content: game.i18n.format("AVANT.Actions.Craft.Information.PayAndReceive", {
                             actorName: actor.name,
                             cost: coinsToRemove.toString(),
                         }),
@@ -341,7 +341,7 @@ class ChatCards {
             const roll = message.rolls.find(
                 (r): r is Rolled<CheckRoll> => r instanceof CheckRoll && r.options.action === "army-strike",
             );
-            const checkContext = (roll ? (message.flags.pf2e.context ?? null) : null) as CheckContextChatFlag | null;
+            const checkContext = (roll ? (message.flags.avant.context ?? null) : null) as CheckContextChatFlag | null;
             const action = button.dataset.outcome === "success" ? "damage" : "critical";
             const strike = actor.strikes[roll?.options.identifier ?? ""];
             strike?.[action]({ checkContext, event });
@@ -355,12 +355,12 @@ class ChatCards {
     static async #rollActorSaves({ event, button, actor, item }: RollActorSavesParams): Promise<void> {
         const tokens = game.user.getActiveTokens();
         if (tokens.length === 0) {
-            ui.notifications.error("PF2E.ErrorMessage.NoTokenSelected", { localize: true });
+            ui.notifications.error("AVANT.ErrorMessage.NoTokenSelected", { localize: true });
             return;
         }
         const saveType = button.dataset.save;
         if (!tupleHasValue(SAVE_TYPES, saveType)) {
-            throw ErrorPF2e(`"${saveType}" is not a recognized save type`);
+            throw ErrorAvant(`"${saveType}" is not a recognized save type`);
         }
 
         const dc = Number(button.dataset.dc ?? "NaN");
@@ -379,7 +379,7 @@ class ChatCards {
 }
 
 interface OnClickButtonParams {
-    message: ChatMessagePF2e;
+    message: ChatMessageAvant;
     event: MouseEvent;
     html: HTMLElement;
     button: HTMLButtonElement;
@@ -388,8 +388,8 @@ interface OnClickButtonParams {
 interface RollActorSavesParams {
     event: MouseEvent;
     button: HTMLButtonElement;
-    actor: ActorPF2e;
-    item: ItemPF2e<ActorPF2e>;
+    actor: ActorAvant;
+    item: ItemAvant<ActorAvant>;
 }
 
 export { ChatCards };

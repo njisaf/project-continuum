@@ -4,20 +4,20 @@ import {
     MATERIAL_DATA,
     MaterialSheetData,
     PhysicalItemSheetData,
-    PhysicalItemSheetPF2e,
+    PhysicalItemSheetAvant,
     RUNE_DATA,
     getPropertyRuneSlots,
 } from "@item/physical/index.ts";
 import { SheetOptions, createSheetTags } from "@module/sheet/helpers.ts";
-import { ErrorPF2e, htmlQueryAll, objectHasKey, setHasElement, sortStringRecord, tupleHasValue } from "@util";
+import { ErrorAvant, htmlQueryAll, objectHasKey, setHasElement, sortStringRecord, tupleHasValue } from "@util";
 import * as R from "remeda";
 import { ComboWeaponMeleeUsage, SpecificWeaponData, WeaponPersistentDamage } from "./data.ts";
-import type { WeaponPF2e } from "./document.ts";
+import type { WeaponAvant } from "./document.ts";
 import { MANDATORY_RANGED_GROUPS, WEAPON_RANGES } from "./values.ts";
 
-export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
+export class WeaponSheetAvant extends PhysicalItemSheetAvant<WeaponAvant> {
     protected override get validTraits(): Record<string, string> {
-        return CONFIG.PF2E.weaponTraits;
+        return CONFIG.AVANT.weaponTraits;
     }
 
     override async getData(options?: Partial<ItemSheetOptions>): Promise<WeaponSheetData> {
@@ -36,18 +36,18 @@ export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
 
         // Weapons have derived damage dice, level, price, and traits: base data is shown for editing
         const abpEnabled = ABP.isEnabled(this.actor);
-        const hintText = abpEnabled ? "PF2E.Item.Weapon.FromABP" : "PF2E.Item.Weapon.FromMaterialAndRunes";
+        const hintText = abpEnabled ? "AVANT.Item.Weapon.FromABP" : "AVANT.Item.Weapon.FromMaterialAndRunes";
 
         const adjustedDiceHint =
             weapon.system.damage.dice !== weapon._source.system.damage.dice
                 ? game.i18n.format(game.i18n.localize(hintText), {
-                      property: game.i18n.localize("PF2E.Item.Weapon.Damage.DiceNumber"),
+                      property: game.i18n.localize("AVANT.Item.Weapon.Damage.DiceNumber"),
                       value: weapon.system.damage.dice,
                   })
                 : null;
 
         const damageDieFaces = Object.fromEntries(
-            Object.entries(CONFIG.PF2E.damageDie)
+            Object.entries(CONFIG.AVANT.damageDie)
                 .map(([num, label]): [number, string] => [Number(num.replace("d", "")), label])
                 .sort(([numA], [numB]) => numA - numB),
         );
@@ -58,7 +58,7 @@ export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
         const weaponRanges = Array.from(WEAPON_RANGES).reduce(
             (ranges: Record<number, string>, range) => ({
                 ...ranges,
-                [range]: game.i18n.format("PF2E.WeaponRangeN", { range: range }),
+                [range]: game.i18n.format("AVANT.WeaponRangeN", { range: range }),
             }),
             {},
         );
@@ -70,7 +70,7 @@ export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
 
         // Restrict the Implement tag to one-handed weapons
         const otherTags = ((): SheetOptions => {
-            const otherWeaponTags: Record<string, string> = fu.deepClone(CONFIG.PF2E.otherWeaponTags);
+            const otherWeaponTags: Record<string, string> = fu.deepClone(CONFIG.AVANT.otherWeaponTags);
             if (weapon.hands !== "1") delete otherWeaponTags.implement;
             return createSheetTags(otherWeaponTags, sheetData.data.traits.otherTags);
         })();
@@ -80,7 +80,7 @@ export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
             damage: { type: "piercing", die: "d4" },
             traits: [],
         };
-        const meleeUsageBaseDamage = Object.entries(CONFIG.PF2E.damageDie).map(([die, label]) => ({
+        const meleeUsageBaseDamage = Object.entries(CONFIG.AVANT.damageDie).map(([die, label]) => ({
             label: `1${game.i18n.localize(label)}`,
             value: die,
         }));
@@ -92,23 +92,23 @@ export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
             ...sheetData,
             abpEnabled,
             adjustedDiceHint,
-            baseTypes: sortStringRecord(CONFIG.PF2E.baseWeaponTypes),
-            categories: CONFIG.PF2E.weaponCategories,
-            conditionTypes: sortStringRecord(CONFIG.PF2E.conditionTypes),
-            damageDice: CONFIG.PF2E.damageDice,
-            damageDie: CONFIG.PF2E.damageDie,
+            baseTypes: sortStringRecord(CONFIG.AVANT.baseWeaponTypes),
+            categories: CONFIG.AVANT.weaponCategories,
+            conditionTypes: sortStringRecord(CONFIG.AVANT.conditionTypes),
+            damageDice: CONFIG.AVANT.damageDice,
+            damageDie: CONFIG.AVANT.damageDie,
             damageDieFaces,
-            damageTypes: sortStringRecord(CONFIG.PF2E.damageTypes),
-            groups: sortStringRecord(CONFIG.PF2E.weaponGroups),
+            damageTypes: sortStringRecord(CONFIG.AVANT.damageTypes),
+            groups: sortStringRecord(CONFIG.AVANT.weaponGroups),
             isBomb: weapon.group === "bomb",
             isComboWeapon,
-            itemBonuses: CONFIG.PF2E.itemBonuses,
+            itemBonuses: CONFIG.AVANT.itemBonuses,
             mandatoryMelee,
             mandatoryRanged,
-            meleeGroups: sortStringRecord(CONFIG.PF2E.meleeWeaponGroups),
+            meleeGroups: sortStringRecord(CONFIG.AVANT.meleeWeaponGroups),
             meleeUsage,
             meleeUsageBaseDamage,
-            meleeUsageTraits: createSheetTags(CONFIG.PF2E.weaponTraits, meleeUsage.traits ?? []),
+            meleeUsageTraits: createSheetTags(CONFIG.AVANT.weaponTraits, meleeUsage.traits ?? []),
             otherTags,
             preciousMaterials: this.getMaterialSheetData(weapon, MATERIAL_DATA.weapon),
             propertyRuneSlots,
@@ -119,9 +119,9 @@ export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
                     .sort((a, b) => a.name.localeCompare(b.name)),
             },
             specificMagicData,
-            weaponMAP: CONFIG.PF2E.weaponMAP,
+            weaponMAP: CONFIG.AVANT.weaponMAP,
             weaponRanges,
-            weaponReload: CONFIG.PF2E.weaponReload,
+            weaponReload: CONFIG.AVANT.weaponReload,
         };
     }
 
@@ -134,7 +134,7 @@ export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
         for (const element of pdElements) {
             element.addEventListener("change", async (event): Promise<void> => {
                 if (!(event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement)) {
-                    throw ErrorPF2e("Unexpected error updating persistent damage data");
+                    throw ErrorAvant("Unexpected error updating persistent damage data");
                 }
 
                 const diceNumber = Number(pdElements.find((e) => e.dataset.persistentField === "number")?.value) || 0;
@@ -145,14 +145,14 @@ export class WeaponSheetPF2e extends PhysicalItemSheetPF2e<WeaponPF2e> {
                     pdElements.find((e) => e.dataset.persistentField === "type")?.value || baseDamageType;
 
                 if (!(typeof diceNumber === "number" && typeof dieFaces === "number" && damageType)) {
-                    throw ErrorPF2e("Unexpected error updating persistent damage data");
+                    throw ErrorAvant("Unexpected error updating persistent damage data");
                 }
 
                 // If the user changed the number to zero directly, wipe the entire persistent damage object
                 const maybeDiceNumber = Math.trunc(Math.abs(Number(event.target.value) || 0));
                 if (event.target.dataset.persistentField === "number" && maybeDiceNumber === 0) {
                     await this.item.update({ "system.damage.persistent": null });
-                } else if (objectHasKey(CONFIG.PF2E.damageTypes, damageType)) {
+                } else if (objectHasKey(CONFIG.AVANT.damageTypes, damageType)) {
                     const damage: WeaponPersistentDamage = {
                         number: Math.trunc(Math.abs(diceNumber)) || 1,
                         faces: tupleHasValue([4, 6, 8, 10, 12] as const, dieFaces) ? dieFaces : null,
@@ -194,25 +194,25 @@ interface PropertyRuneSheetSlot {
     disabled: boolean;
 }
 
-interface WeaponSheetData extends PhysicalItemSheetData<WeaponPF2e> {
+interface WeaponSheetData extends PhysicalItemSheetData<WeaponAvant> {
     abpEnabled: boolean;
     adjustedDiceHint: string | null;
     adjustedLevelHint: string | null;
     adjustedPriceHint: string | null;
-    baseTypes: typeof CONFIG.PF2E.baseWeaponTypes;
-    categories: typeof CONFIG.PF2E.weaponCategories;
-    conditionTypes: typeof CONFIG.PF2E.conditionTypes;
-    damageDice: typeof CONFIG.PF2E.damageDice;
-    damageDie: typeof CONFIG.PF2E.damageDie;
+    baseTypes: typeof CONFIG.AVANT.baseWeaponTypes;
+    categories: typeof CONFIG.AVANT.weaponCategories;
+    conditionTypes: typeof CONFIG.AVANT.conditionTypes;
+    damageDice: typeof CONFIG.AVANT.damageDice;
+    damageDie: typeof CONFIG.AVANT.damageDie;
     damageDieFaces: Record<string, string>;
-    damageTypes: typeof CONFIG.PF2E.damageTypes;
-    groups: typeof CONFIG.PF2E.weaponGroups;
+    damageTypes: typeof CONFIG.AVANT.damageTypes;
+    groups: typeof CONFIG.AVANT.weaponGroups;
     isBomb: boolean;
     isComboWeapon: boolean;
-    itemBonuses: typeof CONFIG.PF2E.itemBonuses;
+    itemBonuses: typeof CONFIG.AVANT.itemBonuses;
     mandatoryMelee: boolean;
     mandatoryRanged: boolean;
-    meleeGroups: typeof CONFIG.PF2E.meleeWeaponGroups;
+    meleeGroups: typeof CONFIG.AVANT.meleeWeaponGroups;
     meleeUsage: ComboWeaponMeleeUsage | undefined;
     meleeUsageBaseDamage: FormSelectOption[];
     meleeUsageTraits: SheetOptions;
@@ -221,7 +221,7 @@ interface WeaponSheetData extends PhysicalItemSheetData<WeaponPF2e> {
     propertyRuneSlots: PropertyRuneSheetSlot[];
     runeTypes: Omit<typeof RUNE_DATA.weapon, "property"> & { property: { slug: string; name: string }[] };
     specificMagicData: SpecificWeaponData;
-    weaponMAP: typeof CONFIG.PF2E.weaponMAP;
+    weaponMAP: typeof CONFIG.AVANT.weaponMAP;
     weaponRanges: Record<number, string>;
-    weaponReload: typeof CONFIG.PF2E.weaponReload;
+    weaponReload: typeof CONFIG.AVANT.weaponReload;
 }

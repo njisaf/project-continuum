@@ -1,5 +1,5 @@
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { itemIsOfType } from "@item/helpers.ts";
 import { EquippedData } from "@item/physical/data.ts";
 import { getUsageDetails } from "@item/physical/usage.ts";
@@ -9,7 +9,7 @@ import { MigrationBase } from "../base.ts";
 export class Migration718CarryType extends MigrationBase {
     static override version = 0.718;
 
-    override async updateItem(source: ItemSourcePF2e, actor?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant, actor?: ActorSourceAvant): Promise<void> {
         if (!itemIsOfType(source, "physical")) return;
 
         const system: SimplifiedSystemSource = source.system;

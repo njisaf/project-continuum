@@ -1,13 +1,13 @@
-import { BaseActorSourcePF2e, FlankingData } from "@actor/data/base.ts";
+import { BaseActorSourceAvant, FlankingData } from "@actor/data/base.ts";
 import { ActorSystemModel, ActorSystemSchema } from "@actor/data/model.ts";
 import { ModelPropFromDataField } from "types/foundry/common/data/fields.js";
-import type { LootPF2e } from "./document.ts";
+import type { LootAvant } from "./document.ts";
 import fields = foundry.data.fields;
 
 /** The stored source data of a loot actor */
-type LootSource = BaseActorSourcePF2e<"loot", LootSystemSource>;
+type LootSource = BaseActorSourceAvant<"loot", LootSystemSource>;
 
-class LootSystemData extends ActorSystemModel<LootPF2e, LootSystemSchema> {
+class LootSystemData extends ActorSystemModel<LootAvant, LootSystemSchema> {
     static override defineSchema(): LootSystemSchema {
         return {
             ...super.defineSchema(),
@@ -34,7 +34,7 @@ class LootSystemData extends ActorSystemModel<LootPF2e, LootSystemSchema> {
     }
 }
 
-interface LootSystemData extends ActorSystemModel<LootPF2e, LootSystemSchema>, ModelPropsFromSchema<LootSystemSchema> {
+interface LootSystemData extends ActorSystemModel<LootAvant, LootSystemSchema>, ModelPropsFromSchema<LootSystemSchema> {
     details: LootDetails;
     traits?: never;
     attributes: LootAttributes;

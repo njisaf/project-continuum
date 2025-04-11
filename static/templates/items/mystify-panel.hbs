@@ -1,7 +1,7 @@
 <section class="tab mystification" data-tab="mystification">
     <fieldset class="basics">
         <div class="form-group mystification-status">
-            <label for="{{item.uuid}}-mystification-status">{{localize "PF2E.identification.MystificationStatus"}}</label>
+            <label for="{{item.uuid}}-mystification-status">{{localize "AVANT.identification.MystificationStatus"}}</label>
             <div class="form-fields">
                 <select name="system.identification.status" id="{{item.uuid}}-mystification-status">
                     {{selectOptions identificationStatusOptions selected=data.identification.status localize=true}}
@@ -11,7 +11,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{{localize "PF2E.identification.DisplayDetails"}}</legend>
+        <legend>{{localize "AVANT.identification.DisplayDetails"}}</legend>
 
         <div class="form-group identification-data unidentified">
             <div class="img-name">
@@ -35,7 +35,7 @@
                 owner=owner
                 editable=editable}}
 
-            <p class="hint">{{localize "PF2E.identification.UnidentifiedHint"}}</p>
+            <p class="hint">{{localize "AVANT.identification.UnidentifiedHint"}}</p>
         </div>
     </fieldset>
 </section>

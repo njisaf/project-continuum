@@ -1,11 +1,11 @@
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { MigrationBase } from "../base.ts";
 
 /** Replace all instances of "mundane-attack" selector with "strike-attack-roll" */
 export class Migration838StrikeAttackRollSelector extends MigrationBase {
     static override version = 0.838;
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         // Sanity check
         if (!Array.isArray(source.system.rules)) {
             source.system.rules = [];

@@ -1,13 +1,13 @@
 import { ActionMacroHelpers, SkillActionOptions } from "../index.ts";
-import { ModifierPF2e } from "@actor/modifiers.ts";
+import { ModifierAvant } from "@actor/modifiers.ts";
 import { SingleCheckAction } from "@actor/actions/index.ts";
 
-const PREFIX = "PF2E.Actions.Steal";
+const PREFIX = "AVANT.Actions.Steal";
 
 function steal(options: SkillActionOptions): void {
     const modifiers = [
-        new ModifierPF2e({
-            label: "PF2E.Actions.Steal.Pocketed",
+        new ModifierAvant({
+            label: "AVANT.Actions.Steal.Pocketed",
             modifier: -5,
             predicate: ["action:steal:pocketed"],
         }),
@@ -37,8 +37,8 @@ const action = new SingleCheckAction({
     cost: 1,
     description: `${PREFIX}.Description`,
     difficultyClass: "perception",
-    img: "systems/pf2e/icons/features/classes/thief.webp",
-    modifiers: [{ label: "PF2E.Actions.Steal.Pocketed", modifier: -5, predicate: ["action:steal:pocketed"] }],
+    img: "systems/avant/icons/features/classes/thief.webp",
+    modifiers: [{ label: "AVANT.Actions.Steal.Pocketed", modifier: -5, predicate: ["action:steal:pocketed"] }],
     name: `${PREFIX}.Title`,
     notes: [
         { outcome: ["success", "criticalSuccess"], text: `${PREFIX}.Notes.success` },

@@ -1,5 +1,5 @@
 <div class="form-group attack-modifier">
-    <label>{{localize "PF2E.NPCWeaponAttackLabel"}}</label>
+    <label>{{localize "AVANT.NPCWeaponAttackLabel"}}</label>
     <input type="number" name="system.bonus.value" value="{{data.bonus.value}}" />
 </div>
 
@@ -7,17 +7,17 @@
     {{#each data.damageRolls as |damageRoll key|}}
         <li class="damage-partial" data-key="{{key}}">
             <div class="form-group">
-                <label>{{localize "PF2E.DamageLabel"}}</label>
+                <label>{{localize "AVANT.DamageLabel"}}</label>
                 <input type="text" name="system.damageRolls.{{key}}.damage" value="{{lookup this "damage"}}" />
             </div>
             <div class="form-group type">
-                <label>{{localize "PF2E.Roll.Type"}}</label>
+                <label>{{localize "AVANT.Roll.Type"}}</label>
                 <select name="system.damageRolls.{{key}}.damageType">
                     {{selectOptions @root.damageTypes selected=damageRoll.damageType localize=true}}
                 </select>
             </div>
             <div class="form-group category">
-                <label>{{localize "PF2E.Category"}}</label>
+                <label>{{localize "AVANT.Category"}}</label>
                 <select name="system.damageRolls.{{key}}.category">
                     {{selectOptions @root.damageCategories selected=damageRoll.category blank="" localize=true}}
                 </select>
@@ -28,7 +28,7 @@
     <li class="damage-partial add">
         <div class="form-group">
             <label>
-                <a class="damage-control" data-action="add-partial">{{localize "PF2E.NPCWeaponAddDamage"}} <i class="fa-solid fa-plus"></i></a>
+                <a class="damage-control" data-action="add-partial">{{localize "AVANT.NPCWeaponAddDamage"}} <i class="fa-solid fa-plus"></i></a>
             </label>
         </div>
     </li>
@@ -36,8 +36,8 @@
 
 <div class="form-group stacked">
     <label>
-        {{localize "PF2E.NPCWeaponAttackEffect"}}
-        <a class="tag-selector" data-tag-selector="basic" data-title="PF2E.NPCWeaponAttackEffect" data-config-types="attackEffects" data-property="system.attackEffects"><i class="fa-solid fa-pen-to-square"></i></a>
+        {{localize "AVANT.NPCWeaponAttackEffect"}}
+        <a class="tag-selector" data-tag-selector="basic" data-title="AVANT.NPCWeaponAttackEffect" data-config-types="attackEffects" data-property="system.attackEffects"><i class="fa-solid fa-pen-to-square"></i></a>
     </label>
 
     <ul class="traits-list tags">

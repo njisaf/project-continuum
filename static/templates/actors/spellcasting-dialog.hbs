@@ -1,22 +1,22 @@
 <form>
     <div class="dialog-content" autocomplete="off">
         <div class="form-group">
-            <label>{{localize "PF2E.SpellcastingTypeLabel"}}</label>
+            <label>{{localize "AVANT.SpellcastingTypeLabel"}}</label>
             <select name="system.prepared.value" {{disabled object.id}}>
                 {{selectOptions spellcastingTypes selected=system.prepared.value localize=true}}
             </select>
         </div>
         {{#if object.isPrepared}}
             <div class="form-group">
-                <label>{{localize "PF2E.SpellFlexibleLabel"}}</label>
+                <label>{{localize "AVANT.SpellFlexibleLabel"}}</label>
                 <input name="system.prepared.flexible" type="checkbox" {{checked system.prepared.flexible}}/>
             </div>
         {{/if}}
         {{#if (eq system.prepared.value "items")}}
             <div class="form-group">
-                <label>{{localize "PF2E.Actor.Creature.Spellcasting.MagicItemTypesLabel"}}</label>
+                <label>{{localize "AVANT.Actor.Creature.Spellcasting.MagicItemTypesLabel"}}</label>
                 <select name="system.prepared.validItems">
-                    {{selectOptions validItemTypes selected=system.prepared.validItems blank="PF2E.Actor.Creature.Spellcasting.ValidItemTypes.All" localize=true}}
+                    {{selectOptions validItemTypes selected=system.prepared.validItems blank="AVANT.Actor.Creature.Spellcasting.ValidItemTypes.All" localize=true}}
                 </select>
             </div>
         {{/if}}
@@ -25,33 +25,33 @@
         {{#unless object.isRitual}}
             {{#if (eq actor.type "character")}}
                 <div class="form-group">
-                    <label>{{localize "PF2E.ProficiencyLabel"}}</label>
+                    <label>{{localize "AVANT.ProficiencyLabel"}}</label>
                     <select name="system.proficiency.slug">
-                        {{selectOptions statistics selected=system.proficiency.slug blank="PF2E.Actor.Creature.Spellcasting.Label" valueAttr="slug" labelAttr="label" localize=true}}
+                        {{selectOptions statistics selected=system.proficiency.slug blank="AVANT.Actor.Creature.Spellcasting.Label" valueAttr="slug" labelAttr="label" localize=true}}
                     </select>
                 </div>
             {{/if}}
             <div class="form-group">
-                <label>{{localize "PF2E.MagicTraditionLabel"}}</label>
+                <label>{{localize "AVANT.MagicTraditionLabel"}}</label>
                 <select name="system.tradition.value">
                     {{#if (eq system.prepared.value "items")}}
-                        {{selectOptions magicTraditions selected=system.tradition.value blank="PF2E.MagicTraditionUseSpellLabel" localize=true}}
+                        {{selectOptions magicTraditions selected=system.tradition.value blank="AVANT.MagicTraditionUseSpellLabel" localize=true}}
                     {{else}}
                         {{selectOptions magicTraditions selected=system.tradition.value localize=true}}
                     {{/if}}
                 </select>
             </div>
             <div class="form-group">
-                <label>{{localize "PF2E.Actor.Character.Attribute.Key"}}</label>
+                <label>{{localize "AVANT.Actor.Character.Attribute.Key"}}</label>
                 <select name="system.ability.value" {{disabled (not isAttributeConfigurable)}}>
                     {{selectOptions attributes selected=selectedAttribute localize=true}}
                 </select>
             </div>
             {{#if (eq actor.type "npc")}}
                 <div class="form-group">
-                    <label>{{localize "PF2E.SpellcastingSettings.AutoHeightenLabel"}}</label>
+                    <label>{{localize "AVANT.SpellcastingSettings.AutoHeightenLabel"}}</label>
                     <select name="system.autoHeightenLevel.value" data-dtype="Number">
-                        {{selectOptions autoHeightenLevels selected=system.autoHeightenLevel.value blank="PF2E.SpellcastingSettings.AutoHeightenDefault" localize=true}}
+                        {{selectOptions autoHeightenLevels selected=system.autoHeightenLevel.value blank="AVANT.SpellcastingSettings.AutoHeightenDefault" localize=true}}
                     </select>
                 </div>
             {{/if}}
@@ -60,9 +60,9 @@
     <div class="dialog-buttons">
         <button type="submit" class="dialog-button finish default">
             {{#if object.id}}
-                {{localize "PF2E.UpdateLabelUniversal"}}
+                {{localize "AVANT.UpdateLabelUniversal"}}
             {{else}}
-                {{localize "PF2E.CreateLabelUniversal"}}
+                {{localize "AVANT.CreateLabelUniversal"}}
             {{/if}}
         </button>
     </div>

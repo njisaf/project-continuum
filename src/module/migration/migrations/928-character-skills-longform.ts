@@ -1,7 +1,7 @@
 import { CharacterSystemSource } from "@actor/character/data.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
 import { SkillSlug } from "@actor/types.ts";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { ZeroToFour } from "@module/data.ts";
 import { objectHasKey, recursiveReplaceString } from "@util";
 import { MigrationBase } from "../base.ts";
@@ -20,7 +20,7 @@ export class Migration928CharacterSkillsLongform extends MigrationBase {
         return new RegExp(String.raw`skill:(${skillShortForms})\b`, "g");
     })();
 
-    override async updateActor(source: ActorSourcePF2e): Promise<void> {
+    override async updateActor(source: ActorSourceAvant): Promise<void> {
         this.#replacePathsAndOptions(source);
         if (source.type !== "character") return;
 
@@ -33,7 +33,7 @@ export class Migration928CharacterSkillsLongform extends MigrationBase {
         }
     }
 
-    override async updateItem(source: ItemSourcePF2e): Promise<void> {
+    override async updateItem(source: ItemSourceAvant): Promise<void> {
         for (const rule of source.system.rules) {
             if (rule.key === "ActiveEffectLike" && "path" in rule && typeof rule.path === "string") {
                 // An ancient path from before FVTT 0.8
@@ -44,7 +44,7 @@ export class Migration928CharacterSkillsLongform extends MigrationBase {
     }
 
     /** Replace all paths everywhere with longform. This catches AELikes and inline rolls */
-    #replacePathsAndOptions(source: ActorSourcePF2e | ItemSourcePF2e) {
+    #replacePathsAndOptions(source: ActorSourceAvant | ItemSourceAvant) {
         source.system = recursiveReplaceString(source.system, (s) => {
             return s.replace(this.#SKILL_SHORT_FORM_PATH, (match, group) =>
                 objectHasKey(SKILL_DICTIONARY, group) ? `system.skills.${SKILL_DICTIONARY[group]}` : match,

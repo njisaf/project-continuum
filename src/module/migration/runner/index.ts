@@ -1,21 +1,21 @@
-import type { ActorPF2e } from "@actor";
-import type { ActorSourcePF2e } from "@actor/data/index.ts";
-import type { ItemPF2e } from "@item";
-import type { ItemSourcePF2e } from "@item/base/data/index.ts";
-import type { MacroPF2e } from "@module/macro.ts";
+import type { ActorAvant } from "@actor";
+import type { ActorSourceAvant } from "@actor/data/index.ts";
+import type { ItemAvant } from "@item";
+import type { ItemSourceAvant } from "@item/base/data/index.ts";
+import type { MacroAvant } from "@module/macro.ts";
 import type { MigrationBase } from "@module/migration/base.ts";
 import { MigrationRunnerBase } from "@module/migration/runner/base.ts";
-import type { UserPF2e } from "@module/user/index.ts";
-import type { ScenePF2e, TokenDocumentPF2e } from "@scene";
+import type { UserAvant } from "@module/user/index.ts";
+import type { SceneAvant, TokenDocumentAvant } from "@scene";
 import { Progress } from "@system/progress.ts";
 
 export class MigrationRunner extends MigrationRunnerBase {
     override needsMigration(): boolean {
-        return super.needsMigration(game.settings.get("pf2e", "worldSchemaVersion"));
+        return super.needsMigration(game.settings.get("avant", "worldSchemaVersion"));
     }
 
     /** Ensure that an actor or item reflects the current data schema before it is created */
-    static async ensureSchemaVersion(document: ActorPF2e | ItemPF2e, migrations: MigrationBase[]): Promise<void> {
+    static async ensureSchemaVersion(document: ActorAvant | ItemAvant, migrations: MigrationBase[]): Promise<void> {
         if (migrations.length === 0) return;
         const currentVersion = this.LATEST_SCHEMA_VERSION;
 
@@ -63,7 +63,7 @@ export class MigrationRunner extends MigrationRunnerBase {
     }
 
     /** Migrate actor or item documents in batches of 50 */
-    async #migrateDocuments<TDocument extends ActorPF2e<null> | ItemPF2e<null>>(
+    async #migrateDocuments<TDocument extends ActorAvant<null> | ItemAvant<null>>(
         collection: WorldCollection<TDocument> | CompendiumCollection<TDocument>,
         migrations: MigrationBase[],
         progress?: Progress,
@@ -99,7 +99,7 @@ export class MigrationRunner extends MigrationRunnerBase {
         }
     }
 
-    async #migrateItem(migrations: MigrationBase[], item: ItemPF2e): Promise<ItemSourcePF2e | null> {
+    async #migrateItem(migrations: MigrationBase[], item: ItemAvant): Promise<ItemSourceAvant | null> {
         const baseItem = item.toObject();
 
         try {
@@ -114,9 +114,9 @@ export class MigrationRunner extends MigrationRunnerBase {
 
     async #migrateActor(
         migrations: MigrationBase[],
-        actor: ActorPF2e,
+        actor: ActorAvant,
         options: { pack?: Maybe<string> } = {},
-    ): Promise<ActorSourcePF2e | null> {
+    ): Promise<ActorSourceAvant | null> {
         const pack = options.pack;
         const baseActor = actor.toObject();
 
@@ -173,7 +173,7 @@ export class MigrationRunner extends MigrationRunnerBase {
         }
     }
 
-    async #migrateWorldMacro(macro: MacroPF2e, migrations: MigrationBase[]): Promise<void> {
+    async #migrateWorldMacro(macro: MacroAvant, migrations: MigrationBase[]): Promise<void> {
         if (!migrations.some((migration) => !!migration.updateMacro)) return;
 
         try {
@@ -202,7 +202,7 @@ export class MigrationRunner extends MigrationRunnerBase {
     }
 
     async #migrateSceneToken(
-        token: TokenDocumentPF2e<ScenePF2e>,
+        token: TokenDocumentAvant<SceneAvant>,
         migrations: MigrationBase[],
     ): Promise<foundry.documents.TokenSource | null> {
         if (!migrations.some((migration) => !!migration.updateToken)) return token.toObject();
@@ -225,7 +225,7 @@ export class MigrationRunner extends MigrationRunnerBase {
         }
     }
 
-    async #migrateUser(user: UserPF2e, migrations: MigrationBase[]): Promise<void> {
+    async #migrateUser(user: UserAvant, migrations: MigrationBase[]): Promise<void> {
         if (!migrations.some((migration) => !!migration.updateUser)) return;
 
         try {
@@ -241,15 +241,15 @@ export class MigrationRunner extends MigrationRunnerBase {
     }
 
     /** Migrates all documents in a compendium. Since getDocuments() already migrates, this merely loads and saves them */
-    async runCompendiumMigration<T extends ActorPF2e<null> | ItemPF2e<null>>(
+    async runCompendiumMigration<T extends ActorAvant<null> | ItemAvant<null>>(
         compendium: CompendiumCollection<T>,
     ): Promise<void> {
         const pack = compendium.metadata.id;
 
-        ui.notifications.info(game.i18n.format("PF2E.Migrations.Starting", { version: game.system.version }));
+        ui.notifications.info(game.i18n.format("AVANT.Migrations.Starting", { version: game.system.version }));
         const documents = await compendium.getDocuments();
         await compendium.documentClass.updateDocuments(documents, { diff: false, recursive: false, pack });
-        ui.notifications.info(game.i18n.format("PF2E.Migrations.Finished", { version: game.system.version }));
+        ui.notifications.info(game.i18n.format("AVANT.Migrations.Finished", { version: game.system.version }));
     }
 
     async runMigrations(migrations: MigrationBase[]): Promise<void> {
@@ -257,7 +257,7 @@ export class MigrationRunner extends MigrationRunnerBase {
 
         /** A roughly estimated "progress max" to reach, for display in the progress bar */
         const progress = new Progress({
-            label: game.i18n.localize("PF2E.Migrations.Running"),
+            label: game.i18n.localize("AVANT.Migrations.Running"),
             max:
                 game.actors.size +
                 game.items.size +
@@ -312,7 +312,7 @@ export class MigrationRunner extends MigrationRunnerBase {
                 // Only migrate if the delta of the synthetic actor has migratable data
                 const deltaSource = token.delta?._source;
                 const hasMigratableData =
-                    (!!deltaSource && !!deltaSource.flags?.pf2e) ||
+                    (!!deltaSource && !!deltaSource.flags?.avant) ||
                     ((deltaSource ?? {}).items ?? []).length > 0 ||
                     Object.keys(deltaSource?.system ?? {}).length > 0;
 
@@ -339,11 +339,11 @@ export class MigrationRunner extends MigrationRunnerBase {
     async runMigration(force = false): Promise<void> {
         const schemaVersion = {
             latest: MigrationRunner.LATEST_SCHEMA_VERSION,
-            current: game.settings.get("pf2e", "worldSchemaVersion"),
+            current: game.settings.get("avant", "worldSchemaVersion"),
         };
         const systemVersion = game.system.version;
 
-        ui.notifications.info(game.i18n.format("PF2E.Migrations.Starting", { version: systemVersion }));
+        ui.notifications.info(game.i18n.format("AVANT.Migrations.Starting", { version: systemVersion }));
 
         const migrationsToRun = force
             ? this.migrations
@@ -368,6 +368,6 @@ export class MigrationRunner extends MigrationRunnerBase {
             }
         }
 
-        await game.settings.set("pf2e", "worldSchemaVersion", schemaVersion.latest);
+        await game.settings.set("avant", "worldSchemaVersion", schemaVersion.latest);
     }
 }

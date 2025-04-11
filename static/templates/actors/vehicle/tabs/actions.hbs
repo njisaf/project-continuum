@@ -3,7 +3,7 @@
         <div class="actions-tabs-wrapper">
             <section class="actions-panels major">
                 <div class="toggles section-container headerless">
-                    {{#if toggles.actions}}{{> "systems/pf2e/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}{{/if}}
+                    {{#if toggles.actions}}{{> "systems/avant/templates/actors/partials/toggles.hbs" toggles=toggles.actions}}{{/if}}
                 </div>
                 {{#each actions as |section sid|}}
                     <header class="action-header">
@@ -15,16 +15,16 @@
                                     data-action="create-item"
                                     data-type="action"
                                     data-action-type="{{sid}}"
-                                ><i class="fa-solid fa-fw fa-plus"></i>{{localize "PF2E.CreateActionTitle"}}</button>
+                                ><i class="fa-solid fa-fw fa-plus"></i>{{localize "AVANT.CreateActionTitle"}}</button>
                                 <button type="button" data-action="browse-abilities">
-                                    <i class="fa-solid fa-fw fa-search"></i>{{localize "PF2E.BrowseLabel"}}
+                                    <i class="fa-solid fa-fw fa-search"></i>{{localize "AVANT.BrowseLabel"}}
                                 </button>
                             </div>
                         {{/if}}
                     </header>
                     <ol class="actions-list item-list directory-list strikes-list">
                         {{#each section.actions as |action aid|}}
-                            {{> "systems/pf2e/templates/actors/partials/action.hbs" action=action}}
+                            {{> "systems/avant/templates/actors/partials/action.hbs" action=action}}
                         {{/each}}
                     </ol>
                 {{/each}}

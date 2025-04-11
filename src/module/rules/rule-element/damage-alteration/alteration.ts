@@ -1,6 +1,6 @@
-import type { ActorPF2e } from "@actor";
-import { DamageDicePF2e, ModifierPF2e } from "@actor/modifiers.ts";
-import type { ItemPF2e } from "@item";
+import type { ActorAvant } from "@actor";
+import { DamageDiceAvant, ModifierAvant } from "@actor/modifiers.ts";
+import type { ItemAvant } from "@item";
 import { damageDieSizeToFaces, nextDamageDieSize } from "@system/damage/helpers.ts";
 import { BaseDamageData } from "@system/damage/types.ts";
 import { DAMAGE_DICE_FACES, DAMAGE_TYPES } from "@system/damage/values.ts";
@@ -27,8 +27,8 @@ class DamageAlteration {
     }
 
     getNewValue(
-        damage: BaseDamageData | DamageDicePF2e | ModifierPF2e,
-        item: ItemPF2e | null,
+        damage: BaseDamageData | DamageDiceAvant | ModifierAvant,
+        item: ItemAvant | null,
     ): DamageAlterationValue | null {
         const rule = this.#rule;
         const resolvables: Record<string, unknown> = item
@@ -92,9 +92,9 @@ class DamageAlteration {
         }
     }
 
-    applyTo<TDamage extends DamageDicePF2e | ModifierPF2e>(
+    applyTo<TDamage extends DamageDiceAvant | ModifierAvant>(
         damage: TDamage,
-        options: { item: ItemPF2e<ActorPF2e>; test: string[] | Set<string> },
+        options: { item: ItemAvant<ActorAvant>; test: string[] | Set<string> },
     ): TDamage {
         const rule = this.#rule;
         if (rule.ignored) return damage;
@@ -127,8 +127,8 @@ class DamageAlteration {
                 damage.dieSize !== stringValue &&
                 options.item.isOfType("weapon")
             ) {
-                if (options.item.flags.pf2e.damageFacesUpgraded) return damage;
-                options.item.flags.pf2e.damageFacesUpgraded = true;
+                if (options.item.flags.avant.damageFacesUpgraded) return damage;
+                options.item.flags.avant.damageFacesUpgraded = true;
             }
             damage.dieSize = stringValue;
         } else if (this.property === "dice-number" && "diceNumber" in damage && typeof value === "number") {
@@ -142,7 +142,7 @@ class DamageAlteration {
 interface PartialRuleElement extends Pick<DamageAlterationRuleElement, "mode" | "property" | "slug" | "value"> {
     resolveValue?: DamageAlterationRuleElement["resolveValue"];
     ignored?: boolean;
-    parent?: ItemPF2e<ActorPF2e>;
+    parent?: ItemAvant<ActorAvant>;
     predicate?: Predicate;
 }
 

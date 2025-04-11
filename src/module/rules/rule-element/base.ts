@@ -1,9 +1,9 @@
-import type { ActorPF2e, ActorType } from "@actor";
-import type { CheckModifier, DamageDicePF2e, ModifierPF2e } from "@actor/modifiers.ts";
-import { ItemPF2e, type WeaponPF2e } from "@item";
-import { ItemSourcePF2e } from "@item/base/data/index.ts";
+import type { ActorAvant, ActorType } from "@actor";
+import type { CheckModifier, DamageDiceAvant, ModifierAvant } from "@actor/modifiers.ts";
+import { ItemAvant, type WeaponAvant } from "@item";
+import { ItemSourceAvant } from "@item/base/data/index.ts";
 import { reduceItemName } from "@item/helpers.ts";
-import type { TokenDocumentPF2e } from "@scene/index.ts";
+import type { TokenDocumentAvant } from "@scene/index.ts";
 import { CheckCheckContext, CheckRoll } from "@system/check/index.ts";
 import { LaxSchemaField, PredicateField, SlugField } from "@system/schema-data-fields.ts";
 import { tupleHasValue } from "@util";
@@ -18,8 +18,8 @@ import { BracketedValue, RuleElementSchema, RuleElementSource, RuleValue } from 
  *
  * @category RuleElement
  */
-abstract class RuleElementPF2e<TSchema extends RuleElementSchema = RuleElementSchema> extends foundry.abstract
-    .DataModel<ItemPF2e<ActorPF2e>, TSchema> {
+abstract class RuleElementAvant<TSchema extends RuleElementSchema = RuleElementSchema> extends foundry.abstract
+    .DataModel<ItemAvant<ActorAvant>, TSchema> {
     declare protected static _schema: LaxSchemaField<RuleElementSchema> | undefined;
 
     declare label: string;
@@ -96,13 +96,13 @@ abstract class RuleElementPF2e<TSchema extends RuleElementSchema = RuleElementSc
         const fields = foundry.data.fields;
         return {
             key: new fields.StringField({ required: true, nullable: false, blank: false, initial: undefined }),
-            slug: new SlugField({ required: true, nullable: true, label: "PF2E.RuleEditor.General.Slug" }),
+            slug: new SlugField({ required: true, nullable: true, label: "AVANT.RuleEditor.General.Slug" }),
             label: new fields.StringField({
                 required: false,
                 nullable: false,
                 blank: false,
                 initial: undefined,
-                label: "PF2E.RuleEditor.General.Label",
+                label: "AVANT.RuleEditor.General.Label",
             }),
             priority: new fields.NumberField({ required: true, nullable: false, integer: true, initial: 100 }),
             ignored: new fields.BooleanField({ required: false, nullable: false, initial: false }),
@@ -128,12 +128,12 @@ abstract class RuleElementPF2e<TSchema extends RuleElementSchema = RuleElementSc
         return this.parent;
     }
 
-    get actor(): ActorPF2e {
+    get actor(): ActorAvant {
         return this.parent.actor;
     }
 
     /** Retrieves the token from the actor, or from the active tokens. */
-    get token(): TokenDocumentPF2e | null {
+    get token(): TokenDocumentAvant | null {
         const actor = this.actor;
         if (actor.token) return actor.token;
 
@@ -184,9 +184,9 @@ abstract class RuleElementPF2e<TSchema extends RuleElementSchema = RuleElementSc
         const fullMessage = message.join(" ");
         const { name, uuid } = this.item;
         if (!this.suppressWarnings) {
-            const ruleName = game.i18n.localize(`PF2E.RuleElement.${this.key}`);
+            const ruleName = game.i18n.localize(`AVANT.RuleElement.${this.key}`);
             console.warn(
-                `PF2e System | ${ruleName} rules element on item ${name} (${uuid}) failed to validate: ${fullMessage}`,
+                `Avant System | ${ruleName} rules element on item ${name} (${uuid}) failed to validate: ${fullMessage}`,
             );
             this.validationFailures.joint ??= new foundry.data.validation.DataModelValidationFailure({
                 message: fullMessage,
@@ -204,7 +204,7 @@ abstract class RuleElementPF2e<TSchema extends RuleElementSchema = RuleElementSc
      *
      * Example:
      * {
-     *   "key": "PF2E.RuleElement.Note",
+     *   "key": "AVANT.RuleElement.Note",
      *   "selector": "will",
      *   "text": "<b>{item|name}</b> A success on a Will save vs fear is treated as a critical success.",
      *   "predicate": {
@@ -409,10 +409,10 @@ abstract class RuleElementPF2e<TSchema extends RuleElementSchema = RuleElementSc
     }
 }
 
-interface RuleElementPF2e<TSchema extends RuleElementSchema>
-    extends foundry.abstract.DataModel<ItemPF2e<ActorPF2e>, TSchema>,
+interface RuleElementAvant<TSchema extends RuleElementSchema>
+    extends foundry.abstract.DataModel<ItemAvant<ActorAvant>, TSchema>,
         ModelPropsFromSchema<RuleElementSchema> {
-    constructor: typeof RuleElementPF2e<TSchema>;
+    constructor: typeof RuleElementAvant<TSchema>;
 
     get schema(): LaxSchemaField<TSchema>;
 
@@ -447,28 +447,28 @@ interface RuleElementPF2e<TSchema extends RuleElementSchema>
      * @param domains Applicable predication domains for pending check
      * @param rollOptions Currently accumulated roll options for the pending check
      */
-    afterRoll?(params: RuleElementPF2e.AfterRollParams): Promise<void>;
+    afterRoll?(params: RuleElementAvant.AfterRollParams): Promise<void>;
 
     /** Runs before the rule's parent item's owning actor is updated */
-    preUpdateActor?(): Promise<{ create: ItemSourcePF2e[]; delete: string[] }>;
+    preUpdateActor?(): Promise<{ create: ItemSourceAvant[]; delete: string[] }>;
 
     /**
      * Runs before this rules element's parent item is created. The item is temporarilly constructed. A rule element can
      * alter itself before its parent item is stored on an actor; it can also alter the item source itself in the same
      * manner.
      */
-    preCreate?({ ruleSource, itemSource, pendingItems, operation }: RuleElementPF2e.PreCreateParams): Promise<void>;
+    preCreate?({ ruleSource, itemSource, pendingItems, operation }: RuleElementAvant.PreCreateParams): Promise<void>;
 
     /**
      * Runs before this rules element's parent item is created. The item is temporarilly constructed. A rule element can
      * alter itself before its parent item is stored on an actor; it can also alter the item source itself in the same
      * manner.
      */
-    preDelete?({ pendingItems, operation }: RuleElementPF2e.PreDeleteParams): Promise<void>;
+    preDelete?({ pendingItems, operation }: RuleElementAvant.PreDeleteParams): Promise<void>;
 
     /**
      * Runs before this rules element's parent item is updated */
-    preUpdate?(changes: DeepPartial<ItemSourcePF2e>): Promise<void>;
+    preUpdate?(changes: DeepPartial<ItemSourceAvant>): Promise<void>;
 
     /**
      * Runs after an item holding this rule is added to an actor. If you modify or add the rule after the item
@@ -505,33 +505,33 @@ interface RuleElementPF2e<TSchema extends RuleElementSchema>
     onDelete?(actorUpdates: Record<string, unknown>): void;
 
     /** An optional method for excluding damage modifiers and extra dice */
-    applyDamageExclusion?(weapon: WeaponPF2e, modifiers: (DamageDicePF2e | ModifierPF2e)[]): void;
+    applyDamageExclusion?(weapon: WeaponAvant, modifiers: (DamageDiceAvant | ModifierAvant)[]): void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-namespace RuleElementPF2e {
+namespace RuleElementAvant {
     export interface PreCreateParams<T extends RuleElementSource = RuleElementSource> {
         /** The source partial of the rule element's parent item to be created */
-        itemSource: ItemSourcePF2e;
+        itemSource: ItemSourceAvant;
         /** The source of the rule in `itemSource`'s `system.rules` array */
         ruleSource: T;
-        /** All items pending creation in a `ItemPF2e.createDocuments` call */
-        pendingItems: ItemSourcePF2e[];
+        /** All items pending creation in a `ItemAvant.createDocuments` call */
+        pendingItems: ItemSourceAvant[];
         /** Items temporarily constructed from pending item source */
-        tempItems: ItemPF2e<ActorPF2e>[];
+        tempItems: ItemAvant<ActorAvant>[];
         /** Updates that should be performed to items after pre creates conclude */
         itemUpdates: EmbeddedDocumentUpdateData[];
-        /** The `operation` object from the `ItemPF2e.createDocuments` call */
-        operation: Partial<DatabaseCreateOperation<ActorPF2e | null>>;
+        /** The `operation` object from the `ItemAvant.createDocuments` call */
+        operation: Partial<DatabaseCreateOperation<ActorAvant | null>>;
         /** Whether this preCreate run is from a pre-update reevaluation */
         reevaluation?: boolean;
     }
 
     export interface PreDeleteParams {
-        /** All items pending deletion in a `ItemPF2e.deleteDocuments` call */
-        pendingItems: ItemPF2e<ActorPF2e>[];
-        /** The context object from the `ItemPF2e.deleteDocuments` call */
-        operation: Partial<DatabaseDeleteOperation<ActorPF2e | null>>;
+        /** All items pending deletion in a `ItemAvant.deleteDocuments` call */
+        pendingItems: ItemAvant<ActorAvant>[];
+        /** The context object from the `ItemAvant.deleteDocuments` call */
+        operation: Partial<DatabaseDeleteOperation<ActorAvant | null>>;
     }
 
     export interface AfterRollParams {
@@ -549,11 +549,11 @@ interface ResolveValueParams {
     warn?: boolean;
 }
 
-interface RuleElementOptions extends ParentedDataModelConstructionOptions<ItemPF2e<ActorPF2e>> {
+interface RuleElementOptions extends ParentedDataModelConstructionOptions<ItemAvant<ActorAvant>> {
     /** If created from an item, the index in the source data */
     sourceIndex?: number;
     /** If data validation fails for any reason, do not emit console warnings */
     suppressWarnings?: boolean;
 }
 
-export { RuleElementPF2e, type RuleElementOptions };
+export { RuleElementAvant, type RuleElementOptions };

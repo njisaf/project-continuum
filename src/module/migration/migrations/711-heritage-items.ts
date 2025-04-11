@@ -1,7 +1,7 @@
 import { CharacterDetailsSource } from "@actor/character/data.ts";
 import { CreatureTrait } from "@actor/creature/types.ts";
-import { ActorSourcePF2e } from "@actor/data/index.ts";
-import { FeatSource, ItemSourcePF2e } from "@item/base/data/index.ts";
+import { ActorSourceAvant } from "@actor/data/index.ts";
+import { FeatSource, ItemSourceAvant } from "@item/base/data/index.ts";
 import { FeatSystemSource } from "@item/feat/data.ts";
 import { HeritageSource, HeritageSystemSource } from "@item/heritage/data.ts";
 import { Rarity } from "@module/data.ts";
@@ -20,123 +20,123 @@ export class Migration711HeritageItems extends MigrationBase {
     #officialAncestries: Record<string, { name: string; uuid: ItemUUID } | undefined> = {
         tengu: {
             name: "Tengu",
-            uuid: "Compendium.pf2e.ancestries.Item.18xDKYPDBLEv2myX",
+            uuid: "Compendium.avant.ancestries.Item.18xDKYPDBLEv2myX",
         },
         kitsune: {
             name: "Kitsune",
-            uuid: "Compendium.pf2e.ancestries.Item.4BL5wf1VF9feC2rY",
+            uuid: "Compendium.avant.ancestries.Item.4BL5wf1VF9feC2rY",
         },
         poppet: {
             name: "Poppet",
-            uuid: "Compendium.pf2e.ancestries.Item.6F2fSFC1Eo1JdpY4",
+            uuid: "Compendium.avant.ancestries.Item.6F2fSFC1Eo1JdpY4",
         },
         kobold: {
             name: "Kobold",
-            uuid: "Compendium.pf2e.ancestries.Item.7oQxL6wgsokD3QXG",
+            uuid: "Compendium.avant.ancestries.Item.7oQxL6wgsokD3QXG",
         },
         catfolk: {
             name: "Catfolk",
-            uuid: "Compendium.pf2e.ancestries.Item.972EkpJOPv9KkQIW",
+            uuid: "Compendium.avant.ancestries.Item.972EkpJOPv9KkQIW",
         },
         dwarf: {
             name: "Dwarf",
-            uuid: "Compendium.pf2e.ancestries.Item.BYj5ZvlXZdpaEgA6",
+            uuid: "Compendium.avant.ancestries.Item.BYj5ZvlXZdpaEgA6",
         },
         gnome: {
             name: "Gnome",
-            uuid: "Compendium.pf2e.ancestries.Item.CYlfsYLJcBOgqKtD",
+            uuid: "Compendium.avant.ancestries.Item.CYlfsYLJcBOgqKtD",
         },
         fleshwarp: {
             name: "Fleshwarp",
-            uuid: "Compendium.pf2e.ancestries.Item.FXlXmNBFiiz9oasi",
+            uuid: "Compendium.avant.ancestries.Item.FXlXmNBFiiz9oasi",
         },
         strix: {
             name: "Strix",
-            uuid: "Compendium.pf2e.ancestries.Item.GXcC6oVa5quzgNHD",
+            uuid: "Compendium.avant.ancestries.Item.GXcC6oVa5quzgNHD",
         },
         android: {
             name: "Android",
-            uuid: "Compendium.pf2e.ancestries.Item.GfLwE884NoRC7cRi",
+            uuid: "Compendium.avant.ancestries.Item.GfLwE884NoRC7cRi",
         },
         halfling: {
             name: "Halfling",
-            uuid: "Compendium.pf2e.ancestries.Item.GgZAHbrjnzWOZy2v",
+            uuid: "Compendium.avant.ancestries.Item.GgZAHbrjnzWOZy2v",
         },
         lizardfolk: {
             name: "Lizardfolk",
-            uuid: "Compendium.pf2e.ancestries.Item.HWEgF7Gmoq55VhTL",
+            uuid: "Compendium.avant.ancestries.Item.HWEgF7Gmoq55VhTL",
         },
         human: {
             name: "Human",
-            uuid: "Compendium.pf2e.ancestries.Item.IiG7DgeLWYrSNXuX",
+            uuid: "Compendium.avant.ancestries.Item.IiG7DgeLWYrSNXuX",
         },
         ratfolk: {
             name: "Ratfolk",
-            uuid: "Compendium.pf2e.ancestries.Item.P6PcVnCkh4XMdefw",
+            uuid: "Compendium.avant.ancestries.Item.P6PcVnCkh4XMdefw",
         },
         elf: {
             name: "Elf",
-            uuid: "Compendium.pf2e.ancestries.Item.PgKmsA2aKdbLU6O0",
+            uuid: "Compendium.avant.ancestries.Item.PgKmsA2aKdbLU6O0",
         },
         anadi: {
             name: "Anadi",
-            uuid: "Compendium.pf2e.ancestries.Item.TQEqWqc7BYiadUdY",
+            uuid: "Compendium.avant.ancestries.Item.TQEqWqc7BYiadUdY",
         },
         sprite: {
             name: "Sprite",
-            uuid: "Compendium.pf2e.ancestries.Item.TRqoeYfGAFjQbviF",
+            uuid: "Compendium.avant.ancestries.Item.TRqoeYfGAFjQbviF",
         },
         goloma: {
             name: "Goloma",
-            uuid: "Compendium.pf2e.ancestries.Item.c4secsSNG2AO7I5i",
+            uuid: "Compendium.avant.ancestries.Item.c4secsSNG2AO7I5i",
         },
         leshy: {
             name: "Leshy",
-            uuid: "Compendium.pf2e.ancestries.Item.cdhgByGG1WtuaK73",
+            uuid: "Compendium.avant.ancestries.Item.cdhgByGG1WtuaK73",
         },
         fetchling: {
             name: "Fetchling",
-            uuid: "Compendium.pf2e.ancestries.Item.hIA3qiUsxvLZXrFP",
+            uuid: "Compendium.avant.ancestries.Item.hIA3qiUsxvLZXrFP",
         },
         grippli: {
             name: "Grippli",
-            uuid: "Compendium.pf2e.ancestries.Item.hXM5jXezIki1cMI2",
+            uuid: "Compendium.avant.ancestries.Item.hXM5jXezIki1cMI2",
         },
         automaton: {
             name: "Automaton",
-            uuid: "Compendium.pf2e.ancestries.Item.kYsBAJ103T44agJF",
+            uuid: "Compendium.avant.ancestries.Item.kYsBAJ103T44agJF",
         },
         orc: {
             name: "Orc",
-            uuid: "Compendium.pf2e.ancestries.Item.lSGWXjcbOa6O5fTx",
+            uuid: "Compendium.avant.ancestries.Item.lSGWXjcbOa6O5fTx",
         },
         hobgoblin: {
             name: "Hobgoblin",
-            uuid: "Compendium.pf2e.ancestries.Item.piNLXUrm9iaGqD2i",
+            uuid: "Compendium.avant.ancestries.Item.piNLXUrm9iaGqD2i",
         },
         shoony: {
             name: "Shoony",
-            uuid: "Compendium.pf2e.ancestries.Item.q6rsqYARyOGXZA8F",
+            uuid: "Compendium.avant.ancestries.Item.q6rsqYARyOGXZA8F",
         },
         goblin: {
             name: "Goblin",
-            uuid: "Compendium.pf2e.ancestries.Item.sQfjTMDaZbT9DThq",
+            uuid: "Compendium.avant.ancestries.Item.sQfjTMDaZbT9DThq",
         },
         conrasu: {
             name: "Conrasu",
-            uuid: "Compendium.pf2e.ancestries.Item.tZn4qIHCUA6wCdnI",
+            uuid: "Compendium.avant.ancestries.Item.tZn4qIHCUA6wCdnI",
         },
         gnoll: {
             name: "Gnoll",
-            uuid: "Compendium.pf2e.ancestries.Item.vxbQ1Yw4qwgjTzqo",
+            uuid: "Compendium.avant.ancestries.Item.vxbQ1Yw4qwgjTzqo",
         },
         shisk: {
             name: "Shisk",
-            uuid: "Compendium.pf2e.ancestries.Item.x1YinOddgUxwOLqP",
+            uuid: "Compendium.avant.ancestries.Item.x1YinOddgUxwOLqP",
         },
         azarketi: {
             name: "Azarketi",
-            uuid: "Compendium.pf2e.ancestries.Item.yFoojz6q3ZjvceFw",
+            uuid: "Compendium.avant.ancestries.Item.yFoojz6q3ZjvceFw",
         },
     };
 
@@ -184,7 +184,7 @@ export class Migration711HeritageItems extends MigrationBase {
         return {
             _id: fu.randomID(),
             type: "heritage",
-            img: feature.img.endsWith("/feat.svg") ? "systems/pf2e/icons/default-icons/heritage.svg" : feature.img,
+            img: feature.img.endsWith("/feat.svg") ? "systems/avant/icons/default-icons/heritage.svg" : feature.img,
             name: feature.name,
             effects: [],
             folder: feature.folder,
@@ -210,7 +210,7 @@ export class Migration711HeritageItems extends MigrationBase {
         };
     }
 
-    override async updateActor(actorSource: ActorSourcePF2e): Promise<void> {
+    override async updateActor(actorSource: ActorSourceAvant): Promise<void> {
         const heritageFeatures = actorSource.items.filter((i): i is FeatSource => this.#isHeritageFeature(i));
         const firstHeritageFeature = heritageFeatures[0];
         const hasRealHeritage = actorSource.items.some((i) => i.type === "heritage");
@@ -231,13 +231,13 @@ export class Migration711HeritageItems extends MigrationBase {
         }
     }
 
-    override async updateItem(itemSource: ItemSourcePF2e, actorSource?: ActorSourcePF2e): Promise<void> {
+    override async updateItem(itemSource: ItemSourceAvant, actorSource?: ActorSourceAvant): Promise<void> {
         if (actorSource || !this.#isHeritageFeature(itemSource)) return;
 
         const newSource: { type: string; img: ImageFilePath; system: object } = itemSource;
         newSource.type = "heritage";
-        if (itemSource.img === "systems/pf2e/icons/default-icons/feat.svg") {
-            itemSource.img = "systems/pf2e/icons/default-icons/heritage.svg";
+        if (itemSource.img === "systems/avant/icons/default-icons/feat.svg") {
+            itemSource.img = "systems/avant/icons/default-icons/heritage.svg";
         }
         type WithPropertyDeletions = HeritageSystemSourceWithNoAncestrySlug & FeatPropertyDeletions;
         const newSystemData: WithPropertyDeletions = this.#heritageFromFeat(itemSource).system;
@@ -260,7 +260,7 @@ type FeatPropertyDeletions = DeepPartial<Omit<FeatSystemSource, "traits">> & {
     [K in DeletionKeys | FeatKeys]?: unknown;
 };
 
-type MaybeWithHeritageFeatType<TSource extends ItemSourcePF2e = ItemSourcePF2e> = TSource & {
+type MaybeWithHeritageFeatType<TSource extends ItemSourceAvant = ItemSourceAvant> = TSource & {
     system: {
         featType?: {
             value: string;

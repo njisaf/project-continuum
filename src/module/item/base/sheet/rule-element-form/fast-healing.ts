@@ -9,14 +9,14 @@ import { tagify } from "@util/tags.ts";
 import { RuleElementForm, RuleElementFormSheetData } from "./base.ts";
 
 class FastHealingForm extends RuleElementForm<FastHealingSource, FastHealingRuleElement> {
-    override template = "systems/pf2e/templates/items/rules/fast-healing.hbs";
+    override template = "systems/avant/templates/items/rules/fast-healing.hbs";
     override activateListeners(html: HTMLElement): void {
         super.activateListeners(html);
 
         // Tagify the selector list. Valid defaults should be the IWR weakness types
         const selectorElement = htmlQuery<HTMLTagifyTagsElement>(html, "tagify-tags.deactivated-by");
         if (selectorElement) {
-            const whitelist = CONFIG.PF2E.weaknessTypes;
+            const whitelist = CONFIG.AVANT.weaknessTypes;
             tagify(selectorElement, { whitelist, enforceWhitelist: false });
         }
     }
@@ -25,8 +25,8 @@ class FastHealingForm extends RuleElementForm<FastHealingSource, FastHealingRule
         return {
             ...(await super.getData()),
             types: {
-                "fast-healing": "PF2E.Encounter.Broadcast.FastHealing.fast-healing.Name",
-                regeneration: "PF2E.Encounter.Broadcast.FastHealing.regeneration.Name",
+                "fast-healing": "AVANT.Encounter.Broadcast.FastHealing.fast-healing.Name",
+                regeneration: "AVANT.Encounter.Broadcast.FastHealing.regeneration.Name",
             },
         };
     }
