@@ -1,0 +1,118 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Character Sheet Editing in Avant
+
+## Overview
+
+The Avant system is built as a fork of the Pathfinder 2e FoundryVTT module. The character sheet is a complex component with multiple tabs and sections that can be customized and extended.
+
+## Character Sheet Architecture
+
+### Core Structure
+- **Main Sheet File**: `avant/static/templates/actors/character/sheet.hbs`
+- **Tab System**: Uses a tab-based navigation system with multiple content sections
+- **Data Flow**: Character data flows from the `CharacterAvant` document class to the `CharacterSheetAvant` sheet class
+
+### Key Components
+
+1. **Sheet Tabs**:
+   - Character information
+   - Actions
+   - Inventory
+   - Spellcasting
+   - Crafting
+   - Proficiencies
+   - Feats
+   - Effects
+   - Biography
+   - PFS (Pathfinder Society)
+
+2. **Tab Visibility Management**:
+   - The `PCSheetTabManager` class handles tab visibility
+   - Users can toggle tab visibility via a UI
+   - Tab visibility state is stored in actor flags (`flags.avant.sheetTabs`)
+
+3. **Character Data Structure**:
+   - Ancestry, Heritage, Background
+   - Class and abilities
+   - Attributes and modifiers
+   - Skills and proficiencies
+   - Languages
+   - Movement speeds
+
+## Styling and Appearance
+
+The character sheet uses a combination of:
+- SCSS files for styling (e.g., `_character.scss`, `_attribute-builder.scss`)
+- CSS variables for theming
+- Flexbox and Grid for layout
+- Conditional classes for state management (e.g., `selected`, `hidden`)
+
+## Modifying the Character Sheet
+
+### Adding New Tabs
+1. Add the tab to the `CHARACTER_SHEET_TABS` constant in `avant/src/module/actor/character/values.ts`
+2. Create a new template file for the tab content
+3. Add the tab link to the navigation in `sheet.hbs`
+4. Add the tab content section to the sheet body
+5. Update the `CharacterSheetData` interface to include any new data needed
+
+### Modifying Existing Tabs
+1. Locate the appropriate template file (e.g., `avant/static/templates/actors/character/tabs/character.hbs`)
+2. Modify the HTML template structure
+3. Update any related styles in the SCSS files
+4. If necessary, modify the data preparation in the `getData()` method of `CharacterSheetAvant`
+
+### Attribute Builder
+The Attribute Builder is a complex component for managing character attributes:
+- Handles ancestry, background, and class boosts
+- Manages voluntary flaws
+- Supports both automatic and manual input modes
+- Uses a grid-based UI for attribute selection
+
+## Key Files for Editing
+
+1. **Document Class**: `avant/src/module/actor/character/document.ts` 
+   - Handles data preparation and business logic
+
+2. **Sheet Class**: `avant/src/module/actor/character/sheet.ts`
+   - Handles UI interaction and rendering
+
+3. **Templates**:
+   - Main sheet: `avant/static/templates/actors/character/sheet.hbs`
+   - Tab templates: `avant/static/templates/actors/character/tabs/*.hbs`
+   - Partials: `avant/static/templates/actors/character/partials/*.hbs`
+
+4. **Styles**:
+   - Character styles: `avant/src/styles/actor/character/_character.scss`
+   - Specific component styles: `avant/src/styles/actor/character/_attribute-builder.scss`
+
+## Building Process
+
+When making changes:
+1. Modify the relevant files
+2. Run `npm run build` to compile changes
+3. Be aware of hidden system files like `.DS_Store` that can cause build errors
+4. Check for warnings about deprecated SASS imports that might need future updating
+
+## Best Practices
+
+1. Follow existing naming conventions and code style
+2. Use proper typing for TypeScript components
+3. Respect the modular architecture and separation of concerns
+4. Test changes thoroughly with different character configurations
+5. Maintain compatibility with existing data structures
+6. Replace any references to "pathfinder" or "pf2e" with "avant" equivalents
+
+## Troubleshooting
+
+Common issues include:
+- Build errors from system files like `.DS_Store`
+- SASS deprecation warnings
+- Template reference errors
+- Type mismatches in TypeScript
+
+For build errors, check the build logs and verify file permissions and existence.

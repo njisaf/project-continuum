@@ -244,6 +244,20 @@
                     font-size: var(--font-size-14);
                 }
 
+                input.number {
+                    background: none;
+                    border: none;
+                    color: var(--color-text-dark-2);
+                    font: 500 var(--font-size-18) / 1 var(--serif);
+                    max-width: 3em;
+                    text-align: center;
+                    
+                    &:focus {
+                        box-shadow: 0 0 0 1px var(--color-border-highlight);
+                        outline: none;
+                    }
+                }
+                
                 &.rollable {
                     svg {
                         width: 1rem;

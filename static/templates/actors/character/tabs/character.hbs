@@ -46,27 +46,16 @@
     <div class="subsection speeds">
         <header>
             <span>{{localize "AVANT.Actor.Speed.Plural"}}</span>
-            <button type="button" class="crb-tag-selector" data-tag-selector="speed-types">
-                <i class="fa-solid fa-fw fa-edit"></i>{{localize "AVANT.Edit"}}
-            </button>
         </header>
 
-        {{#each speeds as |speed|}}
-            <div class="speed">
-                <div class="label">{{localize speed.label}}</div>
-                {{#if speed.value}}
-                    <div class="value" data-tooltip="{{speed.breakdown}}">
-                        {{{icon}}}
-                        <span class="number">{{speed.value}}</span>
-                        <span class="unit">{{localize "AVANT.TravelSpeed.FeetAcronym"}}</span>
-                    </div>
-                {{else if speed.action}}
-                    <a class="value rollable" data-action="use-action" data-action-slug="{{speed.action}}">{{> "systems/avant/templates/actors/character/icons/d20.hbs"}}</a>
-                {{else}}
-                    <div class="value empty">&mdash;</div>
-                {{/if}}
+        <div class="speed">
+            <div class="label">{{localize "AVANT.Actor.Speed.Type.Land"}}</div>
+            <div class="value" data-tooltip="{{speeds.[0].breakdown}}">
+                {{{speeds.[0].icon}}}
+                <input type="number" name="system.attributes.speed.value" class="number" value="{{speeds.[0].value}}" data-dtype="Number" />
+                <span class="unit">{{localize "AVANT.TravelSpeed.FeetAcronym"}}</span>
             </div>
-        {{/each}}
+        </div>
     </div>
 </section>
 
