@@ -10,7 +10,7 @@
             <a class="hover-icon" data-action="show-image" data-tooltip="SIDEBAR.CharArt"><i class="fa-solid fa-image fa-fw"></i></a>
         </div>
 
-        <div class="abcd">
+        {{!-- <div class="abcd">
             <ul class="tags traits paizo-style">
                 {{#if ancestry}}
                     <li class="tag size">{{localize (lookup actorSizes data.traits.size.value)}}</li>
@@ -31,15 +31,36 @@
             <div class="detail vocation{{#if background}} selected{{/if}}">
                 {{> detailItem item=background type="vocation" compendium="avant.backgrounds"}}
             </div>
+        </div> --}}
+
+        <div class="character-text-fields">
+            <div class="field-group">
+                <label>
+                    <span class="details-label">{{localize "TYPES.Item.ancestry"}}</span>
+                    <input type="text" name="system.details.ancestryText.value" value="{{data.details.ancestryText.value}}" />
+                </label>
+            </div>
+            <div class="field-group">
+                <label>
+                    <span class="details-label">{{localize "TYPES.Item.culture"}}</span>
+                    <input type="text" name="system.details.cultureText.value" value="{{data.details.cultureText.value}}" />
+                </label>
+            </div>
+            <div class="field-group">
+                <label>
+                    <span class="details-label">{{localize "TYPES.Item.vocation"}}</span>
+                    <input type="text" name="system.details.vocationText.value" value="{{data.details.vocationText.value}}" />
+                </label>
+            </div>
         </div>
 
         <hr />
     </div>
 
-    <div class="subsection background">
+    <div class="subsection personality">
         <label>
-            <span class="details-label">{{localize "AVANT.Background"}}</span>
-            <textarea class="details-input" name="system.details.background.value" rows="4">{{data.details.background.value}}</textarea>
+            <span class="details-label">{{localize "AVANT.Personality"}}</span>
+            <textarea class="details-input" name="system.details.biography.personality" rows="4">{{data.details.biography.personality}}</textarea>
         </label>
     </div>
 

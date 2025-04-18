@@ -124,6 +124,12 @@ interface CharacterDetailsSource extends CreatureDetailsSource {
     /** Character ethnicity */
     ethnicity: { value: string };
     nationality: { value: string };
+    /** Simple text input for ancestry */
+    ancestryText: { value: string };
+    /** Simple text input for culture (heritage) */
+    cultureText: { value: string };
+    /** Simple text input for vocation (background) */
+    vocationText: { value: string };
     /** User-provided biography for their character */
     biography: CharacterBiography;
 
@@ -443,6 +449,7 @@ interface CharacterDetails extends Omit<CharacterDetailsSource, "alliance">, Cre
     heritage: { name: string; trait: string | null } | null;
     class: { name: string; trait: string } | null;
     deities: CharacterDeities;
+    // Text fields for Ancestry, Culture and Vocation included from CharacterDetailsSource
 }
 
 interface CharacterDeities {

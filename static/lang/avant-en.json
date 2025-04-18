@@ -9,6 +9,7 @@
     },
     "AVANT": {
         "Background": "Background",
+        "Personality": "Personality",
         "GenderPronoun": "Gender/Pronouns",
         "Age": "Age",
         "Ethnicity": "Ethnicity",

@@ -325,6 +325,11 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
               ? "party"
               : "opposition";
 
+        // Initialize text fields if they don't exist
+        details.ancestryText = details.ancestryText || { value: "" };
+        details.cultureText = details.cultureText || { value: "" };
+        details.vocationText = details.vocationText || { value: "" };
+
         // Attributes
         const attributes: DeepPartial<CharacterAttributes> = this.system.attributes;
         attributes.polymorphed = false;
