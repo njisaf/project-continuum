@@ -98,6 +98,8 @@ interface CharacterAttributesSource extends ActorAttributesSource {
         /** Stamina points: present if Stamina variant is enabled  */
         sp?: { value: number };
     };
+    /** Optional simplified display format for HP in the character sheet */
+    simpleHP?: string;
     speed: {
         value: number;
         otherSpeeds: {

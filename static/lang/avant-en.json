@@ -9,6 +9,7 @@
     },
     "AVANT": {
         "Background": "Background",
+        "HitPoints": "Hit Points",
         "Personality": "Personality",
         "GenderPronoun": "Gender/Pronouns",
         "Age": "Age",

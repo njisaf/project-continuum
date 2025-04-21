@@ -313,6 +313,45 @@ aside {
                     color: var(--text-light);
                 }
             }
+            
+            /* Simplified HP styling */
+            &.simplified {
+                padding: var(--space-8) 0;
+                
+                .hp-simplified {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                    
+                    .sidebar_label {
+                        font-weight: bold;
+                        margin-bottom: var(--space-4);
+                    }
+                    
+                    input[type="text"] {
+                        width: 60%;
+                        font-size: var(--font-size-28);
+                        text-align: right;
+                        padding: var(--space-6);
+                        background-color: var(--color-pf-primary);
+                        border: 1px solid var(--sidebar-title);
+                        border-radius: 4px;
+                        color: var(--text-light);
+                        box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+                        margin-top: var(--space-4);
+                        display: inline-block;
+                    }
+                    
+                    .hp-max {
+                        display: inline-block;
+                        font-size: var(--font-size-28);
+                        color: var(--color-pf-tertiary-light);
+                        vertical-align: middle;
+                        margin-left: var(--space-2);
+                    }
+                }
+            }
         }
 
         .stamina {
@@ -536,6 +575,78 @@ aside {
         .perception {
             .pf-rank {
                 margin-left: auto;
+            }
+        }
+
+        .speeds {
+            display: flex;
+    
+            .speed {
+                align-items: center;
+                display: flex;
+                flex: 1 0 0;
+                flex-direction: column;
+                text-align: center;
+    
+                & + .speed {
+                    border-left: 1px solid #d3ccbc;
+                }
+    
+                .label {
+                    color: var(--color-pf-alternate-dark);
+                    font: 500 var(--font-size-14) var(--sans-serif);
+                    font-variant: small-caps;
+                    position: relative;
+                }
+    
+                .value {
+                    align-items: baseline;
+                    color: var(--color-text-dark-2);
+                    display: flex;
+                    font: 500 var(--font-size-18) / 1 var(--serif);
+                    gap: 0.25ch;
+                    padding: var(--space-4) var(--space-4) 0;
+                    position: relative;
+    
+                    i {
+                        color: var(--color-pf-alternate-dark);
+                        font-size: var(--font-size-13);
+                        opacity: 0.85;
+                    }
+    
+                    .unit {
+                        font-size: var(--font-size-14);
+                    }
+    
+                    input.number {
+                        background: none;
+                        border: none;
+                        color: var(--color-text-dark-2);
+                        font: 500 var(--font-size-18) / 1 var(--serif);
+                        max-width: 3em;
+                        text-align: center;
+                        
+                        &:focus {
+                            box-shadow: 0 0 0 1px var(--color-border-highlight);
+                            outline: none;
+                        }
+                    }
+                    
+                    &.rollable {
+                        svg {
+                            width: 1rem;
+                            height: 1rem;
+    
+                            path {
+                                fill: var(--color-text-dark-2);
+                            }
+                        }
+    
+                        &:hover svg {
+                            @include die-spin;
+                        }
+                    }
+                }
             }
         }
 

@@ -1,0 +1,79 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Checklist for Adding New Character Attributes
+
+## Data Structure Updates
+1. Add the field to the appropriate interface in `src/module/actor/character/data.ts`
+   - For character attributes: Add to `CharacterAttributesSource` interface
+   - For character details: Add to `CharacterDetailsSource` interface
+   - For character resources: Add to `CharacterResourcesSource` interface
+
+2. Ensure the field has proper typing and documentation:
+   ```typescript
+   /** Description of what this field does */
+   newField?: string;  // Add question mark for optional fields
+   ```
+
+## Data Preparation
+3. Update `prepareDerivedData()` in `src/module/actor/character/document.ts` if the field needs to be:
+   - Calculated from other fields
+   - Initialized with default values
+   - Modified during data preparation
+
+4. For derived values, add to `prepareBaseData()` in the same file if it needs to happen earlier in the preparation chain
+
+## UI Template Updates
+5. Add the field to the appropriate template in `avant/static/templates/actors/`
+   - For character attributes: Usually in `actors/character/partials/sidebar.hbs`
+   - Use proper naming conventions in the template:
+     ```handlebars
+     <input name="system.attributes.newField" value="{{data.attributes.newField}}" />
+     ```
+
+6. Add proper CSS styles in the appropriate SCSS file:
+   - For sidebar elements: `avant/src/styles/actor/character/_sidebar.scss`
+   - For other elements: Find the appropriate file based on location
+
+## Localization
+7. Add localization strings to `avant/static/lang/avant-en.json`
+   - Use proper nesting based on field context
+   - Example:
+     ```json
+     "AVANT": {
+       "NewFieldName": "Human-Readable Field Name",
+       "Actor": {
+         "Character": {
+           "NewFieldCategory": "Category Name"
+         }
+       }
+     }
+     ```
+
+## Event Handling
+8. If the field requires special handling (beyond standard form submission):
+   - Add an event handler in `activateListeners()` in `src/module/actor/character/sheet.ts`
+   - Or add to the `activateClickListener()` method if it's a button/action
+
+## Data Persistence
+9. Ensure proper data persistence in `_updateObject()` if needed (for special formatting)
+
+10. If the field requires validation or adjustment before saving, add logic to:
+    - `_preUpdate()` in `src/module/actor/character/document.ts`
+
+## Migration (if applicable)
+11. Create a migration script in `src/module/migration/migrations/` if adding to existing actors
+    - Follow the pattern of existing migrations
+    - Add the migration to the migration runner
+
+## Testing
+12. Test with new and existing characters
+13. Check behavior with and without data
+14. Verify all UI elements render correctly
+15. Test all associated functionality
+
+## Documentation
+16. Update any relevant documentation
+17. Add comments to code explaining complex logic or calculations
