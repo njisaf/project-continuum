@@ -96,6 +96,10 @@ const abilities: Record<AttributeString, string> = {
     int: "AVANT.AbilityInt",
     wis: "AVANT.AbilityWis",
     cha: "AVANT.AbilityCha",
+    mgt: "AVANT.AbilityMgt",
+    gra: "AVANT.AbilityGra",
+    intl: "AVANT.AbilityIntl",
+    foc: "AVANT.AbilityFoc",
 };
 
 // Senses
@@ -690,6 +694,18 @@ export const AVANTCONFIG = {
         stealth: { label: "AVANT.Skill.Stealth", attribute: "dex" },
         survival: { label: "AVANT.Skill.Survival", attribute: "wis" },
         thievery: { label: "AVANT.Skill.Thievery", attribute: "dex" },
+        command: { label: "AVANT.Skill.Command", attribute: "mgt" },
+        force: { label: "AVANT.Skill.Force", attribute: "mgt" },
+        surge: { label: "AVANT.Skill.Surge", attribute: "mgt" },
+        charm: { label: "AVANT.Skill.Charm", attribute: "gra" },
+        finesse: { label: "AVANT.Skill.Finesse", attribute: "gra" },
+        hide: { label: "AVANT.Skill.Hide", attribute: "gra" },
+        debate: { label: "AVANT.Skill.Debate", attribute: "intl" },
+        inspect: { label: "AVANT.Skill.Inspect", attribute: "intl" },
+        recall: { label: "AVANT.Skill.Recall", attribute: "intl" },
+        discern: { label: "AVANT.Skill.Discern", attribute: "foc" },
+        endure: { label: "AVANT.Skill.Endure", attribute: "foc" },
+        intuit: { label: "AVANT.Skill.Intuit", attribute: "foc" },
     }) satisfies Record<SkillSlug, { label: string; attribute: AttributeString }>,
 
     featCategories,

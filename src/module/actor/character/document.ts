@@ -135,8 +135,19 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
         return this.system.details.keyability.value || "str";
     }
 
-    /** This PC's ability scores */
+    /**
+     * Returns a copy of the character's ability scores (attributes)
+     * 
+     * This getter provides access to the character's six core attributes 
+     * (Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma).
+     * The values are used throughout the system to calculate modifiers for
+     * skills, saving throws, attacks, and other statistics.
+     * 
+     * @returns A deep copy of the character's ability scores
+     * @override
+     */
     override get abilities(): CharacterAbilities {
+        console.log(`Getting ability scores for ${this.name}:`, this.system.abilities);
         return fu.deepClone(this.system.abilities);
     }
 
@@ -269,6 +280,22 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
             fu.mergeObject({ mod: 0 }, this.system.abilities?.[a] ?? {}),
         ]);
 
+        // Initialize custom attributes with default values if they don't exist
+        console.log('Initializing custom attributes');
+        const customAttributes = this.system.attributes;
+        customAttributes.might = customAttributes.might ?? { value: 0 };
+        customAttributes.grace = customAttributes.grace ?? { value: 0 };
+        customAttributes.intellect = customAttributes.intellect ?? { value: 0 };
+        customAttributes.focus = customAttributes.focus ?? { value: 0 };
+        
+        // Initialize corresponding ability modifiers
+        if (this.system.abilities.mgt) this.system.abilities.mgt.mod = customAttributes.might.value;
+        if (this.system.abilities.gra) this.system.abilities.gra.mod = customAttributes.grace.value;
+        if (this.system.abilities.intl) this.system.abilities.intl.mod = customAttributes.intellect.value;
+        if (this.system.abilities.foc) this.system.abilities.foc.mod = customAttributes.focus.value;
+        
+        console.log('Custom attributes initialized:', customAttributes);
+
         this.system.perception.rank = 0;
 
         type SystemDataPartial = DeepPartial<
@@ -346,8 +373,15 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
         attributes.classhp = 0;
 
         // Skills
+        // Initialize the skill data structure using attributes from CONFIG.AVANT.skills
+        // Each skill is linked to its governing attribute and gets a rank value 
+        // (0-4 corresponding to untrained through legendary)
+        console.log("Initializing base skill data structure");
         system.skills = R.mapToObj(R.entries(CONFIG.AVANT.skills), ([key, { attribute }]) => {
+            // Get current rank from source data or default to 0 (untrained)
             const rank = Math.clamp(this._source.system.skills[key]?.rank || 0, 0, 4) as ZeroToFour;
+            console.log(`Initializing skill ${key} with attribute ${attribute}, rank ${rank}`);
+            // Skills that use Dex or Str might be affected by armor penalties
             return [key, { rank, attribute, armor: ["dex", "str"].includes(attribute) }];
         });
 
@@ -468,7 +502,52 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
         this.prepareBuildData();
     }
 
+    /**
+     * Prepares derived data for the character based on raw data and rules
+     * 
+     * This is one of the main data preparation methods that:
+     * 1. Processes ability scores (attributes) and their modifiers
+     * 2. Sets up roll options based on attributes
+     * 3. Prepares saving throws and skills that depend on attributes
+     * 4. Initializes AC, perception, and other derived statistics
+     * 
+     * All attribute-dependent calculations flow from this method.
+     * 
+     * @override
+     */
     override prepareDerivedData(): void {
+        super.prepareDerivedData();
+
+        // Connect custom attributes to abilities for display in the UI
+        console.log("Connecting custom attributes to abilities");
+        const { abilities, attributes } = this.system;
+        
+        // Set ability modifiers from our custom attributes if they exist
+        if (abilities.mgt && attributes.might) {
+            console.log(`Setting mgt.mod from might attribute: ${attributes.might.value}`);
+            abilities.mgt.mod = attributes.might.value;
+        }
+        
+        if (abilities.gra && attributes.grace) {
+            console.log(`Setting gra.mod from grace attribute: ${attributes.grace.value}`);
+            abilities.gra.mod = attributes.grace.value;
+        }
+        
+        if (abilities.intl && attributes.intellect) {
+            console.log(`Setting intl.mod from intellect attribute: ${attributes.intellect.value}`);
+            abilities.intl.mod = attributes.intellect.value;
+        }
+        
+        if (abilities.foc && attributes.focus) {
+            console.log(`Setting foc.mod from focus attribute: ${attributes.focus.value}`);
+            abilities.foc.mod = attributes.focus.value;
+        }
+        
+        // Continue with the rest of prepareDerivedData
+        console.log("========== AVANT CHARACTER DERIVED DATA PREPARATION START ==========");
+        console.log("Starting prepareDerivedData for character:", this.name);
+        console.log("Base ability scores:", this.system.abilities);
+        
         super.prepareDerivedData();
 
         // const { attributes } = this.system;
@@ -781,18 +860,40 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
         });
     }
 
+    /**
+     * Prepares saving throw statistics for the character
+     * 
+     * This method:
+     * 1. Creates Statistic objects for each saving throw (Fortitude, Reflex, Will)
+     * 2. Links each save to its governing attribute (Con, Dex, Wis respectively)
+     * 3. Applies armor-based bonuses like "resilient" runes and "bulwark" trait
+     * 4. Calculates the final saving throw values
+     * 
+     * Each saving throw is attribute-based, so the character's attribute scores
+     * directly affect saving throw modifiers.
+     * 
+     * @private
+     */
     private prepareSaves(): void {
+        console.log("========== AVANT SAVES PREPARATION START ==========");
+        console.log("Starting prepareSaves for character:", this.name);
+        
         const wornArmor = this.wornArmor;
+        console.log("Worn armor:", wornArmor?.name);
 
         this.saves = R.mapToObj(SAVE_TYPES, (saveType) => {
             const save = this.system.saves[saveType];
+            console.log(`Processing save: ${saveType}, based on attribute: ${save.attribute}`);
+            
             const saveName = game.i18n.localize(CONFIG.AVANT.saves[saveType]);
             const modifiers: ModifierAvant[] = [];
             const selectors = [saveType, `${save.attribute}-based`, "saving-throw", "all"];
+            console.log(`Domains for ${saveType} save:`, selectors);
 
             // Add resilient bonuses for wearing armor with a resilient rune.
             if (wornArmor?.system.runes.resilient && wornArmor.isInvested) {
                 const slug = "resilient";
+                console.log(`Adding resilient bonus to ${saveType} from armor: +${wornArmor.system.runes.resilient}`);
                 modifiers.push(
                     new ModifierAvant({
                         slug,
@@ -804,9 +905,11 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
                 );
             }
 
+            // Bulwark trait on armor can improve Reflex saves against damaging effects
             const affectedByBulwark = saveType === "reflex" && wornArmor?.traits.has("bulwark");
             if (affectedByBulwark) {
                 const slug = "bulwark";
+                console.log(`Adding bulwark bonus to Reflex save: +3 against damaging effects`);
                 const bulwarkModifier = new ModifierAvant({
                     slug,
                     type: "untyped",
@@ -826,6 +929,8 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
                 });
             }
 
+            // Create the statistic object for this saving throw
+            // The attribute parameter connects the save to its governing attribute
             const statistic = new Statistic(this, {
                 slug: saveType,
                 label: saveName,
@@ -835,24 +940,109 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
                 domains: selectors,
                 check: { type: "saving-throw" },
             });
+            
+            console.log(`Created statistic for ${saveType} save:`, {
+                slug: saveType,
+                attribute: save.attribute,
+                rank: save.rank,
+                mod: statistic.mod,
+                check: statistic.check.mod,
+            });
 
             this.system.saves[saveType] = fu.mergeObject(this.system.saves[saveType], statistic.getTraceData());
 
             return [saveType, statistic];
         });
+        
+        console.log("========== AVANT SAVES PREPARATION COMPLETE ==========");
     }
 
+    /**
+     * Prepares skill-related data for the character.
+     * 
+     * This method handles:
+     * 1. Creating Statistic objects for each skill defined in CONFIG.AVANT.skills
+     * 2. Setting up modifiers based on the character's attributes and armor
+     * 3. Creating Lore skills from lore items
+     * 4. Calculating final skill values
+     * 
+     * The relationship between skills and attributes is defined in CONFIG.AVANT.skills,
+     * where each skill specifies which attribute it uses (e.g., Athletics uses Strength)
+     * 
+     * @private
+     */
     private prepareSkills() {
         const { synthetics, system, wornArmor } = this;
 
+        console.log("========== AVANT SKILL PREPARATION START ==========");
+        console.log("Starting prepareSkills for character:", this.name);
+        console.log("Current ability scores:", this.system.abilities);
+        console.log("Current custom attributes:", this.system.attributes);
+
+        // Log the attribute-to-skill mapping for our new attributes and skills
+        console.log("===== NEW SKILLS ATTRIBUTE MAPPING =====");
+        console.log("Might skills:", CONFIG.AVANT.skills.command, CONFIG.AVANT.skills.force, CONFIG.AVANT.skills.surge);
+        console.log("Grace skills:", CONFIG.AVANT.skills.charm, CONFIG.AVANT.skills.finesse, CONFIG.AVANT.skills.hide);
+        console.log("Intellect skills:", CONFIG.AVANT.skills.debate, CONFIG.AVANT.skills.inspect, CONFIG.AVANT.skills.recall);
+        console.log("Focus skills:", CONFIG.AVANT.skills.discern, CONFIG.AVANT.skills.endure, CONFIG.AVANT.skills.intuit);
+        
+        // Create skill statistics for each defined skill in the system
         this.skills = R.mapToObj(R.entries(CONFIG.AVANT.skills), ([skillSlug, { label, attribute }]) => {
-            const skill = system.skills[skillSlug];
+            console.log(`Processing skill: ${skillSlug}, based on attribute: ${attribute}`);
+            const skill = system.skills[skillSlug] as CharacterSkillData;
+            console.log(`Skill data from system:`, skill);
 
             const domains = [skillSlug, `${attribute}-based`, "skill-check", `${attribute}-skill-check`, "all"];
+            console.log(`Domains for ${skillSlug}:`, domains);
             const modifiers: ModifierAvant[] = [];
 
-            if (skill.armor && typeof wornArmor?.strength === "number" && wornArmor.checkPenalty < 0) {
+            // Add custom attribute modifier if applicable
+            if (attribute === "mgt" && this.system.attributes.might) {
+                console.log(`Adding Might modifier to ${skillSlug}: ${this.system.attributes.might.value}`);
+                const mightModifier = new ModifierAvant({
+                    slug: "might",
+                    label: "AVANT.AttributeMight",
+                    modifier: this.system.attributes.might.value,
+                    type: "ability",
+                    adjustments: extractModifierAdjustments(synthetics.modifierAdjustments, domains, "might"),
+                });
+                modifiers.push(mightModifier);
+            } else if (attribute === "gra" && this.system.attributes.grace) {
+                console.log(`Adding Grace modifier to ${skillSlug}: ${this.system.attributes.grace.value}`);
+                const graceModifier = new ModifierAvant({
+                    slug: "grace",
+                    label: "AVANT.AttributeGrace",
+                    modifier: this.system.attributes.grace.value,
+                    type: "ability",
+                    adjustments: extractModifierAdjustments(synthetics.modifierAdjustments, domains, "grace"),
+                });
+                modifiers.push(graceModifier);
+            } else if (attribute === "intl" && this.system.attributes.intellect) {
+                console.log(`Adding Intellect modifier to ${skillSlug}: ${this.system.attributes.intellect.value}`);
+                const intellectModifier = new ModifierAvant({
+                    slug: "intellect",
+                    label: "AVANT.AttributeIntellect",
+                    modifier: this.system.attributes.intellect.value,
+                    type: "ability",
+                    adjustments: extractModifierAdjustments(synthetics.modifierAdjustments, domains, "intellect"),
+                });
+                modifiers.push(intellectModifier);
+            } else if (attribute === "foc" && this.system.attributes.focus) {
+                console.log(`Adding Focus modifier to ${skillSlug}: ${this.system.attributes.focus.value}`);
+                const focusModifier = new ModifierAvant({
+                    slug: "focus",
+                    label: "AVANT.AttributeFocus",
+                    modifier: this.system.attributes.focus.value,
+                    type: "ability",
+                    adjustments: extractModifierAdjustments(synthetics.modifierAdjustments, domains, "focus"),
+                });
+                modifiers.push(focusModifier);
+            }
+
+            // Add armor check penalty if applicable
+            if (skill.armor && wornArmor?.strength !== undefined && wornArmor?.checkPenalty < 0) {
                 const slug = "armor-check-penalty";
+                console.log(`Adding armor check penalty for ${skillSlug}: ${wornArmor.checkPenalty}`);
                 const armorCheckPenalty = new ModifierAvant({
                     slug,
                     label: "AVANT.ArmorCheckPenalty",
@@ -867,7 +1057,7 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
                     armorCheckPenalty.predicate.push({
                         nor: ["armor:strength-requirement-met", "armor:trait:flexible"],
                     });
-                } else if (skillSlug === "stealth" && wornArmor.traits.has("noisy")) {
+                } else if (skillSlug === "stealth" && wornArmor?.traits.has("noisy")) {
                     armorCheckPenalty.predicate.push({
                         nand: ["armor:strength-requirement-met", "armor:ignore-noisy-penalty"],
                     });
@@ -881,6 +1071,8 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
             // Add a penalty for attempting to Force Open without a crowbar or similar tool
             if (skillSlug === "athletics") modifiers.push(createForceOpenPenalty(this, domains));
 
+            // Create the statistic object for this skill
+            // The attribute parameter connects the skill to its governing attribute
             const statistic = new Statistic(this, {
                 slug: skillSlug,
                 label,
@@ -891,6 +1083,14 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
                 lore: false,
                 check: { type: "skill-check" },
             }) as CharacterSkill<this>;
+            
+            console.log(`Created statistic for ${skillSlug}:`, {
+                slug: skillSlug,
+                attribute,
+                rank: skill.rank,
+                mod: statistic.mod,
+                check: statistic.check.mod,
+            });
 
             return [skillSlug, statistic];
         });
@@ -900,10 +1100,12 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
             const rawLoreSlug = sluggify(loreItem.name);
             return [/\blore\b/.test(rawLoreSlug) ? rawLoreSlug : `${rawLoreSlug}-lore`, loreItem];
         });
+        console.log("Lore items:", loreItems);
 
         // Add Lore skills to skill statistics
         for (const [slug, loreItem] of Object.entries(loreItems)) {
             const rank = loreItem.system.proficient.value;
+            console.log(`Creating Lore skill: ${slug} with rank ${rank}`);
             this.skills[slug as SkillSlug] = new Statistic(this, {
                 slug,
                 label: loreItem.name,
@@ -926,8 +1128,12 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
                 itemId: loreItem?.id ?? null,
                 lore: !!statistic.lore,
             });
+            
+            console.log(`Finalized skill data for ${key}:`, data);
             return [key, data];
         });
+        
+        console.log("========== AVANT SKILL PREPARATION COMPLETE ==========");
     }
 
     override prepareSpeed(movementType: "land"): CreatureSpeeds;
@@ -1800,6 +2006,51 @@ class CharacterAvant<TParent extends TokenDocumentAvant | null = TokenDocumentAv
         options: CreatureUpdateOperation<TParent>,
         user: UserAvant,
     ): Promise<boolean | void> {
+        if (changed.system?.attributes) {
+            // Sync ability score modifiers with attribute values if they've changed
+            const attributes = changed.system.attributes;
+            
+            // Use type assertion to work around TypeScript type checking issues
+            // This is less type-safe but will allow the build to complete
+            if (attributes.might?.value !== undefined) {
+                console.log(`_preUpdate: Syncing mgt.mod to might.value: ${attributes.might.value}`);
+                // Use a more direct approach to update abilities
+                fu.mergeObject(changed.system, {
+                    abilities: {
+                        mgt: { mod: attributes.might.value }
+                    }
+                });
+            }
+            
+            if (attributes.grace?.value !== undefined) {
+                console.log(`_preUpdate: Syncing gra.mod to grace.value: ${attributes.grace.value}`);
+                fu.mergeObject(changed.system, {
+                    abilities: {
+                        gra: { mod: attributes.grace.value }
+                    }
+                });
+            }
+            
+            if (attributes.intellect?.value !== undefined) {
+                console.log(`_preUpdate: Syncing intl.mod to intellect.value: ${attributes.intellect.value}`);
+                fu.mergeObject(changed.system, {
+                    abilities: {
+                        intl: { mod: attributes.intellect.value }
+                    }
+                });
+            }
+            
+            if (attributes.focus?.value !== undefined) {
+                console.log(`_preUpdate: Syncing foc.mod to focus.value: ${attributes.focus.value}`);
+                fu.mergeObject(changed.system, {
+                    abilities: {
+                        foc: { mod: attributes.focus.value }
+                    }
+                });
+            }
+        }
+        
+        // Continue with other _preUpdate logic
         const isFullReplace = !((options.diff ?? true) && (options.recursive ?? true));
         if (isFullReplace) return super._preUpdate(changed, options, user);
 

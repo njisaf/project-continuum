@@ -81,6 +81,55 @@
     </div>
 </div>
 
+{{!-- ATTRIBUTES --}}
+<header>
+    <h2>{{localize "AVANT.ActorAttributes"}}</h2>
+</header>
+<div class="attributes">
+    <ol class="attributes-list">
+        <li class="attribute">
+            <label class="sidebar_label">{{localize "AVANT.AttributeMight"}}</label>
+            <input 
+                type="number" 
+                name="system.attributes.might.value" 
+                value="{{data.attributes.might.value}}" 
+                data-dtype="Number"
+                class="attribute-input"
+            />
+        </li>
+        <li class="attribute">
+            <label class="sidebar_label">{{localize "AVANT.AttributeGrace"}}</label>
+            <input 
+                type="number" 
+                name="system.attributes.grace.value" 
+                value="{{data.attributes.grace.value}}" 
+                data-dtype="Number"
+                class="attribute-input"
+            />
+        </li>
+        <li class="attribute">
+            <label class="sidebar_label">{{localize "AVANT.AttributeIntellect"}}</label>
+            <input 
+                type="number" 
+                name="system.attributes.intellect.value" 
+                value="{{data.attributes.intellect.value}}" 
+                data-dtype="Number"
+                class="attribute-input"
+            />
+        </li>
+        <li class="attribute">
+            <label class="sidebar_label">{{localize "AVANT.AttributeFocus"}}</label>
+            <input 
+                type="number" 
+                name="system.attributes.focus.value" 
+                value="{{data.attributes.focus.value}}" 
+                data-dtype="Number"
+                class="attribute-input"
+            />
+        </li>
+    </ol>
+</div>
+
 {{#if specialResources}}
     <header>
         <h2>{{localize "AVANT.Actor.Resources"}}</h2>

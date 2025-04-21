@@ -1,0 +1,81 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+I'll update both documents with the new insights we've gained from our work on fixing the build errors related to skills and attributes.
+
+# Skill System in Avant
+
+## Core Structure
+
+1. **Skill Definition**:
+   - Skills are defined as string slugs in `CORE_SKILL_SLUGS` constant in `src/module/actor/values.ts`
+   - The list includes traditional skills like "acrobatics", "arcana", "athletics" as well as custom skills like "command", "force", "surge", etc.
+   - The `SkillSlug` type is derived from this set of core skills
+
+2. **Character Skills Data Structure**:
+   - In `CharacterSystemSource` (character/data.ts), skills are stored as: 
+     ```typescript
+     skills: Partial<Record<SkillSlug, { rank: ZeroToFour }>>;
+     ```
+   - In the `CharacterSystemData` interface, skills are stored as:
+     ```typescript
+     skills: Record<string, CharacterSkillData>;
+     ```
+
+3. **Skill Data Schema**:
+   - `CharacterSkillData` extends `SkillData` with:
+     ```typescript
+     interface CharacterSkillData extends SkillData {
+       attribute: AttributeString;     // Which attribute the skill is based on (str, dex, etc.)
+       rank: ZeroToFour;               // Proficiency rank (0-4)
+       armor: boolean;                 // Whether this skill is subject to armor check penalty
+       lore?: boolean;                 // Is this skill a Lore skill?
+       itemId: string | null;          // If this is a lore skill, what item it came from
+     }
+     ```
+
+4. **Skills Initialization**:
+   - Skills are initialized in `prepareBaseData()` in `CharacterAvant` class:
+     ```typescript
+     system.skills = R.mapToObj(R.entries(CONFIG.AVANT.skills), ([key, { attribute }]) => {
+       const rank = Math.clamp(this._source.system.skills[key]?.rank || 0, 0, 4) as ZeroToFour;
+       return [key, { rank, attribute, armor: ["dex", "str"].includes(attribute) }];
+     });
+     ```
+   - This initializes each skill with its attribute and proficiency rank
+   - Further processing happens in the `prepareSkills()` method which creates `Statistic` objects for each skill
+
+5. **Skills and Custom Attributes**:
+   - Avant extends the original attribute system with custom attributes (might, grace, intellect, focus)
+   - Skills are now organized under these attributes in the character sheet
+   - In the `prepareSkills()` method, custom attribute modifiers are added to skills based on the attribute mapping:
+     ```typescript
+     // Example for might-based skills
+     if (attribute === "mgt" && this.system.attributes.might) {
+       const mightModifier = new ModifierAvant({
+         slug: "might",
+         label: "AVANT.AttributeMight",
+         modifier: this.system.attributes.might.value,
+         type: "ability"
+       });
+       modifiers.push(mightModifier);
+     }
+     ```
+
+6. **Skill Usage in Actions**:
+   - Skills are used for various actions via action macros
+   - Each action typically requires a specific skill to be used
+   - Skills can be rolled via their statistic objects: `stat.check.roll()`
+   - Actions may add specific roll options, e.g., `action:recall-knowledge:${skill}`
+
+7. **Skills Display in Character Sheet**:
+   - Skills are displayed grouped by their governing attributes
+   - The HTML templates in `static/templates/actors/character/tabs/proficiencies.hbs` organize skills by attribute groups: Might, Grace, Intellect, and Focus
+   - Each skill displays its modifier value, name, and proficiency rank controls
+
+8. **Type Safety and Update Handling**:
+   - Updates to skills and attributes must handle TypeScript type constraints carefully
+   - When modifying data in methods like `_preUpdate()`, it's important to respect the expected data structure
+   - Helper utilities like `fu.mergeObject()` can be used to safely update nested properties while maintaining type compliance

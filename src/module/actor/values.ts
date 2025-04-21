@@ -1,7 +1,13 @@
 import type { ImmunityType, ResistanceType, WeaknessType } from "@actor/types.ts";
 import { immunityTypes, resistanceTypes, weaknessTypes } from "@scripts/config/iwr.ts";
 
-const ATTRIBUTE_ABBREVIATIONS = new Set(["str", "dex", "con", "int", "wis", "cha"] as const);
+/**
+ * Contains all available attribute abbreviations in the system
+ * 
+ * Original attributes: str, dex, con, int, wis, cha
+ * Additional attributes: mgt, gra, intl, foc
+ */
+const ATTRIBUTE_ABBREVIATIONS = new Set(["str", "dex", "con", "int", "wis", "cha", "mgt", "gra", "intl", "foc"] as const);
 
 const CREATURE_ACTOR_TYPES = ["character", "npc", "familiar"] as const;
 
@@ -35,6 +41,18 @@ const CORE_SKILL_SLUGS = new Set([
     "stealth",
     "survival",
     "thievery",
+    "command",
+    "force",
+    "surge",
+    "charm",
+    "finesse",
+    "hide",
+    "debate",
+    "inspect",
+    "recall",
+    "discern",
+    "endure",
+    "intuit",
 ] as const);
 
 const MOVEMENT_TYPES = ["land", "burrow", "climb", "fly", "swim"] as const;

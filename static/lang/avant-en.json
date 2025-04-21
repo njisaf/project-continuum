@@ -9,6 +9,11 @@
     },
     "AVANT": {
         "Background": "Background",
+        "ActorAttributes": "Attributes",
+        "AttributeMight": "Might",
+        "AttributeGrace": "Grace",
+        "AttributeIntellect": "Intellect",
+        "AttributeFocus": "Focus",
         "HitPoints": "Hit Points",
         "Personality": "Personality",
         "GenderPronoun": "Gender/Pronouns",

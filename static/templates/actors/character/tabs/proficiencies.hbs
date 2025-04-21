@@ -1,32 +1,157 @@
 <section class="tab proficiencies major" data-group="primary" data-tab="proficiencies">
     <header>{{localize "AVANT.CoreSkillsHeader"}}</header>
-    <ul class="proficiencies-list">
-        {{!-- Core Skills --}}
-        {{#each data.skills as |skill key|}}
-            {{#unless skill.lore}}
-                <li data-statistic="{{skill.slug}}">
-                    <a class="d20" data-action="roll-check">
-                        {{> "systems/avant/templates/actors/character/icons/d20.hbs"}}
-                    </a>
-                    <a class="modifier hover" data-tooltip-content="#{{@root.options.id}}-{{skill.slug}}-modifiers" data-tooltip="{{skill.breakdown}}">
-                        {{numberFormat skill.value decimals=0 sign=true}}
-                    </a>
-                    <div class="name">{{localize skill.label}}</div>
-                    <select
-                        class="skill-proficiency pf-rank"
-                        data-property="system.skills.{{key}}.rank"
-                        data-rank="{{skill.rank}}"
-                        data-dtype="Number"
-                    >
-                        {{> "systems/avant/templates/actors/character/partials/proficiencylevels-dropdown.hbs" proflevel=skill.rank}}
-                    </select>
-                    {{#with skill}}
-                        {{> "systems/avant/templates/actors/partials/modifiers-tooltip.hbs" abpEnabled=@root.abpEnabled title=label}}
-                    {{/with}}
-                </li>
-            {{/unless}}
-        {{/each}}
-    </ul>
+
+    <!-- Might Skills -->
+    <div class="attribute-skills-group">
+        <h3 class="attribute-header">
+            Might
+            {{#if document.abilities.mgt}}
+            <span class="ability-modifier">{{numberFormat document.abilities.mgt.mod decimals=0 sign=true}}</span>
+            {{/if}}
+        </h3>
+        <ul class="proficiencies-list">
+            {{#each data.skills as |skill key|}}
+                {{#unless skill.lore}}
+                    {{#if (or (eq key "command") (eq key "force") (eq key "surge"))}}
+                    <li data-statistic="{{skill.slug}}">
+                        <a class="d20" data-action="roll-check">
+                            {{> "systems/avant/templates/actors/character/icons/d20.hbs"}}
+                        </a>
+                        <a class="modifier hover" data-tooltip-content="#{{@root.options.id}}-{{skill.slug}}-modifiers" data-tooltip="{{skill.breakdown}}">
+                            {{numberFormat skill.value decimals=0 sign=true}}
+                        </a>
+                        <div class="name">{{localize skill.label}}</div>
+                        <select
+                            class="skill-proficiency pf-rank"
+                            data-property="system.skills.{{key}}.rank"
+                            data-rank="{{skill.rank}}"
+                            data-dtype="Number"
+                        >
+                            {{> "systems/avant/templates/actors/character/partials/proficiencylevels-dropdown.hbs" proflevel=skill.rank}}
+                        </select>
+                        {{#with skill}}
+                            {{> "systems/avant/templates/actors/partials/modifiers-tooltip.hbs" abpEnabled=@root.abpEnabled title=label}}
+                        {{/with}}
+                    </li>
+                    {{/if}}
+                {{/unless}}
+            {{/each}}
+        </ul>
+    </div>
+
+    <!-- Grace Skills -->
+    <div class="attribute-skills-group">
+        <h3 class="attribute-header">
+            Grace
+            {{#if document.abilities.gra}}
+            <span class="ability-modifier">{{numberFormat document.abilities.gra.mod decimals=0 sign=true}}</span>
+            {{/if}}
+        </h3>
+        <ul class="proficiencies-list">
+            {{#each data.skills as |skill key|}}
+                {{#unless skill.lore}}
+                    {{#if (or (eq key "charm") (eq key "finesse") (eq key "hide"))}}
+                    <li data-statistic="{{skill.slug}}">
+                        <a class="d20" data-action="roll-check">
+                            {{> "systems/avant/templates/actors/character/icons/d20.hbs"}}
+                        </a>
+                        <a class="modifier hover" data-tooltip-content="#{{@root.options.id}}-{{skill.slug}}-modifiers" data-tooltip="{{skill.breakdown}}">
+                            {{numberFormat skill.value decimals=0 sign=true}}
+                        </a>
+                        <div class="name">{{localize skill.label}}</div>
+                        <select
+                            class="skill-proficiency pf-rank"
+                            data-property="system.skills.{{key}}.rank"
+                            data-rank="{{skill.rank}}"
+                            data-dtype="Number"
+                        >
+                            {{> "systems/avant/templates/actors/character/partials/proficiencylevels-dropdown.hbs" proflevel=skill.rank}}
+                        </select>
+                        {{#with skill}}
+                            {{> "systems/avant/templates/actors/partials/modifiers-tooltip.hbs" abpEnabled=@root.abpEnabled title=label}}
+                        {{/with}}
+                    </li>
+                    {{/if}}
+                {{/unless}}
+            {{/each}}
+        </ul>
+    </div>
+
+    <!-- Intellect Skills -->
+    <div class="attribute-skills-group">
+        <h3 class="attribute-header">
+            Intellect
+            {{#if document.abilities.intl}}
+            <span class="ability-modifier">{{numberFormat document.abilities.intl.mod decimals=0 sign=true}}</span>
+            {{/if}}
+        </h3>
+        <ul class="proficiencies-list">
+            {{#each data.skills as |skill key|}}
+                {{#unless skill.lore}}
+                    {{#if (or (eq key "debate") (eq key "inspect") (eq key "recall"))}}
+                    <li data-statistic="{{skill.slug}}">
+                        <a class="d20" data-action="roll-check">
+                            {{> "systems/avant/templates/actors/character/icons/d20.hbs"}}
+                        </a>
+                        <a class="modifier hover" data-tooltip-content="#{{@root.options.id}}-{{skill.slug}}-modifiers" data-tooltip="{{skill.breakdown}}">
+                            {{numberFormat skill.value decimals=0 sign=true}}
+                        </a>
+                        <div class="name">{{localize skill.label}}</div>
+                        <select
+                            class="skill-proficiency pf-rank"
+                            data-property="system.skills.{{key}}.rank"
+                            data-rank="{{skill.rank}}"
+                            data-dtype="Number"
+                        >
+                            {{> "systems/avant/templates/actors/character/partials/proficiencylevels-dropdown.hbs" proflevel=skill.rank}}
+                        </select>
+                        {{#with skill}}
+                            {{> "systems/avant/templates/actors/partials/modifiers-tooltip.hbs" abpEnabled=@root.abpEnabled title=label}}
+                        {{/with}}
+                    </li>
+                    {{/if}}
+                {{/unless}}
+            {{/each}}
+        </ul>
+    </div>
+
+    <!-- Focus Skills -->
+    <div class="attribute-skills-group">
+        <h3 class="attribute-header">
+            Focus
+            {{#if document.abilities.foc}}
+            <span class="ability-modifier">{{numberFormat document.abilities.foc.mod decimals=0 sign=true}}</span>
+            {{/if}}
+        </h3>
+        <ul class="proficiencies-list">
+            {{#each data.skills as |skill key|}}
+                {{#unless skill.lore}}
+                    {{#if (or (eq key "discern") (eq key "endure") (eq key "intuit"))}}
+                    <li data-statistic="{{skill.slug}}">
+                        <a class="d20" data-action="roll-check">
+                            {{> "systems/avant/templates/actors/character/icons/d20.hbs"}}
+                        </a>
+                        <a class="modifier hover" data-tooltip-content="#{{@root.options.id}}-{{skill.slug}}-modifiers" data-tooltip="{{skill.breakdown}}">
+                            {{numberFormat skill.value decimals=0 sign=true}}
+                        </a>
+                        <div class="name">{{localize skill.label}}</div>
+                        <select
+                            class="skill-proficiency pf-rank"
+                            data-property="system.skills.{{key}}.rank"
+                            data-rank="{{skill.rank}}"
+                            data-dtype="Number"
+                        >
+                            {{> "systems/avant/templates/actors/character/partials/proficiencylevels-dropdown.hbs" proflevel=skill.rank}}
+                        </select>
+                        {{#with skill}}
+                            {{> "systems/avant/templates/actors/partials/modifiers-tooltip.hbs" abpEnabled=@root.abpEnabled title=label}}
+                        {{/with}}
+                    </li>
+                    {{/if}}
+                {{/unless}}
+            {{/each}}
+        </ul>
+    </div>
 
     {{!-- Lore Header --}}
     <header>
@@ -136,3 +261,30 @@
         </ul>
     {{/if}}
 </section>
+
+<style>
+.attribute-skills-group {
+    margin-bottom: 1em;
+}
+
+.attribute-header {
+    font-weight: bold;
+    color: #5e0000;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ability-modifier {
+    color: #444;
+    font-size: 0.9em;
+    font-weight: normal;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+</style>

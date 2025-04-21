@@ -1,0 +1,91 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# How the Attribute System Works in Avant
+
+## Data Structure
+
+1. **Core Definition**:
+   - Traditional attributes (STR, DEX, CON, INT, WIS, CHA) are defined in `CONFIG.AVANT.abilities` in `src/scripts/config/index.ts`.
+   - Avant adds custom attributes (MGT, GRA, INTL, FOC) with corresponding attribute strings "mgt", "gra", "intl", "foc"
+   - Each skill is linked to an attribute in `CONFIG.AVANT.skills`, which maps skill slugs to their governing attributes.
+   - Ability abbreviations are defined in a constant: `ATTRIBUTE_ABBREVIATIONS`
+
+2. **Character Data**:
+   - Traditional character attributes are stored in `system.abilities` as a `Record<AttributeString, { mod: number }>`
+   - Custom attributes are stored in `system.attributes` with a structure like `might: { value: number }`
+   - When updating character attributes, both properties must be kept in sync
+
+3. **Type Definitions**:
+   - `AttributeString` is a union type of all possible attribute abbreviations
+   - `CharacterAbilities` is defined as `Record<AttributeString, CharacterAbilityData>`
+   - `CharacterAbilityData` extends `AbilityData` with additional properties:
+     ```typescript
+     interface CharacterAbilityData extends AbilityData {
+       /** An ability score prior to modification by items */
+       base: number;
+     }
+     ```
+
+## Data Flow
+
+1. **Initialization**:
+   - In `prepareBaseData()`, both traditional abilities and custom attributes are initialized
+   - Custom attributes are initialized with default values if they don't exist:
+     ```typescript
+     customAttributes.might = customAttributes.might ?? { value: 0 };
+     customAttributes.grace = customAttributes.grace ?? { value: 0 };
+     // etc.
+     ```
+   - Ability modifiers are synchronized with custom attribute values:
+     ```typescript
+     if (this.system.abilities.mgt) this.system.abilities.mgt.mod = customAttributes.might.value;
+     // etc.
+     ```
+
+2. **Data Preparation**:
+   - Custom attributes affect skills based on mappings in CONFIG.AVANT.skills
+   - In `prepareSkills()`, modifiers are created from custom attributes and applied to skills
+
+3. **Update Handling**:
+   - The `_preUpdate()` method is critical for maintaining synchronization between abilities and attributes
+   - When custom attributes are updated, the corresponding ability modifiers must be updated:
+     ```typescript
+     if (attributes.might?.value !== undefined) {
+       fu.mergeObject(changed.system, {
+         abilities: {
+           mgt: { mod: attributes.might.value }
+         }
+       });
+     }
+     ```
+   - This ensures that changes to attributes propagate to abilities
+
+4. **Type Safety Considerations**:
+   - Working with deeply nested partial objects requires careful typing
+   - The `DeepPartial<T>` type is used for update operations to avoid requiring complete objects
+   - Helper functions like `fu.mergeObject()` should be used to update nested properties while maintaining type constraints
+   - Type assertions may be needed in some cases to work around TypeScript's strict checking
+
+5. **Migration Support**:
+   - The system includes migration scripts to add new attributes to existing characters
+   - `Migration790AddCharacterAttributes` ensures all characters have the new custom attributes
+   - The migration also synchronizes ability modifiers with attribute values
+
+## Implementation Challenges
+
+1. **TypeScript Type Compliance**:
+   - The complex type structure can lead to build errors when not strictly adhered to
+   - When working with partial objects during updates, type assertions or merging strategies may be needed
+   - The Record type requires all keys to be present, which can be challenging for partial updates
+
+2. **Synchronization Between Systems**:
+   - Maintaining consistency between abilities and attributes requires careful handling in update methods
+   - Both `prepareBaseData()` and `_preUpdate()` play critical roles in this synchronization
+
+3. **Reliable Update Pattern**:
+   - Using `fu.mergeObject()` for updates is more reliable than direct assignment
+   - This approach preserves existing properties while updating only what has changed
+   - It also helps work around TypeScript's strict requirements for Record types

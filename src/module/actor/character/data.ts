@@ -107,6 +107,15 @@ interface CharacterAttributesSource extends ActorAttributesSource {
             value: number;
         }[];
     };
+    
+    /** Might attribute value - affects command, force, and surge skills */
+    might: { value: number };
+    /** Grace attribute value - affects charm, finesse, and hide skills */
+    grace: { value: number };
+    /** Intellect attribute value - affects debate, inspect, and recall skills */
+    intellect: { value: number };
+    /** Focus attribute value - affects discern, endure, and intuit skills */
+    focus: { value: number };
 }
 
 interface CharacterDetailsSource extends CreatureDetailsSource {
@@ -497,6 +506,15 @@ interface CharacterAttributes extends Omit<CharacterAttributesSource, Attributes
 
     /** Whether this actor is under a battle form polymorph effect */
     battleForm: boolean;
+    
+    /** Might attribute value - affects command, force, and surge skills */
+    might: { value: number };
+    /** Grace attribute value - affects charm, finesse, and hide skills */
+    grace: { value: number };
+    /** Intellect attribute value - affects debate, inspect, and recall skills */
+    intellect: { value: number };
+    /** Focus attribute value - affects discern, endure, and intuit skills */
+    focus: { value: number };
 }
 type AttributesSourceOmission = "immunities" | "weaknesses" | "resistances";
 

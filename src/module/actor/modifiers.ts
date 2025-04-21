@@ -326,22 +326,67 @@ type ModifierOrderedParams = [
 ];
 
 /**
- * Create a modifier for a given attribute type.
- * @returns The modifier of the given attribute
+ * Creates a modifier based on a character attribute (ability score)
+ * 
+ * This function is a central part of how attributes (STR, DEX, etc.) affect various game mechanics:
+ * 1. It creates a modifier object from an attribute value
+ * 2. It applies any relevant adjustments from rule elements
+ * 3. It ensures the modifier is properly typed as an "ability" modifier
+ * 4. It can apply a maximum cap to the attribute value if needed
+ * 
+ * The resulting modifier can then be added to skill checks, saving throws, attack rolls,
+ * or any other statistic that depends on an attribute.
+ * 
+ * @param actor The actor whose attribute is being converted to a modifier
+ * @param attribute The attribute (str, dex, con, int, wis, cha) to create a modifier from
+ * @param domains The domains this modifier applies to (used for rule element targeting)
+ * @param max Optional maximum value for the attribute modifier
+ * @returns A ModifierAvant object representing the attribute modifier
  */
 function createAttributeModifier({ actor, attribute, domains, max }: CreateAbilityModifierParams): ModifierAvant {
+    console.log(`========== CREATING ATTRIBUTE MODIFIER ==========`);
+    console.log(`Creating attribute modifier for ${actor.name}, attribute: ${attribute}`);
+    
+    // Add the attribute-based domain if not already included
     const withAttributeBased = domains.includes(`${attribute}-based`) ? domains : [...domains, `${attribute}-based`];
+    console.log(`Domains for attribute modifier: ${withAttributeBased.join(', ')}`);
+    
+    // Get the attribute modifier value from the actor's abilities
     const modifierValue = actor.abilities[attribute].mod;
+    console.log(`Base ${attribute} modifier value: ${modifierValue}`);
+    
+    // Cap the modifier if a maximum is provided
     const cappedValue = Math.min(modifierValue, max ?? modifierValue);
-
-    return new ModifierAvant({
+    console.log(`After applying cap (${max ?? 'none'}): ${cappedValue}`);
+    
+    // Extract any adjustments that might alter this modifier
+    const adjustments = extractModifierAdjustments(
+        actor.synthetics.modifierAdjustments, 
+        withAttributeBased, 
+        attribute
+    );
+    console.log(`Found ${adjustments.length} adjustments for this attribute modifier`);
+    
+    // Create and return the modifier object
+    const modifier = new ModifierAvant({
         slug: attribute,
         label: CONFIG.AVANT.abilities[attribute],
         modifier: cappedValue,
         type: "ability",
         ability: attribute,
-        adjustments: extractModifierAdjustments(actor.synthetics.modifierAdjustments, withAttributeBased, attribute),
+        adjustments,
     });
+    
+    console.log(`Created attribute modifier:`, {
+        slug: modifier.slug,
+        label: modifier.label,
+        value: modifier.modifier,
+        type: modifier.type,
+        ability: modifier.ability
+    });
+    console.log(`========== ATTRIBUTE MODIFIER CREATED ==========`);
+    
+    return modifier;
 }
 
 interface CreateAbilityModifierParams {
